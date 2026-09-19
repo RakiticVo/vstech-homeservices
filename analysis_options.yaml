@@ -1,0 +1,35 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates the very_good_analysis lint set (locked in CLAUDE.md).
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+
+linter:
+  # very_good_analysis is intentionally strict. These two rules are disabled project-wide because
+  # CLAUDE.md does not mandate dartdoc on every public member (unlike the old home_services
+  # project) and a hard 80-char wrap adds noise without adding safety — everything else in
+  # very_good_analysis (including real correctness/idiom lints) stays on.
+  rules:
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false
+    # `dart fix --apply` mis-corrects this one: it renames constructor *declarations* to
+    # `new(...)`, which is invalid Dart. Disabled until that fixer is safe to run unattended —
+    # do not re-enable without checking `dart fix --dry-run` output first.
+    unnecessary_type_name_in_constructor: false
+    # Conflicts with the standard Flutter convention (and `flutter create`'s own template) of
+    # listing the `flutter`/`flutter_test` SDK entry first, ahead of alphabetical order. Every
+    # other dependency below it stays alphabetically sorted by hand.
+    sort_pub_dependencies: false
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
