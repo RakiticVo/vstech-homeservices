@@ -1,0 +1,14 @@
+{
+  "name": "HomeService Concept 02 - Contemporary Folk Utility",
+  "version": "1.0.0",
+  "source": "reference-concept02.png",
+  "screens": [
+    "01_splash","02_onboarding","03_intro_value","04_login","05_register",
+    "06_home","07_service_categories","08_booking","09_tracking","10_my_home_devices",
+    "11_ai_chat","12_ai_suggestions","13_profile","14_settings_history"
+  ],
+  "palette": {
+    "teal":"#0F766E","amber":"#F59E0B","beige":"#F7EED7",
+    "jade":"#A7D7C5","ceramicBlue":"#3B82F6","lightSand":"#E8DDD0"
+  }
+}

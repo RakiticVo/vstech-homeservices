@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+body{margin:0}
+a{color:#0F766E;text-decoration:none}
+a:hover{color:#0B5A53}
+.hc-scroll{overflow-y:auto;scrollbar-width:none}
+.hc-scroll::-webkit-scrollbar{display:none}
+@keyframes hcDot{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+</style>
+</helmet>
+
+<div data-th="{{ th }}" style="width:390px;height:844px;position:relative;overflow:hidden;background:var(--bg,#FAF6EE);font-family:Manrope,system-ui,sans-serif;color:var(--ink,#14312E);display:flex;flex-direction:column">
+  <div style="height:46px;flex:none"></div>
+
+  <div style="flex:none;display:flex;align-items:center;gap:10px;padding:2px 16px 12px 12px;border-bottom:1px solid var(--line,#EAE2D4)">
+    <div onClick="{{ close }}" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" style="stroke:var(--acc-deep-ink,#0E5952)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </div>
+    <div style="width:42px;height:42px;flex:none;border-radius:21px;overflow:hidden;background:{{ peer.avBg }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#FFFFFF">
+      <sc-if value="{{ peer.img }}"><img src="{{ peer.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></sc-if>
+      <sc-if value="{{ peer.initial }}">{{ peer.initial }}</sc-if>
+    </div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:15.5px;font-weight:800;letter-spacing:-.3px;color:var(--ink,#14312E)">{{ peer.name }}</div>
+      <div style="font-size:11.5px;font-weight:700;color:var(--ink-3,#5F6871);margin-top:2px;font-variant-numeric:tabular-nums">#HS20250425-0012 · {{ statusTxt }}</div>
+    </div>
+    <div onClick="{{ callBtn.go }}" style="width:42px;height:42px;border-radius:21px;background:{{ callBtn.bg }};display:flex;align-items:center;justify-content:center;cursor:pointer">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" style="stroke:{{ callBtn.ink }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
+    </div>
+  </div>
+
+  <div style="flex:none;display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--tint-teal,#E3F1EA)">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" style="stroke:var(--acc-deep-ink,#0E5952);flex:none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"></path><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    <div style="font-size:12px;font-weight:700;color:var(--acc-deep-ink,#0E5952)">{{ t.privacy }}</div>
+  </div>
+
+  <div class="hc-scroll" style="flex:1;min-height:0;padding:14px 14px 10px;display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="6">
+      <div style="display:flex;flex-direction:column">
+        <sc-if value="{{ m.sys }}">
+          <div style="align-self:center;max-width:86%;display:block;padding:6px 12px;border-radius:12px;background:{{ m.sysBg }};font-size:11.5px;font-weight:700;color:{{ m.sysInk }};text-align:center;font-variant-numeric:tabular-nums">
+            {{ m.text }}
+            <sc-if value="{{ m.cb }}"><span onClick="{{ m.cbGo }}" style="font-weight:800;color:var(--acc-ink,#0F766E);cursor:pointer;margin-left:4px">{{ t.callBack }}</span></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ m.bub }}">
+          <div style="display:flex;justify-content:{{ m.jc }}">
+            <div style="max-width:80%;display:flex;flex-direction:column;align-items:{{ m.ai }}">
+              <div style="background:{{ m.bg }};color:{{ m.ink }};border:1px solid {{ m.edge }};border-radius:{{ m.rad }};padding:{{ m.pad }};font-size:14px;font-weight:600;line-height:1.45;text-wrap:pretty">
+                <sc-if value="{{ m.isText }}">{{ m.text }}</sc-if>
+                <sc-if value="{{ m.isPhoto }}">
+                  <div style="width:196px;height:140px;border-radius:12px;background:var(--line,#EAE2D4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" style="stroke:var(--ink-3,#5F6871)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path><path d="m21 15-5-5L5 21"></path></svg>
+                    <div style="font-size:11px;font-weight:700;color:var(--ink-3,#5F6871)">{{ m.text }}</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.isLoc }}">
+                  <div style="width:210px">
+                    <div style="height:104px;border-radius:12px;overflow:hidden;position:relative"><img src="{{ map }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+                    <div style="font-size:13px;font-weight:800;margin-top:8px">{{ t.locT }}</div>
+                    <div style="font-size:12px;font-weight:600;opacity:.8;margin-top:1px">{{ m.text }}</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.isCost }}">
+                  <div style="width:236px">
+                    <div style="font-size:10.5px;font-weight:800;letter-spacing:.4px;color:var(--amber-ink,#A35A06)">{{ t.costK }}</div>
+                    <div style="font-size:14.5px;font-weight:800;color:var(--ink,#14312E);margin-top:5px">{{ t.costT }}</div>
+                    <div style="font-size:12.5px;font-weight:600;color:var(--ink-3,#5F6871);margin-top:2px">{{ t.costB }}</div>
+                    <div style="font-size:19px;font-weight:800;color:var(--ink,#14312E);margin-top:8px;font-variant-numeric:tabular-nums">+45.000đ</div>
+                    <sc-if value="{{ costAct }}">
+                      <div style="display:flex;gap:8px;margin-top:10px">
+                        <div onClick="{{ costNo }}" style="flex:none;width:84px;height:40px;border-radius:20px;border:1px solid var(--line-strong,#E1D8C8);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--ink-2,#374151);cursor:pointer">{{ t.no }}</div>
+                        <div onClick="{{ costOk }}" style="flex:1;height:40px;border-radius:20px;background:var(--amber,#F59E0B);display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:800;color:var(--on-amber,#3A2410);cursor:pointer">{{ t.ok }}</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ costNote }}"><div style="font-size:12px;font-weight:800;color:{{ costNoteInk }};margin-top:10px">{{ costNote }}</div></sc-if>
+                  </div>
+                </sc-if>
+              </div>
+              <sc-if value="{{ m.masked }}"><div style="font-size:11px;font-weight:700;color:var(--ink-4,#767065);margin-top:4px">{{ t.maskNote }}</div></sc-if>
+              <div style="font-size:10.5px;font-weight:700;color:var(--ink-4,#767065);margin-top:3px;font-variant-numeric:tabular-nums">{{ m.meta }}</div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+    <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+      <div style="align-self:flex-start;display:flex;gap:4px;padding:12px 14px;border-radius:18px 18px 18px 6px;background:var(--sf,#FFFFFF);border:1px solid var(--line,#EAE2D4)">
+        <div style="width:7px;height:7px;border-radius:4px;background:var(--ink-4,#767065);animation:hcDot 1.2s infinite"></div>
+        <div style="width:7px;height:7px;border-radius:4px;background:var(--ink-4,#767065);animation:hcDot 1.2s .2s infinite"></div>
+        <div style="width:7px;height:7px;border-radius:4px;background:var(--ink-4,#767065);animation:hcDot 1.2s .4s infinite"></div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:none;border-top:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:10px 12px 24px">
+      <div class="hc-scroll" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:10px">
+        <sc-for list="{{ quick }}" as="q" hint-placeholder-count="4">
+          <div onClick="{{ q.go }}" style="flex:none;height:34px;padding:0 13px;border-radius:17px;border:1.5px solid var(--acc,#0F766E);display:flex;align-items:center;font-size:12.5px;font-weight:700;color:var(--acc-ink,#0F766E);white-space:nowrap;cursor:pointer">{{ q.t }}</div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div onClick="{{ addPhoto }}" style="width:40px;height:40px;flex:none;border-radius:20px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--ink-3,#5F6871)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path><path d="m21 15-5-5L5 21"></path></svg>
+        </div>
+        <div onClick="{{ addLoc }}" style="width:40px;height:40px;flex:none;border-radius:20px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--ink-3,#5F6871)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><path d="M15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path></svg>
+        </div>
+        <div onClick="{{ fillDraft }}" style="flex:1;min-width:0;height:42px;border-radius:21px;border:1px solid var(--line-strong,#E1D8C8);background:var(--bg,#FAF6EE);display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:600;color:{{ draftInk }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text">{{ draftTxt }}</div>
+        <div onClick="{{ send }}" style="width:42px;height:42px;flex:none;border-radius:21px;background:var(--tint-teal,#E3F1EA);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" style="stroke:var(--acc-ink,#0F766E)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ closed }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:none;border-top:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:16px 20px 28px;font-size:12.5px;font-weight:700;line-height:1.55;color:var(--ink-3,#5F6871);text-align:center;text-wrap:pretty">{{ t.closed }}</div>
+  </sc-if>
+
+  <sc-if value="{{ inCall }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:20;background:var(--bg,#FAF6EE);display:flex;flex-direction:column;align-items:center;padding:96px 28px 44px">
+      <div style="width:116px;height:116px;border-radius:58px;overflow:hidden;background:{{ peer.avBg }};display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:800;color:#FFFFFF">
+        <sc-if value="{{ peer.img }}"><img src="{{ peer.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></sc-if>
+        <sc-if value="{{ peer.initial }}">{{ peer.initial }}</sc-if>
+      </div>
+      <div style="font-size:24px;font-weight:800;letter-spacing:-.6px;color:var(--ink,#14312E);margin-top:20px">{{ peer.name }}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--ink-3,#5F6871);margin-top:4px">{{ peer.role }} · #HS20250425-0012</div>
+      <div style="font-size:16px;font-weight:800;color:var(--acc-ink,#0F766E);margin-top:16px;font-variant-numeric:tabular-nums">{{ callState }}</div>
+      <div style="margin-top:22px;border-radius:16px;background:var(--tint-amber,#FDF0D8);padding:12px 15px;display:flex;gap:9px;align-items:flex-start">
+        <div style="width:8px;height:8px;flex:none;border-radius:4px;background:#B91C1C;margin-top:5px"></div>
+        <div style="font-size:12.5px;font-weight:700;line-height:1.5;color:var(--amber-ink,#8A4E05);text-wrap:pretty">{{ t.record }}</div>
+      </div>
+      <div style="flex:1"></div>
+      <sc-if value="{{ callOut }}">
+        <div style="display:flex;gap:28px;align-items:flex-start">
+          <sc-for list="{{ callCtl }}" as="c" hint-placeholder-count="2">
+            <div onClick="{{ c.go }}" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer">
+              <div style="width:62px;height:62px;border-radius:31px;border:1.5px solid {{ c.edge }};background:{{ c.bg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:{{ c.ink }}">{{ c.icon }}</div>
+              <div style="font-size:12px;font-weight:700;color:var(--ink-3,#5F6871)">{{ c.t }}</div>
+            </div>
+          </sc-for>
+          <div onClick="{{ endCall }}" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer">
+            <div style="width:62px;height:62px;border-radius:31px;background:#B91C1C;display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
+            </div>
+            <div style="font-size:12px;font-weight:700;color:var(--ink-3,#5F6871)">{{ t.end }}</div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ callIn }}">
+        <div style="align-self:stretch;display:flex;gap:12px">
+          <div onClick="{{ declineCall }}" style="flex:1;height:56px;border-radius:28px;border:1.5px solid var(--err-ink,#B91C1C);display:flex;align-items:center;justify-content:center;font-size:15.5px;font-weight:800;color:var(--err-ink,#B91C1C);cursor:pointer">{{ t.decline }}</div>
+          <div onClick="{{ acceptCall }}" style="flex:1;height:56px;border-radius:28px;background:var(--acc-deep,#0E5952);display:flex;align-items:center;justify-content:center;font-size:15.5px;font-weight:800;color:#FFFFFF;cursor:pointer">{{ t.accept }}</div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;role&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;customer&quot;,&quot;worker&quot;],&quot;default&quot;:&quot;customer&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;chat&quot;,&quot;callout&quot;,&quot;callin&quot;],&quot;default&quot;:&quot;chat&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;readonly&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;vi&quot;,&quot;en&quot;],&quot;default&quot;:&quot;vi&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ost&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;min&quot;:0,&quot;max&quot;:6,&quot;default&quot;:3,&quot;tsType&quot;:&quot;number&quot;},&quot;simKind&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;simN&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;number&quot;},&quot;techImg&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;onClose&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+const MAPC = (() => {
+  const st = (d, w, c) => '<path d="' + d + '" stroke="' + c + '" stroke-width="' + w + '" fill="none" stroke-linecap="round"/>';
+  let s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 104"><rect width="210" height="104" fill="#EEE8DA"/>';
+  ['M0 30 H210','M0 74 H210','M50 0 V104','M150 0 V104'].forEach(d => s += st(d, 8, '#FFFFFF'));
+  s += '<path d="M50 30 V74 H150" stroke="#0F766E" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+  s += '<circle cx="50" cy="30" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2.5"/><circle cx="150" cy="74" r="7" fill="#F59E0B" stroke="#FFFFFF" stroke-width="2.5"/>';
+  return 'data:image/svg+xml,' + encodeURIComponent(s + '</svg>');
+})();
+const OSTC = [['Đã nhận việc','Accepted'],['Thợ đang đến','On the way'],['Thợ đã đến','Arrived'],['Đang thực hiện','In progress'],['Chờ nghiệm thu','Awaiting sign-off'],['Chờ thanh toán','Awaiting payment'],['Hoàn tất','Completed']];
+const PHONE = /0\d{3}[\s.]?\d{3}[\s.]?\d{3}/g;
+/* by: 'w' worker · 'c' customer · 's' system */
+const BASE = [
+  { by:'s', k:'sys', vi:'Anh Hùng đã nhận việc · 13:12', en:'Hùng accepted the job · 13:12' },
+  { by:'w', k:'text', vi:'Chào chị Mai, em là Hùng. Em sẽ có mặt lúc 14:00 ạ.', en:'Hi Mai, I\u2019m Hùng. I\u2019ll be there at 14:00.', at:'13:14' },
+  { by:'c', k:'text', vi:'Ok em. Nhà chị tầng 12, gửi xe ở hầm B1 nhé.', en:'OK. I\u2019m on floor 12; park in basement B1.', at:'13:15' },
+  { by:'w', k:'loc', vi:'Cách 2,4 km · còn 8 phút', en:'2.4 km away · 8 min', at:'13:40' },
+  { by:'s', k:'call', vi:'Cuộc gọi thoại · 0:48', en:'Voice call · 0:48', at:'13:52' },
+  { by:'c', k:'text', vi:'Nếu cần thì gọi chị số 0901 234 567 nha.', en:'If needed, call me on 0901 234 567.', at:'13:53' },
+  { by:'s', k:'sys', vi:'Thợ đã đến · check-in 13:58', en:'Arrived · checked in at 13:58' },
+  { by:'w', k:'photo', vi:'Ron vòi sen bị mục', en:'Worn shower-head seal', at:'14:40' },
+  { by:'w', k:'cost', at:'14:41' },
+  { by:'s', k:'miss', vi:'Cuộc gọi nhỡ · 15:05', en:'Missed call · 15:05' }
+];
+
+class Component extends DCLogic {
+  state = { extra:[], typing:false, call:null, dur:0, mute:false, spk:false, draft:null, cost:null, seen:false };
+  componentDidMount(){
+    this._t = setInterval(() => {
+      const c = this.state.call;
+      if (c === 'connecting' && this.state.dur >= 2) this.setState({ call:'live', dur:0 });
+      else if (c === 'connecting' || c === 'live') this.setState(s => ({ dur: s.dur + 1 }));
+      else if (c === 'ringing' && this.state.dur >= 20) this.decline();
+      else if (c === 'ringing') this.setState(s => ({ dur: s.dur + 1 }));
+    }, 1000);
+    this.applyMode();
+  }
+  componentWillUnmount(){ clearInterval(this._t); clearTimeout(this._r); }
+  componentDidUpdate(p){
+    if (p.mode !== this.props.mode || p.simN !== this.props.simN) this.applyMode(p);
+  }
+  applyMode(prev){
+    const m = this.props.mode;
+    if (prev && prev.simN !== this.props.simN && this.props.simKind === 'msg') return this.incoming();
+    if (prev && prev.simN !== this.props.simN && this.props.simKind === 'call') return this.setState({ call:'ringing', dur:0 });
+    if (m === 'callout') this.setState({ call:'connecting', dur:0 });
+    else if (m === 'callin') this.setState({ call:'ringing', dur:0 });
+  }
+  me(){ return this.props.role === 'worker' ? 'w' : 'c'; }
+  add(msg){ this.setState(s => ({ extra: s.extra.concat(msg), seen:false })); clearTimeout(this._r); this._r = setTimeout(() => this.setState({ seen:true }), 1400); }
+  incoming(){
+    const w = this.me() === 'w';
+    this.setState({ typing:true });
+    clearTimeout(this._r);
+    this._r = setTimeout(() => this.setState(s => ({ typing:false, extra: s.extra.concat(w
+      ? { by:'c', k:'text', vi:'Anh ơi mang giúp em thêm túi rác lớn nhé.', en:'Could you bring a large rubbish bag too?', at:'16:02' }
+      : { by:'w', k:'text', vi:'Chị ơi em tới sảnh rồi, chị mở cửa giúp em nhé.', en:'I\u2019m at the lobby, could you open the door?', at:'16:02' }) })), 1600);
+  }
+  decline(){
+    this.setState(s => ({ call:null, dur:0, extra: s.extra.concat({ by:'s', k:'miss', vi:'Cuộc gọi nhỡ · 16:05', en:'Missed call · 16:05' }) }));
+  }
+  renderVals(){
+    const en = this.props.lang === 'en', dark = this.props.theme === 'dark';
+    const T = (v, e) => en ? e : v;
+    const me = this.me(), w = me === 'w';
+    const ost = this.props.ost === undefined || this.props.ost === null || this.props.ost === '' ? 3 : Number(this.props.ost);
+    const readonly = !!this.props.readonly;
+    const TEALBG = dark ? '#11827A' : '#0F766E';
+    const costSt = this.state.cost;
+    const mm = n => String(Math.floor(n/60)) + ':' + String(n%60).padStart(2,'0');
+    const all = BASE.concat(this.state.extra);
+    const lastMine = (() => { for (let i = all.length - 1; i >= 0; i--) if (all[i].by === me) return i; return -1; })();
+    const msgs = all.map((m, i) => {
+      if (m.by === 's') {
+        const miss = m.k === 'miss';
+        const txt = miss ? (w ? T('Chị Mai đã không nghe máy · ','Mai missed your call · ') : T('Cuộc gọi nhỡ từ anh Hùng · ','Missed call from Hùng · ')) + (m.vi.split('· ')[1] || '') : T(m.vi, m.en) + (m.at ? ' · ' + m.at : '');
+        return { sys:true, text: txt, cb: miss && !readonly, cbGo: () => this.setState({ call:'connecting', dur:0 }),
+          sysBg: miss ? 'var(--tint-red,#FDE8E4)' : 'var(--line,#EAE2D4)', sysInk: miss ? 'var(--err-ink,#B91C1C)' : 'var(--ink-3,#5F6871)' };
+      }
+      const mine = m.by === me;
+      const raw = m.k === 'cost' ? '' : T(m.vi, m.en);
+      const masked = PHONE.test(raw); PHONE.lastIndex = 0;
+      const text = raw.replace(PHONE, x => x.slice(0,4) + ' ••• •••');
+      const cost = m.k === 'cost';
+      const rec = mine && i === lastMine ? (this.state.seen || i < BASE.length ? T(' · Đã xem',' · Seen') : T(' · Đã gửi',' · Sent')) : '';
+      return { bub:true, jc: mine ? 'flex-end' : 'flex-start', ai: mine ? 'flex-end' : 'flex-start',
+        bg: cost ? 'var(--sf,#FFFFFF)' : mine ? TEALBG : 'var(--sf,#FFFFFF)', ink: mine && !cost ? '#FFFFFF' : 'var(--ink,#14312E)',
+        edge: mine && !cost ? TEALBG : (cost ? 'var(--amber,#F59E0B)' : 'var(--line,#EAE2D4)'),
+        rad: mine ? '18px 18px 6px 18px' : '18px 18px 18px 6px', pad: (m.k === 'photo' || m.k === 'loc') ? '6px' : '10px 13px',
+        isText: m.k === 'text', isPhoto: m.k === 'photo', isLoc: m.k === 'loc', isCost: cost, text, masked,
+        meta: (m.at || '') + rec };
+    });
+    const peer = w
+      ? { name:'Nguyễn Thị Mai', role:T('Khách hàng','Customer'), initial:'M', img:null, avBg:TEALBG }
+      : { name:'Trần Văn Hùng', role:T('Kỹ thuật viên','Technician'), initial:null, img:this.props.techImg || null, avBg:'var(--tile,#EAF3F8)' };
+    const quick = (w ? [['Tôi đang đến','I\u2019m on my way'],['Tôi đã tới sảnh','I\u2019m at the lobby'],['Tôi sắp xong','Almost done'],['Vui lòng mở cửa giúp tôi','Please open the door']]
+                     : [['Mình ở nhà rồi','I\u2019m home'],['Gửi xe ở hầm B1','Park in basement B1'],['Vui lòng gọi trước khi đến','Please call before you arrive'],['Cảm ơn anh','Thanks']])
+      .map(q => ({ t:T(q[0],q[1]), go: () => this.add({ by:me, k:'text', vi:q[0], en:q[1], at:'16:01' }) }));
+    const draftS = w ? ['Em tới rồi, gọi em số 0912 345 678 nhé','I\u2019m here, call me on 0912 345 678'] : ['Em tới cổng chưa?','Are you at the gate yet?'];
+    const inCall = !!this.state.call;
+    return {
+      th: dark ? 'dark' : 'light', map: MAPC, peer,
+      statusTxt: T(OSTC[Math.min(ost,6)][0], OSTC[Math.min(ost,6)][1]),
+      t: {
+        privacy:T('Số điện thoại của hai bên được ẩn','Both phone numbers are hidden'), callBack:T('Gọi lại','Call back'),
+        locT:T('Vị trí hiện tại','Current location'), costK:T('ĐỀ XUẤT CHI PHÍ PHÁT SINH','EXTRA COST REQUEST'),
+        costT:T('Thay ron vòi sen','Replace shower-head seal'), costB:T('Vật tư + công, ảnh đính kèm phía trên','Parts + labour, photo above'),
+        ok:T('Đồng ý','Approve'), no:T('Từ chối','Decline'),
+        maskNote:T('Số điện thoại đã được ẩn để bảo vệ hai bên.','Phone number hidden to protect both sides.'),
+        closed:T('Cuộc trò chuyện đã đóng 24 giờ sau khi hoàn tất đơn. Cần hỗ trợ, vui lòng liên hệ Trung tâm hỗ trợ.','This chat closed 24 hours after the order was completed. For help, contact Support.'),
+        record:T('Cuộc gọi được ghi âm để bảo vệ hai bên và hỗ trợ giải quyết khiếu nại','Calls are recorded to protect both sides and help resolve complaints'),
+        end:T('Kết thúc','End'), decline:T('Từ chối','Decline'), accept:T('Nghe máy','Accept')
+      },
+      msgs, typing: this.state.typing,
+      costAct: !w && !costSt && !readonly,
+      costNote: costSt === 'ok' ? T('Đã đồng ý · cộng vào hoá đơn khi nghiệm thu','Approved · added to the bill at sign-off') : costSt === 'no' ? T('Đã từ chối','Declined')
+        : (w ? T('Đang chờ khách xác nhận','Waiting for the customer') : (readonly ? T('Đã hết hạn','Expired') : null)),
+      costNoteInk: costSt === 'ok' ? 'var(--acc-ink,#0F766E)' : costSt === 'no' ? 'var(--err-ink,#B91C1C)' : 'var(--amber-ink,#A35A06)',
+      costOk: () => this.setState({ cost:'ok' }), costNo: () => this.setState({ cost:'no' }),
+      open: !readonly, closed: readonly, quick,
+      draftTxt: this.state.draft ? T(this.state.draft[0], this.state.draft[1]) : T('Nhập tin nhắn…','Type a message…'),
+      draftInk: this.state.draft ? 'var(--ink,#14312E)' : 'var(--ink-4,#767065)',
+      fillDraft: () => this.setState({ draft: draftS }),
+      send: () => { const d = this.state.draft; if (!d) return; this.setState({ draft:null }); this.add({ by:me, k:'text', vi:d[0], en:d[1], at:'16:03' }); },
+      addPhoto: () => this.add({ by:me, k:'photo', vi:'Ảnh vừa chụp', en:'New photo', at:'16:03' }),
+      addLoc: () => this.add({ by:me, k:'loc', vi: w ? 'Cách 0,3 km · còn 2 phút' : 'Căn hộ Riverside, Quận 1', en: w ? '0.3 km away · 2 min' : 'Riverside apartment, District 1', at:'16:03' }),
+      callBtn: readonly ? { bg:'var(--line,#EAE2D4)', ink:'var(--ink-4,#767065)', go:() => {} } : { bg:'var(--tint-teal,#E3F1EA)', ink:'var(--acc-ink,#0F766E)', go:() => this.setState({ call:'connecting', dur:0 }) },
+      close: () => this.props.onClose && this.props.onClose(),
+      inCall, callOut: this.state.call === 'connecting' || this.state.call === 'live', callIn: this.state.call === 'ringing',
+      callState: this.state.call === 'connecting' ? T('Đang kết nối…','Connecting…') : this.state.call === 'ringing' ? T('Cuộc gọi đến','Incoming call') : mm(this.state.dur),
+      callCtl: [['mute',T('Tắt mic','Mute'),'MIC'],['spk',T('Loa ngoài','Speaker'),'LOA']].map(c => { const on = this.state[c[0]];
+        return { t:c[1], icon: c[0] === 'mute' ? T('MIC','MIC') : T('LOA','SPK'), go: () => this.setState({ [c[0]]: !on }),
+          bg: on ? TEALBG : 'transparent', edge: on ? TEALBG : 'var(--line-strong,#E1D8C8)', ink: on ? '#FFFFFF' : 'var(--ink-2,#374151)' }; }),
+      endCall: () => this.setState(s => ({ call:null, extra: s.extra.concat({ by:'s', k:'call', vi:'Cuộc gọi thoại · ' + mm(s.dur), en:'Voice call · ' + mm(s.dur), at:'16:04' }), dur:0 })),
+      acceptCall: () => this.setState({ call:'live', dur:0 }),
+      declineCall: () => this.decline()
+    };
+  }
+}
+
+</script>
+</body>
+</html>

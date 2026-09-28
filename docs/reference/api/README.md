@@ -14,48 +14,48 @@ Bộ tài liệu này cung cấp thông tin kỹ thuật đầy đủ để mobi
 
 ## Map module MVP → Tài liệu
 
-| Module MVP | File tài liệu | Tính năng chính |
-|---|---|---|
-| Auth, Profile | `01-auth-profiles.md` | Đăng ký, đăng nhập, refresh token, quản lý hồ sơ |
-| Booking, Quote | `02-bookings.md` | Đặt lịch, trạng thái, báo giá, idempotency |
-| Categories, Dispatch | `03-categories-dispatch.md` | Danh mục dịch vụ, phân công thợ |
-| Assets, Warranty | `04-assets-warranty.md` | Quản lý tài sản, bảo hành |
-| Wallet, Payments | `05-wallet-payments.md` | Ví tiền, giao dịch, nạp tiền |
-| Withdrawals | `06-withdrawals.md` | Rút tiền (worker/admin) |
-| Chat | `07-chat.md` | Tin nhắn REST + WebSocket real-time |
-| Notifications | `08-notifications.md` | Thông báo + FCM (trạng thái thật) |
-| Location Tracking | `09-location-tracking.md` | GPS worker, theo dõi khách hàng |
-| VoIP | `10-voip.md` | Cuộc gọi voice |
+| Module MVP | File tài liệu | Tính năng chính | Ghi chú |
+|---|---|---|---|
+| Auth, Profile | `01-auth-profiles.md` | Đăng ký, đăng nhập, refresh token, quản lý hồ sơ | Core MVP |
+| Booking, Quote | `02-bookings.md` | Đặt lịch, trạng thái, báo giá, idempotency | Core MVP |
+| Categories, Dispatch | `03-categories-dispatch.md` | Danh mục dịch vụ, phân công thợ | Core MVP |
+| Assets, Warranty | *(04-assets-warranty)* | Quản lý tài sản, bảo hành | **Post-MVP** (Chưa dùng trong Phase 1) |
+| Wallet, Payments | `05-wallet-payments.md` | Ví tiền, giao dịch, nạp tiền | Core MVP |
+| Withdrawals | `06-withdrawals.md` | Rút tiền (worker/admin) | Core MVP |
+| Chat | `07-chat.md` | Tin nhắn REST + WebSocket real-time | Core MVP |
+| Notifications | `08-notifications.md` | Thông báo + FCM (trạng thái thật) | Core MVP |
+| Location Tracking | `09-location-tracking.md` | GPS worker, theo dõi khách hàng | Core MVP |
+| VoIP | `10-voip.md` | Cuộc gọi voice | Core MVP |
 
 ## Checklist bắt đầu dev
 
 ### Thiết lập môi trường
-- [ ] Clone repo, cài đặt Flutter SDK phiên bản mới nhất
-- [ ] Chạy `flutter pub get` trong `mobile_app/`
-- [ ] Kết nối Firebase (flutterfire configure)
-- [ ] Cấu hình base URL (dev/test/prod) — KHÔNG hardcode
+- [x] Cài đặt Flutter SDK (≥ 3.22, Dart ≥ 3.0)
+- [x] Chạy `flutter pub get` tại thư mục gốc của repository
+- [ ] Kết nối Firebase (`firebase_core`, `firebase_messaging`, `firebase_crashlytics`)
+- [ ] Cấu hình base URL (dev/test/prod) trong `ApiClient` — KHÔNG hardcode
 
-### Kiến trúc ứng dụng
-- [ ] Chọn state management (Riverpod hoặc Bloc)
-- [ ] Thiết lập dependency injection (get_it hoặc provider)
-- [ ] Tạo `api_client.dart` parse `ApiResponse<T>`
-- [ ] Tạo model classes từ DTO (sử dụng freezed + json_serializable)
+### Kiến trúc ứng dụng (Locked Stack)
+- [x] State management: **flutter_bloc / Cubit**
+- [x] Dependency injection: **get_it + injectable**
+- [x] HTTP Client: **Dio** + Interceptor parse `ApiResponse<T>` ([`lib/core/network/api_client.dart`](../../lib/core/network/api_client.dart))
+- [ ] DTO Models: sinh mã với **freezed + json_serializable** (Request & Response tách biệt)
 
-### Bảo mật
-- [ ] Cài đặt `flutter_secure_storage` cho token
-- [ ] Implement auth flow (login → refresh → logout)
-- [ ] Xử lý mock auth CHỈ ở môi trường dev/test
+### Bảo mật & Lưu trữ
+- [x] Cài đặt `flutter_secure_storage` cho Token ([`lib/core/network/auth_token_store.dart`](../../lib/core/network/auth_token_store.dart))
+- [ ] Implement luồng Auth (login → refresh token transparent → logout / redirect)
+- [ ] Mock auth CHỈ dùng ở môi trường dev/test (`Bearer mock-token-<role>-<id>`)
 
 ### Tích hợp backend
-- [ ] Đọc kỹ `00-foundation.md` để hiểu error codes và response format
-- [ ] Implement WebSocket chat theo `07-chat.md`
-- [ ] Implement location tracking theo `09-location-tracking.md`
-- [ ] Xử lý FCM push notification (xác nhận với PM về trạng thái backend)
+- [x] Đọc kỹ `00-foundation.md` để hiểu error codes (`HS-XXX-XXXX`) và response envelope
+- [ ] Implement WebSocket STOMP chat theo `07-chat.md`
+- [ ] Implement location tracking GPS theo `09-location-tracking.md`
+- [ ] Xử lý FCM push notification client-side
 
 ### Kiểm thử
-- [ ] Viết unit test cho API client và models
-- [ ] Viết integration test cho luồng quan trọng (auth, booking)
-- [ ] Test trên cả iOS và Android
+- [ ] Viết unit test cho API datasource, repositories và usecases
+- [ ] Viết BLoC test với `bloc_test` cho các chuyển đổi trạng thái
+- [ ] Test trên cả thiết bị iOS và Android
 
 ## Lưu ý quan trọng
 1. **Backend chưa hỗ trợ FCM:** Notification chỉ persist trong database, mobile tự xử lý Firebase client-side.
@@ -64,9 +64,9 @@ Bộ tài liệu này cung cấp thông tin kỹ thuật đầy đủ để mobi
 4. **Endpoint profiles:** Path là `/profiles` KHÔNG phải `/users`.
 5. **Wallet payments:** Không tồn tại endpoint `POST /payments`, chỉ có `/deposit` và `/withdraw`.
 
-## Tài liệu liên quan
-- [Backend API Contracts](../references/api-contracts.md)
-- [Client API Reference](../references/client-api-reference.md)
-- [User Action → API Map](../references/user-action-api-map.md)
-- [Mobile Dev Rules](../rules/MOBILE_DEV_RULES.md)
-- [AGENTS.md](../../AGENTS.md)
+## Tài liệu quy chuẩn liên quan
+- [AGENTS.md](../../AGENTS.md) — Quy tắc kiến trúc & kỹ thuật tối cao cho mọi AI Agent & Dev
+- [CLAUDE.md](../../CLAUDE.md) — Quy tắc dành riêng cho Claude
+- [PHASE1_SCOPE.md](../PHASE1_SCOPE.md) — Phạm vi tính năng Phase 1 MVP
+- [PRD.md](../PRD.md) — Product Requirements Document V2.3
+- [MASTER_SPEC_V9.md](../../docs/design/MASTER_SPEC_V9.md) — Quy chuẩn thiết kế Eco-Clean Sanctuary v9.0

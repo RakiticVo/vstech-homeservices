@@ -33,7 +33,7 @@
 
 ## Shared foundation (both apps)
 
-Eco-Clean Sanctuary design system (see `docs/design/DESIGN.md`), shared core widgets, feature-first
+Eco-Clean Sanctuary v9.0 design system (see [`docs/design/MASTER_SPEC_V9.md`](../design/MASTER_SPEC_V9.md)), shared core widgets, feature-first
 Flutter structure, Dio API client + interceptors, typed DTO/repository pattern with mockable
 datasources, baseline test scaffolding.
 

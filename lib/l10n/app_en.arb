@@ -1,0 +1,1311 @@
+{
+  "@@locale": "en",
+  "appName": "HomeService",
+  "appTagline": "Better homes every day",
+
+  "skip": "Skip",
+  "next": "Next",
+  "startNow": "Get Started",
+  "continueText": "Continue",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "back": "Back",
+  "retry": "Retry",
+  "done": "Done",
+  "close": "Close",
+  "edit": "Edit",
+
+  "langVi": "Tiếng Việt",
+  "langEn": "English",
+  "changeLanguage": "Change Language",
+
+  "splashLoading": "Starting...",
+
+  "ob1Title": "Clean & Tidy Home\nHealthier Living",
+  "ob1Desc": "Professional cleaning services keeping your living spaces fresh and comfortable.",
+  "ob2Title": "Verified Experts\nAbsolute Peace of Mind",
+  "ob2Desc": "Well-trained technicians with certified skills and clear background checks.",
+  "ob3Title": "3-Step Booking\nTransparent Pricing",
+  "ob3Desc": "Select service, pick time, and confirm. All-inclusive quotes with no surprises.",
+  "ob4Title": "Smart AI Assistant\nDedicated Advice",
+  "ob4Desc": "Instant AI diagnosis, recommending tailored repairs and accurate appointments.",
+
+  "introTitle": "Lighter Chores\nBrighter Living",
+  "introSubtitle": "Vietnam's premier dedicated and trusted household service ecosystem",
+  "value1Title": "100% Transparent",
+  "value1Desc": "Clear itemized pricing before technicians arrive, no hidden markups.",
+  "value2Title": "Auto Warranty",
+  "value2Desc": "0đ warranty after service, committed to lasting companionship with your family.",
+  "value3Title": "Rapid Dispatch",
+  "value3Desc": "Punctual arrival, fast execution, and thoughtful care.",
+  "introCta": "Get Started Now",
+
+  "roleGatewayTitle": "Welcome to\nHomeService",
+  "roleGatewaySubtitle": "Please choose your role to continue",
+  "roleCustomerTitle": "I am a Customer",
+  "roleCustomerDesc": "Book repair, maintenance, and care services for your beloved home.",
+  "roleCustomerAction": "Find Services",
+  "roleWorkerTitle": "I am a Service Pro",
+  "roleWorkerDesc": "Receive nearby jobs promptly, boost earnings, and control your work schedule.",
+  "roleWorkerAction": "Start Taking Jobs",
+  "switchRoleNotice": "You can easily switch roles anytime within the app.",
+
+  "authRoleCustomer": "Customer",
+  "authRoleWorker": "Service Pro",
+  "authSwitchRole": "Switch role",
+
+  "loginTitle": "Sign In",
+  "loginWelcome": "Welcome back!",
+  "loginPhoneOrEmailLabel": "Phone number or Email",
+  "loginPhoneOrEmailHint": "0901 234 567 or name@email.com",
+  "loginPhoneWorkerLabel": "Registered Phone Number",
+  "loginPhoneWorkerHint": "0912 345 678",
+  "loginPasswordLabel": "Password",
+  "loginPasswordHint": "Enter your password",
+  "loginForgotPassword": "Forgot password?",
+  "loginCta": "Sign In",
+  "loginOrSocialDivider": "Or continue with",
+  "loginGoogle": "Continue with Google",
+  "loginApple": "Continue with Apple",
+  "loginFacebook": "Continue with Facebook",
+  "loginNoAccount": "Don't have an account?",
+  "loginRegisterNow": "Sign up now",
+
+  "registerTitle": "Create New Account",
+  "registerSubtitle": "Quick registration to experience our services",
+  "registerFullNameLabel": "Full Name",
+  "registerFullNameHint": "Nguyen Van A",
+  "registerPhoneLabel": "Phone Number",
+  "registerPhoneHint": "0901 234 567",
+  "registerPasswordLabel": "Password",
+  "registerPasswordHint": "At least 6 characters",
+  "registerConfirmPasswordLabel": "Confirm Password",
+  "registerConfirmPasswordHint": "Re-enter your password",
+  "registerTermsAgreement": "I agree with the",
+  "registerTermsLink": "Terms of Service",
+  "registerAndText": "and",
+  "registerPrivacyLink": "Privacy Policy",
+  "registerCta": "Sign Up",
+  "registerAlreadyHaveAccount": "Already have an account?",
+  "registerLoginNow": "Sign in now",
+
+  "otpTitle": "OTP Verification",
+  "otpSubtitle": "A 6-digit verification code has been sent to",
+  "otpQuickFillLabel": "From SMS: 123456",
+  "otpResendCountdown": "Resend code in {seconds}s",
+  "@otpResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "otpResendAction": "Resend OTP Code",
+  "otpCta": "Verify Now",
+  "otpInvalidCode": "Invalid OTP code. Please try again!",
+  "otpVerifySuccess": "Verification successful!",
+
+  "forgotPasswordTitle": "Reset Password",
+  "forgotPasswordSubtitle": "Enter your registered phone number to receive an OTP code for resetting your password",
+  "forgotPasswordPhoneLabel": "Phone Number",
+  "forgotPasswordPhoneHint": "0901 234 567",
+  "forgotPasswordCta": "Send Verification Code",
+  "forgotPasswordBackToLogin": "Back to Sign In",
+
+  "errorFieldRequired": "This field is required",
+  "errorInvalidPhone": "Invalid phone number",
+  "errorPasswordTooShort": "Password must be at least 6 characters",
+  "errorPasswordNotMatch": "Passwords do not match",
+  "errorMustAgreeTerms": "Please agree to the Terms of Service",
+
+  "homeGreeting": "Hello,",
+  "homeGreetingSubtitle": "What does your home need today?",
+  "homeDefaultAddress": "Sunrise City Apt, Dist. 7",
+  "homeSearchPlaceholder": "Search services: air-con, cleaning...",
+
+  "svcCleanTitle": "Home\nCleaning",
+  "svcPlumbTitle": "Electrical &\nPlumbing",
+  "svcAcTitle": "Air-con &\nWasher",
+  "svcLaundryTitle": "Laundry &\nCurtains",
+  "svcMaidTitle": "Hourly\nMaid",
+  "svcPestTitle": "Pest\nControl",
+  "svcInstallTitle": "Handyman &\nAssembly",
+  "svcApplianceTitle": "Appliance\nRepair",
+
+  "homeSectionCategories": "Essential Services",
+  "homeSectionSeeAll": "See all",
+  "homeSectionOffers": "Special Offers",
+  "homeSectionDevices": "Your Home & Devices",
+  "homeDeviceSubtitle": "Track status & maintenance schedule",
+  "homeViewSchedule": "View Schedule",
+
+  "offerTag15": "15% Off",
+  "offerTagFast": "In 20 mins",
+  "startingFrom": "From {price}",
+  "@startingFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+
+  "cleanServiceDesc": "Comprehensive apartment, living room, bedroom, and kitchen deep cleaning.",
+  "acServiceDesc": "Air conditioning cleaning, gas recharge, and electrical safety inspection.",
+  "plumbServiceDesc": "Leak repairs, pipe unblocking, and genuine hardware replacements.",
+
+  "deviceDaikinAc": "Daikin Inverter AC 1.5 HP",
+  "deviceSamsungFridge": "Samsung Twin Cooling Refrigerator",
+  "deviceStatusGood": "Running well",
+  "deviceStatusMaintenance": "Needs service",
+  "deviceLastService": "Last serviced: {date}",
+  "@deviceLastService": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+
+  "navHome": "Home",
+  "navOrders": "Orders",
+  "navAi": "AI Assist",
+  "navNotifications": "Alerts",
+  "navAccount": "Account",
+
+  "categoriesTitle": "All Services",
+  "categoriesFilterAll": "All",
+  "categoriesFilterClean": "Cleaning",
+  "categoriesFilterElectric": "Cooling",
+  "categoriesFilterPlumb": "Plumbing",
+  "categoriesFilterRepair": "Repair",
+
+  "serviceDetailBookCta": "Book Now",
+  "serviceIncluded": "Service package includes",
+  "serviceWarrantyNotice": "30-day 0đ warranty included",
+  "serviceDuration": "Estimated time: 60 - 90 mins",
+  "ratingReviews": "{rating} ({count} reviews)",
+  "@ratingReviews": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "workerGreeting": "Hello {name},",
+  "@workerGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workerGreetingSubtitle": "Ready to take jobs today?",
+  "workerOnline": "Online",
+  "workerOffline": "Offline",
+  "workerTodayEarnings": "Today's Earnings",
+  "workerCompletedJobs": "Completed",
+  "workerRating": "Rating",
+  "workerAcceptRate": "Accept Rate",
+  "workerNetEarnings": "Net to Wallet",
+  "workerNewJobRequest": "New Job Request",
+  "workerArriveIn20Min": "Arrive in 20 mins",
+  "workerViewAndAccept": "View & Accept",
+  "workerDeclineJob": "Decline",
+  "workerTodaySchedule": "Today's Schedule",
+  "workerUpcoming": "Upcoming",
+  "workerDone": "Done",
+
+  "workerNavJobs": "Jobs",
+  "workerNavSchedule": "Schedule",
+  "workerNavWallet": "Wallet",
+  "workerNavProfile": "Profile",
+
+  "jobDetailTitle": "Job Request Details",
+  "jobCustomerName": "Customer",
+  "jobCustomerAddress": "Work Address",
+  "jobDistance": "Distance: {dist}",
+  "@jobDistance": {
+    "placeholders": {
+      "dist": {
+        "type": "String"
+      }
+    }
+  },
+  "jobEstimatedTime": "Est. Duration: {time}",
+  "@jobEstimatedTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "jobPriceBreakdown": "Transparent Earnings Breakdown",
+  "jobLabourFee": "Flat Labour Fee",
+  "jobSiteSurcharge": "Site Surcharge",
+  "jobPlatformFee": "Platform Fee (15%)",
+  "jobAcceptCta": "Accept Job Now",
+  "jobAcceptedSuccess": "Job accepted successfully! Please prepare to travel",
+
+  "kycTitle": "Partner Worker Registration",
+  "kycStepProgress": "Step {step}/6",
+  "@kycStepProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      }
+    }
+  },
+  "kycStep2Title": "Personal Info & Work Area",
+  "kycStep2Desc": "Provide basic info and select the districts you are ready to service.",
+  "kycDistrictSelect": "Service Area (Select multiple)",
+  "kycDistrictQ1": "District 1",
+  "kycDistrictQ2": "District 2 (Thu Duc City)",
+  "kycDistrictQ7": "District 7",
+  "kycDistrictBinhThanh": "Binh Thanh",
+  "kycDistrictPhuNhuan": "Phu Nhuan",
+
+  "kycStep3Title": "National ID Verification",
+  "kycStep3Desc": "Capture clear front and back photos of your chip ID. Avoid glare or cropped edges.",
+  "kycIdFront": "ID Card (Front)",
+  "kycIdBack": "ID Card (Back)",
+  "kycCaptured": "Captured",
+  "kycTapToCapture": "Tap to capture",
+
+  "kycStep4Title": "Portrait Selfie Photo",
+  "kycStep4Desc": "Look directly at the camera, ensure good lighting, no sunglasses or face masks.",
+  "kycTakeSelfie": "Take Facial Photo",
+
+  "kycStep5Title": "Expertise & Certificates",
+  "kycStep5Desc": "Air Conditioning and Height Installation require mandatory Safety Certificates.",
+  "kycCertUpload": "Occupational Safety Certificate",
+  "kycCertUploaded": "Certificate uploaded",
+
+  "kycStep6Title": "Payout Bank Account",
+  "kycStep6Desc": "Account holder name must match 100% with your National ID card.",
+  "kycBankName": "Bank Name",
+  "kycBankHint": "Vietcombank, MB Bank, Techcombank...",
+  "kycAccountNumber": "Account Number",
+  "kycAccountNumberHint": "Enter bank account number",
+  "kycAccountHolder": "Account Holder Name",
+  "kycAccountHolderHint": "TRAN VAN HUNG",
+  "kycSubmitCta": "Submit Application",
+
+  "kycStatusTitle": "Application Status",
+  "kycPendingTitle": "Application Under Review",
+  "kycPendingDesc": "VSTech team is reviewing your documents. Results will be ready within 24 working hours.",
+  "kycNeedsInfoTitle": "Action Required",
+  "kycNeedsInfoDesc": "The back photo of your ID card has glare obscuring numbers. Please re-upload a clear photo.",
+  "kycReuploadId": "Re-upload ID Photo",
+  "kycApprovedTitle": "Application Approved! 🎉",
+  "kycApprovedDesc": "Congratulations Mr. Hung, you are officially a VSTech Partner Worker.",
+  "kycStartJobsCta": "Start Taking Jobs",
+
+  "jobNetEarningsDesc": "Credited directly to wallet upon completion",
+  "jobSampleCleaningTitle": "70m² Apartment Cleaning",
+  "jobSampleCustomerName": "Nguyen Thi Thu Thao",
+  "jobSampleCustomerAddress": "Apt B12.04, Masteri Thao Dien, 159 Ha Noi Highway, Thao Dien, Thu Duc City",
+  "jobSampleSchedule1Service": "Inverter Air Conditioner Cleaning",
+  "jobSampleSchedule1Customer": "Ms. Lan • Thao Dien, Dist. 2",
+  "jobSampleSchedule2Service": "Water Pipe Leak Repair",
+  "jobSampleSchedule2Customer": "Mr. Minh • Binh An, Dist. 2",
+  "workerJobsCompletedRatio": "2/3 jobs",
+  "kycStatusPendingChip": "Pending",
+  "kycStatusNeedsChip": "Needs Info",
+  "kycStatusApprovedChip": "Approved",
+
+  "bookingTitle": "Book Service",
+  "bookingStepProgress": "Step {step}/3: {name}",
+  "@bookingStepProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bookingStep1Title": "Select Package & Add-ons",
+  "bookingStep2Title": "Schedule & Address",
+  "bookingStep3Title": "Review & Confirm",
+  "bookingSelectScope": "Apartment Scope / Area",
+  "bookingScopeSmall": "Apartment under 70m²",
+  "bookingScopeSmallDesc": "1 - 2 bedrooms, 1 bathroom • Est. ~60 - 90 mins",
+  "bookingScopeMedium": "Apartment 70 - 100m²",
+  "bookingScopeMediumDesc": "2 - 3 bedrooms, 2 bathrooms • Est. ~120 mins",
+  "bookingScopeLarge": "Apartment over 100m²",
+  "bookingScopeLargeDesc": "3+ bedrooms, penthouse • Est. ~180 mins",
+  "bookingAddonsTitle": "Additional Services (Optional)",
+  "bookingAddonTrash": "Carry trash downstairs",
+  "bookingAddonTrashDesc": "Sort and take trash down to building garbage area",
+  "bookingAddonDisinfect": "Nano Silver Surface Disinfection",
+  "bookingAddonDisinfectDesc": "Kills 99.9% of bacteria on tables, door knobs, kitchen",
+  "bookingAddonGlass": "Balcony Exterior Glass Cleaning",
+  "bookingAddonGlassDesc": "Specialized squeegee & anti-dust cleaning solution",
+  "bookingEstimatedPreview": "Est. Total Preview",
+  "bookingContinueToSchedule": "Continue: Select Date & Time",
+
+  "bookingScheduleDate": "Service Date",
+  "bookingScheduleToday": "Today",
+  "bookingScheduleTomorrow": "Tomorrow",
+  "bookingScheduleTimeSlot": "Arrival Time Slot",
+  "bookingWorkAddress": "Service Address",
+  "bookingChangeAddress": "Change Address",
+  "bookingPremisesType": "Premises Context (Transparent Surcharge)",
+  "bookingPremisesGround": "Landed House / Street Front",
+  "bookingPremisesGroundSurcharge": "+0đ",
+  "bookingPremisesElevator": "Apartment with Elevator",
+  "bookingPremisesElevatorSurcharge": "+20,000đ",
+  "bookingPremisesStairs": "Apartment via Stairs (High Floor)",
+  "bookingPremisesStairsSurcharge": "+50,000đ",
+  "bookingNotesLabel": "Notes for Worker",
+  "bookingNotesHint": "E.g. Call before arrival, park at basement B2...",
+  "bookingAttachPhotos": "On-site Photos (Optional, max 5)",
+  "bookingPhotoAdded": "{count}/5 photos",
+  "@bookingPhotoAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bookingContinueToConfirm": "Continue: Confirm Booking",
+
+  "bookingOrderSummary": "Itemized Cost Breakdown",
+  "bookingBaseLabourFee": "Basic Labour Package",
+  "bookingAddonsFee": "Additional Services (Add-on)",
+  "bookingPremisesFee": "Premises Surcharge",
+  "bookingDiscountFee": "Voucher Discount",
+  "bookingTotalEstimated": "Total Estimated Payment",
+  "bookingVoucherLabel": "Promo Code (Voucher)",
+  "bookingVoucherHint": "Enter promo code (e.g. NHAMOICHI15)",
+  "bookingVoucherApply": "Apply",
+  "bookingVoucherApplied": "Applied 15% discount voucher",
+  "bookingPaymentMethod": "Payment Method",
+  "bookingPaymentVietQR": "VietQR Bank Transfer",
+  "bookingPaymentVietQRDesc": "Instant 24/7 bank QR code scan",
+  "bookingPaymentVnPay": "ATM Card / E-Wallet (VNPay)",
+  "bookingPaymentVnPayDesc": "Domestic & international Visa/Mastercard",
+  "bookingPaymentCash": "Cash after Completion",
+  "bookingPaymentCashDesc": "Pay directly to worker after final inspection",
+  "bookingPayAfterInspectNotice": "Eco-Clean Guarantee: You only pay after directly inspecting and approving the completed work.",
+  "bookingWarranty30DaysBadge": "Automatic 0đ warranty for 30 days",
+  "bookingConfirmCta": "Confirm Booking · {price}",
+  "@bookingConfirmCta": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dispatchRadarTitle": "Finding Partner Worker",
+  "dispatchRadarScanning": "Scanning partner workers within 2.5 km...",
+  "dispatchRadarSentToWorkers": "Dispatched request to 3 nearest partner workers...",
+  "dispatchRadarFoundWorker": "Matched with Partner Worker!",
+  "dispatchRadarWorkerAssigned": "Nguyen Van Hung has accepted and is preparing to travel",
+  "dispatchRadarWorkerRating": "4.9 ★ • 120+ completed jobs",
+  "dispatchRadarCancelSearch": "Cancel Search",
+  "dispatchRadarCancelConfirm": "Are you sure you want to cancel the search?",
+  "dispatchRadarViewTracking": "Track Worker Location",
+
+  "trackingTitle": "Job Tracking",
+  "trackingOrderCode": "Order: #{code}",
+  "@trackingOrderCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingStageAccepted": "Job Accepted",
+  "trackingStageEnRoute": "Worker En Route",
+  "trackingStageArrived": "Worker Arrived",
+  "trackingStageExecuting": "In Progress",
+  "trackingStageSignoff": "Pending Sign-off",
+  "trackingEtaNotice": "Estimated arrival in {minutes} min · {distance} km",
+  "@trackingEtaNotice": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingCheckInAt": "Worker arrived at {time}",
+  "@trackingCheckInAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingWorkerName": "Nguyen Van Hung",
+  "trackingWorkerRating": "4.9 ★ (128 jobs)",
+  "trackingMaskedCall": "Masked Call",
+  "trackingChat": "Message",
+  "trackingWorkingTimer": "Working Time",
+  "trackingServiceChecklist": "Standard Safety Checklist (5 Steps)",
+  "trackingStep1": "Site inspection & tool preparation",
+  "trackingStep2": "Disassemble panel & clean air filters",
+  "trackingStep3": "Spray wash evaporator coil with nano-disinfectant",
+  "trackingStep4": "Wash condenser unit & flush drain pipe",
+  "trackingStep5": "Reassemble & conduct operating amp check",
+  "trackingStatusCompleted": "Completed",
+  "trackingStatusDoing": "In Progress",
+  "trackingStatusPending": "Pending",
+  "trackingProceedToInspection": "Proceed to Inspection",
+  "trackingHelpSupport": "Help & Support",
+
+  "workerEnRouteTitle": "En Route to Customer",
+  "workerOpenNavigation": "Open Google Maps Navigation",
+  "workerArrivedConfirm": "I Have Arrived",
+  "workerCancelJobPrompt": "Cancel Job",
+  "workerDestinationLabel": "Destination",
+  "workerCustomerNote": "Note: Call before arriving, park at B2 basement",
+  "workerArrivedTitle": "Confirm Arrival",
+  "workerArrivedDesc": "Please tap 'Start Job' once you have met the customer and prepared your tools.",
+  "workerStartJobCta": "Start Working",
+  "workerCustomerNoShow": "Customer Not Present?",
+  "workerExecutingTitle": "Executing Service",
+  "workerExtraCostButton": "+ Request Extra Cost",
+  "workerCompleteJobCta": "Complete Job -> Sign-off",
+  "workerExtraCostDialogTitle": "Request Extra Material Cost",
+  "workerExtraCostDesc": "Enter replacement parts/materials requiring customer approval before servicing.",
+  "workerItemName": "Part/Material Name",
+  "workerItemPrice": "Cost (VND)",
+  "workerSendProposal": "Send Proposal to Customer",
+  "workerProposalSent": "Proposal sent successfully!",
+
+  "inspectTitle": "Service Inspection",
+  "inspectSubtitle": "Please inspect actual work quality before signing off",
+  "inspectItem1": "Apartment swept and vacuumed clean",
+  "inspectItem2": "Windows & glass surfaces streak-free",
+  "inspectItem3": "Bulky waste collected and disposed of properly",
+  "inspectItem4": "Appliances & furniture returned to original positions",
+  "inspectItem5": "No damages or irregular movement of personal property",
+  "inspectSatisfiedCta": "Approve & Sign-off",
+  "inspectUnsatisfiedCta": "Not Satisfied",
+  "inspectWarrantyNotice": "Automatic 30-day 0đ warranty if any issues arise.",
+
+  "paymentSummaryTitle": "Payment Summary",
+  "paymentSummaryDesc": "Transparent payment after direct inspection and sign-off",
+  "paymentExtraCost": "Approved Extra Material Cost",
+  "paymentTotalToPay": "Total Amount to Pay",
+  "paymentPayNowCta": "Pay {amount}",
+  "@paymentPayNowCta": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+
+  "gatewayTitle": "VietQR Payment Gateway",
+  "gatewayScanQrPrompt": "Open any Banking App to scan VietQR",
+  "gatewayAccountOwner": "Account Name",
+  "gatewayBankName": "Bank",
+  "gatewayTransferContent": "Transfer Note",
+  "gatewayConfirmTransferred": "I Have Completed Transfer",
+  "gatewayCountdown": "QR Code expires in {minutes}:{seconds}",
+  "@gatewayCountdown": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+
+  "paidSuccessTitle": "Payment Successful!",
+  "paidSuccessDesc": "Thank you for trusting VSTech Eco-Clean services.",
+  "paidPointsEarned": "+{points} Eco-Clean reward points earned",
+  "@paidPointsEarned": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "paidViewReceipt": "View E-Receipt",
+  "paidReviewWorkerCta": "Review Partner Worker",
+
+  "receiptTitle": "Electronic Receipt",
+  "receiptInvoiceNo": "Invoice No: #{no}",
+  "@receiptInvoiceNo": {
+    "placeholders": {
+      "no": {
+        "type": "String"
+      }
+    }
+  },
+  "receiptDate": "Issued At",
+  "receiptWorkerPayout": "Direct Worker Labour",
+  "receiptPlatformFeeShare": "Platform & Service Insurance Fee",
+  "receiptDownloadPdf": "Download PDF Receipt",
+  "receiptDownloading": "Downloading invoice #{orderCode}.pdf...",
+  "@receiptDownloading": {
+    "placeholders": {
+      "orderCode": {
+        "type": "String"
+      }
+    }
+  },
+  "receiptShare": "Share Receipt",
+  "copiedToClipboard": "Copied: {text}",
+  "@copiedToClipboard": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+
+  "reviewTitle": "Service Review",
+  "reviewPrompt": "How was the service quality today?",
+  "reviewTagPunctual": "Punctual",
+  "reviewTagAttentive": "Attentive",
+  "reviewTagClean": "Clean & Tidy",
+  "reviewTagPolite": "Polite & Honest",
+  "reviewTipTitle": "Send a Tip to Support Worker",
+  "reviewTipSubtitle": "100% of tip goes directly to the worker",
+  "reviewTipNo": "No Tip",
+  "reviewSubmitWithTip": "Submit Review & Tip {amount}",
+  "@reviewSubmitWithTip": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewSubmitOnly": "Submit Review",
+  "reviewCommentHint": "Add remarks to help worker improve (optional)...",
+  "thanksTitle": "Thank You So Much! 🌿",
+  "thanksSubtitle": "Your review and support empower our partner workers greatly.",
+  "thanksBackHome": "Back to Home",
+
+  "workerWaitTitle": "Job Completion",
+  "workerWaitInspectionTitle": "Waiting for Customer Sign-off",
+  "workerWaitInspectionDesc": "Customer is inspecting on-site items.",
+  "workerWaitPaymentTitle": "Waiting for Payment",
+  "workerWaitPaymentDesc": "Customer is paying {amount} via VietQR.",
+  "@workerWaitPaymentDesc": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "workerPaidCelebrationTitle": "Customer Paid Successfully!",
+  "workerPaidWalletCredit": "+{amount} has been credited to your wallet",
+  "@workerPaidWalletCredit": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "workerViewWalletCta": "View Worker Wallet",
+
+  "ordersTitle": "My Bookings",
+  "ordersTabActive": "Active",
+  "ordersTabScheduled": "Scheduled",
+  "ordersTabCompleted": "Completed",
+  "ordersEmptyTitle": "No bookings yet",
+  "ordersEmptyDesc": "Explore our home services and make your first booking today.",
+  "ordersEmptyCta": "Explore Services",
+  "ordersTrackWorkerCta": "Track Worker",
+  "ordersRebookCta": "Rebook",
+  "ordersWarrantyCta": "Warranty 0đ",
+  "ordersViewDetailCta": "Order Details",
+
+  "orderDetailTitle": "Order Details",
+  "orderDetailWorkerCard": "Assigned Worker",
+  "orderDetailScheduleCard": "Schedule & Location",
+  "orderDetailPriceCard": "Payment Breakdown",
+  "orderDetailPaidStatus": "Paid",
+  "orderDetailUnpaidStatus": "Pending Payment",
+  "orderDetailWarrantyBadge": "Automatic 30-Day Free Warranty",
+  "orderDetailCancelCta": "Cancel Order",
+  "orderDetailContactSupport": "Customer Support",
+
+  "workerJobsTitle": "Job Management",
+  "workerJobsTabAssigned": "Assigned",
+  "workerJobsTabActive": "Active",
+  "workerJobsTabCompleted": "Completed",
+  "workerJobsDistance": "{km} km",
+  "@workerJobsDistance": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "workerJobsEarningsEst": "Est. Earnings: +{amount}",
+  "@workerJobsEarningsEst": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "workerJobsAcceptJob": "Accept Job",
+  "workerJobsGoToWork": "Go to Job",
+  "workerJobsCompletedBadge": "Settled",
+  "workerJobsEmpty": "No jobs currently in this category",
+
+  "notificationsTitle": "Notifications",
+  "notificationsMarkAllRead": "Mark all as read",
+  "notificationsSectionToday": "Today",
+  "notificationsSectionEarlier": "Earlier",
+  "notificationsTabAll": "All",
+  "notificationsTabOrders": "Orders",
+  "notificationsTabPromo": "Offers",
+  "notificationsTabSystem": "System",
+  "notificationsEmpty": "No new notifications",
+
+  "notifSettingsTitle": "Notification Settings",
+  "notifSettingsPush": "Push Notifications",
+  "notifSettingsPushDesc": "Receive real-time worker updates and order progress alerts",
+  "notifSettingsSms": "SMS Messages",
+  "notifSettingsSmsDesc": "Receive OTP verification codes and receipts via SMS",
+  "notifSettingsZalo": "Zalo Notifications (ZNS)",
+  "notifSettingsZaloDesc": "Receive updates via official VSTech Zalo OA",
+  "notifSettingsPromo": "Promotions & Offers",
+  "notifSettingsPromoDesc": "Get periodic voucher discounts and loyalty gifts",
+  "notifSettingsSave": "Save Changes",
+  "notifSettingsSaved": "Notification preferences saved",
+
+  "cancelTitle": "Cancel Booking",
+  "cancelFreeSubtitle": "Free cancellation before worker acceptance",
+  "cancelFeeSubtitle": "Cancellation fee {fee} after worker has accepted",
+  "@cancelFeeSubtitle": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelReasonPrompt": "Please select a cancellation reason:",
+  "cancelReasonChangeSchedule": "Schedule conflict / Sudden plan change",
+  "cancelReasonFoundOther": "Found another solution",
+  "cancelReasonWrongInfo": "Wrong service or address",
+  "cancelReasonLateWorker": "Worker is arriving too late",
+  "cancelReasonOther": "Other reason",
+  "cancelReasonOtherHint": "Enter detailed reason...",
+  "cancelPolicyNoteFree": "The booking will be cancelled immediately with zero fee.",
+  "cancelPolicyNoteFee": "A 50,000đ fee will be charged to support the worker's travel expenses.",
+  "cancelConfirmBtnFree": "Confirm Free Cancellation",
+  "cancelConfirmBtnFee": "Confirm & Pay 50,000đ Fee",
+  "cancelKeepBookingBtn": "Keep Booking",
+
+  "workerCancelTitle": "Cancel Job Acceptance",
+  "workerCancelWarning": "Warning: Cancelling will reduce your completion rate from 96% to 95% and may affect dispatch priority.",
+  "workerCancelReasonPrompt": "Select cancellation reason:",
+  "workerCancelReasonVehicle": "Vehicle breakdown or traffic incident",
+  "workerCancelReasonEmergency": "Family emergency",
+  "workerCancelReasonNoContact": "Unable to reach customer after 3 calls",
+  "workerCancelReasonUnsafe": "Worksite is unsafe to execute",
+  "workerCancelReasonOther": "Other reason",
+  "workerCancelReasonOtherHint": "Explain emergency reason...",
+  "workerCancelConfirmBtn": "Confirm Cancellation",
+  "workerCancelKeepJobBtn": "Continue Job",
+
+  "noShowTitle": "Waiting for Customer",
+  "noShowSubtitle": "Arrived at location — Waiting for customer",
+  "noShowTimerDesc": "Maximum wait time is 15 minutes. If no response, you receive a 50,000đ compensation fee.",
+  "noShowCallReminder": "Call Customer",
+  "noShowChatReminder": "Message Customer",
+  "noShowReportBtn": "Report Customer No-show",
+  "noShowUploadEvidencePrompt": "Take a photo of front door/premises as proof:",
+  "noShowUploadBtn": "Take Proof Photo",
+  "noShowConfirmReportBtn": "Submit No-Show Report",
+  "noShowSuccessTitle": "No-Show Recorded",
+  "noShowSuccessDesc": "Order cancelled and 50,000đ travel compensation has been credited to your wallet.",
+  "noShowBackHomeBtn": "Back to Jobs Hub",
+
+  "disputeTitle": "Report Issue & Dispute",
+  "disputeTypePrompt": "Select the issue encountered:",
+  "disputeTypeQuality": "Poor service quality / Substandard",
+  "disputeTypeDamage": "Property damage or loss",
+  "disputeTypeAttitude": "Unprofessional / Rude worker attitude",
+  "disputeTypeOvercharge": "Incorrect charging / Overcharging",
+  "disputeTypeOther": "Other issue",
+  "disputeDescPrompt": "Detailed description of the issue:",
+  "disputeDescHint": "Please describe in detail for fastest resolution...",
+  "disputePhotosPrompt": "Evidence photos (up to 5 photos):",
+  "disputeAddPhoto": "Add Photo",
+  "disputeEscrowNotice": "Escrow Protection: The 400,000đ payment is securely frozen in escrow. The worker cannot withdraw funds until this dispute is resolved.",
+  "disputeSubmitBtn": "Submit Dispute & Freeze Payment",
+
+  "disputedStatusTitle": "Order Under Review",
+  "disputedComplaintCode": "Complaint Code: {code}",
+  "@disputedComplaintCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "disputedEscrowBadge": "Protected by VSTech Escrow",
+  "disputedTimelineTitle": "Dispute Resolution Process:",
+  "disputedStep1": "Received complaint & froze worker payout (Done)",
+  "disputedStep2": "Specialist reviews proof and contacts both parties (Within 2 hrs)",
+  "disputedStep3": "Resolution: Free rework or wallet refund (Within 24 hrs)",
+  "disputedViewComplaintsBtn": "View My Disputes",
+  "disputedBackOrderBtn": "Back to Order Details",
+
+  "complaintsTitle": "My Disputes",
+  "complaintsTabReviewing": "Under Review",
+  "complaintsTabNeedInfo": "Needs Info",
+  "complaintsTabResolved": "Resolved",
+  "complaintsTabClosed": "Closed",
+  "complaintsEmpty": "No disputes in this tab",
+  "complaintDetailTitle": "Dispute Details",
+  "complaintDetailOrderCode": "Order Code: {code}",
+  "@complaintDetailOrderCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintDetailDate": "Created: {date}",
+  "@complaintDetailDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintDetailResolution": "Resolution Outcome",
+  "complaintDetailRefundNotice": "Refund {amount} to e-wallet within 3-5 business days",
+  "@complaintDetailRefundNotice": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "complaintDetailAddInfoPrompt": "Specialist requested additional full-view photos of the appliance:",
+  "complaintDetailAddInfoBtn": "Provide Additional Info",
+
+  "workerDisputeTitle": "Customer Dispute Filed",
+  "workerDisputeWarning": "Customer filed a dispute for order {code}. The labour payout {amount} is temporarily held in Escrow.",
+  "@workerDisputeWarning": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "workerDisputeClaimSection": "Dispute Claim Details:",
+  "workerDisputeReplyPrompt": "Submit your response / explanation:",
+  "workerDisputeReplyHint": "Describe your work process and completion proof...",
+  "workerDisputeSubmitReplyBtn": "Submit Explanation",
+
+  "warrantyCertTitle": "Warranty Certificate",
+  "warrantyCertNumber": "Certificate BH-{code}",
+  "@warrantyCertNumber": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "warrantyActiveStatus": "ACTIVE",
+  "warrantyExpiredStatus": "EXPIRED",
+  "warrantyTechnicianLabel": "Technician",
+  "warrantyCompletedLabel": "Completed",
+  "warrantyPeriodLabel": "Period",
+  "warrantyPeriodValue": "60 days · until 17/05/2026",
+  "warrantyRemainingLabel": "Remaining",
+  "warrantyRemainingDays": "22 days",
+  "warrantyExpiredText": "Expired",
+  "warrantyQrNote": "The technician scans this code upon arrival to open the original order.",
+  "warrantyCoveredTitle": "Covered",
+  "warrantyNotCoveredTitle": "Not covered",
+  "warrantyCoveredItem1": "Air conditioner leaking water after cleaning",
+  "warrantyCoveredItem2": "Gas leakage due to indoor unit assembly",
+  "warrantyCoveredItem3": "Cleaning issues within committed scope",
+  "warrantyNotCoveredItem1": "Damage caused by unstable home power",
+  "warrantyNotCoveredItem2": "Equipment tampered with by third parties",
+  "warrantyNotCoveredItem3": "Aging equipment past recommended lifespan",
+  "warrantyRequestCta": "Request warranty",
+  "warrantyViewRequestCta": "View warranty request",
+
+  "warrantyRequestTitle": "Warranty Request",
+  "warrantyRequestSubtitle": "Warranty for {code}",
+  "@warrantyRequestSubtitle": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "warrantyRequestFreePrice": "0đ",
+  "warrantyDescribeIssueTitle": "Describe the issue",
+  "warrantyDescribePlaceholder": "Tap to describe the issue you are facing...",
+  "warrantyDescribePreset": "Air conditioner leaking water after cleaning",
+  "warrantyMediaTitle": "Photos / Video (up to 5 photos or 1 video)",
+  "warrantyAddPhotoCta": "+ Add photo",
+  "warrantySlotTitle": "Preferred time slots (pick any)",
+  "warrantySlot1": "Tomorrow 26/04 · 08:00 - 10:00",
+  "warrantySlot2": "Tomorrow 26/04 · 14:00 - 16:00",
+  "warrantySlot3": "Sun 27/04 · 09:00 - 11:00",
+  "warrantyFreePolicy": "Free warranty · 0đ. No payment needed.",
+  "warrantySubmitCta": "Send warranty request",
+  "warrantySlotRequiredPrompt": "Pick at least one time slot",
+  "warrantyDescRequiredPrompt": "Describe the issue to send",
+
+  "warrantyStatusTitle": "Warranty Progress",
+  "warrantyBadgeTag": "WARRANTY",
+  "warrantyStatusCode": "#BH20250425-0087",
+  "warrantyStepSubmitted": "Submitted",
+  "warrantyStepAccepted": "Accepted by Pro",
+  "warrantyStepProcessing": "In progress",
+  "warrantyStepResolved": "Resolved",
+  "warrantyNoteSubmitted": "Hùng has 24 hours to accept. If declined, VSTech Home Services assigns another pro.",
+  "warrantyNoteProcessing": "Hùng will arrive in your chosen slot. Track and message him like a regular order.",
+  "warrantyNoteResolved": "Resolved and confirmed by you. The warranty certificate remains valid until 17/05.",
+  "warrantyBackToOrdersCta": "Back to My orders",
+
+  "workerWarrantyJobTitle": "Warranty Job",
+  "workerWarrantyDeadline": "Respond within 23:59:00",
+  "workerWarrantyCustomerInfo": "Nguyễn Thị Mai · Flora Novia Apartment, Thu Duc",
+  "workerWarrantyNetIncome": "Net earnings",
+  "workerWarrantyCustomerIssue": "Air conditioner leaking water after cleaning, drain pipe needs inspection.",
+  "workerWarrantyCustomerIssueTitle": "Issue reported by customer",
+  "workerWarrantyOriginalOrderTitle": "Original order details",
+  "workerWarrantyOriginalCode": "Original order: #HS20250318-0087",
+  "workerWarrantyOriginalDate": "Completed date: 18/03/2026",
+  "workerWarrantyOriginalRating": "Rating: 5.0★ · \"Technician was very enthusiastic\"",
+  "workerWarrantyBeforePhoto": "Before photo",
+  "workerWarrantyAfterPhoto": "After photo",
+  "workerWarrantyDeclineCta": "Decline",
+  "workerWarrantyAcceptCta": "Accept warranty job",
+
+  "workerWarrantyDeclineTitle": "Decline Warranty",
+  "workerWarrantyPenaltyWarnTitle": "Warning: 120.000đ rework deduction",
+  "workerWarrantyPenaltyWarnBody": "The warranty job will be reassigned. Per partner terms, 120.000đ rework cost will be deducted directly from your wallet.",
+  "workerWarrantyReasonTitle": "Reason for declining warranty",
+  "workerWarrantyReason1": "Not caused by my work",
+  "workerWarrantyReason2": "Cannot fit the schedule",
+  "workerWarrantyReason3": "Requires parts outside scope",
+  "workerWarrantyReason4": "Other reason",
+  "workerWarrantyPenaltyAck": "I understand that 120.000đ will be deducted from my earnings wallet.",
+  "workerWarrantyConfirmDeclineCta": "Confirm decline",
+  "workerWarrantyBackToJobCta": "Back to view job",
+
+  "ordersWarrantyActiveChip": "Warranty active: 22 days left · until 17/05",
+  "ordersViewWarrantyCertCta": "View warranty certificate",
+  "ordersActiveWarrantyTitle": "Warranty: Air-con Cleaning",
+
+  "chatPrivacyBanner": "Both phone numbers are hidden",
+  "chatCallBack": "Call back",
+  "chatCurrentLocation": "Current location",
+  "chatExtraCostBadge": "EXTRA COST REQUEST",
+  "chatExtraCostTitle": "Replace shower-head seal",
+  "chatExtraCostDesc": "Parts + labour, photo above",
+  "chatExtraCostAmount": "+45.000đ",
+  "chatApprove": "Approve",
+  "chatDecline": "Decline",
+  "chatExtraCostApproved": "Approved · added to the bill at sign-off",
+  "chatExtraCostDeclined": "Declined",
+  "chatExtraCostPendingWorker": "Waiting for the customer",
+  "chatMaskedPhoneNote": "Phone number hidden to protect both sides.",
+  "chatClosedNotice": "This chat closed 24 hours after the order was completed. For help, contact Support.",
+  "chatInputHint": "Type a message…",
+  "chatSeen": "Seen",
+  "chatSent": "Sent",
+  "chatQuickWorker1": "I'm on my way",
+  "chatQuickWorker2": "I'm at the lobby",
+  "chatQuickWorker3": "Almost done",
+  "chatQuickWorker4": "Please open the door",
+  "chatQuickCustomer1": "I'm home",
+  "chatQuickCustomer2": "Park in basement B1",
+  "chatQuickCustomer3": "Please call before you arrive",
+  "chatQuickCustomer4": "Thanks",
+  "callRecordingNotice": "Calls are recorded to protect both sides and help resolve complaints",
+  "callConnecting": "Connecting…",
+  "callIncoming": "Incoming call",
+  "callMute": "Mute",
+  "callSpeaker": "Speaker",
+  "callEnd": "End",
+  "callAccept": "Accept",
+  "callVoiceLog": "Voice call · {duration}",
+  "@callVoiceLog": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "callMissedCustomer": "Mai missed your call",
+  "callMissedWorker": "Missed call from Hùng",
+
+  "devicesTitle": "Your Home & Devices",
+  "devicesTabDevices": "Devices ({count})",
+  "@devicesTabDevices": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "devicesTabSchedule": "Maintenance Schedule",
+  "devicesAddDevice": "Add New Device",
+  "devicesOverdueReminder": "Water heater service reminder",
+  "devicesOverdueDesc": "Ariston overdue since 10/01. Flush tank and replace anode rod periodically to avoid electrical leakage.",
+  "devicesStatusGood": "Running well",
+  "devicesStatusNeedsService": "Needs service",
+  "devicesLastService": "Last serviced: {date}",
+  "@devicesLastService": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesScheduleOverdueTag": "NEEDS BOOKING",
+  "devicesScheduleUpcomingTag": "UPCOMING",
+  "devicesScheduleFutureTag": "{months} MONTHS LEFT",
+  "@devicesScheduleFutureTag": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "devicesScheduleOverdueMonths": "Overdue by {count} months · {brand}",
+  "@devicesScheduleOverdueMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesScheduleFrequency": "Every {count} months · {brand}",
+  "@devicesScheduleFrequency": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesChangeAddress": "Change address",
+  "devicesDefaultAddressLabel": "Default address",
+
+  "aiAssistantTitle": "HomeService AI Assistant",
+  "aiAssistantOnlineStatus": "Always ready to help 24/7",
+  "aiAssistantWelcome": "Hello Mai! I'm your HomeService AI assistant. I can help you find services, estimate costs, or guide home appliance care.",
+  "aiChipSuggestService": "Suggest suitable services for me",
+  "aiChipHouseCleaningCost": "How much does home cleaning cost?",
+  "aiChipCleanAcAtHome": "How to clean air-con at home?",
+  "aiChipBookElectrician": "I want to book an electrician",
+  "aiChipWarrantyPolicy": "How does warranty policy work?",
+  "aiAssistantInputPlaceholder": "Ask AI assistant anything…",
+  "aiResponseHouseCleaningCost": "Standard home cleaning starts at 80,000đ/hour (min 2 hours). Includes living room, bedroom, kitchen, and bathroom.",
+  "aiResponseAcClean": "Wash dust mesh filters every 2 weeks with warm water. For indoor/outdoor coils, book professional pressure cleaning every 3-6 months.",
+  "aiResponseBookElectrician": "You can book Electrical & Plumbing right away. Certified and verified pros arrive in 30 minutes!",
+  "aiResponseWarranty": "All services include 7 to 30 days warranty. If unsatisfied or the issue recurs, pros return at 100% free of charge.",
+
+  "aiSuggestionsTitle": "Smart Suggestions for You",
+  "aiSuggestionsUrgentSection": "Priority recommendations for your home",
+  "aiSuggestionsHeaterTitle": "Maintain Ariston Water Heater",
+  "aiSuggestionsHeaterDesc": "Unit used for 14 months without tank flush. Book descaling and anode replacement to ensure electrical safety and energy savings.",
+  "aiSuggestionsBookNow": "Book Now · 250.000đ",
+  "aiSuggestionsOtherSection": "Suggested routine services",
+  "aiSuggestionsAcTitle": "Air-con Cleaning",
+  "aiSuggestionsAcDesc": "Clean every 3-6 months to protect respiratory health and save electricity.",
+  "aiSuggestionsLaundryTitle": "Laundry · Curtain & Sofa Wash",
+  "aiSuggestionsLaundryDesc": "Sanitize and eliminate fine dust in your living space for maximum comfort.",
+  "aiSuggestionsPestTitle": "Routine Pest Control",
+  "aiSuggestionsPestDesc": "Protect family health against mosquitoes, roaches, and pests.",
+
+  "profileTitle": "Personal Profile",
+  "profileEditLink": "Edit",
+  "profileMenuPersonalInfo": "Personal Information",
+  "profileMenuAddresses": "My Addresses",
+  "profileMenuFavourites": "Favourite Pros",
+  "profileMenuPayment": "Payment Methods",
+  "profileMenuNotifications": "Notification Settings",
+  "profileMenuSettings": "Settings & Security",
+  "profileMenuComplaints": "My Complaints",
+  "editProfileTitle": "Personal Information",
+  "editProfileChangeAvatar": "Change photo",
+  "editProfileFullName": "Full Name",
+  "editProfilePhone": "Phone Number",
+  "editProfileEmail": "Email",
+  "editProfileDob": "Date of Birth",
+  "editProfileOtpNotice": "OTP verification needed when changing phone number",
+  "editProfileSavedSuccess": "Profile changes saved successfully",
+  "editProfileSaveCta": "Save Changes",
+
+  "addressesTitle": "My Addresses",
+  "addressesAddNew": "Add New Address",
+  "addressesDefaultBadge": "DEFAULT",
+  "addressesTagHome": "HOME",
+  "addressesTagWork": "WORK",
+  "addressesTagOther": "OTHER",
+  "addressesEditAction": "Edit",
+  "addressesSetDefaultAction": "Set as default",
+  "addressesDeleteAction": "Delete",
+  "addressesDefaultCannotDelete": "Default address cannot be deleted",
+  "addressesDeleteConfirm": "Are you sure you want to delete this address?",
+  "addressEditTitle": "Add / Edit Address",
+  "addressEditLabelSection": "Address Label",
+  "addressEditSearchPlaceholder": "Search your home address…",
+  "addressEditPinNote": "Pin exact location on map",
+  "addressEditHouseType": "Property Type",
+  "addressEditTownhouse": "Townhouse",
+  "addressEditApartment": "Apartment",
+  "addressEditFloor": "Floor Number",
+  "addressEditElevator": "Elevator",
+  "addressEditHasElevator": "Has elevator",
+  "addressEditNoElevator": "No elevator",
+  "addressEditAccessNote": "Location note (parking, gate bell…)",
+  "addressEditSetDefaultSwitch": "Set as default address",
+  "addressEditSaveCta": "Save Address",
+
+  "pmsTitle": "Payment Methods",
+  "pmsLinkWalletCta": "Link New Wallet",
+  "pmsDefaultLabel": "Default payment method",
+  "pmsSetDefault": "Set as default",
+  "pmsUnlink": "Unlink",
+  "pmsUnlinkConfirm": "Unlink this wallet? You can link it again anytime.",
+  "pmsSecurityNote": "Payment info is encrypted and protected under international PCI-DSS security standards.",
+  "linkWalletTitle": "Link Digital Wallet",
+  "linkWalletSelectPrompt": "Select the digital wallet you want to link:",
+  "linkWalletStepConfirmTitle": "Confirm in wallet app",
+  "linkWalletStepConfirmDesc": "Wallet app is opened. Please sign in and authorize HomeService for automatic booking charges.",
+  "linkWalletStepSuccessTitle": "Wallet Linked Successfully!",
+  "linkWalletStepSuccessDesc": "Phone number: 0901 ••• 567",
+  "linkWalletContinueCta": "Continue",
+  "linkWalletIHaveConfirmedCta": "I have confirmed",
+  "linkWalletBackToPmsCta": "Back to payment methods",
+
+  "favsTitle": "Favourite Pros",
+  "favsEmpty": "You have no favourite pros yet. Rate 5 stars upon order completion to add pros here!",
+  "favsRebookCta": "Rebook This Pro",
+  "favsLastJob": "Last job: {job}",
+  "@favsLastJob": {
+    "placeholders": {
+      "job": {
+        "type": "String"
+      }
+    }
+  },
+  "workerPreviewTitle": "Pro Profile",
+  "workerPreviewVerifiedPro": "Verified Professional",
+  "workerPreviewServices": "Specialized Services",
+  "workerPreviewRecentReview": "Recent customer review",
+  "workerPreviewBookCta": "Book with This Pro",
+
+  "settingsTitle": "Settings & History",
+  "settingsTabSettings": "Settings",
+  "settingsTabHistory": "Order History",
+  "settingsLanguage": "Language",
+  "settingsChangePassword": "Change Password",
+  "settingsPaymentMethods": "Payment Methods",
+  "settingsPaymentMethodsSub": "Manage cards and wallets",
+  "settingsHelpCenter": "Help Center",
+  "settingsHelpCenterSub": "Complaints and order help",
+  "settingsAbout": "About App",
+  "settingsAboutSub": "Version 1.0.0",
+  "settingsAboutDialogTitle": "VSTech Home Services v1.0.0",
+  "settingsAboutDialogBody": "Official release Phase 1 MVP · V-STech. All rights reserved by VSTech Home Services.",
+  "settingsDeleteAccount": "Delete Account",
+  "settingsLogout": "Log Out",
+  "logoutDialogTitle": "Log out of your account?",
+  "logoutDialogBody": "You will need to sign in again with your phone number to continue booking and tracking services.",
+  "logoutConfirmCta": "Log Out",
+  "logoutCancelCta": "Stay",
+  "changePasswordTitle": "Change Password",
+  "changePasswordCurrent": "Current password",
+  "changePasswordNew": "New password",
+  "changePasswordConfirm": "Confirm new password",
+  "changePasswordRule": "Password must be at least 8 characters long, including letters and numbers.",
+  "changePasswordSuccess": "Password changed successfully!",
+  "changePasswordCta": "Confirm Change Password",
+  "deleteAccountTitle": "Delete Account",
+  "deleteAccountWarningTitle": "This action cannot be undone",
+  "deleteAccountWarningBody": "All account information and associated data will be permanently deleted from the system.",
+  "deleteAccountItem1": "Personal profile and phone number",
+  "deleteAccountItem2": "Saved addresses and linked digital wallets",
+  "deleteAccountItem3": "Favourite pros and chat history",
+  "deleteAccountItem4": "Active warranty certificates",
+  "deleteAccountReasonTitle": "Please tell us why you want to delete your account:",
+  "deleteAccountReason1": "No longer need the service",
+  "deleteAccountReason2": "Privacy and personal data concerns",
+  "deleteAccountReason3": "Want to create a new account",
+  "deleteAccountReason4": "Other reason",
+  "deleteAccountConfirmCta": "Delete Account · Verify OTP",
+  "deleteAccountKeepCta": "Keep My Account",
+
+  "wwalletTitle": "Earnings Wallet",
+  "wwalletAvailableBalance": "Available to withdraw",
+  "wwalletTotalEarned": "Total earned",
+  "wwalletWithdrawn": "Withdrawn / pending",
+  "wwalletDeductions": "Deductions",
+  "wwalletOnHold": "On hold",
+  "wwalletOnHoldNotice": "On hold (not in balance)",
+  "wwalletWithdrawCta": "Withdraw",
+  "wwalletTabAll": "All",
+  "wwalletTabIncome": "Income",
+  "wwalletTabWithdraw": "Withdrawal",
+  "wwalletTabHold": "On hold",
+  "wwalletStatusCompleted": "Completed",
+  "wwalletStatusProcessing": "Processing",
+  "wwalletStatusOnHold": "On hold",
+  "wtxTitle": "Transaction Details",
+  "wtxBreakdownTitle": "Breakdown",
+  "wtxCustomerPaid": "Customer paid",
+  "wtxExtraCost": "Incl. extra cost",
+  "wtxPlatformFee": "Platform fee 15% of service price",
+  "wtxNetIncome": "Net",
+  "wtxInfoTitle": "Transaction Info",
+  "wtxTime": "Time",
+  "wtxTxId": "Transaction ID",
+  "wtxRelatedOrder": "Related order",
+  "wtxTargetBank": "To account",
+  "wwdTitle": "Withdraw to Bank",
+  "wwdAmountLabel": "Amount",
+  "wwdAmountHint": "Enter withdrawal amount",
+  "wwdQuickAll": "All",
+  "wwdCurrentBalance": "Current balance",
+  "wwdMinAmount": "Minimum per withdrawal",
+  "wwdFee": "Fee",
+  "wwdFeeFree": "0đ (Free)",
+  "wwdBalanceAfter": "Balance after",
+  "wwdBankCardTitle": "To bank account",
+  "wwdFromKyc": "from partner profile",
+  "wwdPhase1Notice": "Phase 1: accounting approves and transfers manually within 24 working hours.",
+  "wwdContinueCta": "Continue",
+  "wwdMinValidation": "Minimum withdrawal is 100.000đ",
+  "wwdMaxValidation": "Amount exceeds available balance",
+  "wwdpinTitle": "Enter Wallet PIN",
+  "wwdpinSubtitle": "Confirm withdrawal of {amount} to bank",
+  "@wwdpinSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "wwdpinSecurityNote": "6-digit PIN securing your account.",
+  "wwdstTitle": "Withdrawal Request",
+  "wwdstSuccessTitle": "Withdrawal request submitted!",
+  "wwdstStep1": "Request sent",
+  "wwdstStep2": "Awaiting accounting (within 24 h)",
+  "wwdstStep3": "Transferred",
+  "wwdstNote": "The amount is deducted from your available balance. If rejected, it returns to your wallet.",
+  "wwdstBackWalletCta": "Back to wallet",
+  "wcalTitle": "Schedule",
+  "wcalWeekRange": "21/04 – 27/04",
+  "wcalSetAvailabilityCta": "Availability & time off",
+  "wcalJobsCount": "{count} jobs",
+  "@wcalJobsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wcalDayOff": "Off",
+  "wcalToday": "Today",
+  "wcalNoJobs": "No jobs yet. You are available in your set hours.",
+  "wcalDayOffRegular": "Regular day off.",
+  "wavailTitle": "Availability & Time Off",
+  "wavailWeeklySchedule": "Weekly Availability",
+  "wavailTapToCycle": "Tap a time range to cycle (08:00–18:00 · 07:00–20:00 · 13:00–21:00)",
+  "wavailTimeOffSection": "Time Off",
+  "wavailTimeOffDesc": "Select days you wish to pause receiving new jobs.",
+  "wavailTimeOffWarn": "You have an accepted warranty job at 08:00 on 26/04. Time off only blocks new jobs; message the customer or support to reschedule.",
+  "wavailSaveCta": "Save Schedule",
+  "wavailSavedSuccess": "Work schedule settings saved successfully",
+  "wzoneTitle": "Work Zone",
+  "wzoneDistrictsTitle": "Service Districts",
+  "wzoneDistrictsNote": "Select at least 1 district you are ready to serve.",
+  "wzoneRadiusTitle": "Radius from your location",
+  "wzoneRadiusNote": "You only get jobs inside selected districts and this radius. A wider zone means more jobs.",
+  "wzoneSaveCta": "Save Work Zone",
+  "wzoneSavedSuccess": "Work zone saved successfully",
+  "wskillTitle": "Skills & Certificates",
+  "wskillExpiredBannerTitle": "Work-at-height certificate expired",
+  "wskillExpiredBannerDesc": "Outdoor and high-floor jobs are hidden (outdoor AC units, balconies, garden pest control). Upload a new copy to see them again.",
+  "wskillPendingBannerTitle": "New certificate pending (within 48 hours)",
+  "wskillPendingBannerDesc": "Outdoor jobs stay hidden until the certificate is approved.",
+  "wskillServicesTitle": "Services Offered",
+  "wskillHiddenTag": "HIDDEN",
+  "wskillCertsTitle": "Professional Certificates",
+  "wskillCertExpired": "EXPIRED",
+  "wskillCertApproved": "APPROVED",
+  "wskillCertPending": "PENDING",
+  "wskillUploadCta": "+ Upload Certificate",
+  "wcertTitle": "Upload Certificate",
+  "wcertTypeTitle": "Certificate Type",
+  "wcertTypeHeight": "Work-at-height safety",
+  "wcertTypeAc": "Daikin AC technician",
+  "wcertTypeOther": "Other professional certificate",
+  "wcertPhotoTitle": "Certificate Photo",
+  "wcertPhotoTapToUpload": "+ Photo of the front",
+  "wcertPhotoAttached": "Photo attached · Tap to change",
+  "wcertExpiryTitle": "Expiry Date",
+  "wcertSubmitCta": "Submit for Review",
+  "wcertSubmittedSuccess": "Certificate submitted for review. Results within 48 hours.",
+  "wperfTitle": "Performance",
+  "wperfRatingSubtitle": "128 reviews · last 30 days",
+  "wperfAcceptRate": "Acceptance rate",
+  "wperfAcceptDesc": "Jobs you accepted out of jobs offered. Target 90%+.",
+  "wperfCompRate": "Completion rate",
+  "wperfCompDesc": "Accepted jobs finished without cancelling. Target 95%+.",
+  "wperfOnTimeRate": "On-time check-in",
+  "wperfOnTimeDesc": "Checked in at or before the booked time. Target 90%+.",
+  "wperfWarrantyRate": "Warranty rate",
+  "wperfWarrantyDesc": "Jobs that needed a warranty visit. Lower is better; keep under 5%.",
+  "wperfBadgesTitle": "Earned Badges",
+  "wperfBadgePunctual": "Punctual",
+  "wperfBadgePunctualDesc": "30 days on time",
+  "wperfBadge100": "100 jobs",
+  "wperfBadge100Desc": "128 jobs completed",
+  "wperfBadgeFav": "Customer favourite",
+  "wperfBadgeFavDesc": "Saved by 24 customers",
+  "wperfBadgeNoComplaint": "Complaint-free",
+  "wperfBadgeNoComplaintDesc": "Needs 30 days without complaints",
+  "wprofileTitle": "Partner Profile",
+  "wprofileWorkerId": "Partner ID: {id}",
+  "@wprofileWorkerId": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "wprofileMenuSkills": "Skills & certificates",
+  "wprofileMenuZone": "Work zone",
+  "wprofileMenuSchedule": "Work schedule",
+  "wprofileMenuPerf": "Performance",
+  "wprofileMenuPayout": "Payout account",
+  "wprofileLogoutCta": "Log out Worker Account",
+  "wprofileLogoutDialogTitle": "Log out of Worker Account?",
+  "wprofileLogoutDialogBody": "You will not receive new job alerts until you log back in."
+}

@@ -51,8 +51,7 @@ abstract final class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
           disabledBackgroundColor: AppColors.border,
-          minimumSize: const Size.fromHeight(AppErgonomics.primaryCtaMinHeight),
-          maximumSize: const Size(double.infinity, AppErgonomics.primaryCtaMaxHeight),
+          minimumSize: const Size(0, AppErgonomics.primaryCtaMinHeight),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.control),
@@ -64,7 +63,7 @@ abstract final class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
           side: const BorderSide(color: AppColors.primary),
-          minimumSize: const Size.fromHeight(AppErgonomics.primaryCtaMinHeight),
+          minimumSize: const Size(0, AppErgonomics.primaryCtaMinHeight),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.control),
           ),

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+body{margin:0;font-family:Manrope,system-ui,sans-serif}
+doc-page:not(:defined){visibility:hidden}
+a{color:#0F766E;text-decoration:none}
+a:hover{color:#0B5A53}
+</style>
+<script src="./doc-page.js"></script>
+</helmet>
+
+<doc-page orientation="landscape">
+
+  <section class="page" style="box-sizing:border-box;padding:70px 76px;background:linear-gradient(160deg,#FAF7F0 0%,#F1EBDD 60%,#E8E0CE 100%);display:flex;flex-direction:column">
+    <div style="display:flex;align-items:flex-start;gap:26px">
+      <svg viewBox="0 0 100 100" width="76" height="76" fill="none" style="flex:none">
+        <path d="M50 10 L90 44 V90 H10 V44 Z" stroke="#0F766E" stroke-width="7" stroke-linejoin="round"></path>
+        <rect x="36" y="46" width="28" height="26" rx="5" fill="#F59E0B"></rect>
+        <path d="M50 46 V72 M36 59 H64" stroke="#F6F1E6" stroke-width="4"></path>
+      </svg>
+      <div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:2.4px;color:#0F766E">HOMESERVICE · DỊCH VỤ GIA ĐÌNH</div>
+        <div style="font-size:52px;font-weight:800;letter-spacing:-1.8px;color:#0E5952;line-height:1.05;margin-top:12px">Contemporary<br>Folk Utility</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:14px;margin-top:38px">
+      <div style="width:4px;height:52px;border-radius:2px;background:#F59E0B"></div>
+      <div style="font-size:21px;font-weight:700;letter-spacing:-.4px;color:#0E5952;line-height:1.4">“Nhịp sống vội, nhà vẫn luôn là nơi chờ bạn.”</div>
+    </div>
+
+    <div style="font-size:15px;font-weight:500;line-height:1.7;color:#5B6572;margin-top:28px;max-width:660px;text-wrap:pretty">Lấy cảm hứng từ nhịp sống đô thị Việt Nam, HomeService kết hợp sự tiện lợi hiện đại với những giá trị quen thuộc, mang dịch vụ gia đình đến gần hơn, nhanh hơn và đáng tin cậy hơn.</div>
+
+    <div style="display:flex;gap:44px;margin-top:auto;padding-top:40px;align-items:flex-end">
+      <div style="display:flex;gap:18px">
+        <sc-for list="{{ palette }}" as="p" hint-placeholder-count="6">
+          <div style="text-align:center">
+            <div style="width:52px;height:52px;border-radius:26px;background:{{ p.hex }};border:1px solid rgba(17,24,39,.09)"></div>
+            <div style="font-size:10.5px;font-weight:800;color:#374151;margin-top:9px">{{ p.name }}</div>
+            <div style="font-size:9.5px;font-weight:600;color:#8A8271;margin-top:2px;font-variant-numeric:tabular-nums">{{ p.hex }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div style="font-size:13px;font-weight:700;color:#7A7364">128 màn hình · 7 hành trình · 390 × 844 px</div>
+        <div style="font-size:13px;font-weight:700;color:#7A7364;margin-top:5px;font-variant-numeric:tabular-nums">Tháng 9, 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <sc-for list="{{ pages }}" as="pg" hint-placeholder-count="6">
+    <section class="page" style="box-sizing:border-box;padding:38px 44px 30px;background:#FAF7F0;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:13px;padding-bottom:13px;border-bottom:1px solid #DDD5C4">
+        <svg viewBox="0 0 100 100" width="26" height="26" fill="none" style="flex:none">
+          <path d="M50 10 L90 44 V90 H10 V44 Z" stroke="#0F766E" stroke-width="9" stroke-linejoin="round"></path>
+          <rect x="37" y="48" width="26" height="24" rx="5" fill="#F59E0B"></rect>
+        </svg>
+        <div style="font-size:15px;font-weight:800;letter-spacing:-.3px;color:#0E5952">{{ pg.head }}</div>
+        <div style="font-size:12px;font-weight:600;color:#8A8271">{{ pg.sub }}</div>
+        <div style="margin-left:auto;font-size:11px;font-weight:800;letter-spacing:1.2px;color:#A89F8C;font-variant-numeric:tabular-nums">{{ pg.no }}</div>
+      </div>
+
+      <div style="display:flex;gap:32px;justify-content:flex-start;margin-top:26px">
+        <sc-for list="{{ pg.tiles }}" as="s" hint-placeholder-count="3">
+          <div style="width:265px">
+            <div style="width:265px;height:574px;position:relative">
+              <div style="position:absolute;top:0;left:0;transform:scale(.6801);transform-origin:top left">
+                <div style="width:390px;height:844px;border-radius:30px;overflow:hidden;border:1px solid #D8CFBC;background:#FAF6EE">
+                  <dc-import name="HomeServicePhone" screen="{{ s.k }}" ob-slide="{{ s.ob }}" theme="light" lang="vi" role="{{ s.role }}" otp-preset="{{ s.otpPreset }}" otp-err="{{ s.otpErr }}" otp-ctx="{{ s.otpCtx }}" dlg="{{ s.dlg }}" kyc-step="{{ s.kycStep }}" kyc-status="{{ s.kycStatus }}" svc="{{ s.svc }}" pay-state="{{ s.payState }}" match-state="{{ s.matchState }}" stars="{{ s.stars }}" tip="{{ s.tip }}" completed="{{ s.completed }}" cancel-fee="{{ s.cancelFee }}" ost="{{ s.ost }}" o-tab="{{ s.oTab }}" j-tab="{{ s.jTab }}" chat="{{ s.chat }}" chat-closed="{{ s.chatClosed }}" bh="{{ s.bh }}" bh-id="{{ s.bhId }}" wbh="{{ s.wbh }}" cst="{{ s.cst }}" k-id="{{ s.kId }}" ns="{{ s.ns }}" wcx="{{ s.wcx }}" wd="{{ s.wd }}" xc="{{ s.xc }}" hint-size="390px,844px"></dc-import>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:14px">
+              <div style="font-size:9.5px;font-weight:800;font-variant-numeric:tabular-nums;background:{{ s.chip }};color:#FFFFFF;padding:3px 6px;border-radius:5px">{{ s.n }}</div>
+              <div style="font-size:13.5px;font-weight:800;letter-spacing:-.2px;color:#14312E">{{ s.t }}</div>
+            </div>
+            <div style="font-size:11px;font-weight:500;line-height:1.5;color:#7A7364;margin-top:5px;text-wrap:pretty">{{ s.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-for>
+
+</doc-page>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const G = [
+  ['01','Onboarding & Brand','#0F766E',[
+    ['01','splash',0,'Splash','Skyline Sài Gòn dưới lớp beige ấm, logo và dòng viết tay đặt ở hai đầu trục dọc.'],
+    ['02','onboarding',0,'Onboarding 1 — Lời mở','Tranh chiếm nửa màn, một câu hứa. Bỏ qua để nhạt bên trái, Tiếp theo là khối teal đặc.'],
+    ['03','onboarding',1,'Onboarding 2 — Niềm tin','Ba huy hiệu trả lời câu hỏi lớn nhất của khách hàng mới: người vào nhà tôi là ai.'],
+    ['04','onboarding',2,'Onboarding 3 — Cách dùng','Ba bước đặt trên đầu để đọc trước khi mắt rơi xuống hình.'],
+    ['05','onboarding',3,'Onboarding 4 — AI','Slide duy nhất nói về năng lực riêng, đặt cuối vì thuyết phục nhất khi đã hiểu dịch vụ.'],
+    ['06','intro',0,'Onboarding 5 — Tổng kết','Màn duy nhất trong chuỗi chỉ có một nút, không có Bỏ qua.'],
+    ['07','login',0,'Đăng nhập','Chỉ hai trường. Đăng nhập mạng xã hội hạ xuống dưới đường kẻ.'],
+    ['08','register',0,'Đăng ký','Email đánh dấu tùy chọn ngay trên nhãn, giảm số quyết định phải cân nhắc.']
+  ]],
+  ['02','Core Journey','#0E5952',[
+    ['09','home',0,'Trang chủ','Chào tên trước, tìm kiếm ngay sau, rồi banner giữ một CTA duy nhất.'],
+    ['10','categories',0,'Danh mục dịch vụ','Danh sách thay vì lưới: mỗi dòng có chỗ cho một câu mô tả lợi ích.'],
+    ['11','booking',0,'Đặt lịch dịch vụ','Giá tạm tính ghim ở chân trang nên luôn thấy khi đổi khung giờ.'],
+    ['12','tracking',0,"Theo dõi — Thợ đang đến","Bản đồ vẽ bằng code, ETA 8 phút · 2,4 km, gọi/nhắn ngay trên thẻ thợ. Tiến trình nằm trong sheet đáy.",{ost:1}],
+    ['13','devices',0,'Ngôi nhà của bạn','Hồ sơ thiết bị theo địa chỉ, lịch bảo trì gắn mức ưu tiên.']
+  ]],
+  ['03','Support & Account','#3B82F6',[
+    ['14','chat',0,'AI Assistant','Một câu chào rồi nhường chỗ cho năm ý định có sẵn — nhanh hơn gõ.'],
+    ['15','suggestions',0,'AI gợi ý dịch vụ','Gợi ý chính kèm lý do cụ thể; gợi ý phụ để trần theo danh sách.'],
+    ['16','profile',0,'Hồ sơ cá nhân','Thẻ danh tính tách khỏi khối menu, số lượng hiện bên phải.'],
+    ['17','settings',0,'Cài đặt & Lịch sử','Hai tab dùng chung một khung: danh sách và thẻ đơn hàng.']
+  ]],
+  ['04','Luồng cho Thợ','#A35A06',[
+    ['18','whome',0,'Việc hôm nay','Công tắc nhận việc, thực nhận trong ngày và yêu cầu mới có đếm ngược.',{role:'worker'}],
+    ['19','wjob',0,'Chi tiết yêu cầu','Giá tách dòng, trừ phí nền tảng, số cuối là thực nhận về ví.',{role:'worker'}],
+    ['20','wwork',0,'Đang thực hiện','Nút hoàn tất chỉ bật khi đủ năm mục trong danh sách việc.',{role:'worker'}],
+    ['21','wwallet',0,'Ví thu nhập','Số dư có thể rút là con số lớn nhất màn.',{role:'worker'}],
+    ['22','wprofile',0,'Hồ sơ tay nghề','Xác thực, đánh giá, dịch vụ nhận làm; đăng xuất cuối menu.',{role:'worker'}]
+  ]],
+  ['05','Vai trò & Xác thực','#14312E',[
+    ['23','role',0,'Chọn vai trò','Hai thẻ lớn; Tiếp tục chỉ bật khi đã chọn.'],
+    ['24','login',0,'Đăng nhập — Thợ','Chỉ số điện thoại và mật khẩu, không đăng nhập mạng xã hội.',{role:'worker'}],
+    ['25','otp',0,'Xác thực OTP','Dùng chung cho đăng ký, đăng nhập bằng mã và quên mật khẩu.',{otpPreset:'1234',otpCtx:'login'}],
+    ['26','otp',0,'OTP — sai mã','Sáu ô viền đỏ, gõ tiếp là tự xoá mã sai.',{otpPreset:'123789',otpErr:true,otpCtx:'login'}],
+    ['27','forgot',0,'Quên mật khẩu','Giữ nguyên vai trò đã chọn.'],
+    ['28','newpass',0,'Mật khẩu mới','Ba điều kiện hiện sẵn dạng đã đạt.'],
+    ['29','passok',0,'Đổi mật khẩu thành công','Quay về đúng màn đăng nhập của vai trò.'],
+    ['30','settings',0,'Đăng xuất — Khách','Hộp xác nhận nói rõ hậu quả.',{dlg:true}]
+  ]],
+  ['06','Đăng ký đối tác · UC-W-10','#A35A06',[
+    ['31','register',0,'Bước 1 — Số điện thoại','Nói trước những gì cần chuẩn bị.',{role:'worker'}],
+    ['32','wkyc',0,'Bước 2 — Thông tin cá nhân','Khu vực nhận việc là chip chọn nhiều.',{kycStep:2}],
+    ['33','wkyc',0,'Bước 3 — CCCD','Nút chỉ bật khi đủ hai mặt.',{kycStep:3}],
+    ['34','wkyc',0,'Bước 4 — Khuôn mặt','Nút chính đổi từ Chụp sang Tiếp tục.',{kycStep:4}],
+    ['35','wkyc',0,'Bước 5 — Tay nghề & chứng chỉ','Máy lạnh hoặc Lắp đặt bắt buộc chứng chỉ làm việc trên cao.',{kycStep:5}],
+    ['36','wkyc',0,'Bước 6 — Tài khoản nhận tiền','Tên chủ tài khoản phải khớp CCCD.',{kycStep:6}],
+    ['37','wkyc',0,'Hồ sơ — Đang chờ duyệt','Thời hạn cụ thể, kênh báo kết quả.',{kycStep:7,kycStatus:'pending'}],
+    ['38','wkyc',0,'Hồ sơ — Cần bổ sung','Lý do rõ, nút về đúng bước cần sửa.',{kycStep:7,kycStatus:'needs'}],
+    ['39','wkyc',0,'Hồ sơ — Đã duyệt','Nút duy nhất vào Việc hôm nay.',{kycStep:7,kycStatus:'approved'}],
+    ['40','service',0,"Chi tiết dịch vụ","Phạm vi, gói và giá dự kiến trước khi đặt.",{}],
+    ['41','book1',0,"Bước 1 — Gói & dịch vụ thêm","Gói dạng thẻ chọn một, add-on dạng chip kèm giá.",{}],
+    ['42','booking',0,"Bước 2 — Thời gian, địa chỉ, mặt bằng","Loại nhà, tầng, thang máy quyết định phụ phí mặt bằng; giá không tính theo quãng đường.",{}],
+    ['43','book3',0,"Bước 3 — Xác nhận","Giá dự kiến tách dòng, chọn cách trả sau nghiệm thu. Nút amber Xác nhận đặt lịch là bước cam kết giá, chưa trừ tiền.",{}],
+    ['44','pay',0,"Cổng thanh toán","QR kèm đồng hồ hết hạn 10 phút.",{}],
+    ['45','pay',0,"Thanh toán thất bại","Nói rõ chưa bị trừ tiền.",{"payState":"fail"}],
+    ['46','done',0,"Bước 4 — Hoàn tất","Mã đơn nổi bật; dòng thanh toán ghi rõ trả sau nghiệm thu.",{}],
+    ['47','matching',0,"Đang tìm thợ","Vòng lan toả và đồng hồ đếm.",{"matchState":"hold"}],
+    ['48','matching',0,"Đã có thợ nhận","Thẻ anh Hùng giống hệt thẻ ở màn Theo dõi, để khách nhận ra đúng người.",{"matchState":"found"}],
+    ['49','matching',0,"Chưa tìm được thợ","Hai lối ra: đổi giờ (nút chính) hoặc huỷ miễn phí, kèm câu nói rõ tiền hoàn về đâu và bao lâu.",{"matchState":"none"}],
+    ['50','review',0,"Đánh giá — chưa tip","Chưa chọn sao thì nút khoá.",{"stars":5}],
+    ['51','review',0,"Đánh giá — có tip","Chọn mức tip thì nút đổi sang amber và ghi rõ số tiền.",{"stars":5,"tip":50000}],
+    ['52','thanks',0,"Cảm ơn","Xác nhận tiền tip đã tới thợ.",{"tip":50000,"completed":true}],
+    ['53','receipt',0,"Hoá đơn điện tử","Cùng bảng chi phí với bước 3, thêm dòng tip và mã giao dịch.",{"tip":50000,"completed":true}],
+    ['54','cancel',0,"Huỷ đặt lịch — miễn phí","Chưa có thợ nhận nên không mất phí. Chọn lý do rồi mới bấm được nút viền đỏ; không có khối đặc.",{}],
+    ['55','cancel',0,"Huỷ đặt lịch — có phí","Thợ đã nhận việc: phí 50.000đ hiện ngay đầu màn và trên nút.",{"cancelFee":true}],
+    ['56','tracking',0,"Theo dõi — Thợ đã đến","Thông báo đến nơi và giờ check-in thay cho bản đồ.",{"ost":2}],
+    ['57','tracking',0,"Theo dõi — Đang thực hiện","Đồng hồ chạy và tiến độ 3/5, cùng danh sách với màn Đang thực hiện của thợ.",{"ost":3}],
+    ['58','tracking',0,"Theo dõi — Chờ nghiệm thu","Thợ bấm Hoàn tất thì màn này hiện nút Nghiệm thu ngay.",{"ost":4}],
+    ['59','accept',0,"Nghiệm thu","Ảnh trước/sau, 5/5 việc, thời gian thực tế và hoá đơn cuối 400.000đ. Báo vấn đề là link phụ.",{"ost":4}],
+    ['60','dispute',0,"Báo vấn đề","Chọn loại, mô tả, thêm ảnh. Gửi xong đơn chuyển sang Đang xem xét.",{"ost":4}],
+    ['61','disputed',0,"Đơn đang được xem xét","Nói rõ chưa trừ tiền và tiền của thợ đang được giữ.",{"ost":7}],
+    ['62','paysum',0,"Thanh toán","Hoá đơn cuối, phương thức đã chọn lúc đặt (đổi được), mã giảm giá. Nút amber Thanh toán 400.000đ.",{"ost":5}],
+    ['63','paid',0,"Thanh toán thành công","Nút chính dẫn sang đánh giá; hoá đơn là link phụ.",{"ost":6,"completed":true}],
+    ['64','wgo',0,"Thợ — Đang đến","Bản đồ vẽ bằng code, ETA, mở chỉ đường; gọi và nhắn qua tổng đài, số hai bên được ẩn.",{"role":"worker","ost":1}],
+    ['65','warr',0,"Thợ — Đã đến","Check-in, nhắc chụp ảnh trước khi làm, nút Bắt đầu làm.",{"role":"worker","ost":2}],
+    ['66','wwait',0,"Thợ — Chờ khách nghiệm thu","Trạng thái giống hệt bên khách. Bảng tiền 400.000đ − 60.000đ = 340.000đ.",{"role":"worker","ost":4}],
+    ['67','wwait',0,"Thợ — Chờ khách thanh toán","Khách đã xác nhận; tiền chưa về ví.",{"role":"worker","ost":5}],
+    ['68','wwait',0,"Thợ — Đã nhận tiền","Đã nhận 340.000đ vào ví, nút duy nhất mở Ví thu nhập.",{"role":"worker","ost":6}],
+    ['69','wwait',0,"Thợ — Đơn đang được xem xét","Khách báo vấn đề: chưa chuyển tiền cho đến khi có kết quả.",{"role":"worker","ost":7}],
+    ['70','wwallet',0,"Thợ — Ví sau khi nhận tiền","Giao dịch +340.000đ nằm đầu danh sách, số dư tăng lên 5.200.000đ.",{"role":"worker","ost":6}],
+    ['71','orders',0,"Đơn của tôi — Đang làm","Mở từ tab Đơn hàng. Đơn #…0012 chuyển tab theo trạng thái; mỗi thẻ có đúng một nút viền theo ngữ cảnh.",{"oTab":1}],
+    ['72','orders',0,"Đơn của tôi — Đang chờ","Đơn đang tìm thợ nằm ở đây; bấm Theo dõi mở màn tìm thợ.",{"oTab":0}],
+    ['73','orders',0,"Đơn của tôi — Hoàn thành","Hoàn tất và đã huỷ chung một tab, lọc bằng chip. Nút Đặt lại mở đúng dịch vụ cũ.",{"oTab":2}],
+    ['74','orders',0,"Đơn của tôi — Tab trống","Khi đơn #…0012 hoàn tất, tab Đang làm trống và hiện nút Đặt dịch vụ.",{"oTab":1,"ost":6}],
+    ['75','settings',0,"Cài đặt","Đổi tên từ Cài đặt & Lịch sử; tab lịch sử chỉ còn liên kết sang Đơn của tôi › Hoàn thành.",{}],
+    ['76','wjobs',0,"Thợ — Công việc · Mới phân công","Yêu cầu có đếm ngược ghim trên cùng với Nhận / Từ chối; bên dưới là việc đã nhận chưa bắt đầu.",{"role":"worker"}],
+    ['77','wjobs',0,"Thợ — Công việc · Đang làm","Mỗi thẻ ghi giờ, khách, quận, mặt bằng và Thực nhận. Chừa chỗ cho nhãn BẢO HÀNH cạnh giờ.",{"role":"worker","jTab":1,"ost":3}],
+    ['78','wjobs',0,"Thợ — Công việc · Hoàn thành","Việc xong kèm thực nhận từng việc; việc bị huỷ ghi 0đ.",{"role":"worker","jTab":2,"ost":6}],
+    ['79','wcal',0,"Thợ — Lịch (tạm)","Giữ chỗ cho đợt dành cho thợ; nút duy nhất dẫn sang Công việc.",{"role":"worker"}],
+    ['80','tracking',0,"Chat — Khách","Một luồng hội thoại chung cho đơn #…0012: tin hệ thống, vị trí, ảnh, thẻ phát sinh, nhật ký cuộc gọi. Số điện thoại gõ vào bị ẩn.",{"ost":3,"chat":"chat"}],
+    ['81','wwork',0,"Chat — Thợ","Cùng nội dung, đảo phía gửi. Trả lời nhanh riêng cho thợ; thẻ phát sinh chỉ hiện Đang chờ khách xác nhận.",{"role":"worker","ost":3,"chat":"chat"}],
+    ['82','tracking',0,"Gọi đi — Khách","Đang kết nối rồi đếm giờ; tắt mic, loa ngoài, kết thúc. Thông báo ghi âm luôn hiện.",{"ost":1,"chat":"callout"}],
+    ['83','wgo',0,"Cuộc gọi đến — Thợ","Nghe máy (teal) / Từ chối (viền đỏ). Từ chối hoặc 20 giây không nghe thành cuộc gọi nhỡ có Gọi lại.",{"role":"worker","ost":1,"chat":"callin"}],
+    ['84','tracking',0,"Chat đã đóng","24 giờ sau khi hoàn tất, luồng chỉ đọc; nút gọi tắt.",{"ost":6,"chat":"chat","chatClosed":true}],
+    ['85','bhcert',0,"Phiếu bảo hành","Tự phát hành khi đơn Hoàn tất. Máy lạnh 60 ngày: 18/03 → 17/05, còn 22 ngày tính từ 25/04. QR để thợ mở đúng đơn gốc.",{"bhId":"#HS20250318-0087"}],
+    ['86','bhreq',0,"Yêu cầu bảo hành","Mô tả, ảnh/video, khung giờ mong muốn. Không có tiền nên nút là teal.",{"bh":"none"}],
+    ['87','bhstat',0,"Trạng thái bảo hành","Đã gửi → Thợ đã nhận → Đang xử lý → Đã khắc phục. Việc bảo hành luôn 0đ.",{"bh":"1"}],
+    ['88','orders',0,"Đơn của tôi — việc bảo hành","Thẻ có nhãn BẢO HÀNH, 0đ, tham chiếu đơn gốc. Tab Hoàn thành hiện chip còn/hết bảo hành.",{"oTab":0}],
+    ['89','wbh',0,"Thợ — Chi tiết việc bảo hành","Hạn phản hồi 23:59:00, sự cố và ảnh của khách, tóm tắt việc gốc ngày 18/03 kèm ảnh trước/sau.",{"role":"worker"}],
+    ['90','wbhno',0,"Thợ — Từ chối bảo hành","Cảnh báo trừ 120.000đ và chuyển thợ khác. Bắt buộc chọn lý do và tick xác nhận; nút viền đỏ.",{"role":"worker"}],
+    ['91','wwait',0,"Thợ — Hoàn tất bảo hành","Không có bước thanh toán: khách xác nhận là Hoàn tất, dòng tiền duy nhất là Bảo hành – 0đ.",{"role":"worker","wbh":"acc","ost":6}],
+    ['92','wwallet',0,"Thợ — Ví khi bị phạt","Giao dịch âm −120.000đ kèm lý do nằm đầu danh sách.",{"role":"worker","wbh":"no"}],
+    ['93','odetail',0,"Chi tiết đơn — đang làm","Tiến trình có giờ check-in, dịch vụ và add-on, mặt bằng, thẻ thợ có Chat/Gọi, chi phí và dòng phát sinh bị từ chối gạch ngang.",{"ost":3}],
+    ['94','odetail',0,"Chi tiết đơn — chờ thanh toán","“Chưa thanh toán – bạn trả sau khi nghiệm thu”, ảnh trước/sau, nút amber duy nhất Thanh toán 400.000đ.",{"ost":5}],
+    ['95','odetail',0,"Chi tiết đơn — đang khiếu nại","“Tiền đang được giữ an toàn, chưa chuyển cho thợ”, nút xem khiếu nại.",{"ost":7}],
+    ['96','notif',0,"Thông báo — Khách","Nhóm Hôm nay / Trước đó, chấm chưa đọc, đọc tất cả. Mỗi dòng mở đúng màn: theo dõi, chat, nghiệm thu, hoá đơn, bảo hành, khiếu nại, ưu đãi, bảo trì.",{}],
+    ['97','nset',0,"Cài đặt thông báo — Khách","Ba nhóm bật/tắt: Đơn hàng, Tin nhắn & cuộc gọi, Ưu đãi.",{}],
+    ['98','clist',0,"Khiếu nại của tôi","Bốn trạng thái: Đang xem xét / Cần bổ sung / Đã giải quyết / Đã đóng. Khiếu nại từ Báo vấn đề (đợt 3) nằm đầu danh sách.",{"ost":7}],
+    ['99','cdetail',0,"Khiếu nại đã giải quyết","#KN-0228-014 · Giặt sofa - nệm: hoàn một phần 100.000đ về ZaloPay, dự kiến 3–5 ngày làm việc.",{"kId":"014"}],
+    ['100','cdetail',0,"Khiếu nại cần bổ sung","Ghi rõ cần thêm gì; nút duy nhất Bổ sung thông tin.",{"ost":7,"cst":"needs","kId":"031"}],
+    ['101','wnotif',0,"Thông báo — Thợ","Mở từ chuông ở Hôm nay. Việc mới, bảo hành, tin nhắn, cuộc gọi nhỡ, khiếu nại, nghiệm thu, tiền về ví, rút tiền, duyệt hồ sơ.",{"role":"worker"}],
+    ['102','wwait',0,"Thợ — Khách đã khiếu nại","Tóm tắt khiếu nại cùng trạng thái với bên khách; nút Gửi phản hồi mở form giải thích + ảnh.",{"role":"worker","ost":7}],
+    ['103','wwallet',0,"Thợ — Tiền đang tạm giữ","340.000đ của đơn #…0012 hiện “Đang tạm giữ” đến khi có kết quả; số dư không đổi.",{"role":"worker","ost":7}],
+    ['104','eprof',0,"Thông tin cá nhân","Chạm từng ô để sửa; nút Lưu thay đổi chỉ bật khi có thay đổi. Đổi số điện thoại đi qua màn OTP của đợt 1.",{}],
+    ['105','addrs',0,"Địa chỉ của tôi","Nhãn, tag MẶC ĐỊNH, bối cảnh mặt bằng và ghi chú trên từng thẻ. Địa chỉ mặc định không có nút Xoá.",{}],
+    ['106','addredit',0,"Thêm / sửa địa chỉ","Nhãn Nhà / Công ty / Khác, ghim bản đồ vẽ bằng code, loại nhà, tầng, thang máy, ghi chú cho thợ, đặt mặc định.",{}],
+    ['107','pms',0,"Phương thức thanh toán","VNPay và ZaloPay với số tài khoản che bớt. Ví mặc định được chọn sẵn ở bước xác nhận và thanh toán.",{}],
+    ['108','pmlink',0,"Liên kết ví mới","Chọn ví → xác nhận trong app ví → đã liên kết. Ví mới xuất hiện ngay trong danh sách chọn khi đặt lịch.",{}],
+    ['109','favs',0,"Thợ yêu thích","Đánh giá, dịch vụ, lần làm gần nhất. “Đặt lại với thợ này” vào thẳng bước 1 và hiện Ưu tiên thợ ở bước 3.",{}],
+    ['110','wprev',0,"Hồ sơ thợ","Mở từ ảnh thợ ở màn Theo dõi hoặc từ danh sách yêu thích; trái tim ở góc phải.",{}],
+    ['111','chpass',0,"Đổi mật khẩu","Hiện tại → mới → nhập lại; nút khoá đến khi điền đủ.",{}],
+    ['112','delacc',0,"Xoá tài khoản","Giải thích dữ liệu bị xoá, chọn lý do, xác thực OTP. Nút viền đỏ, không có khối đặc.",{}],
+    ['113','wns',0,"Thợ — Chờ khách (vắng mặt)","Chỉ mở sau check-in. Đếm ngược 15 phút, nhật ký đã gọi 2 lần và nhắn tin, link sang chat. Nút báo chỉ bật khi hết giờ.",{"role":"worker","ost":2}],
+    ['114','wnsrep',0,"Thợ — Báo khách vắng mặt","Ảnh bằng chứng bắt buộc, ghi chú. Phí vắng mặt 50.000đ, thợ nhận đủ.",{"role":"worker","ost":2}],
+    ['115','wnsdone',0,"Thợ — Đã ghi nhận vắng mặt","Việc chuyển sang Hoàn thành với nhãn Khách vắng mặt; ví +50.000đ.",{"role":"worker","ns":"done"}],
+    ['116','odetail',0,"Khách — Thông báo vắng mặt","Chi tiết đơn giải thích phí 50.000đ kèm giờ check-in và 2 cuộc gọi; không thu 400.000đ.",{"ns":"done","ost":2}],
+    ['117','wcxl',0,"Thợ — Huỷ việc","Chọn lý do, cảnh báo Tỉ lệ nhận 96% → 95%, Tỉ lệ hoàn thành 98% → 97%. Nút viền đỏ.",{"role":"worker","ost":1}],
+    ['118','matching',0,"Khách — Thợ huỷ, tìm lại","Đơn tự quay về Đang tìm thợ, kèm câu giải thích và không mất phí.",{"wcx":true,"matchState":"hold"}],
+    ['119','wwallet',0,"Thợ — Ví & số dư","Tổng thu nhập − đã rút − khấu trừ = có thể rút. Đang tạm giữ tách riêng, không cộng vào số dư. Mỗi dòng mở chi tiết giao dịch.",{"role":"worker","ost":7}],
+    ['120','wwd',0,"Thợ — Rút tiền","Chip 500k / 1 triệu / Tất cả, tối thiểu 100.000đ, phí 0đ, số dư sau khi rút, tài khoản từ hồ sơ KYC.",{"role":"worker","ost":6}],
+    ['121','wwdpin',0,"Thợ — Nhập PIN","Bàn phím số; đủ 6 số thì gửi yêu cầu.",{"role":"worker","ost":6}],
+    ['122','wwdst',0,"Thợ — Trạng thái rút tiền","Đã gửi → Chờ kế toán duyệt (trong 24 giờ) → Đã chuyển khoản.",{"role":"worker","ost":6,"wd":"pending"}],
+    ['123','wtx',0,"Thợ — Chi tiết giao dịch","Loại, số tiền, khách trả − phí 15% = thực nhận, thời gian, mã giao dịch, đơn liên quan, trạng thái.",{"role":"worker","ost":6}],
+    ['124','wcal',0,"Thợ — Lịch tuần","Tab Lịch trên dock. Việc đặt đúng ngày, bấm ngày để xem danh sách; CN là ngày nghỉ.",{"role":"worker"}],
+    ['125','wavail',0,"Thợ — Giờ nhận việc & nghỉ đột xuất","Bật/tắt từng ngày, chạm khung giờ để đổi, chặn ngày nghỉ đột xuất; cảnh báo nếu ngày đó đã có việc.",{"role":"worker"}],
+    ['126','wzone',0,"Thợ — Khu vực nhận việc","Chip quận, thanh bán kính 3–12 km, bản đồ vẽ bằng code với vòng bán kính.",{"role":"worker"}],
+    ['127','wskill',0,"Thợ — Kỹ năng & chứng chỉ","Chứng chỉ làm việc trên cao hết hạn: các dịch vụ NGOÀI TRỜI hiện nhãn ẨN, kèm giải thích.",{"role":"worker"}],
+    ['128','wcert',0,"Thợ — Tải chứng chỉ mới","Loại, ảnh, ngày hết hạn; gửi xong chuyển sang Chờ duyệt.",{"role":"worker"}],
+    ['129','wperf',0,"Thợ — Hiệu suất","Đánh giá, tỉ lệ nhận, hoàn thành, check-in đúng giờ, bảo hành; mỗi chỉ số một dòng giải thích và mục tiêu; huy hiệu.",{"role":"worker"}],
+    ['130','paysum',0,"Khách — Thanh toán có phát sinh","Khách đã đồng ý thay ron vòi sen 45.000đ: hoá đơn cuối 445.000đ, nút amber Thanh toán 445.000đ.",{"ost":5,"xc":"ok"}],
+    ['131','wwait',0,"Thợ — Nhận tiền có phát sinh","400.000đ + 45.000đ phát sinh − 60.000đ phí (15% trên giá dịch vụ) = 385.000đ vào ví.",{"role":"worker","ost":6,"xc":"ok"}]
+  ]]
+];
+
+
+/* ---- reorder by flow; cells renumbered in flow order ---- */
+const JOURNEYS = [["Vào app","Splash, chọn vai trò, đăng nhập / đăng ký và hồ sơ đối tác","#0F766E",[["Mở đầu",["01","02","03","04","05","06"],[],1],["Chọn vai trò",["23"],[],1],["Đăng nhập",["07"],["24"]],["Đăng ký",["08"],["31"]],["OTP & mật khẩu",["25","26","27","28","29"],[],1],["Hồ sơ đối tác (KYC)",[],["32","33","34","35","36","37","38","39"]]]],["Một đơn trọn vẹn","Đơn #HS20250425-0012 từ lúc đặt tới lúc đánh giá — hai làn thẳng cột theo trạng thái","#0E5952",[["Tìm & đặt lịch",["09","10","40","41","42","43"],[]],["Ghép thợ",["46","47","48"],["18","19"]],["Danh sách đơn",["71","72","73","74"],["76","77","78"]],["Thợ đang đến",["12"],["64"]],["Thợ đã đến",["56"],["65"]],["Đang thực hiện",["57"],["20"]],["Chờ nghiệm thu",["58","59"],["66"]],["Chờ thanh toán",["62","44"],["67"]],["Hoàn tất",["63","53","50","51","52"],["68","70"]],["Chi tiết đơn & thông báo",["93","94","96","97"],["101"]]]],["Nhánh ngoại lệ","Huỷ, không tìm được thợ, vắng mặt, phát sinh, thanh toán lỗi và khiếu nại","#A35A06",[["Khách huỷ lịch",["54","55"],[]],["Không tìm được thợ",["49"],[]],["Thợ huỷ việc",["118"],["117"]],["Khách vắng mặt",["116"],["113","114","115"]],["Chi phí phát sinh",["130"],["131"]],["Thanh toán thất bại",["45"],[]],["Khiếu nại",["60","61","95","98","99","100"],["102","103","69"]]]],["Bảo hành","Phiếu tự cấp khi hoàn tất, yêu cầu 0đ, thợ nhận hoặc từ chối","#0F766E",[["Phiếu & yêu cầu",["85","86"],[]],["Phân công",["87","88"],["89"]],["Thợ từ chối",[],["90","92"]],["Hoàn tất",[],["91"]]]],["Chat & gọi","Cùng một cuộc trò chuyện giữa chị Mai và anh Hùng, số điện thoại được ẩn","#3B82F6",[["Chat",["80","84"],["81"]],["Gọi ẩn số",["82"],["83"]]]],["Tài khoản & cài đặt","Hồ sơ, địa chỉ, ví, thợ yêu thích, bảo mật và đăng xuất","#14312E",[["Tiện ích",["13","14","15"],[]],["Hồ sơ",["16","104"],["22"]],["Địa chỉ & thanh toán",["105","106","107","108"],[]],["Thợ yêu thích",["109","110"],[]],["Cài đặt & bảo mật",["75","111","112","30"],[]]]],["Ví & vận hành của Thợ","Số dư, rút tiền, lịch, khu vực, chứng chỉ và hiệu suất","#A35A06",[["Ví",[],["21","119","123"]],["Rút tiền",[],["120","121","122"]],["Lịch",[],["124","125"]],["Khu vực & kỹ năng",[],["126","127","128"]],["Hiệu suất",[],["129"]]]]];
+const RENAME = {"07":"Đăng nhập — Khách","08":"Đăng ký — Khách"};
+const BYN = {};
+G.forEach(g => g[3].forEach(s => { BYN[s[0]] = s; }));
+let CN = 0;
+const REORDERED = JOURNEYS.map((j, gi) => {
+  const list = [];
+  j[3].forEach(st => [['c', st[1]], ['w', st[2]]].forEach(([lane, ids]) => ids.forEach(id => {
+    const o = BYN[id]; const s = o.slice(); s[0] = String(++CN).padStart(2,'0'); if (RENAME[id]) s[3] = RENAME[id];
+    const w = lane === 'w' || s[1][0] === 'w' || !!(s[5] && s[5].role === 'worker');
+    if (w) s[5] = { ...(s[5] || {}), role:'worker' };
+    s[3] = st[0] + ' · ' + (w ? 'Thợ' : (st[3] ? 'Chung' : 'Khách')) + ' — ' + s[3].replace(/^(Thợ|Khách) — /, '');
+    list.push(s); })));
+  return [String(gi+1).padStart(2,'0'), j[0], j[2], list];
+});
+G.length = 0; REORDERED.forEach(g => G.push(g));
+
+class Component extends DCLogic {
+  renderVals(){
+    const tiles = [];
+    for (const [gn, gt, chip, list] of G)
+      for (const s of list)
+        tiles.push({ n:s[0], k:s[1], ob:s[2], t:s[3], b:s[4], chip, gn, gt, ...(s[5] || {}) });
+
+    const pages = [];
+    for (let i = 0; i < tiles.length; i += 3) {
+      const slice = tiles.slice(i, i + 3);
+      const gs = [...new Set(slice.map(s => s.gn + ' · ' + s.gt))];
+      pages.push({
+        tiles: slice,
+        head: gs.length === 1 ? gs[0] : 'Chuyển nhóm',
+        sub: gs.length === 1 ? '' : gs.join('  →  '),
+        no: 'Trang ' + (pages.length + 2) + '/' + (Math.ceil(tiles.length / 3) + 1)
+      });
+    }
+
+    return {
+      pages,
+      palette: [['Teal','#0F766E'],['Amber','#F59E0B'],['Beige','#F7EED7'],['Jade','#A7D7C5'],['Ceramic','#3B82F6'],['Sand','#E8DDD0']]
+        .map(p => ({ name:p[0], hex:p[1] }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

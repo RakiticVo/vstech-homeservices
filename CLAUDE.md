@@ -37,11 +37,16 @@ copies in `docs/reference/`.
 | **Secure Storage** | flutter_secure_storage |
 | **Typography** | google_fonts (Plus Jakarta Sans + Inter — see Design System below) |
 | **Responsive scaling** | flutter_screenutil |
-| **Maps** | google_maps_flutter |
+| **Location & Maps** | google_maps_flutter + geolocator (GPS tracking 2s/broadcast) |
+| **Permissions** | permission_handler (Camera, Location, Mic, Notifications) |
 | **Realtime** | STOMP over WebSocket (`stomp_dart_client` or equivalent) for chat/tracking — see `docs/reference/api/00-foundation.md` |
+| **Network State** | connectivity_plus (Auto reconnect trigger & offline banner) |
 | **Push** | firebase_messaging |
 | **Crash reporting** | firebase_crashlytics |
 | **Image/file pick** | image_picker |
+| **Formatting / L10n** | intl (NumberFormat currency, DateFormat, Pluralization) |
+| **System Utilities** | url_launcher (dialer tel:, navigation geo:, deep link), uuid |
+| **Logging** | logger (`appLogger` via PrettyPrinter) + pretty_dio_logger (debug only) |
 | **Linter** | very_good_analysis |
 | **Testing** | bloc_test, mocktail, golden_toolkit |
 
@@ -86,12 +91,12 @@ before any screen ships):**
 5. **Fixed floating bottom nav dock** (`rounded-full`, white, hairline border) pins to the screen bottom; scrollable page bodies need `AppSpacing.dockClearanceMin`–`dockClearanceMax` (112–128px) of bottom padding so content is never hidden under it.
 6. **Photo-first** — service categories/cards use real photo thumbnails (squircle, soft-rounded), not abstract icons. Placeholder images are fine until real photography exists.
 7. **Icons** are neutral slate grey (`textMuted`/`textSecondary`), hairline stroke (1.25–1.5px), 20–24px, never wrapped in a circle/square chip, never all turned `primary` teal.
-8. **Typography minimums**: field labels ≥14px, input/body text ≥16px (prevents iOS auto-zoom), card titles ≥18px, button text 16–17px bold/semibold.
+9. **Zero Hardcoded Text (100% Localization)**: All user-visible strings MUST come from `context.l10n` with 1:1 parity between `app_vi.arb` and `app_en.arb`.
+10. **SOLID Principles & Clean Architecture**: Presentation widgets must stay decoupled from data sources; business logic lives in BLoC/Cubit only.
+11. **CHANGELOG Maintenance**: Keep `CHANGELOG.md` updated whenever implementing or updating plans.
 
-**Typography** — Google Fonts, two families only:
-- Headings & buttons → `GoogleFonts.plusJakartaSans`
-- Body & numeric/prices → `GoogleFonts.inter`
-- Do not mix in other font families. See `lib/core/constants/app_text_styles.dart` for the full scale.
+**Typography** — `GoogleFonts.sourceSans3` for the entire app.
+See `lib/core/constants/app_text_styles.dart` for the full scale.
 
 **Radius hierarchy** (`lib/core/constants/app_spacing.dart` → `AppRadius`): `chip=8px` (badges/tags),
 `control=12px` (inputs, selection chips, the primary CTA), `card=16px` (content cards/sheets),

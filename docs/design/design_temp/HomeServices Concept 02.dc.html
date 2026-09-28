@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+body{margin:0;background:#EFEADE;font-family:Manrope,system-ui,sans-serif}
+a{color:#0F766E;text-decoration:none}
+a:hover{color:#0B5A53}
+</style>
+</helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0E5952"></rect><path d="M50 30 L72 49 V72 H28 V49 Z" fill="none" stroke="#F7EED7" stroke-width="5" stroke-linejoin="round"></path><rect x="43" y="52" width="14" height="13" rx="3" fill="#F59E0B"></rect></svg></template>
+
+<div style="min-height:100vh;box-sizing:border-box;width:max-content;min-width:100%;background:#EFEADE;color:#1F2937;padding:38px 44px 80px">
+
+  <div style="display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap;max-width:1500px">
+    <div style="flex:1;min-width:300px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:#8A8271">HOMESERVICE · MOBILE · 390×844</div>
+      <div style="font-size:31px;font-weight:800;letter-spacing:-.9px;color:#0E5952;margin-top:7px">Dịch vụ gia đình · Contemporary Folk Utility</div>
+      <div style="font-size:14px;font-weight:500;color:#5B6572;margin-top:9px;max-width:660px;line-height:1.55;text-wrap:pretty">Điện thoại bên dưới chạy thật: bấm đặt dịch vụ, đổi khung giờ, chuyển tab, theo dõi đơn. Máy bắt đầu từ Splash và chạy trọn một luồng qua chọn vai trò, đăng nhập, rồi vào đúng trải nghiệm Khách hoặc Thợ. Bảng bên dưới là toàn bộ 128 màn, chia theo 7 hành trình; mỗi hành trình có hai làn Khách và Thợ thẳng cột theo từng chặng.</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <sc-for list="{{ controls }}" as="c" hint-placeholder-count="2">
+        <div style="background:#FFFFFF;border:1px solid #DCD2C0;border-radius:14px;padding:9px 11px">
+          <div style="font-size:9.5px;font-weight:800;letter-spacing:.9px;color:#8A8271;margin-bottom:7px">{{ c.k }}</div>
+          <div style="display:flex;gap:4px">
+            <sc-for list="{{ c.opts }}" as="o" hint-placeholder-count="2">
+              <div onClick="{{ o.on }}" style="padding:6px 11px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.l }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start;margin-top:34px;padding-bottom:38px;border-bottom:1px solid #DCD2C0">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:13px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.1px;color:#8A8271">BẢN TƯƠNG TÁC</div>
+        <div style="font-size:11px;font-weight:800;color:#0F766E;font-variant-numeric:tabular-nums">{{ live.n }}</div>
+        <div style="font-size:13px;font-weight:800;color:#14312E">{{ live.t }}</div>
+      </div>
+      <div style="position:relative;width:414px;height:868px;box-sizing:border-box;padding:12px;border-radius:58px;background:linear-gradient(145deg,#4A4A4E 0%,#232326 26%,#17171A 55%,#2E2E32 100%);box-shadow:0 30px 64px rgba(31,41,55,.28)">
+        <div style="position:absolute;inset:6px;border-radius:52px;border:1px solid rgba(255,255,255,.14);pointer-events:none"></div>
+        <div style="position:absolute;left:-3px;top:170px;width:3px;height:34px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
+        <div style="position:absolute;left:-3px;top:228px;width:3px;height:58px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
+        <div style="position:absolute;left:-3px;top:302px;width:3px;height:58px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
+        <div style="position:absolute;right:-3px;top:250px;width:3px;height:92px;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#36363A,#1B1B1E)"></div>
+        <div style="width:390px;height:844px;border-radius:47px;overflow:hidden;background:#FAF6EE;position:relative">
+          <dc-import name="HomeServicePhone" screen="{{ live.k }}" ob-slide="{{ live.ob }}" theme="{{ theme }}" lang="{{ lang }}" role="{{ live.role }}" otp-preset="{{ live.otpPreset }}" otp-err="{{ live.otpErr }}" otp-ctx="{{ live.otpCtx }}" dlg="{{ live.dlg }}" kyc-step="{{ live.kycStep }}" kyc-status="{{ live.kycStatus }}" svc="{{ live.svc }}" pay-state="{{ live.payState }}" match-state="{{ live.matchState }}" stars="{{ live.stars }}" tip="{{ live.tip }}" completed="{{ live.completed }}" cancel-fee="{{ live.cancelFee }}" ost="{{ live.ost }}" o-tab="{{ live.oTab }}" j-tab="{{ live.jTab }}" chat="{{ live.chat }}" chat-closed="{{ live.chatClosed }}" sim-kind="{{ simKind }}" sim-n="{{ simN }}" bh="{{ live.bh }}" bh-id="{{ live.bhId }}" wbh="{{ live.wbh }}" cst="{{ live.cst }}" k-id="{{ live.kId }}" ns="{{ live.ns }}" wcx="{{ live.wcx }}" wd="{{ live.wd }}" xc="{{ live.xc }}" hint-size="390px,844px"></dc-import>
+          <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;border-radius:16px;background:#0A0A0B"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:9px;margin-top:14px">
+        <div onClick="{{ prev }}" style="flex:1;height:42px;border-radius:12px;border:1px solid #DCD2C0;background:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13.5px;font-weight:700;color:#0E5952;cursor:pointer">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0E5952" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>Màn trước
+        </div>
+        <div onClick="{{ next }}" style="flex:1;height:42px;border-radius:12px;border:1px solid #DCD2C0;background:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13.5px;font-weight:700;color:#0E5952;cursor:pointer">
+          Màn sau<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0E5952" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;min-width:320px;max-width:460px;display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ notes }}" as="n" hint-placeholder-count="5">
+        <div style="background:#FFFFFF;border:1px solid #DCD2C0;border-radius:16px;padding:16px 18px">
+          <div style="font-size:12.5px;font-weight:800;color:#0F766E;letter-spacing:.2px">{{ n.t }}</div>
+          <div style="font-size:13px;font-weight:500;color:#5B6572;line-height:1.6;margin-top:6px;text-wrap:pretty">{{ n.b }}</div>
+        </div>
+      </sc-for>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;padding-top:2px">
+        <sc-for list="{{ palette }}" as="p" hint-placeholder-count="6">
+          <div style="text-align:center">
+            <div style="width:42px;height:42px;border-radius:21px;background:{{ p.hex }};border:1px solid rgba(17,24,39,.08)"></div>
+            <div style="font-size:10px;font-weight:800;color:#374151;margin-top:7px">{{ p.name }}</div>
+            <div style="font-size:9px;font-weight:600;color:#8A8271;margin-top:1px;font-variant-numeric:tabular-nums">{{ p.hex }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:56px;margin-top:40px">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+      <div>
+        <div style="display:flex;align-items:center;gap:16px;padding-bottom:15px;border-bottom:1px solid #DDD5C4">
+          <div style="width:42px;height:42px;flex:none;border-radius:13px;background:{{ g.badgeBg }};display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:800;color:#fff">{{ g.n }}</div>
+          <div>
+            <div style="font-size:22px;font-weight:800;letter-spacing:-.6px;color:#0E5952">{{ g.t }}</div>
+            <div style="font-size:13px;font-weight:600;color:#7A7364;margin-top:3px">{{ g.b }}</div>
+          </div>
+          <div style="margin-left:auto;font-size:11.5px;font-weight:800;letter-spacing:1px;color:#A89F8C">{{ g.count }}</div>
+        </div>
+
+        <div style="overflow-x:auto;margin-top:22px;padding-bottom:14px">
+          <div style="display:flex;width:max-content">
+            <div style="width:58px;flex:none;display:flex;flex-direction:column;position:sticky;left:0;z-index:2;background:#EFE7D8">
+              <div style="height:52px"></div>
+              <sc-if value="{{ g.hasC }}" hint-placeholder-val="{{ true }}"><div style="height:730px;border-top:1px solid #E6DECF;display:flex;align-items:flex-start;padding-top:22px;box-sizing:border-box"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;letter-spacing:2.4px;color:#0E5952">KHÁCH HÀNG</div></div></sc-if>
+              <sc-if value="{{ g.hasW }}" hint-placeholder-val="{{ true }}"><div style="height:730px;border-top:1px solid #E6DECF;display:flex;align-items:flex-start;padding-top:22px;box-sizing:border-box"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;letter-spacing:2.4px;color:#A35A06">THỢ</div></div></sc-if>
+            </div>
+            <sc-for list="{{ g.stages }}" as="st" hint-placeholder-count="3">
+              <div style="flex:none;display:flex;flex-direction:column;padding:0 30px;border-left:1px dashed #D8CFBD">
+                <div style="height:52px;display:flex;align-items:center;gap:10px">
+                  <div style="width:24px;height:24px;border-radius:12px;background:{{ g.badgeBg }};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#FFFFFF">{{ st.idx }}</div>
+                  <div style="font-size:15px;font-weight:800;letter-spacing:-.3px;color:#14312E;white-space:nowrap">{{ st.label }}</div>
+                  <sc-if value="{{ st.shared }}"><div style="padding:3px 8px;border-radius:7px;background:#E3F1EA;font-size:10px;font-weight:800;letter-spacing:.4px;color:#0E5952">DÙNG CHUNG</div></sc-if>
+                </div>
+              <sc-if value="{{ g.hasC }}" hint-placeholder-val="{{ true }}">
+                <div style="height:730px;box-sizing:border-box;padding:18px 0 0;display:flex;gap:34px;align-items:flex-start;border-top:1px solid #E6DECF">
+                  <sc-for list="{{ st.c }}" as="s" hint-placeholder-count="1">
+            <div style="width:286px">
+              <div onClick="{{ s.go }}" style="width:286px;height:600px;position:relative;cursor:pointer">
+                <div style="position:absolute;top:0;left:0;transform:scale(.691);transform-origin:top left">
+                  <div style="position:relative;width:414px;height:868px;box-sizing:border-box;padding:12px;border-radius:58px;background:linear-gradient(145deg,#4A4A4E 0%,#232326 26%,#17171A 55%,#2E2E32 100%);box-shadow:{{ s.shadow }}">
+                    <div style="position:absolute;inset:6px;border-radius:52px;border:1px solid rgba(255,255,255,.14);pointer-events:none"></div>
+                    <div style="position:absolute;left:-3px;top:228px;width:3px;height:58px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
+                    <div style="position:absolute;left:-3px;top:302px;width:3px;height:58px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
+                    <div style="position:absolute;right:-3px;top:250px;width:3px;height:92px;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#36363A,#1B1B1E)"></div>
+                    <div style="width:390px;height:844px;border-radius:47px;overflow:hidden;background:#FAF6EE;position:relative">
+                      <dc-import name="HomeServicePhone" screen="{{ s.k }}" ob-slide="{{ s.ob }}" theme="{{ theme }}" lang="{{ lang }}" role="{{ s.role }}" otp-preset="{{ s.otpPreset }}" otp-err="{{ s.otpErr }}" otp-ctx="{{ s.otpCtx }}" dlg="{{ s.dlg }}" kyc-step="{{ s.kycStep }}" kyc-status="{{ s.kycStatus }}" svc="{{ s.svc }}" pay-state="{{ s.payState }}" match-state="{{ s.matchState }}" stars="{{ s.stars }}" tip="{{ s.tip }}" completed="{{ s.completed }}" cancel-fee="{{ s.cancelFee }}" ost="{{ s.ost }}" o-tab="{{ s.oTab }}" j-tab="{{ s.jTab }}" chat="{{ s.chat }}" chat-closed="{{ s.chatClosed }}" bh="{{ s.bh }}" bh-id="{{ s.bhId }}" wbh="{{ s.wbh }}" cst="{{ s.cst }}" k-id="{{ s.kId }}" ns="{{ s.ns }}" wcx="{{ s.wcx }}" wd="{{ s.wd }}" xc="{{ s.xc }}" hint-size="390px,844px"></dc-import>
+                      <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;border-radius:16px;background:#0A0A0B"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:baseline;gap:9px;margin-top:16px">
+                <div style="font-size:10px;font-weight:800;font-variant-numeric:tabular-nums;background:{{ s.chipBg }};color:{{ s.chipFg }};padding:3px 6px;border-radius:5px">{{ s.n }}</div>
+                <div style="font-size:14.5px;font-weight:800;letter-spacing:-.3px;color:#14312E">{{ s.t }}</div>
+              </div>
+              <div style="font-size:12px;font-weight:500;line-height:1.55;color:#7A7364;margin-top:6px;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{ s.b }}</div>
+            </div>
+          </sc-for>
+                  <sc-if value="{{ st.cEmpty }}"><div style="width:190px;height:600px;box-sizing:border-box;border-radius:26px;border:1.5px dashed #D8CFBD;display:flex;align-items:center;justify-content:center;padding:0 22px;text-align:center;font-size:12.5px;font-weight:700;line-height:1.5;color:#9A927F">{{ st.cNote }}</div></sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{ g.hasW }}" hint-placeholder-val="{{ true }}">
+                <div style="height:730px;box-sizing:border-box;padding:18px 0 0;display:flex;gap:34px;align-items:flex-start;border-top:1px solid #E6DECF">
+                  <sc-for list="{{ st.w }}" as="s" hint-placeholder-count="1">
+            <div style="width:286px">
+              <div onClick="{{ s.go }}" style="width:286px;height:600px;position:relative;cursor:pointer">
+                <div style="position:absolute;top:0;left:0;transform:scale(.691);transform-origin:top left">
+                  <div style="position:relative;width:414px;height:868px;box-sizing:border-box;padding:12px;border-radius:58px;background:linear-gradient(145deg,#4A4A4E 0%,#232326 26%,#17171A 55%,#2E2E32 100%);box-shadow:{{ s.shadow }}">
+                    <div style="position:absolute;inset:6px;border-radius:52px;border:1px solid rgba(255,255,255,.14);pointer-events:none"></div>
+                    <div style="position:absolute;left:-3px;top:228px;width:3px;height:58px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
+                    <div style="position:absolute;left:-3px;top:302px;width:3px;height:58px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
+                    <div style="position:absolute;right:-3px;top:250px;width:3px;height:92px;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#36363A,#1B1B1E)"></div>
+                    <div style="width:390px;height:844px;border-radius:47px;overflow:hidden;background:#FAF6EE;position:relative">
+                      <dc-import name="HomeServicePhone" screen="{{ s.k }}" ob-slide="{{ s.ob }}" theme="{{ theme }}" lang="{{ lang }}" role="{{ s.role }}" otp-preset="{{ s.otpPreset }}" otp-err="{{ s.otpErr }}" otp-ctx="{{ s.otpCtx }}" dlg="{{ s.dlg }}" kyc-step="{{ s.kycStep }}" kyc-status="{{ s.kycStatus }}" svc="{{ s.svc }}" pay-state="{{ s.payState }}" match-state="{{ s.matchState }}" stars="{{ s.stars }}" tip="{{ s.tip }}" completed="{{ s.completed }}" cancel-fee="{{ s.cancelFee }}" ost="{{ s.ost }}" o-tab="{{ s.oTab }}" j-tab="{{ s.jTab }}" chat="{{ s.chat }}" chat-closed="{{ s.chatClosed }}" bh="{{ s.bh }}" bh-id="{{ s.bhId }}" wbh="{{ s.wbh }}" cst="{{ s.cst }}" k-id="{{ s.kId }}" ns="{{ s.ns }}" wcx="{{ s.wcx }}" wd="{{ s.wd }}" xc="{{ s.xc }}" hint-size="390px,844px"></dc-import>
+                      <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;border-radius:16px;background:#0A0A0B"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:baseline;gap:9px;margin-top:16px">
+                <div style="font-size:10px;font-weight:800;font-variant-numeric:tabular-nums;background:{{ s.chipBg }};color:{{ s.chipFg }};padding:3px 6px;border-radius:5px">{{ s.n }}</div>
+                <div style="font-size:14.5px;font-weight:800;letter-spacing:-.3px;color:#14312E">{{ s.t }}</div>
+              </div>
+              <div style="font-size:12px;font-weight:500;line-height:1.55;color:#7A7364;margin-top:6px;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{ s.b }}</div>
+            </div>
+          </sc-for>
+                  <sc-if value="{{ st.wEmpty }}"><div style="width:190px;height:600px;box-sizing:border-box;border-radius:26px;border:1.5px dashed #D8CFBD;display:flex;align-items:center;justify-content:center;padding:0 22px;text-align:center;font-size:12.5px;font-weight:700;line-height:1.5;color:#9A927F">{{ st.wNote }}</div></sc-if>
+                </div>
+              </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const GROUPS = [
+  {n:'01', t:'Onboarding & Brand', b:'Khởi đầu đơn giản, kết nối niềm tin', badgeBg:'#0F766E', screens:[
+    ['01','splash',0,'Splash','Skyline Sài Gòn dưới lớp beige ấm, logo và dòng viết tay đặt ở hai đầu trục dọc.'],
+    ['02','onboarding',0,'Onboarding 1 — Lời mở','Tranh chiếm nửa màn, một câu hứa. Bỏ qua để nhạt bên trái, Tiếp theo là khối teal đặc.'],
+    ['03','onboarding',1,'Onboarding 2 — Niềm tin','Ba huy hiệu trả lời câu hỏi lớn nhất của khách hàng mới: người vào nhà tôi là ai.'],
+    ['04','onboarding',2,'Onboarding 3 — Cách dùng','Ba bước đặt trên đầu để đọc trước khi mắt rơi xuống hình.'],
+    ['05','onboarding',3,'Onboarding 4 — AI','Slide duy nhất nói về năng lực riêng, đặt cuối vì thuyết phục nhất khi đã hiểu dịch vụ.'],
+    ['06','intro',0,'Onboarding 5 — Tổng kết','Màn duy nhất trong chuỗi chỉ có một nút, không có Bỏ qua — đến đây chỉ còn một đường đi tiếp.'],
+    ['07','login',0,'Đăng nhập','Chỉ hai trường. Đăng nhập mạng xã hội hạ xuống dưới đường kẻ để không cạnh tranh với nút chính.'],
+    ['08','register',0,'Đăng ký','Email đánh dấu tùy chọn ngay trên nhãn, giảm số quyết định người dùng phải cân nhắc.']
+  ]},
+  {n:'02', t:'Core Journey', b:'Từ nhu cầu đến trải nghiệm chỉ trong vài bước', badgeBg:'#0E5952', screens:[
+    ['09','home',0,'Trang chủ','Chào tên trước, tìm kiếm ngay sau, rồi hero teal giữ một CTA duy nhất.'],
+    ['10','categories',0,'Danh mục dịch vụ','Danh sách thay vì lưới: mỗi dòng có chỗ cho một câu mô tả lợi ích.'],
+    ['11','booking',0,'Đặt lịch dịch vụ','Giá tạm tính ghim ở chân trang nên luôn thấy được khi đổi khung giờ.'],
+    ['12','tracking',0,"Theo dõi — Thợ đang đến","Bản đồ vẽ bằng code, ETA 8 phút · 2,4 km, gọi/nhắn ngay trên thẻ thợ. Tiến trình nằm trong sheet đáy.",{ost:1}],
+    ['13','devices',0,'Ngôi nhà của bạn','Hồ sơ thiết bị theo địa chỉ. Tab Lịch bảo trì xếp theo ngày và gắn mức ưu tiên.']
+  ]},
+  {n:'03', t:'Support & Account', b:'Luôn bên bạn trong mọi tình huống', badgeBg:'#3B82F6', screens:[
+    ['14','chat',0,'AI Assistant','Một câu chào rồi nhường chỗ cho năm ý định có sẵn — nhanh hơn gõ.'],
+    ['15','suggestions',0,'AI gợi ý dịch vụ','Gợi ý chính trên nền amber nhạt kèm lý do cụ thể; gợi ý phụ để trần theo danh sách.'],
+    ['16','profile',0,'Hồ sơ cá nhân','Thẻ danh tính tách khỏi khối menu, số lượng hiện bên phải để không cần mở mới biết.'],
+    ['17','settings',0,'Cài đặt & Lịch sử','Hai tab dùng chung một khung: cài đặt là danh sách, lịch sử là thẻ có mã đơn và số tiền.']
+  ]},
+  {n:'04', t:'Luồng cho Thợ', b:'Nhận việc, làm việc, nhận tiền — mặt bên kia của cùng một đơn', badgeBg:'#A35A06', worker:true, screens:[
+    ['18','whome',0,'Việc hôm nay','Công tắc nhận việc ở góc phải, thu nhập thực nhận trong ngày đặt đầu tiên. Yêu cầu mới có viền teal và đồng hồ đếm ngược.'],
+    ['19','wjob',0,'Chi tiết yêu cầu','Đúng đơn của chị Mai ở luồng khách. Phí nền tảng trừ từng dòng, số cuối luôn là “thực nhận về ví”.'],
+    ['20','wwork',0,'Đang thực hiện','Danh sách việc bấm được. Nút hoàn tất chỉ bật khi đủ năm mục, và báo còn bao nhiêu việc thay vì chỉ mờ đi.'],
+    ['21','wwallet',0,'Ví thu nhập','Số dư có thể rút là con số lớn nhất màn. Giao dịch dùng lại icon dịch vụ nên nhận ra việc nào mà không cần đọc.'],
+    ['22','wprofile',0,'Hồ sơ tay nghề','Thứ khách nhìn thấy trước khi thợ vào nhà: xác thực, đánh giá, dịch vụ nhận làm và nhận xét thật. Đăng xuất nằm cuối menu.']
+  ]},
+  {n:'05', t:'Vai trò & Xác thực', b:'Một app, hai vai trò — chọn vai trò trước, rồi mới đăng nhập', badgeBg:'#14312E', screens:[
+    ['23','role',0,'Chọn vai trò','Hai thẻ lớn, mỗi thẻ một câu lợi ích. Nút Tiếp tục chỉ bật khi đã chọn; đổi ngôn ngữ ngay ở góc trên.',{pick:null}],
+    ['24','login',0,'Đăng nhập — Thợ','Chỉ số điện thoại và mật khẩu, không có đăng nhập mạng xã hội. Chip vai trò ở đầu màn kèm link đổi vai trò.',{role:'worker'}],
+    ['25','otp',0,'Xác thực OTP','Dùng chung cho đăng ký, đăng nhập bằng mã và quên mật khẩu. Gợi ý mã từ Tin nhắn cho bản demo một chạm.',{otpPreset:'1234',otpCtx:'login'}],
+    ['26','otp',0,'OTP — sai mã','Sáu ô viền đỏ và một câu nói rõ cần làm gì. Gõ tiếp là tự xoá mã sai.',{otpPreset:'123789',otpErr:true,otpCtx:'login'}],
+    ['27','forgot',0,'Quên mật khẩu','Giữ nguyên vai trò đã chọn. Số điện thoại điền sẵn theo vai trò.'],
+    ['28','newpass',0,'Mật khẩu mới','Ba điều kiện hiện sẵn dạng đã đạt, để người dùng biết mật khẩu mới hợp lệ trước khi bấm.'],
+    ['29','passok',0,'Đổi mật khẩu thành công','Nhắc lại vai trò trong câu xác nhận, rồi quay về đúng màn đăng nhập của vai trò đó.'],
+    ['30','settings',0,'Đăng xuất — Khách','Hộp xác nhận nói rõ hậu quả: quay về chọn vai trò, đơn đang chạy vẫn tiếp tục.',{dlg:true}]
+  ]},
+  {n:'06', t:'Đăng ký đối tác · UC-W-10', b:'Sáu bước KYC có thanh tiến trình, rồi màn trạng thái hồ sơ', badgeBg:'#A35A06', screens:[
+    ['31','register',0,'Bước 1 — Số điện thoại','Nói trước những gì cần chuẩn bị, gồm chứng chỉ làm việc trên cao theo PRD v2.3.',{role:'worker'}],
+    ['32','wkyc',0,'Bước 2 — Thông tin cá nhân','Khu vực nhận việc là chip chọn nhiều, vì thợ thường nhận việc ở hai ba quận liền kề.',{kycStep:2}],
+    ['33','wkyc',0,'Bước 3 — CCCD','Hai ô chụp mặt trước, mặt sau. Nút chỉ bật khi đủ cả hai và nói rõ còn thiếu gì.',{kycStep:3}],
+    ['34','wkyc',0,'Bước 4 — Xác thực khuôn mặt','Nút chính đổi vai: trước là Chụp ảnh khuôn mặt, sau khi chụp mới thành Tiếp tục.',{kycStep:4}],
+    ['35','wkyc',0,'Bước 5 — Tay nghề & chứng chỉ','Chọn Máy lạnh hoặc Lắp đặt thì chứng chỉ làm việc trên cao chuyển sang Bắt buộc và khoá nút tiếp tục.',{kycStep:5}],
+    ['36','wkyc',0,'Bước 6 — Tài khoản nhận tiền','Tên chủ tài khoản phải khớp với CCCD; màn báo khớp ngay dưới trường nhập.',{kycStep:6}],
+    ['37','wkyc',0,'Hồ sơ — Đang chờ duyệt','Nói thời hạn cụ thể và kênh báo kết quả. Dòng thời gian ba mốc cho biết đang ở đâu.',{kycStep:7,kycStatus:'pending'}],
+    ['38','wkyc',0,'Hồ sơ — Cần bổ sung','Lý do nằm trong khung đỏ nhạt, nút chính dẫn thẳng về đúng bước cần sửa.',{kycStep:7,kycStatus:'needs'}],
+    ['39','wkyc',0,'Hồ sơ — Đã duyệt','Nút duy nhất đưa thẳng vào Việc hôm nay.',{kycStep:7,kycStatus:'approved'}],
+    ['40','service',0,"Chi tiết dịch vụ","Phạm vi, gói và giá dự kiến trước khi đặt. Nhãn TRONG NHÀ / NGOÀI TRỜI theo PRD v2.3 báo trước khi nào cần chứng chỉ làm việc trên cao.",{}],
+    ['41','book1',0,"Bước 1 — Gói & dịch vụ thêm","Gói dạng thẻ chọn một, add-on dạng chip kèm giá. Tạm tính ở chân trang cập nhật ngay khi bật tắt.",{}],
+    ['42','booking',0,"Bước 2 — Thời gian, địa chỉ, mặt bằng","Loại nhà, tầng, thang máy quyết định phụ phí mặt bằng; giá không tính theo quãng đường. Ảnh/video giúp thợ mang đúng đồ nghề.",{}],
+    ['43','book3',0,"Bước 3 — Xác nhận","Giá dự kiến tách dòng, chọn cách trả sau nghiệm thu. Nút amber Xác nhận đặt lịch là bước cam kết giá, chưa trừ tiền.",{}],
+    ['44','pay',0,"Cổng thanh toán","QR kèm đồng hồ hết hạn 10 phút. Huỷ giao dịch hoặc hết giờ đều dẫn sang trạng thái thất bại.",{}],
+    ['45','pay',0,"Thanh toán thất bại","Nói rõ chưa bị trừ tiền. Thử lại giữ nguyên đơn; Đổi phương thức quay về bước 3.",{"payState":"fail"}],
+    ['46','done',0,"Bước 4 — Hoàn tất","Mã đơn nổi bật; dòng thanh toán ghi rõ trả sau nghiệm thu.",{}],
+    ['47','matching',0,"Đang tìm thợ","Vòng lan toả và đồng hồ đếm. Bản tương tác tự chuyển sang Đã có thợ sau khoảng 6 giây.",{"matchState":"hold"}],
+    ['48','matching',0,"Đã có thợ nhận","Thẻ anh Hùng giống hệt thẻ ở màn Theo dõi, để khách nhận ra đúng người.",{"matchState":"found"}],
+    ['49','matching',0,"Chưa tìm được thợ","Hai lối ra: đổi giờ (nút chính) hoặc huỷ miễn phí, kèm câu nói rõ tiền hoàn về đâu và bao lâu.",{"matchState":"none"}],
+    ['50','review',0,"Đánh giá — chưa tip","Chưa chọn sao thì nút khoá. Không tip thì nút là teal vì không có tiền đi ra.",{"stars":5}],
+    ['51','review',0,"Đánh giá — có tip","Chọn mức tip thì nút đổi sang amber và ghi rõ số tiền.",{"stars":5,"tip":50000}],
+    ['52','thanks',0,"Cảm ơn","Xác nhận tiền tip đã tới thợ. Hoá đơn là liên kết phụ, không tranh với nút chính.",{"tip":50000,"completed":true}],
+    ['53','receipt',0,"Hoá đơn điện tử","Cùng bảng chi phí với bước 3, thêm dòng tip và mã giao dịch. Mở được từ Lịch sử đơn hàng.",{"tip":50000,"completed":true}],
+    ['54','cancel',0,"Huỷ đặt lịch — miễn phí","Chưa có thợ nhận nên không mất phí. Chọn lý do rồi mới bấm được nút viền đỏ; không có khối đặc.",{}],
+    ['55','cancel',0,"Huỷ đặt lịch — có phí","Thợ đã nhận việc: phí 50.000đ hiện ngay đầu màn và trên nút.",{"cancelFee":true}],
+    ['56','tracking',0,"Theo dõi — Thợ đã đến","Thông báo đến nơi và giờ check-in thay cho bản đồ.",{"ost":2}],
+    ['57','tracking',0,"Theo dõi — Đang thực hiện","Đồng hồ chạy và tiến độ 3/5, cùng danh sách với màn Đang thực hiện của thợ.",{"ost":3}],
+    ['58','tracking',0,"Theo dõi — Chờ nghiệm thu","Thợ bấm Hoàn tất thì màn này hiện nút Nghiệm thu ngay.",{"ost":4}],
+    ['59','accept',0,"Nghiệm thu","Ảnh trước/sau, 5/5 việc, thời gian thực tế và hoá đơn cuối 400.000đ. Báo vấn đề là link phụ.",{"ost":4}],
+    ['60','dispute',0,"Báo vấn đề","Chọn loại, mô tả, thêm ảnh. Gửi xong đơn chuyển sang Đang xem xét.",{"ost":4}],
+    ['61','disputed',0,"Đơn đang được xem xét","Nói rõ chưa trừ tiền và tiền của thợ đang được giữ.",{"ost":7}],
+    ['62','paysum',0,"Thanh toán","Hoá đơn cuối, phương thức đã chọn lúc đặt (đổi được), mã giảm giá. Nút amber Thanh toán 400.000đ.",{"ost":5}],
+    ['63','paid',0,"Thanh toán thành công","Nút chính dẫn sang đánh giá; hoá đơn là link phụ.",{"ost":6,"completed":true}],
+    ['64','wgo',0,"Thợ — Đang đến","Bản đồ vẽ bằng code, ETA, mở chỉ đường; gọi và nhắn qua tổng đài, số hai bên được ẩn.",{"role":"worker","ost":1}],
+    ['65','warr',0,"Thợ — Đã đến","Check-in, nhắc chụp ảnh trước khi làm, nút Bắt đầu làm.",{"role":"worker","ost":2}],
+    ['66','wwait',0,"Thợ — Chờ khách nghiệm thu","Trạng thái giống hệt bên khách. Bảng tiền 400.000đ − 60.000đ = 340.000đ.",{"role":"worker","ost":4}],
+    ['67','wwait',0,"Thợ — Chờ khách thanh toán","Khách đã xác nhận; tiền chưa về ví.",{"role":"worker","ost":5}],
+    ['68','wwait',0,"Thợ — Đã nhận tiền","Đã nhận 340.000đ vào ví, nút duy nhất mở Ví thu nhập.",{"role":"worker","ost":6}],
+    ['69','wwait',0,"Thợ — Đơn đang được xem xét","Khách báo vấn đề: chưa chuyển tiền cho đến khi có kết quả.",{"role":"worker","ost":7}],
+    ['70','wwallet',0,"Thợ — Ví sau khi nhận tiền","Giao dịch +340.000đ nằm đầu danh sách, số dư tăng lên 5.200.000đ.",{"role":"worker","ost":6}],
+    ['71','orders',0,"Đơn của tôi — Đang làm","Mở từ tab Đơn hàng. Đơn #…0012 chuyển tab theo trạng thái; mỗi thẻ có đúng một nút viền theo ngữ cảnh.",{"oTab":1}],
+    ['72','orders',0,"Đơn của tôi — Đang chờ","Đơn đang tìm thợ nằm ở đây; bấm Theo dõi mở màn tìm thợ.",{"oTab":0}],
+    ['73','orders',0,"Đơn của tôi — Hoàn thành","Hoàn tất và đã huỷ chung một tab, lọc bằng chip. Nút Đặt lại mở đúng dịch vụ cũ.",{"oTab":2}],
+    ['74','orders',0,"Đơn của tôi — Tab trống","Khi đơn #…0012 hoàn tất, tab Đang làm trống và hiện nút Đặt dịch vụ.",{"oTab":1,"ost":6}],
+    ['75','settings',0,"Cài đặt","Đổi tên từ Cài đặt & Lịch sử; tab lịch sử chỉ còn liên kết sang Đơn của tôi › Hoàn thành.",{}],
+    ['76','wjobs',0,"Thợ — Công việc · Mới phân công","Yêu cầu có đếm ngược ghim trên cùng với Nhận / Từ chối; bên dưới là việc đã nhận chưa bắt đầu.",{"role":"worker"}],
+    ['77','wjobs',0,"Thợ — Công việc · Đang làm","Mỗi thẻ ghi giờ, khách, quận, mặt bằng và Thực nhận. Chừa chỗ cho nhãn BẢO HÀNH cạnh giờ.",{"role":"worker","jTab":1,"ost":3}],
+    ['78','wjobs',0,"Thợ — Công việc · Hoàn thành","Việc xong kèm thực nhận từng việc; việc bị huỷ ghi 0đ.",{"role":"worker","jTab":2,"ost":6}],
+    ['79','wcal',0,"Thợ — Lịch (tạm)","Giữ chỗ cho đợt dành cho thợ; nút duy nhất dẫn sang Công việc.",{"role":"worker"}],
+    ['80','tracking',0,"Chat — Khách","Một luồng hội thoại chung cho đơn #…0012: tin hệ thống, vị trí, ảnh, thẻ phát sinh, nhật ký cuộc gọi. Số điện thoại gõ vào bị ẩn.",{"ost":3,"chat":"chat"}],
+    ['81','wwork',0,"Chat — Thợ","Cùng nội dung, đảo phía gửi. Trả lời nhanh riêng cho thợ; thẻ phát sinh chỉ hiện Đang chờ khách xác nhận.",{"role":"worker","ost":3,"chat":"chat"}],
+    ['82','tracking',0,"Gọi đi — Khách","Đang kết nối rồi đếm giờ; tắt mic, loa ngoài, kết thúc. Thông báo ghi âm luôn hiện.",{"ost":1,"chat":"callout"}],
+    ['83','wgo',0,"Cuộc gọi đến — Thợ","Nghe máy (teal) / Từ chối (viền đỏ). Từ chối hoặc 20 giây không nghe thành cuộc gọi nhỡ có Gọi lại.",{"role":"worker","ost":1,"chat":"callin"}],
+    ['84','tracking',0,"Chat đã đóng","24 giờ sau khi hoàn tất, luồng chỉ đọc; nút gọi tắt.",{"ost":6,"chat":"chat","chatClosed":true}],
+    ['85','bhcert',0,"Phiếu bảo hành","Tự phát hành khi đơn Hoàn tất. Máy lạnh 60 ngày: 18/03 → 17/05, còn 22 ngày tính từ 25/04. QR để thợ mở đúng đơn gốc.",{"bhId":"#HS20250318-0087"}],
+    ['86','bhreq',0,"Yêu cầu bảo hành","Mô tả, ảnh/video, khung giờ mong muốn. Không có tiền nên nút là teal.",{"bh":"none"}],
+    ['87','bhstat',0,"Trạng thái bảo hành","Đã gửi → Thợ đã nhận → Đang xử lý → Đã khắc phục. Việc bảo hành luôn 0đ.",{"bh":"1"}],
+    ['88','orders',0,"Đơn của tôi — việc bảo hành","Thẻ có nhãn BẢO HÀNH, 0đ, tham chiếu đơn gốc. Tab Hoàn thành hiện chip còn/hết bảo hành.",{"oTab":0}],
+    ['89','wbh',0,"Thợ — Chi tiết việc bảo hành","Hạn phản hồi 23:59:00, sự cố và ảnh của khách, tóm tắt việc gốc ngày 18/03 kèm ảnh trước/sau.",{"role":"worker"}],
+    ['90','wbhno',0,"Thợ — Từ chối bảo hành","Cảnh báo trừ 120.000đ và chuyển thợ khác. Bắt buộc chọn lý do và tick xác nhận; nút viền đỏ.",{"role":"worker"}],
+    ['91','wwait',0,"Thợ — Hoàn tất bảo hành","Không có bước thanh toán: khách xác nhận là Hoàn tất, dòng tiền duy nhất là Bảo hành – 0đ.",{"role":"worker","wbh":"acc","ost":6}],
+    ['92','wwallet',0,"Thợ — Ví khi bị phạt","Giao dịch âm −120.000đ kèm lý do nằm đầu danh sách.",{"role":"worker","wbh":"no"}],
+    ['93','odetail',0,"Chi tiết đơn — đang làm","Tiến trình có giờ check-in, dịch vụ và add-on, mặt bằng, thẻ thợ có Chat/Gọi, chi phí và dòng phát sinh bị từ chối gạch ngang.",{"ost":3}],
+    ['94','odetail',0,"Chi tiết đơn — chờ thanh toán","“Chưa thanh toán – bạn trả sau khi nghiệm thu”, ảnh trước/sau, nút amber duy nhất Thanh toán 400.000đ.",{"ost":5}],
+    ['95','odetail',0,"Chi tiết đơn — đang khiếu nại","“Tiền đang được giữ an toàn, chưa chuyển cho thợ”, nút xem khiếu nại.",{"ost":7}],
+    ['96','notif',0,"Thông báo — Khách","Nhóm Hôm nay / Trước đó, chấm chưa đọc, đọc tất cả. Mỗi dòng mở đúng màn: theo dõi, chat, nghiệm thu, hoá đơn, bảo hành, khiếu nại, ưu đãi, bảo trì.",{}],
+    ['97','nset',0,"Cài đặt thông báo — Khách","Ba nhóm bật/tắt: Đơn hàng, Tin nhắn & cuộc gọi, Ưu đãi.",{}],
+    ['98','clist',0,"Khiếu nại của tôi","Bốn trạng thái: Đang xem xét / Cần bổ sung / Đã giải quyết / Đã đóng. Khiếu nại từ Báo vấn đề (đợt 3) nằm đầu danh sách.",{"ost":7}],
+    ['99','cdetail',0,"Khiếu nại đã giải quyết","#KN-0228-014 · Giặt sofa - nệm: hoàn một phần 100.000đ về ZaloPay, dự kiến 3–5 ngày làm việc.",{"kId":"014"}],
+    ['100','cdetail',0,"Khiếu nại cần bổ sung","Ghi rõ cần thêm gì; nút duy nhất Bổ sung thông tin.",{"ost":7,"cst":"needs","kId":"031"}],
+    ['101','wnotif',0,"Thông báo — Thợ","Mở từ chuông ở Hôm nay. Việc mới, bảo hành, tin nhắn, cuộc gọi nhỡ, khiếu nại, nghiệm thu, tiền về ví, rút tiền, duyệt hồ sơ.",{"role":"worker"}],
+    ['102','wwait',0,"Thợ — Khách đã khiếu nại","Tóm tắt khiếu nại cùng trạng thái với bên khách; nút Gửi phản hồi mở form giải thích + ảnh.",{"role":"worker","ost":7}],
+    ['103','wwallet',0,"Thợ — Tiền đang tạm giữ","340.000đ của đơn #…0012 hiện “Đang tạm giữ” đến khi có kết quả; số dư không đổi.",{"role":"worker","ost":7}],
+    ['104','eprof',0,"Thông tin cá nhân","Chạm từng ô để sửa; nút Lưu thay đổi chỉ bật khi có thay đổi. Đổi số điện thoại đi qua màn OTP của đợt 1.",{}],
+    ['105','addrs',0,"Địa chỉ của tôi","Nhãn, tag MẶC ĐỊNH, bối cảnh mặt bằng và ghi chú trên từng thẻ. Địa chỉ mặc định không có nút Xoá.",{}],
+    ['106','addredit',0,"Thêm / sửa địa chỉ","Nhãn Nhà / Công ty / Khác, ghim bản đồ vẽ bằng code, loại nhà, tầng, thang máy, ghi chú cho thợ, đặt mặc định.",{}],
+    ['107','pms',0,"Phương thức thanh toán","VNPay và ZaloPay với số tài khoản che bớt. Ví mặc định được chọn sẵn ở bước xác nhận và thanh toán.",{}],
+    ['108','pmlink',0,"Liên kết ví mới","Chọn ví → xác nhận trong app ví → đã liên kết. Ví mới xuất hiện ngay trong danh sách chọn khi đặt lịch.",{}],
+    ['109','favs',0,"Thợ yêu thích","Đánh giá, dịch vụ, lần làm gần nhất. “Đặt lại với thợ này” vào thẳng bước 1 và hiện Ưu tiên thợ ở bước 3.",{}],
+    ['110','wprev',0,"Hồ sơ thợ","Mở từ ảnh thợ ở màn Theo dõi hoặc từ danh sách yêu thích; trái tim ở góc phải.",{}],
+    ['111','chpass',0,"Đổi mật khẩu","Hiện tại → mới → nhập lại; nút khoá đến khi điền đủ.",{}],
+    ['112','delacc',0,"Xoá tài khoản","Giải thích dữ liệu bị xoá, chọn lý do, xác thực OTP. Nút viền đỏ, không có khối đặc.",{}],
+    ['113','wns',0,"Thợ — Chờ khách (vắng mặt)","Chỉ mở sau check-in. Đếm ngược 15 phút, nhật ký đã gọi 2 lần và nhắn tin, link sang chat. Nút báo chỉ bật khi hết giờ.",{"role":"worker","ost":2}],
+    ['114','wnsrep',0,"Thợ — Báo khách vắng mặt","Ảnh bằng chứng bắt buộc, ghi chú. Phí vắng mặt 50.000đ, thợ nhận đủ.",{"role":"worker","ost":2}],
+    ['115','wnsdone',0,"Thợ — Đã ghi nhận vắng mặt","Việc chuyển sang Hoàn thành với nhãn Khách vắng mặt; ví +50.000đ.",{"role":"worker","ns":"done"}],
+    ['116','odetail',0,"Khách — Thông báo vắng mặt","Chi tiết đơn giải thích phí 50.000đ kèm giờ check-in và 2 cuộc gọi; không thu 400.000đ.",{"ns":"done","ost":2}],
+    ['117','wcxl',0,"Thợ — Huỷ việc","Chọn lý do, cảnh báo Tỉ lệ nhận 96% → 95%, Tỉ lệ hoàn thành 98% → 97%. Nút viền đỏ.",{"role":"worker","ost":1}],
+    ['118','matching',0,"Khách — Thợ huỷ, tìm lại","Đơn tự quay về Đang tìm thợ, kèm câu giải thích và không mất phí.",{"wcx":true,"matchState":"hold"}],
+    ['119','wwallet',0,"Thợ — Ví & số dư","Tổng thu nhập − đã rút − khấu trừ = có thể rút. Đang tạm giữ tách riêng, không cộng vào số dư. Mỗi dòng mở chi tiết giao dịch.",{"role":"worker","ost":7}],
+    ['120','wwd',0,"Thợ — Rút tiền","Chip 500k / 1 triệu / Tất cả, tối thiểu 100.000đ, phí 0đ, số dư sau khi rút, tài khoản từ hồ sơ KYC.",{"role":"worker","ost":6}],
+    ['121','wwdpin',0,"Thợ — Nhập PIN","Bàn phím số; đủ 6 số thì gửi yêu cầu.",{"role":"worker","ost":6}],
+    ['122','wwdst',0,"Thợ — Trạng thái rút tiền","Đã gửi → Chờ kế toán duyệt (trong 24 giờ) → Đã chuyển khoản.",{"role":"worker","ost":6,"wd":"pending"}],
+    ['123','wtx',0,"Thợ — Chi tiết giao dịch","Loại, số tiền, khách trả − phí 15% = thực nhận, thời gian, mã giao dịch, đơn liên quan, trạng thái.",{"role":"worker","ost":6}],
+    ['124','wcal',0,"Thợ — Lịch tuần","Tab Lịch trên dock. Việc đặt đúng ngày, bấm ngày để xem danh sách; CN là ngày nghỉ.",{"role":"worker"}],
+    ['125','wavail',0,"Thợ — Giờ nhận việc & nghỉ đột xuất","Bật/tắt từng ngày, chạm khung giờ để đổi, chặn ngày nghỉ đột xuất; cảnh báo nếu ngày đó đã có việc.",{"role":"worker"}],
+    ['126','wzone',0,"Thợ — Khu vực nhận việc","Chip quận, thanh bán kính 3–12 km, bản đồ vẽ bằng code với vòng bán kính.",{"role":"worker"}],
+    ['127','wskill',0,"Thợ — Kỹ năng & chứng chỉ","Chứng chỉ làm việc trên cao hết hạn: các dịch vụ NGOÀI TRỜI hiện nhãn ẨN, kèm giải thích.",{"role":"worker"}],
+    ['128','wcert',0,"Thợ — Tải chứng chỉ mới","Loại, ảnh, ngày hết hạn; gửi xong chuyển sang Chờ duyệt.",{"role":"worker"}],
+    ['129','wperf',0,"Thợ — Hiệu suất","Đánh giá, tỉ lệ nhận, hoàn thành, check-in đúng giờ, bảo hành; mỗi chỉ số một dòng giải thích và mục tiêu; huy hiệu.",{"role":"worker"}],
+    ['130','paysum',0,"Khách — Thanh toán có phát sinh","Khách đã đồng ý thay ron vòi sen 45.000đ: hoá đơn cuối 445.000đ, nút amber Thanh toán 445.000đ.",{"ost":5,"xc":"ok"}],
+    ['131','wwait',0,"Thợ — Nhận tiền có phát sinh","400.000đ + 45.000đ phát sinh − 60.000đ phí (15% trên giá dịch vụ) = 385.000đ vào ví.",{"role":"worker","ost":6,"xc":"ok"}]
+  ]}
+];
+
+
+/* ---- reorder by flow; cells renumbered in flow order ---- */
+const JOURNEYS = [["Vào app","Splash, chọn vai trò, đăng nhập / đăng ký và hồ sơ đối tác","#0F766E",[["Mở đầu",["01","02","03","04","05","06"],[],1],["Chọn vai trò",["23"],[],1],["Đăng nhập",["07"],["24"]],["Đăng ký",["08"],["31"]],["OTP & mật khẩu",["25","26","27","28","29"],[],1],["Hồ sơ đối tác (KYC)",[],["32","33","34","35","36","37","38","39"]]]],["Một đơn trọn vẹn","Đơn #HS20250425-0012 từ lúc đặt tới lúc đánh giá — hai làn thẳng cột theo trạng thái","#0E5952",[["Tìm & đặt lịch",["09","10","40","41","42","43"],[]],["Ghép thợ",["46","47","48"],["18","19"]],["Danh sách đơn",["71","72","73","74"],["76","77","78"]],["Thợ đang đến",["12"],["64"]],["Thợ đã đến",["56"],["65"]],["Đang thực hiện",["57"],["20"]],["Chờ nghiệm thu",["58","59"],["66"]],["Chờ thanh toán",["62","44"],["67"]],["Hoàn tất",["63","53","50","51","52"],["68","70"]],["Chi tiết đơn & thông báo",["93","94","96","97"],["101"]]]],["Nhánh ngoại lệ","Huỷ, không tìm được thợ, vắng mặt, phát sinh, thanh toán lỗi và khiếu nại","#A35A06",[["Khách huỷ lịch",["54","55"],[]],["Không tìm được thợ",["49"],[]],["Thợ huỷ việc",["118"],["117"]],["Khách vắng mặt",["116"],["113","114","115"]],["Chi phí phát sinh",["130"],["131"]],["Thanh toán thất bại",["45"],[]],["Khiếu nại",["60","61","95","98","99","100"],["102","103","69"]]]],["Bảo hành","Phiếu tự cấp khi hoàn tất, yêu cầu 0đ, thợ nhận hoặc từ chối","#0F766E",[["Phiếu & yêu cầu",["85","86"],[]],["Phân công",["87","88"],["89"]],["Thợ từ chối",[],["90","92"]],["Hoàn tất",[],["91"]]]],["Chat & gọi","Cùng một cuộc trò chuyện giữa chị Mai và anh Hùng, số điện thoại được ẩn","#3B82F6",[["Chat",["80","84"],["81"]],["Gọi ẩn số",["82"],["83"]]]],["Tài khoản & cài đặt","Hồ sơ, địa chỉ, ví, thợ yêu thích, bảo mật và đăng xuất","#14312E",[["Tiện ích",["13","14","15"],[]],["Hồ sơ",["16","104"],["22"]],["Địa chỉ & thanh toán",["105","106","107","108"],[]],["Thợ yêu thích",["109","110"],[]],["Cài đặt & bảo mật",["75","111","112","30"],[]]]],["Ví & vận hành của Thợ","Số dư, rút tiền, lịch, khu vực, chứng chỉ và hiệu suất","#A35A06",[["Ví",[],["21","119","123"]],["Rút tiền",[],["120","121","122"]],["Lịch",[],["124","125"]],["Khu vực & kỹ năng",[],["126","127","128"]],["Hiệu suất",[],["129"]]]]];
+const RENAME = {"07":"Đăng nhập — Khách","08":"Đăng ký — Khách"};
+const BYN = {};
+GROUPS.forEach(g => g.screens.forEach(s => { BYN[s[0]] = s; }));
+let CN = 0;
+const mk = (id, lane) => { const o = BYN[id]; const s = o.slice(); s[0] = String(++CN).padStart(2,'0'); if (RENAME[id]) s[3] = RENAME[id];
+  s.worker = lane === 'w' || s[1][0] === 'w' || !!(s[5] && s[5].role === 'worker');
+  if (s.worker) s[5] = { ...(s[5] || {}), role:'worker' };
+  s.lane = lane; return s; };
+const REORDERED = JOURNEYS.map((j, gi) => {
+  const stages = j[3].map(st => ({ label: st[0], shared: !!st[3], c: st[1].map(id => mk(id,'c')), w: st[2].map(id => mk(id,'w')) }));
+  return { n:String(gi+1).padStart(2,'0'), t:j[0], b:j[1], badgeBg:j[2], stages, screens: stages.flatMap(x => x.c.concat(x.w)) };
+});
+GROUPS.length = 0; REORDERED.forEach(g => GROUPS.push(g));
+const XP = s => ({ role: (s[5] && s[5].role) || undefined, otpPreset: s[5] && s[5].otpPreset, otpErr: s[5] && s[5].otpErr,
+  otpCtx: s[5] && s[5].otpCtx, dlg: s[5] && s[5].dlg, kycStep: s[5] && s[5].kycStep, kycStatus: s[5] && s[5].kycStatus,
+  svc: s[5] && s[5].svc, payState: s[5] && s[5].payState, matchState: s[5] && s[5].matchState, stars: s[5] && s[5].stars, tip: s[5] && s[5].tip, completed: s[5] && s[5].completed, cancelFee: s[5] && s[5].cancelFee, ost: s[5] && s[5].ost, oTab: s[5] && s[5].oTab, jTab: s[5] && s[5].jTab, chat: s[5] && s[5].chat, chatClosed: s[5] && s[5].chatClosed, bh: s[5] && s[5].bh, bhId: s[5] && s[5].bhId, wbh: s[5] && s[5].wbh, cst: s[5] && s[5].cst, kId: s[5] && s[5].kId, ns: s[5] && s[5].ns, wcx: s[5] && s[5].wcx, wd: s[5] && s[5].wd, xc: s[5] && s[5].xc });
+const FLAT = GROUPS.flatMap(g => g.screens);
+
+const OSTN = ['Đã nhận việc','Thợ đang đến','Thợ đã đến','Đang thực hiện','Chờ nghiệm thu','Chờ thanh toán','Hoàn tất','Đang xem xét'];
+class Component extends DCLogic {
+  state = { i: 0, theme: 'light', lang: 'vi', ovRole: 'customer', ovOst: null, ovI: -1, ovList: false, simN: 0, simKind: null };
+  at(i){ return () => this.setState({ i: (i + FLAT.length) % FLAT.length }); }
+
+  renderVals(){
+    const simKind = this.state.simKind, simN = this.state.simN;
+    const i = this.state.i;
+    const cur = FLAT[i];
+    const set = (k,v) => () => this.setState({[k]:v});
+    const opt = (l,active,on) => ({ l, on, bg: active?'#0A544E':'#F0EDE5', fg: active?'#FFF8EC':'#5B6572' });
+
+    return {
+      simKind, simN,
+      live: (() => { const base = { n: cur[0], k: cur[1], ob: cur[2], t: cur[3], ...XP(cur) };
+        if (this.state.ovI !== i || this.state.ovOst === null) return base;
+        const o = this.state.ovOst, w = this.state.ovRole === 'worker';
+        const L = this.state.ovList;
+        const k = w ? (L ? 'wjobs' : o <= 1 ? 'wgo' : o === 2 ? 'warr' : o === 3 ? 'wwork' : 'wwait') : (L ? 'orders' : 'tracking');
+        const tabs = L ? (w ? { jTab: o === 0 ? 0 : o === 6 ? 2 : 1 } : { oTab: o === 0 ? 0 : o === 6 ? 2 : 1 }) : {};
+        return { ...base, n:'—', k, ob:0, role: w ? 'worker' : undefined, ost:o, ...tabs, t: (w ? 'Thợ · ' : 'Khách · ') + (L ? (w ? 'Công việc · ' : 'Đơn của tôi · ') : '') + OSTN[o] }; })(),
+      prev: this.at(i-1),
+      next: this.at(i+1),
+
+      theme: this.state.theme, lang: this.state.lang,
+      controls: [
+        { k:'NGÔN NGỮ', opts:[
+          opt('VI', this.state.lang==='vi', set('lang','vi')),
+          opt('EN', this.state.lang==='en', set('lang','en'))
+        ]},
+        { k:'GIAO DIỆN', opts:[
+          opt('Sáng', this.state.theme==='light', set('theme','light')),
+          opt('Tối', this.state.theme==='dark', set('theme','dark'))
+        ]},
+        { k:'VÀO NHANH', opts:[
+          opt('Từ đầu', i===0, set('i',0)),
+          opt('Khách hàng', FLAT[i][1]==='home', set('i', FLAT.findIndex(x => x[1]==='home'))),
+          opt('Thợ', FLAT[i][1]==='whome', set('i', FLAT.findIndex(x => x[1]==='whome')))
+        ]},
+        { k:'TRẠNG THÁI ĐƠN', opts:(() => { const o = this.state.ovI === i ? this.state.ovOst : null; const cur0 = o === null ? -1 : o;
+          const put = x => () => this.setState({ ovOst:x, ovI:this.state.i });
+          return [
+            opt('Khách', this.state.ovRole==='customer', () => this.setState({ ovRole:'customer', ovOst: cur0 < 0 ? 1 : cur0, ovI:this.state.i })),
+            opt('Thợ', this.state.ovRole==='worker', () => this.setState({ ovRole:'worker', ovOst: cur0 < 0 ? 1 : cur0, ovI:this.state.i })),
+            opt('◀', false, put(Math.max(0, (cur0 < 0 ? 1 : cur0 === 7 ? 4 : cur0) - 1))),
+            opt(cur0 < 0 ? 'Chọn trạng thái' : OSTN[cur0], cur0 >= 0, put(cur0 < 0 ? 1 : cur0)),
+            opt('▶', false, put(cur0 < 0 ? 1 : Math.min(6, cur0 === 7 ? 5 : cur0 + 1))),
+            opt('Báo vấn đề', cur0 === 7, put(7)),
+            opt('Xem danh sách', this.state.ovList, () => this.setState({ ovList: !this.state.ovList, ovOst: cur0 < 0 ? 1 : cur0, ovI:this.state.i }))
+          ]; })() },
+        { k:'LIÊN LẠC', opts:[
+          opt('Tin nhắn đến', this.state.simKind === 'msg', () => this.setState(s => ({ simKind:'msg', simN: s.simN + 1 }))),
+          opt('Cuộc gọi đến', this.state.simKind === 'call', () => this.setState(s => ({ simKind:'call', simN: s.simN + 1 })))
+        ]},
+        { k:'MÔ PHỎNG', opts:[
+          opt('Huỷ lịch có phí', FLAT[i][1]==='cancel', set('i', FLAT.findIndex(x => x[1]==='cancel' && x[5] && x[5].cancelFee))),
+          opt('Không tìm được thợ', FLAT[i][1]==='matching' && FLAT[i][5] && FLAT[i][5].matchState==='none', set('i', FLAT.findIndex(x => x[1]==='matching' && x[5] && x[5].matchState==='none')))
+        ]}
+      ],
+
+      palette: [['Teal','#0F766E'],['Amber','#F59E0B'],['Beige','#F7EED7'],['Jade','#A7D7C5'],['Ceramic','#3B82F6'],['Sand','#E8DDD0']]
+        .map(p=>({ name:p[0], hex:p[1] })),
+
+      notes: [
+        {t:'Một mục tiêu, một CTA mỗi màn', b:'Nút chính luôn là khối đặc: teal cho điều hướng tiến tới, amber chỉ dành cho bước cam kết chi tiền (xác nhận, thanh toán, tip). Không màn nào có hai khối đặc cạnh nhau.'},
+        {t:'Chất Việt nằm ở tranh, không ở khung', b:'Skyline Sài Gòn, gia đình, chữ viết tay chỉ xuất hiện ở năm màn onboarding và một điểm nhấn trang chủ. Vào luồng nghiệp vụ thì lùi hẳn, nhường chỗ cho tốc độ.'},
+        {t:'Ngôi nhà của bạn là phần khác biệt', b:'Hồ sơ thiết bị theo địa chỉ, kèm lịch bảo trì xếp theo mức ưu tiên. Máy nước nóng Ariston quá hạn là sợi chỉ xuyên suốt: xuất hiện ở tab Thiết bị, tab Lịch bảo trì và gợi ý AI.'},
+        {t:'AI hỗ trợ, không lấn át', b:'Chat mở bằng năm ý định có sẵn thay vì ô nhập trống. Gợi ý luôn nêu lý do kèm số liệu cụ thể — “Bạn đã 3 tuần chưa đặt dịch vụ vệ sinh” — chứ không gợi ý trống.'},
+        {t:'Giá minh bạch từng bước', b:'Tạm tính ghim ở chân màn đặt lịch nên luôn thấy được khi đổi khung giờ. Lịch sử đơn hiện mã đơn, trạng thái và số tiền ngay trên thẻ, không cần mở ra mới biết.'}
+      ],
+
+      groups: GROUPS.map(g => {
+        const tile = s => { const idx = FLAT.indexOf(s); const on = idx === i;
+          return { n:s[0], k:s[1], ob:s[2], t:s[3], b:s[4], go:this.at(idx), ...XP(s),
+            shadow: on ? '0 0 0 4px #0F766E, 0 26px 52px rgba(31,41,55,.26)' : '0 22px 44px rgba(31,41,55,.2)',
+            chipBg: on ? '#0F766E' : (s.lane === 'w' ? '#A35A06' : '#14312E'), chipFg:'#FFFFFF' }; };
+        const hasC = g.stages.some(x => x.c.length), hasW = g.stages.some(x => x.w.length);
+        return { ...g, count: g.screens.length + ' MÀN · ' + g.stages.length + ' CHẶNG', hasC, hasW,
+          stages: g.stages.map((x, si) => ({ label:x.label, idx:String(si + 1), shared:x.shared,
+            c: x.c.map(tile), w: x.w.map(tile), cEmpty: !x.c.length, wEmpty: !x.w.length,
+            cNote: 'Khách không có màn ở chặng này',
+            wNote: x.shared ? 'Dùng chung với làn Khách phía trên' : 'Thợ không có màn ở chặng này' })) };
+      })
+    };
+  }
+}
+
+</script>
+</body>
+</html>
