@@ -170,7 +170,7 @@ class _DisputeDetailPageState extends State<DisputeDetailPage> {
                               _infoAdded = true;
                             });
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Đã bổ sung 2 ảnh minh chứng')),
+                              SnackBar(content: Text(context.l10n.disputeEvidenceAdded)),
                             );
                           },
                           icon: const Icon(Icons.add_a_photo_outlined, size: 18),

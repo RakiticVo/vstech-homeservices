@@ -7,18 +7,29 @@ import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/widgets/app_button.dart';
 import 'package:vstech_home_services/features/booking/presentation/widgets/radar_pulse_animation.dart';
 
 /// Realtime Dispatch Radar matching screen.
 /// Simulates scanning within 2.5km, dispatching to 3 nearest workers, and worker accept transition.
+/// Also covers the "no pro available" outcome (Cell 49) and the re-search after a pro
+/// cancels (Cell 118).
 class DispatchRadarMatchingPage extends StatefulWidget {
   const DispatchRadarMatchingPage({
     this.initialStage = 0,
+    this.isWorkerCancelled = false,
     super.key,
   });
 
-  /// 0: Scanning 2.5km, 1: Dispatched to 3 workers, 2: Matched with partner worker
+  /// 0: Scanning 2.5km, 1: Dispatched to 3 workers, 2: Matched with partner worker,
+  /// 3: No pro available for the chosen slot
   final int initialStage;
+
+  /// Shows the "previous pro cancelled, searching again at no cost" note while searching.
+  final bool isWorkerCancelled;
+
+  static const int stageMatched = 2;
+  static const int stageNoWorker = 3;
 
   @override
   State<DispatchRadarMatchingPage> createState() => _DispatchRadarMatchingPageState();
@@ -85,7 +96,7 @@ class _DispatchRadarMatchingPageState extends State<DispatchRadarMatchingPage> {
           TextButton(
             onPressed: () => Navigator.of(dialogCtx).pop(),
             child: Text(
-              'Không',
+              dialogCtx.l10n.dialogNo,
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w600,
@@ -135,6 +146,10 @@ class _DispatchRadarMatchingPageState extends State<DispatchRadarMatchingPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_currentStage == DispatchRadarMatchingPage.stageNoWorker) {
+      return _buildNoWorkerScaffold(context);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -145,7 +160,7 @@ class _DispatchRadarMatchingPageState extends State<DispatchRadarMatchingPage> {
         leading: IconButton(
           icon: const Icon(Icons.close, color: AppColors.textPrimary),
           onPressed: () {
-            if (_currentStage < 2) {
+            if (_currentStage < DispatchRadarMatchingPage.stageMatched) {
               _onCancelSearch();
             } else {
               if (context.canPop()) {
@@ -179,6 +194,37 @@ class _DispatchRadarMatchingPageState extends State<DispatchRadarMatchingPage> {
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
+
+              if (widget.isWorkerCancelled &&
+                  _currentStage < DispatchRadarMatchingPage.stageMatched) ...[
+                Container(
+                  key: const Key('worker_cancelled_note'),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: AppColors.warning.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(AppRadius.control),
+                    border: Border.all(color: AppColors.warning),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.info_outline_rounded, size: 20, color: AppColors.textSecondary),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          context.l10n.dispatchRadarWorkerCancelledNote('Trần Văn Hùng'),
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+              ],
 
               // Stage progress & status card
               AnimatedSwitcher(
@@ -237,6 +283,103 @@ class _DispatchRadarMatchingPageState extends State<DispatchRadarMatchingPage> {
                 ),
               ],
               const SizedBox(height: AppSpacing.sm),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoWorkerScaffold(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        shape: const Border(bottom: BorderSide(color: AppColors.border)),
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: AppColors.textPrimary),
+          onPressed: () => context.go(AppRoutes.customerHome),
+        ),
+        title: Text(
+          l10n.dispatchRadarTitle,
+          style: AppTextStyles.bodyLarge.copyWith(
+            fontWeight: FontWeight.w800,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 88,
+                        height: 88,
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: const Icon(
+                          Icons.event_busy_rounded,
+                          size: 40,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      Text(
+                        l10n.dispatchRadarNoWorkerTitle,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.headlineMd.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        l10n.dispatchRadarNoWorkerDesc,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.bodyMd.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              AppButton.primary(
+                key: const Key('matching_change_time'),
+                label: l10n.dispatchRadarChangeTime,
+                icon: Icons.schedule_rounded,
+                onPressed: () => context.go(AppRoutes.bookingStep2),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              AppSecondaryButton(
+                key: const Key('matching_cancel_free'),
+                label: l10n.dispatchRadarCancelFree,
+                isFullWidth: true,
+                icon: Icons.close_rounded,
+                borderColor: AppColors.error,
+                textColor: AppColors.error,
+                onPressed: () => context.go(AppRoutes.customerHome),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l10n.dispatchRadarNoChargeNote,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+              ),
             ],
           ),
         ),

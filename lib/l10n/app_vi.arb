@@ -2,7 +2,6 @@
   "@@locale": "vi",
   "appName": "HomeService",
   "appTagline": "Nhà tốt hơn mỗi ngày",
-
   "skip": "Bỏ qua",
   "next": "Tiếp theo",
   "startNow": "Bắt đầu ngay",
@@ -14,13 +13,10 @@
   "done": "Hoàn tất",
   "close": "Đóng",
   "edit": "Chỉnh sửa",
-
   "langVi": "Tiếng Việt",
   "langEn": "English",
   "changeLanguage": "Đổi ngôn ngữ",
-
   "splashLoading": "Đang khởi động...",
-
   "ob1Title": "Nhà sạch tinh tươm\nSống khỏe mỗi ngày",
   "ob1Desc": "Dịch vụ vệ sinh, dọn dẹp chuyên nghiệp giúp không gian sống luôn thoáng đãng, trong lành.",
   "ob2Title": "Thợ chuẩn tay nghề\nAn tâm tuyệt đối",
@@ -29,7 +25,6 @@
   "ob3Desc": "Chọn dịch vụ, chọn giờ và xác nhận. Báo giá trọn gói không phát sinh bất ngờ.",
   "ob4Title": "Trợ lý AI thông minh\nTư vấn tận tâm",
   "ob4Desc": "AI chẩn đoán sự cố nhanh chóng, gợi ý giải pháp sửa chữa và đặt hẹn chính xác.",
-
   "introTitle": "Việc nhà nhẹ hơn\nCuộc sống tươi hơn",
   "introSubtitle": "Hệ sinh thái dịch vụ gia đình tận tâm, tin cậy hàng đầu Việt Nam",
   "value1Title": "Minh bạch 100%",
@@ -39,7 +34,6 @@
   "value3Title": "Phục vụ siêu tốc",
   "value3Desc": "Thợ có mặt đúng giờ hẹn, phục vụ nhanh chóng và chu đáo.",
   "introCta": "Bắt đầu ngay",
-
   "roleGatewayTitle": "Chào mừng bạn đến với\nHomeService",
   "roleGatewaySubtitle": "Vui lòng chọn vai trò để tiếp tục trải nghiệm",
   "roleCustomerTitle": "Tôi là Khách hàng",
@@ -49,11 +43,9 @@
   "roleWorkerDesc": "Nhận việc nhanh chóng, gia tăng thu nhập và chủ động thời gian làm việc.",
   "roleWorkerAction": "Bắt đầu nhận việc",
   "switchRoleNotice": "Bạn có thể dễ dàng chuyển đổi vai trò bất cứ lúc nào trong ứng dụng.",
-
   "authRoleCustomer": "Khách hàng",
   "authRoleWorker": "Thợ đối tác",
   "authSwitchRole": "Đổi vai trò",
-
   "loginTitle": "Đăng nhập",
   "loginWelcome": "Chào mừng bạn quay lại!",
   "loginPhoneOrEmailLabel": "Số điện thoại hoặc Email",
@@ -70,7 +62,6 @@
   "loginFacebook": "Tiếp tục với Facebook",
   "loginNoAccount": "Chưa có tài khoản?",
   "loginRegisterNow": "Đăng ký ngay",
-
   "registerTitle": "Tạo tài khoản mới",
   "registerSubtitle": "Đăng ký nhanh chóng để trải nghiệm dịch vụ",
   "registerFullNameLabel": "Họ và tên",
@@ -88,7 +79,6 @@
   "registerCta": "Đăng ký",
   "registerAlreadyHaveAccount": "Đã có tài khoản?",
   "registerLoginNow": "Đăng nhập ngay",
-
   "otpTitle": "Xác thực mã OTP",
   "otpSubtitle": "Mã xác thực gồm 6 chữ số đã được gửi tới số điện thoại",
   "otpQuickFillLabel": "Từ Tin nhắn: 123456",
@@ -104,25 +94,21 @@
   "otpCta": "Xác thực ngay",
   "otpInvalidCode": "Mã OTP không chính xác. Vui lòng thử lại!",
   "otpVerifySuccess": "Xác thực thành công!",
-
   "forgotPasswordTitle": "Khôi phục mật khẩu",
   "forgotPasswordSubtitle": "Nhập số điện thoại đã đăng ký để nhận mã OTP thiết lập lại mật khẩu của bạn",
   "forgotPasswordPhoneLabel": "Số điện thoại",
   "forgotPasswordPhoneHint": "0901 234 567",
   "forgotPasswordCta": "Gửi mã xác thực",
   "forgotPasswordBackToLogin": "Quay lại Đăng nhập",
-
   "errorFieldRequired": "Vui lòng nhập trường này",
   "errorInvalidPhone": "Số điện thoại không hợp lệ",
   "errorPasswordTooShort": "Mật khẩu phải có ít nhất 6 ký tự",
   "errorPasswordNotMatch": "Mật khẩu xác nhận không khớp",
   "errorMustAgreeTerms": "Vui lòng đồng ý với điều khoản dịch vụ",
-
   "homeGreeting": "Chào bạn,",
   "homeGreetingSubtitle": "Hôm nay nhà bạn cần hỗ trợ gì?",
   "homeDefaultAddress": "Chung cư Sunrise City, Q.7",
   "homeSearchPlaceholder": "Tìm kiếm dịch vụ: máy lạnh, dọn dẹp...",
-
   "svcCleanTitle": "Dọn dẹp\nvệ sinh",
   "svcPlumbTitle": "Sửa điện\nnước",
   "svcAcTitle": "Điện lạnh &\nmáy giặt",
@@ -131,14 +117,12 @@
   "svcPestTitle": "Diệt\ncôn trùng",
   "svcInstallTitle": "Lắp đặt &\nkhoan mộc",
   "svcApplianceTitle": "Sửa đồ\ngia dụng",
-
   "homeSectionCategories": "Dịch vụ thiết yếu",
   "homeSectionSeeAll": "Xem tất cả",
   "homeSectionOffers": "Ưu đãi đặc quyền",
   "homeSectionDevices": "Ngôi nhà & Thiết bị",
   "homeDeviceSubtitle": "Theo dõi tình trạng & lịch bảo dưỡng",
   "homeViewSchedule": "Xem lịch bảo dưỡng",
-
   "offerTag15": "Giảm 15%",
   "offerTagFast": "Có mặt 20p",
   "startingFrom": "Từ {price}",
@@ -149,11 +133,9 @@
       }
     }
   },
-
   "cleanServiceDesc": "Vệ sinh toàn diện căn hộ, phòng khách, phòng ngủ và bếp sạch bong.",
   "acServiceDesc": "Bảo dưỡng xịt rửa máy lạnh, nạp gas và kiểm tra an toàn điện.",
   "plumbServiceDesc": "Xử lý rò rỉ nước, thông tắc chậu rửa và thay phụ kiện chính hãng.",
-
   "deviceDaikinAc": "Máy lạnh Daikin Inverter 1.5 HP",
   "deviceSamsungFridge": "Tủ lạnh Samsung Twin Cooling",
   "deviceStatusGood": "Hoạt động tốt",
@@ -166,20 +148,17 @@
       }
     }
   },
-
   "navHome": "Trang chủ",
   "navOrders": "Đơn hàng",
   "navAi": "AI hỗ trợ",
   "navNotifications": "Thông báo",
   "navAccount": "Tài khoản",
-
   "categoriesTitle": "Tất cả dịch vụ",
   "categoriesFilterAll": "Tất cả",
   "categoriesFilterClean": "Vệ sinh",
   "categoriesFilterElectric": "Điện lạnh",
   "categoriesFilterPlumb": "Điện nước",
   "categoriesFilterRepair": "Sửa chữa",
-
   "serviceDetailBookCta": "Đặt lịch ngay",
   "serviceIncluded": "Gói dịch vụ bao gồm",
   "serviceWarrantyNotice": "Bảo hành 0đ trong 30 ngày",
@@ -195,7 +174,6 @@
       }
     }
   },
-
   "workerGreeting": "Chào anh {name},",
   "@workerGreeting": {
     "placeholders": {
@@ -219,12 +197,10 @@
   "workerTodaySchedule": "Lịch việc hôm nay",
   "workerUpcoming": "Sắp tới",
   "workerDone": "Đã xong",
-
   "workerNavJobs": "Việc",
   "workerNavSchedule": "Lịch",
   "workerNavWallet": "Ví",
   "workerNavProfile": "Hồ sơ",
-
   "jobDetailTitle": "Chi tiết yêu cầu việc",
   "jobCustomerName": "Khách hàng",
   "jobCustomerAddress": "Địa chỉ làm việc",
@@ -250,7 +226,6 @@
   "jobPlatformFee": "Phí nền tảng (15%)",
   "jobAcceptCta": "Nhận việc ngay",
   "jobAcceptedSuccess": "Đã nhận việc thành công! Vui lòng chuẩn bị di chuyển",
-
   "kycTitle": "Đăng ký Thợ đối tác",
   "kycStepProgress": "Bước {step}/6",
   "@kycStepProgress": {
@@ -268,23 +243,19 @@
   "kycDistrictQ7": "Quận 7",
   "kycDistrictBinhThanh": "Bình Thạnh",
   "kycDistrictPhuNhuan": "Phú Nhuận",
-
   "kycStep3Title": "Xác minh Căn cước công dân",
   "kycStep3Desc": "Chụp rõ 2 mặt CCCD gắn chip chính chủ, không lóa sáng hoặc mất góc.",
   "kycIdFront": "Mặt trước CCCD",
   "kycIdBack": "Mặt sau CCCD",
   "kycCaptured": "Đã chụp",
   "kycTapToCapture": "Chạm để chụp",
-
   "kycStep4Title": "Chụp ảnh selfie chân dung",
   "kycStep4Desc": "Nhìn thẳng vào camera, đảm bảo đủ sáng, không đeo kính râm hoặc khẩu trang.",
   "kycTakeSelfie": "Chụp ảnh khuôn mặt",
-
   "kycStep5Title": "Chuyên môn & Chứng chỉ",
   "kycStep5Desc": "Dịch vụ Điện lạnh và Lắp đặt trên cao bắt buộc tải lên Chứng chỉ an toàn.",
   "kycCertUpload": "Chứng chỉ an toàn lao động",
   "kycCertUploaded": "Đã tải lên chứng chỉ",
-
   "kycStep6Title": "Tài khoản ngân hàng nhận tiền",
   "kycStep6Desc": "Tên chủ tài khoản phải trùng khớp 100% với tên trên CCCD của bạn.",
   "kycBankName": "Ngân hàng",
@@ -294,7 +265,6 @@
   "kycAccountHolder": "Tên chủ tài khoản",
   "kycAccountHolderHint": "TRAN VAN HUNG",
   "kycSubmitCta": "Gửi hồ sơ xét duyệt",
-
   "kycStatusTitle": "Trạng thái hồ sơ",
   "kycPendingTitle": "Hồ sơ đang được xét duyệt",
   "kycPendingDesc": "Đội ngũ VSTech đang kiểm tra chứng từ của bạn. Kết quả sẽ có trong vòng 24 giờ làm việc.",
@@ -304,7 +274,6 @@
   "kycApprovedTitle": "Hồ sơ đã được phê duyệt! 🎉",
   "kycApprovedDesc": "Chúc mừng anh Hùng đã chính thức trở thành Thợ đối tác của VSTech.",
   "kycStartJobsCta": "Bắt đầu nhận việc",
-
   "jobNetEarningsDesc": "Cộng thẳng vào ví sau khi hoàn tất",
   "jobSampleCleaningTitle": "Dọn dẹp căn hộ 70m²",
   "jobSampleCustomerName": "Nguyễn Thị Thu Thảo",
@@ -317,7 +286,6 @@
   "kycStatusPendingChip": "Đang duyệt",
   "kycStatusNeedsChip": "Cần bổ sung",
   "kycStatusApprovedChip": "Đã duyệt",
-
   "bookingTitle": "Đặt lịch dịch vụ",
   "bookingStepProgress": "Bước {step}/3: {name}",
   "@bookingStepProgress": {
@@ -349,7 +317,6 @@
   "bookingAddonGlassDesc": "Sử dụng gạt kính chuyên dụng & dung dịch chống bám bụi",
   "bookingEstimatedPreview": "Dự toán tạm tính",
   "bookingContinueToSchedule": "Tiếp tục: Chọn ngày giờ",
-
   "bookingScheduleDate": "Ngày làm việc",
   "bookingScheduleToday": "Hôm nay",
   "bookingScheduleTomorrow": "Ngày mai",
@@ -375,7 +342,6 @@
     }
   },
   "bookingContinueToConfirm": "Tiếp tục: Xác nhận đơn",
-
   "bookingOrderSummary": "Chi tiết bảng kê dự toán",
   "bookingBaseLabourFee": "Công thợ gói cơ bản",
   "bookingAddonsFee": "Dịch vụ kèm theo (Add-on)",
@@ -403,7 +369,6 @@
       }
     }
   },
-
   "dispatchRadarTitle": "Tìm Thợ đối tác",
   "dispatchRadarScanning": "Đang quét các Thợ đối tác trong bán kính 2.5 km...",
   "dispatchRadarSentToWorkers": "Đã gửi yêu cầu đến 3 thợ đối tác gần bạn nhất...",
@@ -413,7 +378,6 @@
   "dispatchRadarCancelSearch": "Hủy tìm kiếm",
   "dispatchRadarCancelConfirm": "Bạn có chắc chắn muốn hủy tìm kiếm không?",
   "dispatchRadarViewTracking": "Xem vị trí thợ đang di chuyển",
-
   "trackingTitle": "Tiến độ công việc",
   "trackingOrderCode": "Mã đơn: #{code}",
   "@trackingOrderCode": {
@@ -463,7 +427,6 @@
   "trackingStatusPending": "Chờ tới lượt",
   "trackingProceedToInspection": "Tiến hành nghiệm thu",
   "trackingHelpSupport": "Trợ giúp",
-
   "workerEnRouteTitle": "Đang di chuyển đến khách",
   "workerOpenNavigation": "Mở Google Maps dẫn đường",
   "workerArrivedConfirm": "Tôi đã đến nơi",
@@ -483,7 +446,6 @@
   "workerItemPrice": "Chi phí (VNĐ)",
   "workerSendProposal": "Gửi đề xuất đến khách",
   "workerProposalSent": "Đã gửi đề xuất thành công!",
-
   "inspectTitle": "Nghiệm thu dịch vụ",
   "inspectSubtitle": "Vui lòng đối chiếu chất lượng công việc thực tế trước khi xác nhận hoàn tất",
   "inspectItem1": "Căn hộ đã được quét dọn và hút bụi sạch sẽ",
@@ -494,7 +456,6 @@
   "inspectSatisfiedCta": "Nghiệm thu hài lòng",
   "inspectUnsatisfiedCta": "Chưa đạt yêu cầu",
   "inspectWarrantyNotice": "Bảo hành tự động 0đ trong 30 ngày nếu có bất kỳ vấn đề phát sinh.",
-
   "paymentSummaryTitle": "Bảng kê thanh toán",
   "paymentSummaryDesc": "Thanh toán minh bạch sau khi trực tiếp nghiệm thu hài lòng",
   "paymentExtraCost": "Chi phí linh kiện phát sinh (Đã duyệt)",
@@ -507,7 +468,6 @@
       }
     }
   },
-
   "gatewayTitle": "Cổng thanh toán VietQR",
   "gatewayScanQrPrompt": "Mở ứng dụng Ngân hàng bất kỳ để quét mã VietQR",
   "gatewayAccountOwner": "Chủ thụ hưởng",
@@ -525,7 +485,6 @@
       }
     }
   },
-
   "paidSuccessTitle": "Thanh toán thành công!",
   "paidSuccessDesc": "Cảm ơn bạn đã tin tưởng dịch vụ Eco-Clean của VSTech.",
   "paidPointsEarned": "+{points} điểm tích lũy Eco-Clean",
@@ -538,7 +497,6 @@
   },
   "paidViewReceipt": "Xem hóa đơn điện tử",
   "paidReviewWorkerCta": "Đánh giá Thợ đối tác",
-
   "receiptTitle": "Hóa đơn điện tử",
   "receiptInvoiceNo": "Số hóa đơn: #{no}",
   "@receiptInvoiceNo": {
@@ -569,7 +527,6 @@
       }
     }
   },
-
   "reviewTitle": "Đánh giá dịch vụ",
   "reviewPrompt": "Bạn cảm thấy chất lượng dịch vụ hôm nay thế nào?",
   "reviewTagPunctual": "Đúng giờ",
@@ -592,7 +549,6 @@
   "thanksTitle": "Cảm ơn bạn rất nhiều! 🌿",
   "thanksSubtitle": "Ý kiến đánh giá và sự ủng hộ của bạn là động lực to lớn cho đối tác của chúng tôi.",
   "thanksBackHome": "Về trang chủ",
-
   "workerWaitTitle": "Hoàn tất đơn công việc",
   "workerWaitInspectionTitle": "Chờ khách hàng nghiệm thu",
   "workerWaitInspectionDesc": "Khách hàng đang kiểm tra các hạng mục thực tế.",
@@ -615,7 +571,6 @@
     }
   },
   "workerViewWalletCta": "Xem ví thu nhập",
-
   "ordersTitle": "Đơn hàng của tôi",
   "ordersTabActive": "Đang làm",
   "ordersTabScheduled": "Đang chờ",
@@ -627,7 +582,6 @@
   "ordersRebookCta": "Đặt lại",
   "ordersWarrantyCta": "Bảo hành 0đ",
   "ordersViewDetailCta": "Chi tiết đơn",
-
   "orderDetailTitle": "Chi tiết đơn hàng",
   "orderDetailWorkerCard": "Thợ phụ trách",
   "orderDetailScheduleCard": "Lịch hẹn & Địa điểm",
@@ -637,7 +591,6 @@
   "orderDetailWarrantyBadge": "Bảo hành tự động 0đ trong 30 ngày",
   "orderDetailCancelCta": "Hủy đơn",
   "orderDetailContactSupport": "Hỗ trợ khách hàng",
-
   "workerJobsTitle": "Quản lý công việc",
   "workerJobsTabAssigned": "Mới phân công",
   "workerJobsTabActive": "Đang làm",
@@ -662,7 +615,6 @@
   "workerJobsGoToWork": "Vào ca làm việc",
   "workerJobsCompletedBadge": "Đã quyết toán",
   "workerJobsEmpty": "Hiện không có công việc nào trong danh mục này",
-
   "notificationsTitle": "Thông báo",
   "notificationsMarkAllRead": "Đã đọc tất cả",
   "notificationsSectionToday": "Hôm nay",
@@ -672,7 +624,6 @@
   "notificationsTabPromo": "Khuyến mãi",
   "notificationsTabSystem": "Hệ thống",
   "notificationsEmpty": "Không có thông báo mới",
-
   "notifSettingsTitle": "Cài đặt thông báo",
   "notifSettingsPush": "Thông báo đẩy (Push)",
   "notifSettingsPushDesc": "Nhận thông báo tiến độ thợ và trạng thái đơn hàng tức thì",
@@ -684,7 +635,6 @@
   "notifSettingsPromoDesc": "Nhận voucher giảm giá định kỳ và chương trình tri ân",
   "notifSettingsSave": "Lưu thay đổi",
   "notifSettingsSaved": "Đã lưu cài đặt thông báo",
-
   "cancelTitle": "Huỷ đặt lịch",
   "cancelFreeSubtitle": "Huỷ miễn phí trước khi thợ nhận việc",
   "cancelFeeSubtitle": "Phí huỷ đơn {fee} sau khi thợ đã nhận việc",
@@ -707,7 +657,6 @@
   "cancelConfirmBtnFree": "Xác nhận huỷ miễn phí",
   "cancelConfirmBtnFee": "Xác nhận huỷ & Trả 50.000đ",
   "cancelKeepBookingBtn": "Giữ lại đơn hàng",
-
   "workerCancelTitle": "Huỷ nhận việc",
   "workerCancelWarning": "Cảnh báo: Việc huỷ đơn sẽ giảm tỉ lệ hoàn thành của bạn từ 96% xuống 95% và có thể ảnh hưởng đến thứ hạng phân đơn.",
   "workerCancelReasonPrompt": "Chọn lý do huỷ việc:",
@@ -719,7 +668,6 @@
   "workerCancelReasonOtherHint": "Ghi rõ lý do đột xuất...",
   "workerCancelConfirmBtn": "Xác nhận huỷ việc",
   "workerCancelKeepJobBtn": "Tiếp tục công việc",
-
   "noShowTitle": "Chờ khách hàng",
   "noShowSubtitle": "Đã đến hiện trường — Đang chờ khách mở cửa",
   "noShowTimerDesc": "Quy định chờ tối đa 15 phút. Nếu khách không phản hồi, bạn sẽ được nhận phí hỗ trợ 50.000đ.",
@@ -732,7 +680,6 @@
   "noShowSuccessTitle": "Đã ghi nhận vắng mặt",
   "noShowSuccessDesc": "Hệ thống đã tự động huỷ đơn và cộng 50.000đ phí hỗ trợ di chuyển vào ví của bạn.",
   "noShowBackHomeBtn": "Về danh sách việc",
-
   "disputeTitle": "Báo vấn đề & Khiếu nại",
   "disputeTypePrompt": "Chọn vấn đề bạn gặp phải:",
   "disputeTypeQuality": "Chất lượng dịch vụ không đạt yêu cầu",
@@ -746,7 +693,6 @@
   "disputeAddPhoto": "Thêm ảnh",
   "disputeEscrowNotice": "Bảo vệ Escrow: Số tiền 400.000đ đang được đóng băng an toàn trong tài khoản trung gian. Thợ sẽ không thể rút tiền cho đến khi khiếu nại được giải quyết thỏa đáng.",
   "disputeSubmitBtn": "Gửi khiếu nại & Đóng băng tiền",
-
   "disputedStatusTitle": "Đơn đang được xem xét",
   "disputedComplaintCode": "Mã khiếu nại: {code}",
   "@disputedComplaintCode": {
@@ -763,7 +709,6 @@
   "disputedStep3": "Đưa ra giải pháp: Bảo hành làm lại 0đ hoặc hoàn tiền về ví (Tối đa 24h)",
   "disputedViewComplaintsBtn": "Xem danh sách khiếu nại",
   "disputedBackOrderBtn": "Về chi tiết đơn hàng",
-
   "complaintsTitle": "Khiếu nại của tôi",
   "complaintsTabReviewing": "Đang xem xét",
   "complaintsTabNeedInfo": "Cần bổ sung",
@@ -798,7 +743,6 @@
   },
   "complaintDetailAddInfoPrompt": "Chuyên viên cần bạn cung cấp thêm ảnh chụp toàn cảnh thiết bị:",
   "complaintDetailAddInfoBtn": "Bổ sung thông tin",
-
   "workerDisputeTitle": "Khách hàng khiếu nại",
   "workerDisputeWarning": "Khách hàng đã gửi khiếu nại cho đơn hàng {code}. Số tiền công {amount} đang được tạm giữ an toàn trong tài khoản bảo chứng Escrow.",
   "@workerDisputeWarning": {
@@ -815,7 +759,6 @@
   "workerDisputeReplyPrompt": "Gửi phản hồi / giải trình của bạn:",
   "workerDisputeReplyHint": "Mô tả quá trình thực hiện công việc và bằng chứng nghiệm thu...",
   "workerDisputeSubmitReplyBtn": "Gửi giải trình",
-
   "warrantyCertTitle": "Phiếu bảo hành",
   "warrantyCertNumber": "Phiếu BH-{code}",
   "@warrantyCertNumber": {
@@ -845,7 +788,6 @@
   "warrantyNotCoveredItem3": "Thiết bị quá cũ đã hết tuổi thọ khuyến nghị",
   "warrantyRequestCta": "Yêu cầu bảo hành",
   "warrantyViewRequestCta": "Xem yêu cầu bảo hành",
-
   "warrantyRequestTitle": "Yêu cầu bảo hành",
   "warrantyRequestSubtitle": "Bảo hành cho {code}",
   "@warrantyRequestSubtitle": {
@@ -869,7 +811,6 @@
   "warrantySubmitCta": "Gửi yêu cầu bảo hành",
   "warrantySlotRequiredPrompt": "Chọn ít nhất một khung giờ",
   "warrantyDescRequiredPrompt": "Mô tả sự cố để gửi",
-
   "warrantyStatusTitle": "Tiến trình bảo hành",
   "warrantyBadgeTag": "BẢO HÀNH",
   "warrantyStatusCode": "#BH20250425-0087",
@@ -881,7 +822,6 @@
   "warrantyNoteProcessing": "Anh Hùng sẽ đến trong khung giờ bạn chọn. Theo dõi và nhắn tin như một đơn thường.",
   "warrantyNoteResolved": "Đã khắc phục và bạn đã xác nhận. Phiếu bảo hành vẫn còn hiệu lực đến 17/05.",
   "warrantyBackToOrdersCta": "Về Đơn của tôi",
-
   "workerWarrantyJobTitle": "Việc bảo hành",
   "workerWarrantyDeadline": "Phản hồi trong 23:59:00",
   "workerWarrantyCustomerInfo": "Nguyễn Thị Mai · Căn hộ Flora Novia, Thủ Đức",
@@ -896,7 +836,6 @@
   "workerWarrantyAfterPhoto": "Ảnh sau khi làm",
   "workerWarrantyDeclineCta": "Từ chối",
   "workerWarrantyAcceptCta": "Nhận việc bảo hành",
-
   "workerWarrantyDeclineTitle": "Từ chối bảo hành",
   "workerWarrantyPenaltyWarnTitle": "Cảnh báo trừ 120.000đ chi phí khắc phục",
   "workerWarrantyPenaltyWarnBody": "Đơn bảo hành sẽ được điều phối cho Thợ khác. Theo điều khoản đối tác, bạn sẽ bị khấu trừ 120.000đ chi phí làm lại trực tiếp từ ví.",
@@ -908,11 +847,9 @@
   "workerWarrantyPenaltyAck": "Tôi hiểu 120.000đ sẽ bị trừ vào ví thu nhập.",
   "workerWarrantyConfirmDeclineCta": "Xác nhận từ chối",
   "workerWarrantyBackToJobCta": "Quay lại xem việc",
-
   "ordersWarrantyActiveChip": "Còn bảo hành 22 ngày · đến 17/05",
   "ordersViewWarrantyCertCta": "Xem phiếu bảo hành",
   "ordersActiveWarrantyTitle": "Bảo hành: Vệ sinh máy lạnh",
-
   "chatPrivacyBanner": "Số điện thoại của hai bên được ẩn",
   "chatCallBack": "Gọi lại",
   "chatCurrentLocation": "Vị trí hiện tại",
@@ -955,7 +892,6 @@
   },
   "callMissedCustomer": "Chị Mai đã không nghe máy",
   "callMissedWorker": "Cuộc gọi nhỡ từ anh Hùng",
-
   "devicesTitle": "Ngôi nhà của bạn",
   "devicesTabDevices": "Thiết bị ({count})",
   "@devicesTabDevices": {
@@ -1013,7 +949,6 @@
   },
   "devicesChangeAddress": "Đổi địa chỉ",
   "devicesDefaultAddressLabel": "Địa chỉ mặc định",
-
   "aiAssistantTitle": "Trợ lý AI HomeService",
   "aiAssistantOnlineStatus": "Sẵn sàng hỗ trợ 24/7",
   "aiAssistantWelcome": "Xin chào Mai! Mình là trợ lý AI của HomeService. Mình có thể hỗ trợ bạn tìm kiếm dịch vụ, tư vấn báo giá hoặc hướng dẫn chăm sóc thiết bị tại nhà.",
@@ -1027,7 +962,6 @@
   "aiResponseAcClean": "Bạn nên rửa lưới lọc bụi 2 tuần/lần bằng nước ấm. Với dàn lạnh và cục nóng, nên đặt thợ chuyên nghiệp 3-6 tháng/lần để xịt rửa áp lực cao.",
   "aiResponseBookElectrician": "Bạn có thể đặt dịch vụ Sửa chữa điện nước ngay. Thợ được chứng chỉ và kiểm tra lý lịch sẽ có mặt sau 30 phút!",
   "aiResponseWarranty": "Tất cả dịch vụ đều có bảo hành từ 7 đến 30 ngày. Nếu không hài lòng hoặc lỗi tái phát, thợ sẽ quay lại xử lý miễn phí 100%.",
-
   "aiSuggestionsTitle": "Gợi ý thông minh cho bạn",
   "aiSuggestionsUrgentSection": "Đề xuất ưu tiên cho ngôi nhà của bạn",
   "aiSuggestionsHeaterTitle": "Bảo trì máy nước nóng Ariston",
@@ -1040,7 +974,6 @@
   "aiSuggestionsLaundryDesc": "Khử khuẩn và loại bỏ bụi mịn không gian sống, tạo cảm giác thư giãn.",
   "aiSuggestionsPestTitle": "Diệt côn trùng định kỳ",
   "aiSuggestionsPestDesc": "Bảo vệ sức khỏe cả gia đình khỏi muỗi, gián và côn trùng gây hại.",
-
   "profileTitle": "Hồ sơ cá nhân",
   "profileEditLink": "Chỉnh sửa",
   "profileMenuPersonalInfo": "Thông tin cá nhân",
@@ -1059,7 +992,6 @@
   "editProfileOtpNotice": "Cần xác thực OTP khi đổi số điện thoại",
   "editProfileSavedSuccess": "Đã lưu thay đổi thông tin thành công",
   "editProfileSaveCta": "Lưu thay đổi",
-
   "addressesTitle": "Địa chỉ của tôi",
   "addressesAddNew": "Thêm địa chỉ mới",
   "addressesDefaultBadge": "MẶC ĐỊNH",
@@ -1085,7 +1017,6 @@
   "addressEditAccessNote": "Ghi chú vị trí (gửi xe, chuông cổng…)",
   "addressEditSetDefaultSwitch": "Đặt làm địa chỉ mặc định",
   "addressEditSaveCta": "Lưu địa chỉ",
-
   "pmsTitle": "Phương thức thanh toán",
   "pmsLinkWalletCta": "Liên kết ví mới",
   "pmsDefaultLabel": "Ví mặc định khi thanh toán",
@@ -1102,7 +1033,6 @@
   "linkWalletContinueCta": "Tiếp tục",
   "linkWalletIHaveConfirmedCta": "Tôi đã xác nhận",
   "linkWalletBackToPmsCta": "Về danh sách ví",
-
   "favsTitle": "Thợ yêu thích",
   "favsEmpty": "Bạn chưa lưu thợ yêu thích nào. Đánh giá 5 sao sau khi hoàn thành đơn để thêm thợ vào danh sách nhé!",
   "favsRebookCta": "Đặt lại thợ này",
@@ -1119,7 +1049,6 @@
   "workerPreviewServices": "Dịch vụ chuyên môn",
   "workerPreviewRecentReview": "Đánh giá gần đây từ khách hàng",
   "workerPreviewBookCta": "Đặt lịch với thợ này",
-
   "settingsTitle": "Cài đặt & Lịch sử",
   "settingsTabSettings": "Cài đặt",
   "settingsTabHistory": "Lịch sử đơn hàng",
@@ -1160,7 +1089,6 @@
   "deleteAccountReason4": "Lý do khác",
   "deleteAccountConfirmCta": "Xoá tài khoản · xác thực OTP",
   "deleteAccountKeepCta": "Giữ lại tài khoản",
-
   "wwalletTitle": "Ví thu nhập",
   "wwalletAvailableBalance": "Số dư có thể rút",
   "wwalletTotalEarned": "Tổng thu nhập đã về",
@@ -1307,5 +1235,164 @@
   "wprofileMenuPayout": "Tài khoản nhận tiền",
   "wprofileLogoutCta": "Đăng xuất tài khoản Thợ",
   "wprofileLogoutDialogTitle": "Đăng xuất khỏi tài khoản Thợ?",
-  "wprofileLogoutDialogBody": "Bạn sẽ không nhận được thông báo cuốc việc mới cho đến khi đăng nhập lại."
+  "wprofileLogoutDialogBody": "Bạn sẽ không nhận được thông báo cuốc việc mới cho đến khi đăng nhập lại.",
+  "dialogNo": "Không",
+  "resetPasswordTitle": "Tạo mật khẩu mới",
+  "resetPasswordSubtitle": "Mật khẩu mới dùng cho lần đăng nhập tiếp theo.",
+  "resetPasswordNewLabel": "Mật khẩu mới",
+  "resetPasswordConfirmLabel": "Nhập lại mật khẩu",
+  "resetPasswordRuleLength": "Ít nhất 8 ký tự",
+  "resetPasswordRuleMix": "Có cả chữ và số",
+  "resetPasswordRuleDifferent": "Khác mật khẩu cũ",
+  "resetPasswordMismatch": "Mật khẩu nhập lại không khớp",
+  "resetPasswordCta": "Cập nhật mật khẩu",
+  "resetPasswordSuccessTitle": "Đã đổi mật khẩu",
+  "resetPasswordSuccessBody": "Dùng mật khẩu mới để đăng nhập tài khoản {role}.",
+  "@resetPasswordSuccessBody": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "resetPasswordBackToLogin": "Về đăng nhập",
+  "gatewayCancelTransaction": "Huỷ giao dịch",
+  "gatewayFailTitle": "Thanh toán không thành công",
+  "gatewayFailExpired": "Mã QR đã hết hạn.",
+  "gatewayFailCancelled": "Giao dịch đã bị huỷ.",
+  "gatewayNoCharge": "Bạn chưa bị trừ tiền.",
+  "gatewayChangeMethod": "Đổi phương thức",
+  "bookingSuccessTitle": "Đặt lịch thành công",
+  "bookingSuccessDesc": "Chúng tôi đang tìm thợ phù hợp cho bạn. Thường mất dưới 5 phút.",
+  "bookingSuccessServiceLabel": "Dịch vụ",
+  "bookingSuccessTimeLabel": "Thời gian",
+  "bookingSuccessAddressLabel": "Địa chỉ",
+  "bookingSuccessEstimateLabel": "Dự kiến",
+  "bookingSuccessPaymentLabel": "Thanh toán",
+  "bookingSuccessPayAfter": "Sau nghiệm thu · {method}",
+  "@bookingSuccessPayAfter": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "bookingSuccessTrackCta": "Theo dõi đơn",
+  "dispatchRadarNoWorkerTitle": "Chưa tìm được thợ",
+  "dispatchRadarNoWorkerDesc": "Khung giờ bạn chọn đang kín lịch ở khu vực của bạn. Chọn giờ khác hoặc huỷ miễn phí.",
+  "dispatchRadarChangeTime": "Đổi thời gian",
+  "dispatchRadarCancelFree": "Huỷ đơn miễn phí",
+  "dispatchRadarNoChargeNote": "Bạn chưa bị trừ tiền vì chỉ thanh toán sau khi nghiệm thu.",
+  "dispatchRadarWorkerCancelledNote": "{worker} vừa huỷ việc vì lý do đột xuất. HomeService đang tìm thợ khác cho bạn; bạn không mất phí.",
+  "@dispatchRadarWorkerCancelledNote": {
+    "placeholders": {
+      "worker": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailStatusAwaitingPayment": "Chờ thanh toán",
+  "orderDetailStatusDisputed": "Đang xem xét",
+  "orderDetailStatusNoShow": "Khách vắng mặt",
+  "orderDetailUnpaidTitle": "Chưa thanh toán – bạn trả sau khi nghiệm thu",
+  "orderDetailUnpaidMethod": "Phương thức: {method}",
+  "@orderDetailUnpaidMethod": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailHeldTitle": "Tiền đang được giữ an toàn, chưa chuyển cho thợ",
+  "orderDetailHeldRef": "Theo khiếu nại {code}",
+  "@orderDetailHeldRef": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailNoShowNoteTitle": "Bạn vắng mặt khi thợ đến · phí {fee}",
+  "@orderDetailNoShowNoteTitle": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailNoShowNoteDesc": "{worker} check-in lúc {checkIn}, chờ 15 phút và gọi 2 lần không liên lạc được. Phí vắng mặt {fee} trả cho thợ; bạn không bị thu {price} tiền dịch vụ.",
+  "@orderDetailNoShowNoteDesc": {
+    "placeholders": {
+      "worker": {
+        "type": "String"
+      },
+      "checkIn": {
+        "type": "String"
+      },
+      "fee": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailNoShowFeeTitle": "Đã thu phí vắng mặt {fee}",
+  "@orderDetailNoShowFeeTitle": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailNoShowFeeDesc": "{method} · không thu tiền dịch vụ",
+  "@orderDetailNoShowFeeDesc": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailViewComplaintCta": "Xem khiếu nại",
+  "orderDetailBeforeAfterTitle": "Ảnh trước / sau",
+  "orderDetailBeforeLabel": "Trước",
+  "orderDetailAfterLabel": "Sau",
+  "workerDisputedTitle": "Đơn đang được xem xét",
+  "workerDisputedDesc": "Khách đã báo một vấn đề. HomeService sẽ liên hệ anh trong 24 giờ. Tiền công chưa được chuyển cho đến khi có kết quả.",
+  "workerDisputedComplaintTitle": "Khách đã khiếu nại",
+  "workerDisputedComplaintSample": "Chưa sạch · Phòng tắm thứ hai chưa được lau sạch, sàn còn vết cặn.",
+  "workerDisputedReplyCta": "Gửi phản hồi",
+  "workerBackToTodayCta": "Về việc hôm nay",
+  "workerWarrantyDoneTitle": "Hoàn tất bảo hành",
+  "workerWarrantyDoneDesc": "Khách đã xác nhận. Việc bảo hành không có bước thanh toán.",
+  "workerWarrantyAmountLabel": "Bảo hành",
+  "workerExtraCostLabel": "Chi phí phát sinh",
+  "workerNetToWallet": "Thực nhận về ví",
+  "noShowCallingCustomer": "Đang gọi cho khách hàng {name}",
+  "@noShowCallingCustomer": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noShowOpeningChat": "Đang mở trò chuyện với {name}",
+  "@noShowOpeningChat": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "disputeEvidenceAdded": "Đã bổ sung 2 ảnh minh chứng",
+  "workerDisputeReplySent": "Đã gửi bản giải trình đến bộ phận phân xử VSTech",
+  "workerCancelRecorded": "Đã ghi nhận huỷ công việc {code}",
+  "@workerCancelRecorded": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailReportIssue": "Báo vấn đề"
 }

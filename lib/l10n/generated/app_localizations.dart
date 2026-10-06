@@ -5581,6 +5581,407 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Bạn sẽ không nhận được thông báo cuốc việc mới cho đến khi đăng nhập lại.'**
   String get wprofileLogoutDialogBody;
+
+  /// No description provided for @dialogNo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không'**
+  String get dialogNo;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo mật khẩu mới'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu mới dùng cho lần đăng nhập tiếp theo.'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @resetPasswordNewLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu mới'**
+  String get resetPasswordNewLabel;
+
+  /// No description provided for @resetPasswordConfirmLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập lại mật khẩu'**
+  String get resetPasswordConfirmLabel;
+
+  /// No description provided for @resetPasswordRuleLength.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ít nhất 8 ký tự'**
+  String get resetPasswordRuleLength;
+
+  /// No description provided for @resetPasswordRuleMix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có cả chữ và số'**
+  String get resetPasswordRuleMix;
+
+  /// No description provided for @resetPasswordRuleDifferent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác mật khẩu cũ'**
+  String get resetPasswordRuleDifferent;
+
+  /// No description provided for @resetPasswordMismatch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu nhập lại không khớp'**
+  String get resetPasswordMismatch;
+
+  /// No description provided for @resetPasswordCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật mật khẩu'**
+  String get resetPasswordCta;
+
+  /// No description provided for @resetPasswordSuccessTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đổi mật khẩu'**
+  String get resetPasswordSuccessTitle;
+
+  /// No description provided for @resetPasswordSuccessBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng mật khẩu mới để đăng nhập tài khoản {role}.'**
+  String resetPasswordSuccessBody(String role);
+
+  /// No description provided for @resetPasswordBackToLogin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Về đăng nhập'**
+  String get resetPasswordBackToLogin;
+
+  /// No description provided for @gatewayCancelTransaction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huỷ giao dịch'**
+  String get gatewayCancelTransaction;
+
+  /// No description provided for @gatewayFailTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán không thành công'**
+  String get gatewayFailTitle;
+
+  /// No description provided for @gatewayFailExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã QR đã hết hạn.'**
+  String get gatewayFailExpired;
+
+  /// No description provided for @gatewayFailCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch đã bị huỷ.'**
+  String get gatewayFailCancelled;
+
+  /// No description provided for @gatewayNoCharge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa bị trừ tiền.'**
+  String get gatewayNoCharge;
+
+  /// No description provided for @gatewayChangeMethod.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi phương thức'**
+  String get gatewayChangeMethod;
+
+  /// No description provided for @bookingSuccessTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt lịch thành công'**
+  String get bookingSuccessTitle;
+
+  /// No description provided for @bookingSuccessDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chúng tôi đang tìm thợ phù hợp cho bạn. Thường mất dưới 5 phút.'**
+  String get bookingSuccessDesc;
+
+  /// No description provided for @bookingSuccessServiceLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịch vụ'**
+  String get bookingSuccessServiceLabel;
+
+  /// No description provided for @bookingSuccessTimeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thời gian'**
+  String get bookingSuccessTimeLabel;
+
+  /// No description provided for @bookingSuccessAddressLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Địa chỉ'**
+  String get bookingSuccessAddressLabel;
+
+  /// No description provided for @bookingSuccessEstimateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dự kiến'**
+  String get bookingSuccessEstimateLabel;
+
+  /// No description provided for @bookingSuccessPaymentLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán'**
+  String get bookingSuccessPaymentLabel;
+
+  /// No description provided for @bookingSuccessPayAfter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sau nghiệm thu · {method}'**
+  String bookingSuccessPayAfter(String method);
+
+  /// No description provided for @bookingSuccessTrackCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo dõi đơn'**
+  String get bookingSuccessTrackCta;
+
+  /// No description provided for @dispatchRadarNoWorkerTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tìm được thợ'**
+  String get dispatchRadarNoWorkerTitle;
+
+  /// No description provided for @dispatchRadarNoWorkerDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khung giờ bạn chọn đang kín lịch ở khu vực của bạn. Chọn giờ khác hoặc huỷ miễn phí.'**
+  String get dispatchRadarNoWorkerDesc;
+
+  /// No description provided for @dispatchRadarChangeTime.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi thời gian'**
+  String get dispatchRadarChangeTime;
+
+  /// No description provided for @dispatchRadarCancelFree.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huỷ đơn miễn phí'**
+  String get dispatchRadarCancelFree;
+
+  /// No description provided for @dispatchRadarNoChargeNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa bị trừ tiền vì chỉ thanh toán sau khi nghiệm thu.'**
+  String get dispatchRadarNoChargeNote;
+
+  /// No description provided for @dispatchRadarWorkerCancelledNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'{worker} vừa huỷ việc vì lý do đột xuất. HomeService đang tìm thợ khác cho bạn; bạn không mất phí.'**
+  String dispatchRadarWorkerCancelledNote(String worker);
+
+  /// No description provided for @orderDetailStatusAwaitingPayment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ thanh toán'**
+  String get orderDetailStatusAwaitingPayment;
+
+  /// No description provided for @orderDetailStatusDisputed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang xem xét'**
+  String get orderDetailStatusDisputed;
+
+  /// No description provided for @orderDetailStatusNoShow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách vắng mặt'**
+  String get orderDetailStatusNoShow;
+
+  /// No description provided for @orderDetailUnpaidTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa thanh toán – bạn trả sau khi nghiệm thu'**
+  String get orderDetailUnpaidTitle;
+
+  /// No description provided for @orderDetailUnpaidMethod.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phương thức: {method}'**
+  String orderDetailUnpaidMethod(String method);
+
+  /// No description provided for @orderDetailHeldTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền đang được giữ an toàn, chưa chuyển cho thợ'**
+  String get orderDetailHeldTitle;
+
+  /// No description provided for @orderDetailHeldRef.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo khiếu nại {code}'**
+  String orderDetailHeldRef(String code);
+
+  /// No description provided for @orderDetailNoShowNoteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn vắng mặt khi thợ đến · phí {fee}'**
+  String orderDetailNoShowNoteTitle(String fee);
+
+  /// No description provided for @orderDetailNoShowNoteDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'{worker} check-in lúc {checkIn}, chờ 15 phút và gọi 2 lần không liên lạc được. Phí vắng mặt {fee} trả cho thợ; bạn không bị thu {price} tiền dịch vụ.'**
+  String orderDetailNoShowNoteDesc(
+    String worker,
+    String checkIn,
+    String fee,
+    String price,
+  );
+
+  /// No description provided for @orderDetailNoShowFeeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thu phí vắng mặt {fee}'**
+  String orderDetailNoShowFeeTitle(String fee);
+
+  /// No description provided for @orderDetailNoShowFeeDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'{method} · không thu tiền dịch vụ'**
+  String orderDetailNoShowFeeDesc(String method);
+
+  /// No description provided for @orderDetailViewComplaintCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem khiếu nại'**
+  String get orderDetailViewComplaintCta;
+
+  /// No description provided for @orderDetailBeforeAfterTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh trước / sau'**
+  String get orderDetailBeforeAfterTitle;
+
+  /// No description provided for @orderDetailBeforeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trước'**
+  String get orderDetailBeforeLabel;
+
+  /// No description provided for @orderDetailAfterLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sau'**
+  String get orderDetailAfterLabel;
+
+  /// No description provided for @workerDisputedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn đang được xem xét'**
+  String get workerDisputedTitle;
+
+  /// No description provided for @workerDisputedDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách đã báo một vấn đề. HomeService sẽ liên hệ anh trong 24 giờ. Tiền công chưa được chuyển cho đến khi có kết quả.'**
+  String get workerDisputedDesc;
+
+  /// No description provided for @workerDisputedComplaintTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách đã khiếu nại'**
+  String get workerDisputedComplaintTitle;
+
+  /// No description provided for @workerDisputedComplaintSample.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa sạch · Phòng tắm thứ hai chưa được lau sạch, sàn còn vết cặn.'**
+  String get workerDisputedComplaintSample;
+
+  /// No description provided for @workerDisputedReplyCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi phản hồi'**
+  String get workerDisputedReplyCta;
+
+  /// No description provided for @workerBackToTodayCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Về việc hôm nay'**
+  String get workerBackToTodayCta;
+
+  /// No description provided for @workerWarrantyDoneTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tất bảo hành'**
+  String get workerWarrantyDoneTitle;
+
+  /// No description provided for @workerWarrantyDoneDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách đã xác nhận. Việc bảo hành không có bước thanh toán.'**
+  String get workerWarrantyDoneDesc;
+
+  /// No description provided for @workerWarrantyAmountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảo hành'**
+  String get workerWarrantyAmountLabel;
+
+  /// No description provided for @workerExtraCostLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi phí phát sinh'**
+  String get workerExtraCostLabel;
+
+  /// No description provided for @workerNetToWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thực nhận về ví'**
+  String get workerNetToWallet;
+
+  /// No description provided for @noShowCallingCustomer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang gọi cho khách hàng {name}'**
+  String noShowCallingCustomer(String name);
+
+  /// No description provided for @noShowOpeningChat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang mở trò chuyện với {name}'**
+  String noShowOpeningChat(String name);
+
+  /// No description provided for @disputeEvidenceAdded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bổ sung 2 ảnh minh chứng'**
+  String get disputeEvidenceAdded;
+
+  /// No description provided for @workerDisputeReplySent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi bản giải trình đến bộ phận phân xử VSTech'**
+  String get workerDisputeReplySent;
+
+  /// No description provided for @workerCancelRecorded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã ghi nhận huỷ công việc {code}'**
+  String workerCancelRecorded(String code);
+
+  /// No description provided for @orderDetailReportIssue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo vấn đề'**
+  String get orderDetailReportIssue;
 }
 
 class _AppLocalizationsDelegate

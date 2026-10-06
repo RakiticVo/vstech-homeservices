@@ -5,6 +5,30 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ---
 
+## [0.14.0] — 2026-10-05: Bổ sung các màn/trạng thái còn thiếu so với Concept 02 (đối chiếu 128 ô trên Claude Design)
+
+### Added
+- `ResetPasswordPage` (`/auth/reset-password` — Cell 28 `newpass`): Tạo mật khẩu mới sau OTP quên mật khẩu, 3 quy tắc kiểm tra trực tiếp, báo lỗi nhập lại không khớp, nút khoá đến khi hợp lệ.
+- `ResetPasswordSuccessPage` (`/auth/reset-password/success` — Cell 29 `passok`): Xác nhận đã đổi mật khẩu, nhắc lại vai trò, quay về đúng màn đăng nhập của vai trò.
+- `BookingSuccessPage` (`/customer/booking/success` — Cell 46 `done`): Bước 4 hoàn tất đặt lịch với mã đơn nổi bật, bảng tóm tắt (dịch vụ, thời gian, địa chỉ, dự kiến, thanh toán sau nghiệm thu) và nút Theo dõi đơn.
+- `DispatchRadarMatchingPage`: trạng thái Chưa tìm được thợ (Cell 49 — Đổi thời gian / Huỷ đơn miễn phí) và ghi chú Thợ huỷ, đang tìm lại (Cell 118); route nhận `?stage=` và `?rematch=true`.
+- `PaymentGatewayPage`: trạng thái Thanh toán thất bại (Cell 45) khi bấm Huỷ giao dịch hoặc QR hết hạn — Thử lại / Đổi phương thức; route nhận `?state=fail`.
+- `CustomerOrdersPage`: trạng thái tab Đang làm trống (Cell 74); route nhận `?activeEmpty=true`.
+- `CustomerOrderDetailPage`: 3 trạng thái mới `awaiting_payment` (Cell 94), `disputed` (Cell 95), `no_show` (Cell 116) với chip trạng thái Icon + Label + Màu, thẻ thanh toán/tạm giữ, ảnh trước/sau và CTA theo ngữ cảnh.
+- `WorkerJobCompletionPage`: trạng thái Đơn đang được xem xét (Cell 69), Hoàn tất bảo hành 0đ (Cell 91) và Nhận tiền có chi phí phát sinh (Cell 131 — phí 15% chỉ tính trên giá dịch vụ); route nhận `?extra=`.
+- 9 widget test mới cho các màn/trạng thái trên.
+
+### Changed
+- Luồng quên mật khẩu: OTP → Tạo mật khẩu mới → Đã đổi mật khẩu (trước đây về thẳng Đăng nhập).
+- Bước 3 đặt lịch chuyển sang màn Hoàn tất (Cell 46) thay vì nhảy thẳng vào màn tìm thợ.
+- Nút Xem ví thu nhập ở màn chờ của Thợ mở `/worker/wallet` thay vì Trang chủ Thợ.
+
+### Fixed
+- Bỏ dải chip debug viết cứng `"Chờ nghiệm thu (Cell 51)"`… trong `WorkerJobCompletionPage`.
+- Đưa các chuỗi viết cứng vào l10n (vi/en): nút "Không" ở hộp thoại huỷ tìm thợ, SnackBar trong `customer_no_show_page`, `dispute_detail_page`, `worker_dispute_notification_page`, `worker_cancellation_page`.
+
+---
+
 ## [0.13.0] — 2026-09-28: Batch 13 UI Implementation (Worker Wallet, Withdrawals, Schedule & Operations — Cells 117–128 & Cell 106) — COMPLETE 128-CELL CONCEPT 02 MATRIX 🎉
 
 ### Added

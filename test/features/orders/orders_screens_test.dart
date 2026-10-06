@@ -16,34 +16,16 @@ Widget _createTestOrdersWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.customerOrders,
-        builder: (context, state) => const CustomerOrdersPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.customerOrderDetail,
-        builder: (context, state) => const CustomerOrderDetailPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerJobsHub,
-        builder: (context, state) => const WorkerJobsHubPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.customerNotifications,
-        builder: (context, state) => const CustomerNotificationsPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.customerOrders, builder: (context, state) => const CustomerOrdersPage()),
+      GoRoute(path: AppRoutes.customerOrderDetail, builder: (context, state) => const CustomerOrderDetailPage()),
+      GoRoute(path: AppRoutes.workerJobsHub, builder: (context, state) => const WorkerJobsHubPage()),
+      GoRoute(path: AppRoutes.customerNotifications, builder: (context, state) => const CustomerNotificationsPage()),
       GoRoute(
         path: AppRoutes.customerNotificationSettings,
         builder: (context, state) => const CustomerNotificationSettingsPage(),
       ),
-      GoRoute(
-        path: AppRoutes.workerNotifications,
-        builder: (context, state) => const WorkerNotificationsPage(),
-      ),
+      GoRoute(path: AppRoutes.workerNotifications, builder: (context, state) => const WorkerNotificationsPage()),
     ],
   );
 
@@ -92,7 +74,9 @@ void main() {
       expect(find.textContaining('Đặt lại'), findsWidgets);
     });
 
-    testWidgets('CustomerOrderDetailPage renders worker, schedule, itemized invoice and warranty badge', (tester) async {
+    testWidgets('CustomerOrderDetailPage renders worker, schedule, itemized invoice and warranty badge', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1400));
       await tester.pumpWidget(_createTestOrdersWidget(const CustomerOrderDetailPage()));
       await tester.pumpAndSettle();
@@ -122,7 +106,9 @@ void main() {
       expect(find.textContaining('Theo dõi thợ'), findsOneWidget);
     });
 
-    testWidgets('WorkerJobsHubPage renders Assigned, Active and Completed tabs with net payout and actions', (tester) async {
+    testWidgets('WorkerJobsHubPage renders Assigned, Active and Completed tabs with net payout and actions', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1400));
       await tester.pumpWidget(_createTestOrdersWidget(const WorkerJobsHubPage()));
       await tester.pumpAndSettle();
@@ -151,7 +137,9 @@ void main() {
       expect(find.textContaining('5.0 ★'), findsOneWidget);
     });
 
-    testWidgets('CustomerNotificationsPage renders timeline sections, filter chips and notification tiles', (tester) async {
+    testWidgets('CustomerNotificationsPage renders timeline sections, filter chips and notification tiles', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1400));
       await tester.pumpWidget(_createTestOrdersWidget(const CustomerNotificationsPage()));
       await tester.pumpAndSettle();
@@ -193,7 +181,9 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('WorkerNotificationsPage renders dispatch assignments, wallet credits and safety alerts', (tester) async {
+    testWidgets('WorkerNotificationsPage renders dispatch assignments, wallet credits and safety alerts', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1400));
       await tester.pumpWidget(_createTestOrdersWidget(const WorkerNotificationsPage()));
       await tester.pumpAndSettle();
@@ -203,6 +193,49 @@ void main() {
       expect(find.textContaining('Yêu cầu công việc mới'), findsOneWidget);
       expect(find.textContaining('ví thu nhập'), findsOneWidget);
       expect(find.textContaining('an toàn lao động'), findsOneWidget);
+    });
+
+    testWidgets('CustomerOrdersPage renders empty Active tab with booking CTA (Cell 74)', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 1200));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await tester.pumpWidget(_createTestOrdersWidget(const CustomerOrdersPage(isActiveTabEmpty: true)));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('orders_empty_state')), findsOneWidget);
+      expect(find.text('Chưa có đơn đặt lịch nào'), findsOneWidget);
+      expect(find.text('Khám phá dịch vụ ngay'), findsOneWidget);
+    });
+
+    testWidgets('CustomerOrderDetailPage renders awaiting-payment, disputed and no-show variants (Cells 94, 95, 116)', (
+      tester,
+    ) async {
+      await tester.binding.setSurfaceSize(const Size(390, 2400));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await tester.pumpWidget(
+        _createTestOrdersWidget(const CustomerOrderDetailPage(status: CustomerOrderDetailPage.statusAwaitingPayment)),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('order_detail_unpaid_notice')), findsOneWidget);
+      expect(find.text('Thanh toán 400.000đ'), findsOneWidget);
+      expect(find.text('Ảnh trước / sau'), findsOneWidget);
+      expect(find.text('Báo vấn đề'), findsOneWidget);
+
+      await tester.pumpWidget(
+        _createTestOrdersWidget(const CustomerOrderDetailPage(status: CustomerOrderDetailPage.statusDisputed)),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Tiền đang được giữ an toàn, chưa chuyển cho thợ'), findsOneWidget);
+      expect(find.text('Xem khiếu nại'), findsOneWidget);
+
+      await tester.pumpWidget(
+        _createTestOrdersWidget(const CustomerOrderDetailPage(status: CustomerOrderDetailPage.statusNoShow)),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('order_detail_no_show_note')), findsOneWidget);
+      expect(find.text('Đã thu phí vắng mặt 50.000đ'), findsOneWidget);
+      expect(find.textContaining('không bị thu 400.000đ'), findsOneWidget);
     });
   });
 }

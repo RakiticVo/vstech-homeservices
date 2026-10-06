@@ -2972,4 +2972,241 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get wprofileLogoutDialogBody =>
       'Bạn sẽ không nhận được thông báo cuốc việc mới cho đến khi đăng nhập lại.';
+
+  @override
+  String get dialogNo => 'Không';
+
+  @override
+  String get resetPasswordTitle => 'Tạo mật khẩu mới';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Mật khẩu mới dùng cho lần đăng nhập tiếp theo.';
+
+  @override
+  String get resetPasswordNewLabel => 'Mật khẩu mới';
+
+  @override
+  String get resetPasswordConfirmLabel => 'Nhập lại mật khẩu';
+
+  @override
+  String get resetPasswordRuleLength => 'Ít nhất 8 ký tự';
+
+  @override
+  String get resetPasswordRuleMix => 'Có cả chữ và số';
+
+  @override
+  String get resetPasswordRuleDifferent => 'Khác mật khẩu cũ';
+
+  @override
+  String get resetPasswordMismatch => 'Mật khẩu nhập lại không khớp';
+
+  @override
+  String get resetPasswordCta => 'Cập nhật mật khẩu';
+
+  @override
+  String get resetPasswordSuccessTitle => 'Đã đổi mật khẩu';
+
+  @override
+  String resetPasswordSuccessBody(String role) {
+    return 'Dùng mật khẩu mới để đăng nhập tài khoản $role.';
+  }
+
+  @override
+  String get resetPasswordBackToLogin => 'Về đăng nhập';
+
+  @override
+  String get gatewayCancelTransaction => 'Huỷ giao dịch';
+
+  @override
+  String get gatewayFailTitle => 'Thanh toán không thành công';
+
+  @override
+  String get gatewayFailExpired => 'Mã QR đã hết hạn.';
+
+  @override
+  String get gatewayFailCancelled => 'Giao dịch đã bị huỷ.';
+
+  @override
+  String get gatewayNoCharge => 'Bạn chưa bị trừ tiền.';
+
+  @override
+  String get gatewayChangeMethod => 'Đổi phương thức';
+
+  @override
+  String get bookingSuccessTitle => 'Đặt lịch thành công';
+
+  @override
+  String get bookingSuccessDesc =>
+      'Chúng tôi đang tìm thợ phù hợp cho bạn. Thường mất dưới 5 phút.';
+
+  @override
+  String get bookingSuccessServiceLabel => 'Dịch vụ';
+
+  @override
+  String get bookingSuccessTimeLabel => 'Thời gian';
+
+  @override
+  String get bookingSuccessAddressLabel => 'Địa chỉ';
+
+  @override
+  String get bookingSuccessEstimateLabel => 'Dự kiến';
+
+  @override
+  String get bookingSuccessPaymentLabel => 'Thanh toán';
+
+  @override
+  String bookingSuccessPayAfter(String method) {
+    return 'Sau nghiệm thu · $method';
+  }
+
+  @override
+  String get bookingSuccessTrackCta => 'Theo dõi đơn';
+
+  @override
+  String get dispatchRadarNoWorkerTitle => 'Chưa tìm được thợ';
+
+  @override
+  String get dispatchRadarNoWorkerDesc =>
+      'Khung giờ bạn chọn đang kín lịch ở khu vực của bạn. Chọn giờ khác hoặc huỷ miễn phí.';
+
+  @override
+  String get dispatchRadarChangeTime => 'Đổi thời gian';
+
+  @override
+  String get dispatchRadarCancelFree => 'Huỷ đơn miễn phí';
+
+  @override
+  String get dispatchRadarNoChargeNote =>
+      'Bạn chưa bị trừ tiền vì chỉ thanh toán sau khi nghiệm thu.';
+
+  @override
+  String dispatchRadarWorkerCancelledNote(String worker) {
+    return '$worker vừa huỷ việc vì lý do đột xuất. HomeService đang tìm thợ khác cho bạn; bạn không mất phí.';
+  }
+
+  @override
+  String get orderDetailStatusAwaitingPayment => 'Chờ thanh toán';
+
+  @override
+  String get orderDetailStatusDisputed => 'Đang xem xét';
+
+  @override
+  String get orderDetailStatusNoShow => 'Khách vắng mặt';
+
+  @override
+  String get orderDetailUnpaidTitle =>
+      'Chưa thanh toán – bạn trả sau khi nghiệm thu';
+
+  @override
+  String orderDetailUnpaidMethod(String method) {
+    return 'Phương thức: $method';
+  }
+
+  @override
+  String get orderDetailHeldTitle =>
+      'Tiền đang được giữ an toàn, chưa chuyển cho thợ';
+
+  @override
+  String orderDetailHeldRef(String code) {
+    return 'Theo khiếu nại $code';
+  }
+
+  @override
+  String orderDetailNoShowNoteTitle(String fee) {
+    return 'Bạn vắng mặt khi thợ đến · phí $fee';
+  }
+
+  @override
+  String orderDetailNoShowNoteDesc(
+    String worker,
+    String checkIn,
+    String fee,
+    String price,
+  ) {
+    return '$worker check-in lúc $checkIn, chờ 15 phút và gọi 2 lần không liên lạc được. Phí vắng mặt $fee trả cho thợ; bạn không bị thu $price tiền dịch vụ.';
+  }
+
+  @override
+  String orderDetailNoShowFeeTitle(String fee) {
+    return 'Đã thu phí vắng mặt $fee';
+  }
+
+  @override
+  String orderDetailNoShowFeeDesc(String method) {
+    return '$method · không thu tiền dịch vụ';
+  }
+
+  @override
+  String get orderDetailViewComplaintCta => 'Xem khiếu nại';
+
+  @override
+  String get orderDetailBeforeAfterTitle => 'Ảnh trước / sau';
+
+  @override
+  String get orderDetailBeforeLabel => 'Trước';
+
+  @override
+  String get orderDetailAfterLabel => 'Sau';
+
+  @override
+  String get workerDisputedTitle => 'Đơn đang được xem xét';
+
+  @override
+  String get workerDisputedDesc =>
+      'Khách đã báo một vấn đề. HomeService sẽ liên hệ anh trong 24 giờ. Tiền công chưa được chuyển cho đến khi có kết quả.';
+
+  @override
+  String get workerDisputedComplaintTitle => 'Khách đã khiếu nại';
+
+  @override
+  String get workerDisputedComplaintSample =>
+      'Chưa sạch · Phòng tắm thứ hai chưa được lau sạch, sàn còn vết cặn.';
+
+  @override
+  String get workerDisputedReplyCta => 'Gửi phản hồi';
+
+  @override
+  String get workerBackToTodayCta => 'Về việc hôm nay';
+
+  @override
+  String get workerWarrantyDoneTitle => 'Hoàn tất bảo hành';
+
+  @override
+  String get workerWarrantyDoneDesc =>
+      'Khách đã xác nhận. Việc bảo hành không có bước thanh toán.';
+
+  @override
+  String get workerWarrantyAmountLabel => 'Bảo hành';
+
+  @override
+  String get workerExtraCostLabel => 'Chi phí phát sinh';
+
+  @override
+  String get workerNetToWallet => 'Thực nhận về ví';
+
+  @override
+  String noShowCallingCustomer(String name) {
+    return 'Đang gọi cho khách hàng $name';
+  }
+
+  @override
+  String noShowOpeningChat(String name) {
+    return 'Đang mở trò chuyện với $name';
+  }
+
+  @override
+  String get disputeEvidenceAdded => 'Đã bổ sung 2 ảnh minh chứng';
+
+  @override
+  String get workerDisputeReplySent =>
+      'Đã gửi bản giải trình đến bộ phận phân xử VSTech';
+
+  @override
+  String workerCancelRecorded(String code) {
+    return 'Đã ghi nhận huỷ công việc $code';
+  }
+
+  @override
+  String get orderDetailReportIssue => 'Báo vấn đề';
 }

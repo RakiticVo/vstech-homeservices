@@ -2969,4 +2969,240 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get wprofileLogoutDialogBody =>
       'You will not receive new job alerts until you log back in.';
+
+  @override
+  String get dialogNo => 'No';
+
+  @override
+  String get resetPasswordTitle => 'Create a new password';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'You will use this password next time you log in.';
+
+  @override
+  String get resetPasswordNewLabel => 'New password';
+
+  @override
+  String get resetPasswordConfirmLabel => 'Confirm password';
+
+  @override
+  String get resetPasswordRuleLength => 'At least 8 characters';
+
+  @override
+  String get resetPasswordRuleMix => 'Letters and numbers';
+
+  @override
+  String get resetPasswordRuleDifferent => 'Different from your old password';
+
+  @override
+  String get resetPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String get resetPasswordCta => 'Update password';
+
+  @override
+  String get resetPasswordSuccessTitle => 'Password updated';
+
+  @override
+  String resetPasswordSuccessBody(String role) {
+    return 'Use your new password to log in to your account as $role.';
+  }
+
+  @override
+  String get resetPasswordBackToLogin => 'Back to log in';
+
+  @override
+  String get gatewayCancelTransaction => 'Cancel transaction';
+
+  @override
+  String get gatewayFailTitle => 'Payment failed';
+
+  @override
+  String get gatewayFailExpired => 'The QR code has expired.';
+
+  @override
+  String get gatewayFailCancelled => 'The transaction was cancelled.';
+
+  @override
+  String get gatewayNoCharge => 'You have not been charged.';
+
+  @override
+  String get gatewayChangeMethod => 'Change method';
+
+  @override
+  String get bookingSuccessTitle => 'Booking confirmed';
+
+  @override
+  String get bookingSuccessDesc =>
+      'We are finding the right pro for you. This usually takes under 5 minutes.';
+
+  @override
+  String get bookingSuccessServiceLabel => 'Service';
+
+  @override
+  String get bookingSuccessTimeLabel => 'Time';
+
+  @override
+  String get bookingSuccessAddressLabel => 'Address';
+
+  @override
+  String get bookingSuccessEstimateLabel => 'Estimate';
+
+  @override
+  String get bookingSuccessPaymentLabel => 'Payment';
+
+  @override
+  String bookingSuccessPayAfter(String method) {
+    return 'After sign-off · $method';
+  }
+
+  @override
+  String get bookingSuccessTrackCta => 'Track order';
+
+  @override
+  String get dispatchRadarNoWorkerTitle => 'No pro available yet';
+
+  @override
+  String get dispatchRadarNoWorkerDesc =>
+      'Your chosen slot is fully booked in your area. Pick another time or cancel for free.';
+
+  @override
+  String get dispatchRadarChangeTime => 'Change time';
+
+  @override
+  String get dispatchRadarCancelFree => 'Cancel for free';
+
+  @override
+  String get dispatchRadarNoChargeNote =>
+      'You have not been charged, since you only pay after sign-off.';
+
+  @override
+  String dispatchRadarWorkerCancelledNote(String worker) {
+    return '$worker had to cancel. HomeService is finding you another pro at no cost to you.';
+  }
+
+  @override
+  String get orderDetailStatusAwaitingPayment => 'Awaiting payment';
+
+  @override
+  String get orderDetailStatusDisputed => 'Under review';
+
+  @override
+  String get orderDetailStatusNoShow => 'Customer no-show';
+
+  @override
+  String get orderDetailUnpaidTitle => 'Not paid yet – you pay after sign-off';
+
+  @override
+  String orderDetailUnpaidMethod(String method) {
+    return 'Method: $method';
+  }
+
+  @override
+  String get orderDetailHeldTitle =>
+      'Your money is held safely and not released to the pro';
+
+  @override
+  String orderDetailHeldRef(String code) {
+    return 'Pending complaint $code';
+  }
+
+  @override
+  String orderDetailNoShowNoteTitle(String fee) {
+    return 'You were not home when the pro arrived · $fee fee';
+  }
+
+  @override
+  String orderDetailNoShowNoteDesc(
+    String worker,
+    String checkIn,
+    String fee,
+    String price,
+  ) {
+    return '$worker checked in at $checkIn, waited 15 minutes and called twice without reaching you. The $fee no-show fee goes to the pro; you are not charged the $price service price.';
+  }
+
+  @override
+  String orderDetailNoShowFeeTitle(String fee) {
+    return 'No-show fee charged: $fee';
+  }
+
+  @override
+  String orderDetailNoShowFeeDesc(String method) {
+    return '$method · service price not charged';
+  }
+
+  @override
+  String get orderDetailViewComplaintCta => 'View complaint';
+
+  @override
+  String get orderDetailBeforeAfterTitle => 'Before / after';
+
+  @override
+  String get orderDetailBeforeLabel => 'Before';
+
+  @override
+  String get orderDetailAfterLabel => 'After';
+
+  @override
+  String get workerDisputedTitle => 'Order under review';
+
+  @override
+  String get workerDisputedDesc =>
+      'The customer reported an issue. HomeService will contact you within 24 hours. No money is released until it is resolved.';
+
+  @override
+  String get workerDisputedComplaintTitle => 'Customer filed a complaint';
+
+  @override
+  String get workerDisputedComplaintSample =>
+      'Not clean · The second bathroom floor still has residue.';
+
+  @override
+  String get workerDisputedReplyCta => 'Send response';
+
+  @override
+  String get workerBackToTodayCta => 'Back to today';
+
+  @override
+  String get workerWarrantyDoneTitle => 'Warranty job completed';
+
+  @override
+  String get workerWarrantyDoneDesc =>
+      'The customer signed off. Warranty jobs have no payment step.';
+
+  @override
+  String get workerWarrantyAmountLabel => 'Warranty';
+
+  @override
+  String get workerExtraCostLabel => 'Extra cost';
+
+  @override
+  String get workerNetToWallet => 'Net to wallet';
+
+  @override
+  String noShowCallingCustomer(String name) {
+    return 'Calling customer $name';
+  }
+
+  @override
+  String noShowOpeningChat(String name) {
+    return 'Opening chat with $name';
+  }
+
+  @override
+  String get disputeEvidenceAdded => '2 evidence photos added';
+
+  @override
+  String get workerDisputeReplySent =>
+      'Your explanation was sent to the VSTech resolution team';
+
+  @override
+  String workerCancelRecorded(String code) {
+    return 'Job $code cancellation recorded';
+  }
+
+  @override
+  String get orderDetailReportIssue => 'Report an issue';
 }

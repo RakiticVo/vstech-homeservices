@@ -18,42 +18,15 @@ Widget _createTestCheckoutWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.inspectionSignoff,
-        builder: (context, state) => const InspectionSignoffPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.orderPaymentSummary,
-        builder: (context, state) => const OrderPaymentSummaryPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.paymentGateway,
-        builder: (context, state) => const PaymentGatewayPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.paymentSuccess,
-        builder: (context, state) => const PaymentSuccessPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.electronicReceipt,
-        builder: (context, state) => const ElectronicReceiptPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.orderReviewTip,
-        builder: (context, state) => const OrderReviewTipPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.orderThanks,
-        builder: (context, state) => const OrderThanksPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerJobCompletion,
-        builder: (context, state) => const WorkerJobCompletionPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.inspectionSignoff, builder: (context, state) => const InspectionSignoffPage()),
+      GoRoute(path: AppRoutes.orderPaymentSummary, builder: (context, state) => const OrderPaymentSummaryPage()),
+      GoRoute(path: AppRoutes.paymentGateway, builder: (context, state) => const PaymentGatewayPage()),
+      GoRoute(path: AppRoutes.paymentSuccess, builder: (context, state) => const PaymentSuccessPage()),
+      GoRoute(path: AppRoutes.electronicReceipt, builder: (context, state) => const ElectronicReceiptPage()),
+      GoRoute(path: AppRoutes.orderReviewTip, builder: (context, state) => const OrderReviewTipPage()),
+      GoRoute(path: AppRoutes.orderThanks, builder: (context, state) => const OrderThanksPage()),
+      GoRoute(path: AppRoutes.workerJobCompletion, builder: (context, state) => const WorkerJobCompletionPage()),
     ],
   );
 
@@ -177,7 +150,9 @@ void main() {
       expect(find.textContaining('Chia sẻ'), findsOneWidget);
     });
 
-    testWidgets('OrderReviewTipPage allows 5-star rating, tag selection, tip toggle and amber submit CTA', (tester) async {
+    testWidgets('OrderReviewTipPage allows 5-star rating, tag selection, tip toggle and amber submit CTA', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1400));
       await tester.pumpWidget(_createTestCheckoutWidget(const OrderReviewTipPage()));
       await tester.pumpAndSettle();
@@ -227,6 +202,61 @@ void main() {
       expect(find.textContaining('cộng vào ví'), findsWidgets);
       expect(find.text('340.000đ'), findsOneWidget);
       expect(find.textContaining('Xem ví thu nhập'), findsOneWidget);
+    });
+
+    testWidgets('PaymentGatewayPage moves to failed state on cancel and recovers on retry (Cell 45)', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 1400));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await tester.pumpWidget(_createTestCheckoutWidget(const PaymentGatewayPage()));
+      await tester.pump();
+
+      await tester.tap(find.byKey(const Key('gateway_cancel_transaction')));
+      await tester.pump();
+      expect(find.text('Thanh toán không thành công'), findsOneWidget);
+      expect(find.textContaining('Giao dịch đã bị huỷ.'), findsOneWidget);
+      expect(find.textContaining('Bạn chưa bị trừ tiền.'), findsOneWidget);
+      expect(find.byKey(const Key('gateway_change_method')), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('gateway_retry')));
+      await tester.pump();
+      expect(find.text('Thanh toán không thành công'), findsNothing);
+      expect(find.byKey(const Key('gateway_cancel_transaction')), findsOneWidget);
+    });
+
+    testWidgets('WorkerJobCompletionPage renders disputed, warranty-done and extra-cost payout (Cells 69, 91, 131)', (
+      tester,
+    ) async {
+      await tester.binding.setSurfaceSize(const Size(390, 1400));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await tester.pumpWidget(
+        _createTestCheckoutWidget(const WorkerJobCompletionPage(initialStage: WorkerJobCompletionPage.stageDisputed)),
+      );
+      await tester.pump();
+      expect(find.text('Đơn đang được xem xét'), findsOneWidget);
+      expect(find.byKey(const Key('worker_complaint_card')), findsOneWidget);
+      expect(find.text('Gửi phản hồi'), findsOneWidget);
+
+      await tester.pumpWidget(
+        _createTestCheckoutWidget(
+          const WorkerJobCompletionPage(initialStage: WorkerJobCompletionPage.stageWarrantyDone),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('Hoàn tất bảo hành'), findsOneWidget);
+      expect(find.text('0đ'), findsOneWidget);
+
+      await tester.pumpWidget(
+        _createTestCheckoutWidget(
+          const WorkerJobCompletionPage(initialStage: WorkerJobCompletionPage.stageCredited, extraCost: 45000),
+        ),
+      );
+      await tester.pump();
+      // 400.000đ + 45.000đ − 60.000đ (15% of the service price only)
+      expect(find.text('385.000đ'), findsOneWidget);
+      expect(find.text('+45.000đ'), findsOneWidget);
+      expect(find.text('-60.000đ'), findsOneWidget);
     });
   });
 }

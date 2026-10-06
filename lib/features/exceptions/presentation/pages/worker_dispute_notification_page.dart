@@ -224,7 +224,7 @@ class _WorkerDisputeNotificationPageState extends State<WorkerDisputeNotificatio
                 child: ElevatedButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Đã gửi bản giải trình đến bộ phận phân xử VSTech')),
+                      SnackBar(content: Text(context.l10n.workerDisputeReplySent)),
                     );
                     unawaited(context.push(AppRoutes.workerJobsHub));
                   },

@@ -15,11 +15,14 @@ import 'package:vstech_home_services/features/auth/presentation/pages/onboarding
 import 'package:vstech_home_services/features/auth/presentation/pages/otp_verification_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/payment_methods_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/register_page.dart';
+import 'package:vstech_home_services/features/auth/presentation/pages/reset_password_page.dart';
+import 'package:vstech_home_services/features/auth/presentation/pages/reset_password_success_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/role_gateway_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/splash_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step1_service_option_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step2_schedule_address_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step3_confirm_page.dart';
+import 'package:vstech_home_services/features/booking/presentation/pages/booking_success_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/dispatch_radar_matching_page.dart';
 import 'package:vstech_home_services/features/checkout/presentation/pages/electronic_receipt_page.dart';
 import 'package:vstech_home_services/features/checkout/presentation/pages/inspection_signoff_page.dart';
@@ -85,22 +88,10 @@ import 'package:vstech_home_services/features/worker_kyc/presentation/pages/work
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.splash,
   routes: [
-    GoRoute(
-      path: AppRoutes.splash,
-      builder: (context, state) => const SplashPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.onboarding,
-      builder: (context, state) => const OnboardingPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.intro,
-      builder: (context, state) => const IntroValuePage(),
-    ),
-    GoRoute(
-      path: AppRoutes.roleGateway,
-      builder: (context, state) => const RoleGatewayPage(),
-    ),
+    GoRoute(path: AppRoutes.splash, builder: (context, state) => const SplashPage()),
+    GoRoute(path: AppRoutes.onboarding, builder: (context, state) => const OnboardingPage()),
+    GoRoute(path: AppRoutes.intro, builder: (context, state) => const IntroValuePage()),
+    GoRoute(path: AppRoutes.roleGateway, builder: (context, state) => const RoleGatewayPage()),
     GoRoute(
       path: AppRoutes.login,
       builder: (context, state) {
@@ -121,11 +112,7 @@ final GoRouter appRouter = GoRouter(
         final phone = state.uri.queryParameters['phone'] ?? '0901 234 567';
         final role = state.uri.queryParameters['role'] ?? 'customer';
         final otpContext = state.uri.queryParameters['context'] ?? 'register';
-        return OtpVerificationPage(
-          phone: phone,
-          role: role,
-          otpContext: otpContext,
-        );
+        return OtpVerificationPage(phone: phone, role: role, otpContext: otpContext);
       },
     ),
     GoRoute(
@@ -133,20 +120,19 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final role = state.uri.queryParameters['role'] ?? 'customer';
         final phone = state.uri.queryParameters['phone'] ?? '';
-        return ForgotPasswordPage(
-          role: role,
-          phone: phone,
-        );
+        return ForgotPasswordPage(role: role, phone: phone);
       },
     ),
     GoRoute(
-      path: AppRoutes.customerHome,
-      builder: (context, state) => const CustomerHomePage(),
+      path: AppRoutes.resetPassword,
+      builder: (context, state) => ResetPasswordPage(role: state.uri.queryParameters['role'] ?? 'customer'),
     ),
     GoRoute(
-      path: AppRoutes.categories,
-      builder: (context, state) => const CategoriesPage(),
+      path: AppRoutes.resetPasswordSuccess,
+      builder: (context, state) => ResetPasswordSuccessPage(role: state.uri.queryParameters['role'] ?? 'customer'),
     ),
+    GoRoute(path: AppRoutes.customerHome, builder: (context, state) => const CustomerHomePage()),
+    GoRoute(path: AppRoutes.categories, builder: (context, state) => const CategoriesPage()),
     GoRoute(
       path: AppRoutes.serviceDetail,
       builder: (context, state) {
@@ -154,14 +140,8 @@ final GoRouter appRouter = GoRouter(
         return ServiceDetailPage(serviceId: id);
       },
     ),
-    GoRoute(
-      path: AppRoutes.workerDashboard,
-      builder: (context, state) => const WorkerDashboardPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerJobDetail,
-      builder: (context, state) => const WorkerJobDetailPage(),
-    ),
+    GoRoute(path: AppRoutes.workerDashboard, builder: (context, state) => const WorkerDashboardPage()),
+    GoRoute(path: AppRoutes.workerJobDetail, builder: (context, state) => const WorkerJobDetailPage()),
     GoRoute(
       path: AppRoutes.workerKyc,
       builder: (context, state) {
@@ -176,10 +156,7 @@ final GoRouter appRouter = GoRouter(
         return WorkerKycStatusPage(initialStatus: status);
       },
     ),
-    GoRoute(
-      path: AppRoutes.bookingStep1,
-      builder: (context, state) => const BookingStep1ServiceOptionPage(),
-    ),
+    GoRoute(path: AppRoutes.bookingStep1, builder: (context, state) => const BookingStep1ServiceOptionPage()),
     GoRoute(
       path: AppRoutes.bookingStep2,
       builder: (context, state) {
@@ -215,8 +192,22 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
+      path: AppRoutes.bookingSuccess,
+      builder: (context, state) {
+        final total = int.tryParse(state.uri.queryParameters['total'] ?? '350000') ?? 350000;
+        final date = state.uri.queryParameters['date'] ?? 'today';
+        final slot = state.uri.queryParameters['slot'] ?? '14:00 - 16:00';
+        final method = state.uri.queryParameters['method'] ?? 'vietqr';
+        return BookingSuccessPage(total: total, date: date, slot: slot, paymentMethod: method);
+      },
+    ),
+    GoRoute(
       path: AppRoutes.bookingMatching,
-      builder: (context, state) => const DispatchRadarMatchingPage(),
+      builder: (context, state) {
+        final stage = int.tryParse(state.uri.queryParameters['stage'] ?? '0') ?? 0;
+        final rematch = state.uri.queryParameters['rematch'] == 'true';
+        return DispatchRadarMatchingPage(initialStage: stage, isWorkerCancelled: rematch);
+      },
     ),
     GoRoute(
       path: AppRoutes.customerTracking,
@@ -226,18 +217,9 @@ final GoRouter appRouter = GoRouter(
         return CustomerTrackingPage(initialStage: stage, orderCode: code);
       },
     ),
-    GoRoute(
-      path: AppRoutes.workerEnRoute,
-      builder: (context, state) => const WorkerEnRoutePage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerArrived,
-      builder: (context, state) => const WorkerArrivedPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerExecuting,
-      builder: (context, state) => const WorkerExecutingPage(),
-    ),
+    GoRoute(path: AppRoutes.workerEnRoute, builder: (context, state) => const WorkerEnRoutePage()),
+    GoRoute(path: AppRoutes.workerArrived, builder: (context, state) => const WorkerArrivedPage()),
+    GoRoute(path: AppRoutes.workerExecuting, builder: (context, state) => const WorkerExecutingPage()),
     GoRoute(
       path: AppRoutes.inspectionSignoff,
       builder: (context, state) {
@@ -267,7 +249,8 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final amount = int.tryParse(state.uri.queryParameters['amount'] ?? '400000') ?? 400000;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        return PaymentGatewayPage(amount: amount, orderCode: code);
+        final failed = state.uri.queryParameters['state'] == 'fail';
+        return PaymentGatewayPage(amount: amount, orderCode: code, initialFailed: failed);
       },
     ),
     GoRoute(
@@ -295,24 +278,23 @@ final GoRouter appRouter = GoRouter(
         return OrderReviewTipPage(initialRating: rating, initialTip: tip, orderCode: code);
       },
     ),
-    GoRoute(
-      path: AppRoutes.orderThanks,
-      builder: (context, state) => const OrderThanksPage(),
-    ),
+    GoRoute(path: AppRoutes.orderThanks, builder: (context, state) => const OrderThanksPage()),
     GoRoute(
       path: AppRoutes.workerJobCompletion,
       builder: (context, state) {
         final stage = state.uri.queryParameters['stage'] ?? 'inspection';
         final total = int.tryParse(state.uri.queryParameters['total'] ?? '400000') ?? 400000;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        return WorkerJobCompletionPage(initialStage: stage, totalPrice: total, orderCode: code);
+        final extra = int.tryParse(state.uri.queryParameters['extra'] ?? '0') ?? 0;
+        return WorkerJobCompletionPage(initialStage: stage, totalPrice: total, extraCost: extra, orderCode: code);
       },
     ),
     GoRoute(
       path: AppRoutes.customerOrders,
       builder: (context, state) {
         final tab = int.tryParse(state.uri.queryParameters['tab'] ?? '0') ?? 0;
-        return CustomerOrdersPage(initialTab: tab);
+        final activeEmpty = state.uri.queryParameters['activeEmpty'] == 'true';
+        return CustomerOrdersPage(initialTab: tab, isActiveTabEmpty: activeEmpty);
       },
     ),
     GoRoute(
@@ -331,18 +313,12 @@ final GoRouter appRouter = GoRouter(
         return WorkerJobsHubPage(initialTab: tab);
       },
     ),
-    GoRoute(
-      path: AppRoutes.customerNotifications,
-      builder: (context, state) => const CustomerNotificationsPage(),
-    ),
+    GoRoute(path: AppRoutes.customerNotifications, builder: (context, state) => const CustomerNotificationsPage()),
     GoRoute(
       path: AppRoutes.customerNotificationSettings,
       builder: (context, state) => const CustomerNotificationSettingsPage(),
     ),
-    GoRoute(
-      path: AppRoutes.workerNotifications,
-      builder: (context, state) => const WorkerNotificationsPage(),
-    ),
+    GoRoute(path: AppRoutes.workerNotifications, builder: (context, state) => const WorkerNotificationsPage()),
     GoRoute(
       path: AppRoutes.customerCancel,
       builder: (context, state) {
@@ -380,10 +356,7 @@ final GoRouter appRouter = GoRouter(
         return OrderDisputedPage(orderCode: code, complaintCode: complaint);
       },
     ),
-    GoRoute(
-      path: AppRoutes.customerDisputeList,
-      builder: (context, state) => const CustomerDisputeListPage(),
-    ),
+    GoRoute(path: AppRoutes.customerDisputeList, builder: (context, state) => const CustomerDisputeListPage()),
     GoRoute(
       path: AppRoutes.disputeDetail,
       builder: (context, state) {
@@ -406,11 +379,7 @@ final GoRouter appRouter = GoRouter(
         final code = state.uri.queryParameters['code'] ?? 'HS-20250318-0087';
         final expired = state.uri.queryParameters['expired'] == 'true';
         final hasRequest = state.uri.queryParameters['hasRequest'] == 'true';
-        return WarrantyCertificatePage(
-          orderCode: code,
-          isExpired: expired,
-          hasExistingRequest: hasRequest,
-        );
+        return WarrantyCertificatePage(orderCode: code, isExpired: expired, hasExistingRequest: hasRequest);
       },
     ),
     GoRoute(
@@ -434,10 +403,7 @@ final GoRouter appRouter = GoRouter(
         return WorkerWarrantyJobDetailPage(orderCode: code);
       },
     ),
-    GoRoute(
-      path: AppRoutes.workerWarrantyDecline,
-      builder: (context, state) => const WorkerWarrantyDeclinePage(),
-    ),
+    GoRoute(path: AppRoutes.workerWarrantyDecline, builder: (context, state) => const WorkerWarrantyDeclinePage()),
     GoRoute(
       path: AppRoutes.chat,
       builder: (context, state) {
@@ -446,13 +412,7 @@ final GoRouter appRouter = GoRouter(
         final order = state.uri.queryParameters['order'] ?? '#HS20250425-0012';
         final peer = state.uri.queryParameters['peer'];
         final status = state.uri.queryParameters['status'] ?? 'Đang thực hiện';
-        return ChatPage(
-          role: role,
-          isClosed: isClosed,
-          orderCode: order,
-          peerName: peer,
-          orderStatus: status,
-        );
+        return ChatPage(role: role, isClosed: isClosed, orderCode: order, peerName: peer, orderStatus: status);
       },
     ),
     GoRoute(
@@ -462,76 +422,26 @@ final GoRouter appRouter = GoRouter(
         final mode = state.uri.queryParameters['mode'] ?? 'callout';
         final peer = state.uri.queryParameters['peer'];
         final order = state.uri.queryParameters['order'] ?? '#HS20250425-0012';
-        return VoipCallPage(
-          role: role,
-          mode: mode,
-          peerName: peer,
-          orderCode: order,
-        );
+        return VoipCallPage(role: role, mode: mode, peerName: peer, orderCode: order);
       },
     ),
     // --- Batch 12: Devices, AI Assistant & Account Settings ---
-    GoRoute(
-      path: AppRoutes.myHomeDevices,
-      builder: (context, state) => const MyHomeDevicesPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.aiAssistant,
-      builder: (context, state) => const AiAssistantPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.aiSuggestions,
-      builder: (context, state) => const AiSuggestionsPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.customerProfile,
-      builder: (context, state) => const CustomerProfilePage(),
-    ),
-    GoRoute(
-      path: AppRoutes.editProfile,
-      builder: (context, state) => const EditProfilePage(),
-    ),
-    GoRoute(
-      path: AppRoutes.myAddresses,
-      builder: (context, state) => const MyAddressesPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.editAddress,
-      builder: (context, state) => const EditAddressPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.paymentMethods,
-      builder: (context, state) => const PaymentMethodsPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.linkWallet,
-      builder: (context, state) => const LinkWalletPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.favouritePros,
-      builder: (context, state) => const FavouriteProsPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerProfilePreview,
-      builder: (context, state) => const WorkerProfilePreviewPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.customerSettings,
-      builder: (context, state) => const CustomerSettingsPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.changePassword,
-      builder: (context, state) => const ChangePasswordPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.deleteAccount,
-      builder: (context, state) => const DeleteAccountPage(),
-    ),
+    GoRoute(path: AppRoutes.myHomeDevices, builder: (context, state) => const MyHomeDevicesPage()),
+    GoRoute(path: AppRoutes.aiAssistant, builder: (context, state) => const AiAssistantPage()),
+    GoRoute(path: AppRoutes.aiSuggestions, builder: (context, state) => const AiSuggestionsPage()),
+    GoRoute(path: AppRoutes.customerProfile, builder: (context, state) => const CustomerProfilePage()),
+    GoRoute(path: AppRoutes.editProfile, builder: (context, state) => const EditProfilePage()),
+    GoRoute(path: AppRoutes.myAddresses, builder: (context, state) => const MyAddressesPage()),
+    GoRoute(path: AppRoutes.editAddress, builder: (context, state) => const EditAddressPage()),
+    GoRoute(path: AppRoutes.paymentMethods, builder: (context, state) => const PaymentMethodsPage()),
+    GoRoute(path: AppRoutes.linkWallet, builder: (context, state) => const LinkWalletPage()),
+    GoRoute(path: AppRoutes.favouritePros, builder: (context, state) => const FavouriteProsPage()),
+    GoRoute(path: AppRoutes.workerProfilePreview, builder: (context, state) => const WorkerProfilePreviewPage()),
+    GoRoute(path: AppRoutes.customerSettings, builder: (context, state) => const CustomerSettingsPage()),
+    GoRoute(path: AppRoutes.changePassword, builder: (context, state) => const ChangePasswordPage()),
+    GoRoute(path: AppRoutes.deleteAccount, builder: (context, state) => const DeleteAccountPage()),
     // --- Batch 13: Worker Wallet, Withdrawals, Schedule & Operations ---
-    GoRoute(
-      path: AppRoutes.workerWallet,
-      builder: (context, state) => const WorkerWalletPage(),
-    ),
+    GoRoute(path: AppRoutes.workerWallet, builder: (context, state) => const WorkerWalletPage()),
     GoRoute(
       path: AppRoutes.workerTransactionDetail,
       builder: (context, state) {
@@ -539,10 +449,7 @@ final GoRouter appRouter = GoRouter(
         return WorkerTransactionDetailPage(txId: txId);
       },
     ),
-    GoRoute(
-      path: AppRoutes.workerWithdraw,
-      builder: (context, state) => const WorkerWithdrawPage(),
-    ),
+    GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
     GoRoute(
       path: AppRoutes.workerWithdrawPin,
       builder: (context, state) {
@@ -557,33 +464,13 @@ final GoRouter appRouter = GoRouter(
         return WorkerWithdrawStatusPage(withdrawalAmount: amount);
       },
     ),
-    GoRoute(
-      path: AppRoutes.workerSchedule,
-      builder: (context, state) => const WorkerScheduleWeekPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerAvailability,
-      builder: (context, state) => const WorkerAvailabilityPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerWorkZone,
-      builder: (context, state) => const WorkerWorkZonePage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerSkills,
-      builder: (context, state) => const WorkerSkillsPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerUploadCert,
-      builder: (context, state) => const WorkerUploadCertPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerPerformance,
-      builder: (context, state) => const WorkerPerformancePage(),
-    ),
-    GoRoute(
-      path: AppRoutes.workerProfile,
-      builder: (context, state) => const WorkerProfilePage(),
-    ),
+    GoRoute(path: AppRoutes.workerSchedule, builder: (context, state) => const WorkerScheduleWeekPage()),
+    GoRoute(path: AppRoutes.workerAvailability, builder: (context, state) => const WorkerAvailabilityPage()),
+    GoRoute(path: AppRoutes.workerWorkZone, builder: (context, state) => const WorkerWorkZonePage()),
+    GoRoute(path: AppRoutes.workerSkills, builder: (context, state) => const WorkerSkillsPage()),
+    GoRoute(path: AppRoutes.workerUploadCert, builder: (context, state) => const WorkerUploadCertPage()),
+    GoRoute(path: AppRoutes.workerPerformance, builder: (context, state) => const WorkerPerformancePage()),
+    GoRoute(path: AppRoutes.workerProfile, builder: (context, state) => const WorkerProfilePage()),
   ],
 );
+

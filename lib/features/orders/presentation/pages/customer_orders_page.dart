@@ -18,9 +18,13 @@ class CustomerOrdersPage extends StatefulWidget {
   const CustomerOrdersPage({
     super.key,
     this.initialTab = 0,
+    this.isActiveTabEmpty = false,
   });
 
   final int initialTab;
+
+  /// Renders the Active tab with no orders (Cell 74 — after order #…0012 completes).
+  final bool isActiveTabEmpty;
 
   @override
   State<CustomerOrdersPage> createState() => _CustomerOrdersPageState();
@@ -104,7 +108,9 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
                     AppSpacing.dockClearanceMax,
                   ),
                   children: [
-                    if (_selectedTab == 0) ...[
+                    if (_selectedTab == 0 && widget.isActiveTabEmpty) ...[
+                      _buildEmptyState(),
+                    ] else if (_selectedTab == 0) ...[
                       // Active Orders (Cell 36, 37)
                       _buildActiveOrderCard(
                         code: 'HS-2026-0012',
@@ -166,6 +172,54 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
               currentIndex: 1, // Orders tab active
               onTabSelected: _onDockTabSelected,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Padding(
+      key: const Key('orders_empty_state'),
+      padding: const EdgeInsets.only(top: AppSpacing.xl),
+      child: Column(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.border),
+            ),
+            child: const Icon(
+              Icons.receipt_long_outlined,
+              size: 36,
+              color: AppColors.textMuted,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Text(
+            context.l10n.ordersEmptyTitle,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyLarge.copyWith(
+              fontWeight: FontWeight.w800,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            context.l10n.ordersEmptyDesc,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          AppButton.primary(
+            label: context.l10n.ordersEmptyCta,
+            icon: Icons.add_rounded,
+            onPressed: () {
+              unawaited(context.push(AppRoutes.categories));
+            },
           ),
         ],
       ),

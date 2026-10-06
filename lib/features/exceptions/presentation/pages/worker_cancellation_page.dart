@@ -236,7 +236,7 @@ class _WorkerCancellationPageState extends State<WorkerCancellationPage> {
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Đã ghi nhận huỷ công việc ${widget.jobCode}'),
+                        content: Text(context.l10n.workerCancelRecorded(widget.jobCode)),
                       ),
                     );
                     unawaited(context.push(AppRoutes.workerJobsHub));

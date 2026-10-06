@@ -10,16 +10,22 @@ import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
 
-/// Customer Order Detail Screen (`orderdet` — Concept 02: Cells 62, 63).
+/// Customer Order Detail Screen (`orderdet` — Concept 02: Cells 62, 63, 93–95, 116).
 /// Itemized order specifications, worker contact card, transparent price breakdown,
 /// 30-day warranty badge, and situational action triggers.
 class CustomerOrderDetailPage extends StatelessWidget {
   const CustomerOrderDetailPage({
     super.key,
     this.orderCode = 'HS-2026-0012',
-    this.status = 'active', // 'active', 'completed', 'scheduled'
+    // 'active', 'completed', 'scheduled', 'awaiting_payment', 'disputed', 'no_show'
+    this.status = 'active',
     this.totalPrice = 400000,
   });
+
+  static const String statusAwaitingPayment = 'awaiting_payment';
+  static const String statusDisputed = 'disputed';
+  static const String statusNoShow = 'no_show';
+  static const int _noShowFee = 50000;
 
   final String orderCode;
   final String status;
@@ -91,34 +97,26 @@ class CustomerOrderDetailPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: status == 'completed'
-                        ? const Color(0xFFE8F5E9)
-                        : AppColors.secondarySurface,
-                    borderRadius: BorderRadius.circular(AppRadius.chip),
-                    border: Border.all(
-                      color: status == 'completed'
-                          ? AppColors.success
-                          : AppColors.primary.withValues(alpha: 0.3),
-                    ),
-                  ),
-                  child: Text(
-                    status == 'completed'
-                        ? context.l10n.orderDetailPaidStatus
-                        : context.l10n.trackingStageEnRoute,
-                    style: AppTextStyles.labelSmall.copyWith(
-                      color: status == 'completed'
-                          ? AppColors.successDark
-                          : AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
+                _buildStatusChip(context),
               ],
             ),
           ),
+
+          if (status == statusNoShow) ...[
+            const SizedBox(height: AppSpacing.md),
+            _buildNoticeCard(
+              key: const Key('order_detail_no_show_note'),
+              icon: Icons.person_off_outlined,
+              color: AppColors.warning,
+              title: context.l10n.orderDetailNoShowNoteTitle(_formatPrice(_noShowFee)),
+              body: context.l10n.orderDetailNoShowNoteDesc(
+                'Trần Văn Hùng',
+                '13:58',
+                _formatPrice(_noShowFee),
+                _formatPrice(totalPrice),
+              ),
+            ),
+          ],
 
           const SizedBox(height: AppSpacing.lg),
 
@@ -327,8 +325,18 @@ class CustomerOrderDetailPage extends StatelessWidget {
 
           const SizedBox(height: AppSpacing.lg),
 
+          if (_paymentNotice(context) case final notice?) ...[
+            notice,
+            const SizedBox(height: AppSpacing.lg),
+          ],
+
+          if (status == statusAwaitingPayment || status == statusDisputed) ...[
+            _buildBeforeAfterPhotos(context),
+            const SizedBox(height: AppSpacing.lg),
+          ],
+
           // 30-Day Warranty Badge
-          Container(
+          if (!_isExceptionStatus) Container(
             padding: const EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
               color: AppColors.secondarySurface,
@@ -355,7 +363,48 @@ class CustomerOrderDetailPage extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
 
           // Action Buttons
-          if (status == 'active') ...[
+          if (status == statusAwaitingPayment) ...[
+            AppButton(
+              key: const Key('order_detail_pay_cta'),
+              label: context.l10n.paymentPayNowCta(_formatPrice(totalPrice)),
+              backgroundColor: AppColors.warning,
+              textColor: AppColors.textPrimary,
+              onPressed: () {
+                unawaited(
+                  context.push('${AppRoutes.orderPaymentSummary}?code=$orderCode'),
+                );
+              },
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  unawaited(context.push('${AppRoutes.disputeReport}?code=$orderCode'));
+                },
+                child: Text(
+                  context.l10n.orderDetailReportIssue,
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.error,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ] else if (status == statusDisputed) ...[
+            AppButton(
+              key: const Key('order_detail_view_complaint_cta'),
+              label: context.l10n.orderDetailViewComplaintCta,
+              icon: Icons.gavel_rounded,
+              onPressed: () {
+                unawaited(
+                  context.push(
+                    '${AppRoutes.disputeDetail}?id=${Uri.encodeComponent('#KN-0425-031')}'
+                    '&order=$orderCode',
+                  ),
+                );
+              },
+            ),
+          ] else if (status == 'active') ...[
             AppButton(
               label: context.l10n.ordersTrackWorkerCta,
               icon: Icons.map_outlined,
@@ -408,6 +457,199 @@ class CustomerOrderDetailPage extends StatelessWidget {
           ],
         ],
       ),
+    );
+  }
+
+  bool get _isExceptionStatus =>
+      status == statusAwaitingPayment || status == statusDisputed || status == statusNoShow;
+
+  Widget _buildStatusChip(BuildContext context) {
+    final l10n = context.l10n;
+    final (String label, Color fg, Color bg, Color edge, IconData icon) = switch (status) {
+      'completed' => (
+          l10n.orderDetailPaidStatus,
+          AppColors.successDark,
+          AppColors.success.withValues(alpha: 0.1),
+          AppColors.success,
+          Icons.check_circle_outline_rounded,
+        ),
+      statusAwaitingPayment => (
+          l10n.orderDetailStatusAwaitingPayment,
+          AppColors.textPrimary,
+          AppColors.warning.withValues(alpha: 0.12),
+          AppColors.warning,
+          Icons.payments_outlined,
+        ),
+      statusDisputed => (
+          l10n.orderDetailStatusDisputed,
+          AppColors.textPrimary,
+          AppColors.warning.withValues(alpha: 0.12),
+          AppColors.warning,
+          Icons.gavel_rounded,
+        ),
+      statusNoShow => (
+          l10n.orderDetailStatusNoShow,
+          AppColors.textSecondary,
+          AppColors.background,
+          AppColors.border,
+          Icons.person_off_outlined,
+        ),
+      _ => (
+          l10n.trackingStageEnRoute,
+          AppColors.primary,
+          AppColors.secondarySurface,
+          AppColors.primary.withValues(alpha: 0.3),
+          Icons.directions_run_rounded,
+        ),
+    };
+
+    return Container(
+      key: const Key('order_detail_status_chip'),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(AppRadius.chip),
+        border: Border.all(color: edge),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: fg),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: AppTextStyles.labelSmall.copyWith(
+              color: fg,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Payment / escrow state banner shown under the price card for the exception statuses.
+  Widget? _paymentNotice(BuildContext context) {
+    final l10n = context.l10n;
+    final method = l10n.bookingPaymentVnPay;
+    switch (status) {
+      case statusAwaitingPayment:
+        return _buildNoticeCard(
+          key: const Key('order_detail_unpaid_notice'),
+          icon: Icons.schedule_rounded,
+          color: AppColors.primary,
+          title: l10n.orderDetailUnpaidTitle,
+          body: l10n.orderDetailUnpaidMethod(method),
+        );
+      case statusDisputed:
+        return _buildNoticeCard(
+          key: const Key('order_detail_held_notice'),
+          icon: Icons.lock_outline_rounded,
+          color: AppColors.warning,
+          title: l10n.orderDetailHeldTitle,
+          body: l10n.orderDetailHeldRef('#KN-0425-031'),
+        );
+      case statusNoShow:
+        return _buildNoticeCard(
+          key: const Key('order_detail_no_show_fee'),
+          icon: Icons.receipt_long_outlined,
+          color: AppColors.warning,
+          title: l10n.orderDetailNoShowFeeTitle(_formatPrice(_noShowFee)),
+          body: l10n.orderDetailNoShowFeeDesc(method),
+        );
+      default:
+        return null;
+    }
+  }
+
+  Widget _buildNoticeCard({
+    required Key key,
+    required IconData icon,
+    required Color color,
+    required String title,
+    required String body,
+  }) {
+    return Container(
+      key: key,
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(AppRadius.control),
+        border: Border.all(color: color),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: AppColors.textSecondary),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  body,
+                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBeforeAfterPhotos(BuildContext context) {
+    final labels = [context.l10n.orderDetailBeforeLabel, context.l10n.orderDetailAfterLabel];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.l10n.orderDetailBeforeAfterTitle,
+          style: AppTextStyles.labelLarge.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Row(
+          children: [
+            for (var i = 0; i < labels.length; i++) ...[
+              if (i > 0) const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 4 / 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(AppRadius.card),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.image_outlined, size: 24, color: AppColors.textMuted),
+                        const SizedBox(height: 4),
+                        Text(
+                          labels[i],
+                          style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ],
     );
   }
 

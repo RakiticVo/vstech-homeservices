@@ -11,6 +11,8 @@ abstract final class AppRoutes {
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';
   static const String forgotPassword = '/auth/forgot-password';
+  static const String resetPassword = '/auth/reset-password';
+  static const String resetPasswordSuccess = '/auth/reset-password/success';
 
   // --- customer home & categories ---
   static const String customerHome = '/customer/home';
@@ -27,6 +29,7 @@ abstract final class AppRoutes {
   static const String bookingStep1 = '/customer/booking/step-1';
   static const String bookingStep2 = '/customer/booking/step-2';
   static const String bookingStep3 = '/customer/booking/step-3';
+  static const String bookingSuccess = '/customer/booking/success';
   static const String bookingMatching = '/customer/booking/matching';
 
   // --- tracking & real-time progress (Batch 6) ---

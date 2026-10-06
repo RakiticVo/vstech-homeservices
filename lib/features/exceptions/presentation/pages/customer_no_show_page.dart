@@ -180,7 +180,7 @@ class _CustomerNoShowPageState extends State<CustomerNoShowPage> {
                 child: OutlinedButton.icon(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Đang gọi cho khách hàng ${widget.customerName}')),
+                      SnackBar(content: Text(context.l10n.noShowCallingCustomer(widget.customerName))),
                     );
                   },
                   icon: const Icon(Icons.phone_outlined, size: 18, color: AppColors.primary),
@@ -202,7 +202,7 @@ class _CustomerNoShowPageState extends State<CustomerNoShowPage> {
                 child: OutlinedButton.icon(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Đang mở trò chuyện với ${widget.customerName}')),
+                      SnackBar(content: Text(context.l10n.noShowOpeningChat(widget.customerName))),
                     );
                   },
                   icon: const Icon(Icons.chat_bubble_outline_rounded, size: 18, color: AppColors.primary),

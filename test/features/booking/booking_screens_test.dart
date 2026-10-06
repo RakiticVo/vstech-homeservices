@@ -7,6 +7,7 @@ import 'package:vstech_home_services/core/theme/app_theme.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step1_service_option_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step2_schedule_address_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step3_confirm_page.dart';
+import 'package:vstech_home_services/features/booking/presentation/pages/booking_success_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/dispatch_radar_matching_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/widgets/addon_option_tile.dart';
 import 'package:vstech_home_services/features/booking/presentation/widgets/booking_step_indicator.dart';
@@ -19,14 +20,8 @@ Widget _createTestBookingWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.bookingStep1,
-        builder: (context, state) => const BookingStep1ServiceOptionPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.bookingStep1, builder: (context, state) => const BookingStep1ServiceOptionPage()),
       GoRoute(
         path: AppRoutes.bookingStep2,
         builder: (context, state) {
@@ -41,17 +36,10 @@ Widget _createTestBookingWidget(Widget child) {
           final basePrice = int.tryParse(state.uri.queryParameters['basePrice'] ?? '350000') ?? 350000;
           final addonsPrice = int.tryParse(state.uri.queryParameters['addonsPrice'] ?? '30000') ?? 30000;
           final premisesPrice = int.tryParse(state.uri.queryParameters['premisesPrice'] ?? '20000') ?? 20000;
-          return BookingStep3ConfirmPage(
-            basePrice: basePrice,
-            addonsPrice: addonsPrice,
-            premisesPrice: premisesPrice,
-          );
+          return BookingStep3ConfirmPage(basePrice: basePrice, addonsPrice: addonsPrice, premisesPrice: premisesPrice);
         },
       ),
-      GoRoute(
-        path: AppRoutes.bookingMatching,
-        builder: (context, state) => const DispatchRadarMatchingPage(),
-      ),
+      GoRoute(path: AppRoutes.bookingMatching, builder: (context, state) => const DispatchRadarMatchingPage()),
     ],
   );
 
@@ -79,12 +67,7 @@ void main() {
 
       await tester.pumpWidget(
         _createTestBookingWidget(
-          const Scaffold(
-            appBar: BookingStepIndicator(
-              currentStep: 1,
-              stepTitle: 'Chọn gói & Dịch vụ kèm',
-            ),
-          ),
+          const Scaffold(appBar: BookingStepIndicator(currentStep: 1, stepTitle: 'Chọn gói & Dịch vụ kèm')),
         ),
       );
       await tester.pumpAndSettle();
@@ -98,9 +81,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 1600));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestBookingWidget(const BookingStep1ServiceOptionPage()),
-      );
+      await tester.pumpWidget(_createTestBookingWidget(const BookingStep1ServiceOptionPage()));
       await tester.pumpAndSettle();
 
       // Verify scope selector
@@ -129,11 +110,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestBookingWidget(
-          const BookingStep2ScheduleAddressPage(),
-        ),
-      );
+      await tester.pumpWidget(_createTestBookingWidget(const BookingStep2ScheduleAddressPage()));
       await tester.pumpAndSettle();
 
       // Verify date options
@@ -170,11 +147,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 1200));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestBookingWidget(
-          const BookingStep3ConfirmPage(),
-        ),
-      );
+      await tester.pumpWidget(_createTestBookingWidget(const BookingStep3ConfirmPage()));
       await tester.pumpAndSettle();
 
       // Verify itemized breakdown
@@ -210,11 +183,7 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       // Test Stage 0: Scanning
-      await tester.pumpWidget(
-        _createTestBookingWidget(
-          const DispatchRadarMatchingPage(),
-        ),
-      );
+      await tester.pumpWidget(_createTestBookingWidget(const DispatchRadarMatchingPage()));
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(RadarPulseAnimation), findsOneWidget);
@@ -237,17 +206,59 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       // Test Stage 2: Found worker
-      await tester.pumpWidget(
-        _createTestBookingWidget(
-          const DispatchRadarMatchingPage(initialStage: 2),
-        ),
-      );
+      await tester.pumpWidget(_createTestBookingWidget(const DispatchRadarMatchingPage(initialStage: 2)));
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Nguyễn Văn Hùng'), findsOneWidget);
       expect(find.text('4.9 ★ • 120+ đơn hoàn tất'), findsOneWidget);
       expect(find.text('Anh Nguyễn Văn Hùng đã nhận việc và đang chuẩn bị di chuyển'), findsOneWidget);
       expect(find.text('Xem vị trí thợ đang di chuyển'), findsOneWidget);
+    });
+
+    testWidgets('BookingSuccessPage renders order code, summary rows and track CTA (Cell 46)', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await tester.pumpWidget(
+        _createTestBookingWidget(const BookingSuccessPage(total: 330000, paymentMethod: 'vnpay')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Đặt lịch thành công'), findsOneWidget);
+      expect(find.text('#HS-2026-0012'), findsOneWidget);
+      expect(find.text('330.000đ'), findsOneWidget);
+      expect(find.textContaining('Sau nghiệm thu'), findsOneWidget);
+      expect(find.text('Theo dõi đơn'), findsOneWidget);
+    });
+
+    testWidgets('DispatchRadarMatchingPage renders no-worker state with change time and free cancel (Cell 49)', (
+      tester,
+    ) async {
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await tester.pumpWidget(
+        _createTestBookingWidget(
+          const DispatchRadarMatchingPage(initialStage: DispatchRadarMatchingPage.stageNoWorker),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(RadarPulseAnimation), findsNothing);
+      expect(find.text('Chưa tìm được thợ'), findsOneWidget);
+      expect(find.byKey(const Key('matching_change_time')), findsOneWidget);
+      expect(find.byKey(const Key('matching_cancel_free')), findsOneWidget);
+    });
+
+    testWidgets('DispatchRadarMatchingPage shows worker-cancelled note while re-searching (Cell 118)', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await tester.pumpWidget(_createTestBookingWidget(const DispatchRadarMatchingPage(isWorkerCancelled: true)));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byKey(const Key('worker_cancelled_note')), findsOneWidget);
+      expect(find.textContaining('bạn không mất phí'), findsOneWidget);
     });
   });
 }

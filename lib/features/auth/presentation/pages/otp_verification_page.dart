@@ -102,7 +102,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
         // Routing based on context
         if (widget.otpContext == 'forgot') {
-          unawaited(context.push('${AppRoutes.login}?role=${widget.role}'));
+          unawaited(
+            context.push('${AppRoutes.resetPassword}?role=${widget.role}'),
+          );
         } else if (widget.role == 'customer') {
           unawaited(context.push(AppRoutes.customerHome));
         } else if (widget.otpContext == 'register') {

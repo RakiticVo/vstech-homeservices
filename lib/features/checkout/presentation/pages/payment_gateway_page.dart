@@ -13,15 +13,20 @@ import 'package:vstech_home_services/core/widgets/app_button.dart';
 
 /// Instant VietQR Gateway Screen (`pay` — Concept 02: Cell 53).
 /// Displays real-time banking QR code, bank transfer details, and confirmation trigger.
+/// Cancelling the transaction or letting the QR expire leads to the failed state (Cell 45).
 class PaymentGatewayPage extends StatefulWidget {
   const PaymentGatewayPage({
     super.key,
     this.amount = 400000,
     this.orderCode = 'HS-2026-0012',
+    this.initialFailed = false,
   });
 
   final int amount;
   final String orderCode;
+
+  /// Opens directly on the failed state (used for previews/deep links).
+  final bool initialFailed;
 
   @override
   State<PaymentGatewayPage> createState() => _PaymentGatewayPageState();
@@ -30,15 +35,40 @@ class PaymentGatewayPage extends StatefulWidget {
 class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
   int _secondsLeft = 899; // 14:59
   Timer? _countdownTimer;
+  late bool _isFailed;
 
   @override
   void initState() {
     super.initState();
+    _isFailed = widget.initialFailed;
+    if (!_isFailed) _startCountdown();
+  }
+
+  void _startCountdown() {
+    _secondsLeft = 899;
+    _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted && _secondsLeft > 0) {
+      if (!mounted) return;
+      if (_secondsLeft > 1) {
         setState(() => _secondsLeft--);
+      } else {
+        timer.cancel();
+        setState(() {
+          _secondsLeft = 0;
+          _isFailed = true;
+        });
       }
     });
+  }
+
+  void _onCancelTransaction() {
+    _countdownTimer?.cancel();
+    setState(() => _isFailed = true);
+  }
+
+  void _onRetry() {
+    setState(() => _isFailed = false);
+    _startCountdown();
   }
 
   @override
@@ -78,7 +108,7 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
           child: Container(color: AppColors.border, height: 1),
         ),
       ),
-      body: ListView(
+      body: _isFailed ? _buildFailedBody(context) : ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
           // Prompt & Expiration Banner
@@ -254,7 +284,91 @@ class _PaymentGatewayPageState extends State<PaymentGatewayPage> {
               );
             },
           ),
+          const SizedBox(height: AppSpacing.sm),
+          Center(
+            child: TextButton(
+              key: const Key('gateway_cancel_transaction'),
+              onPressed: _onCancelTransaction,
+              child: Text(
+                context.l10n.gatewayCancelTransaction,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.error,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFailedBody(BuildContext context) {
+    final l10n = context.l10n;
+    final reason =
+        _secondsLeft == 0 ? l10n.gatewayFailExpired : l10n.gatewayFailCancelled;
+
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 88,
+                      height: 88,
+                      decoration: BoxDecoration(
+                        color: AppColors.error.withValues(alpha: 0.08),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.error),
+                      ),
+                      child: const Icon(
+                        Icons.close_rounded,
+                        size: 40,
+                        color: AppColors.error,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    Text(
+                      l10n.gatewayFailTitle,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.headlineMd.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Text(
+                      '$reason ${l10n.gatewayNoCharge}',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.bodyMd.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            AppButton.primary(
+              key: const Key('gateway_retry'),
+              label: l10n.retry,
+              icon: Icons.refresh_rounded,
+              onPressed: _onRetry,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            AppSecondaryButton(
+              key: const Key('gateway_change_method'),
+              label: l10n.gatewayChangeMethod,
+              isFullWidth: true,
+              icon: Icons.swap_horiz_rounded,
+              onPressed: () => Navigator.of(context).maybePop(),
+            ),
+          ],
+        ),
       ),
     );
   }

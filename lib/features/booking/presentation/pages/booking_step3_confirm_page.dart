@@ -88,7 +88,12 @@ class _BookingStep3ConfirmPageState extends State<BookingStep3ConfirmPage> {
   }
 
   void _onConfirmBooking() {
-    unawaited(context.push(AppRoutes.bookingMatching));
+    unawaited(
+      context.push(
+        '${AppRoutes.bookingSuccess}?total=$_finalTotal&date=${widget.date}'
+        '&slot=${Uri.encodeComponent(widget.slot)}&method=$_selectedPaymentMethod',
+      ),
+    );
   }
 
   @override
