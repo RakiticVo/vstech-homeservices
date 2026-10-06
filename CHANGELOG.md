@@ -5,6 +5,27 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ---
 
+## [Unreleased]
+
+### Added
+- **Pha 0 tích hợp API — nền tảng mạng:**
+  - `AppEnv` (`core/config/app_env.dart`): `API_BASE_URL` / `WS_BASE_URL` qua `--dart-define`, mặc định UAT `https://homeservice-uat.vitinhkimhung.com`.
+  - `ApiClient` viết lại: helper `get/post/put/delete` parse envelope `ApiResponse` và ném `NetworkException` khi có `errorCode`; refresh token dùng chung một lần cho các 401 đồng thời (Dio riêng, giữ refresh token cũ); tự gắn `X-Idempotency-Key` cho call `idempotent: true` (giữ nguyên key khi retry); `Accept-Language` theo locale; `sendUnwrapped` cho endpoint không bọc envelope (`POST /bookings`).
+  - `ApiEndpoints` đủ các module app dùng (auth, profiles, devices, categories, bookings/quotes, technician, wallet/payments/withdrawals, notifications, chat, voip, WS paths).
+  - `Failure` + `Result<T>` (`Ok`/`Err`, `Result.guard`) và `FailureMessageX.failureMessage()` map toàn bộ catalog `HS-XXX-XXXX` sang chuỗi l10n (38 key `apiError*` vi/en, phân biệt `HS-409-0002` theo ngữ cảnh auth/wallet).
+  - `SecureAuthTokenStore` (flutter_secure_storage), `SessionCubit` (app-level) + GoRouter `redirect`/`refreshListenable` đưa về đăng nhập khi phiên hết hạn.
+  - DI chuyển sang `injectable` codegen (`RegisterModule` cấp `FlutterSecureStorage`, `ApiClient`).
+  - `MoneyConverter`/`UtcDateTimeConverter` cho json_serializable, `MoneyFormatter` (`4.860.000đ`).
+  - `docs/api/openapi.yaml`: bản spec đã sửa lỗi cú pháp YAML (thêm server UAT).
+  - 33 test mới: `test/unit/core/**`, `test/bloc/core/session_cubit_test.dart`, fixtures `test/fixtures/core/`, mocks `test/helpers/mocks.dart`.
+- `docs/plans/API_INTEGRATION_PLAN.md`: Kế hoạch tích hợp API theo `docs/api/openapi.json` với môi trường UAT `https://homeservice-uat.vitinhkimhung.com` — Pha 0 nền tảng + 5 pha theo feature, danh sách lỗ hổng contract cần backend xác nhận.
+
+### Changed
+- `GoRouter` tạo qua `createAppRouter(session:)`; `VstechHomeServicesApp` nhận `router` qua constructor; `main.dart` khởi tạo DI và khôi phục phiên trước `runApp`.
+- `NetworkException` không còn chứa chuỗi tiếng Việt viết cứng — chỉ mang `kind`/`errorCode`/`statusCode`.
+
+---
+
 ## [0.14.0] — 2026-10-05: Bổ sung các màn/trạng thái còn thiếu so với Concept 02 (đối chiếu 128 ô trên Claude Design)
 
 ### Added

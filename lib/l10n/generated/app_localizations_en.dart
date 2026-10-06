@@ -3205,4 +3205,136 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderDetailReportIssue => 'Report an issue';
+
+  @override
+  String get apiErrorTimeout => 'The connection is too slow, please try again.';
+
+  @override
+  String get apiErrorNoConnection =>
+      'No internet connection. Please check your Wi-Fi or mobile data.';
+
+  @override
+  String get apiErrorUnknown => 'Something went wrong, please try again later.';
+
+  @override
+  String get apiErrorSessionExpired =>
+      'Your session has expired, please sign in again.';
+
+  @override
+  String get apiErrorInvalidInput =>
+      'Some information is invalid, please check again.';
+
+  @override
+  String get apiErrorScheduleInvalid =>
+      'The booking time must be in the future.';
+
+  @override
+  String get apiErrorLocationInvalid => 'Please pick an exact location.';
+
+  @override
+  String get apiErrorInvalidTransition =>
+      'This action isn\'t available in the current status.';
+
+  @override
+  String get apiErrorMissingIdempotency =>
+      'Missing transaction confirmation code, please try again.';
+
+  @override
+  String get apiErrorPriceLimit => 'The price exceeds the allowed limit.';
+
+  @override
+  String get apiErrorBookingCompleted => 'This booking is already completed.';
+
+  @override
+  String get apiErrorDisputeInvalid =>
+      'A dispute can\'t be opened for this booking.';
+
+  @override
+  String get apiErrorDisputeResolveInvalid =>
+      'The dispute resolution is invalid.';
+
+  @override
+  String get apiErrorInsufficientBalance =>
+      'Your wallet balance is not enough for this transaction.';
+
+  @override
+  String get apiErrorWithdrawalProcessed =>
+      'This withdrawal request has already been processed.';
+
+  @override
+  String get apiErrorWeakPassword =>
+      'Password must be at least 8 characters with upper-case, lower-case letters and a number.';
+
+  @override
+  String get apiErrorApplianceTypeInvalid =>
+      'This appliance type is not supported.';
+
+  @override
+  String get apiErrorNoFieldToUpdate => 'Please change at least one field.';
+
+  @override
+  String get apiErrorInvalidCredentials => 'Incorrect phone/email or password.';
+
+  @override
+  String get apiErrorForbidden => 'You don\'t have permission to do this.';
+
+  @override
+  String get apiErrorChatForbidden => 'You don\'t have access to this chat.';
+
+  @override
+  String get apiErrorCallLogForbidden =>
+      'You don\'t have access to this call log.';
+
+  @override
+  String get apiErrorNotificationForbidden =>
+      'You don\'t have access to this notification.';
+
+  @override
+  String get apiErrorNotFound => 'The requested data was not found.';
+
+  @override
+  String get apiErrorProfileNotFound => 'User profile not found.';
+
+  @override
+  String get apiErrorCategoryNotFound => 'Service category not found.';
+
+  @override
+  String get apiErrorBookingNotFound => 'Booking not found.';
+
+  @override
+  String get apiErrorDispatchNotFound => 'Dispatch information not found.';
+
+  @override
+  String get apiErrorWalletNotFound => 'Wallet not found.';
+
+  @override
+  String get apiErrorWithdrawalNotFound => 'Withdrawal request not found.';
+
+  @override
+  String get apiErrorAssetNotFound => 'Appliance not found.';
+
+  @override
+  String get apiErrorProfileConflict => 'This profile already exists.';
+
+  @override
+  String get apiErrorAccountExists => 'This account already exists.';
+
+  @override
+  String get apiErrorTransactionInProgress =>
+      'A transaction is being processed, please try again.';
+
+  @override
+  String get apiErrorAssetUnderWarranty =>
+      'This appliance is under warranty and can\'t be deleted.';
+
+  @override
+  String get apiErrorChatClosed => 'This chat has ended.';
+
+  @override
+  String get apiErrorTooManyRequests =>
+      'You\'re going too fast, please try again shortly.';
+
+  @override
+  String get apiErrorDispatchUnavailable =>
+      'Dispatch is temporarily unavailable.';
 }

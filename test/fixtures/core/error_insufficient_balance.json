@@ -1,0 +1,6 @@
+{
+  "status": 400,
+  "message": "Số dư không đủ",
+  "errorCode": "HS-400-0020",
+  "timestamp": "2026-10-06T08:00:00Z"
+}

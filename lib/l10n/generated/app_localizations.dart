@@ -5982,6 +5982,234 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Báo vấn đề'**
   String get orderDetailReportIssue;
+
+  /// No description provided for @apiErrorTimeout.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết nối mạng quá chậm, vui lòng thử lại.'**
+  String get apiErrorTimeout;
+
+  /// No description provided for @apiErrorNoConnection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có kết nối mạng. Vui lòng kiểm tra Wi-Fi hoặc 4G.'**
+  String get apiErrorNoConnection;
+
+  /// No description provided for @apiErrorUnknown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có lỗi xảy ra, vui lòng thử lại sau.'**
+  String get apiErrorUnknown;
+
+  /// No description provided for @apiErrorSessionExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.'**
+  String get apiErrorSessionExpired;
+
+  /// No description provided for @apiErrorInvalidInput.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin chưa hợp lệ, vui lòng kiểm tra lại.'**
+  String get apiErrorInvalidInput;
+
+  /// No description provided for @apiErrorScheduleInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thời gian đặt lịch phải ở tương lai.'**
+  String get apiErrorScheduleInvalid;
+
+  /// No description provided for @apiErrorLocationInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng chọn vị trí chính xác.'**
+  String get apiErrorLocationInvalid;
+
+  /// No description provided for @apiErrorInvalidTransition.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể thực hiện thao tác này ở trạng thái hiện tại.'**
+  String get apiErrorInvalidTransition;
+
+  /// No description provided for @apiErrorMissingIdempotency.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiếu mã xác nhận giao dịch, vui lòng thử lại.'**
+  String get apiErrorMissingIdempotency;
+
+  /// No description provided for @apiErrorPriceLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá vượt quá giới hạn cho phép.'**
+  String get apiErrorPriceLimit;
+
+  /// No description provided for @apiErrorBookingCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn đặt lịch này đã hoàn thành.'**
+  String get apiErrorBookingCompleted;
+
+  /// No description provided for @apiErrorDisputeInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tạo khiếu nại cho đơn này.'**
+  String get apiErrorDisputeInvalid;
+
+  /// No description provided for @apiErrorDisputeResolveInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giải quyết khiếu nại không hợp lệ.'**
+  String get apiErrorDisputeResolveInvalid;
+
+  /// No description provided for @apiErrorInsufficientBalance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư ví không đủ để thực hiện giao dịch.'**
+  String get apiErrorInsufficientBalance;
+
+  /// No description provided for @apiErrorWithdrawalProcessed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu rút tiền đã được xử lý.'**
+  String get apiErrorWithdrawalProcessed;
+
+  /// No description provided for @apiErrorWeakPassword.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường và số.'**
+  String get apiErrorWeakPassword;
+
+  /// No description provided for @apiErrorApplianceTypeInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Loại thiết bị không được hỗ trợ.'**
+  String get apiErrorApplianceTypeInvalid;
+
+  /// No description provided for @apiErrorNoFieldToUpdate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng chọn ít nhất một trường để cập nhật.'**
+  String get apiErrorNoFieldToUpdate;
+
+  /// No description provided for @apiErrorInvalidCredentials.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số điện thoại/email hoặc mật khẩu không chính xác.'**
+  String get apiErrorInvalidCredentials;
+
+  /// No description provided for @apiErrorForbidden.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không có quyền thực hiện thao tác này.'**
+  String get apiErrorForbidden;
+
+  /// No description provided for @apiErrorChatForbidden.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không có quyền truy cập đoạn chat này.'**
+  String get apiErrorChatForbidden;
+
+  /// No description provided for @apiErrorCallLogForbidden.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không có quyền xem thông tin cuộc gọi.'**
+  String get apiErrorCallLogForbidden;
+
+  /// No description provided for @apiErrorNotificationForbidden.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không có quyền truy cập thông báo này.'**
+  String get apiErrorNotificationForbidden;
+
+  /// No description provided for @apiErrorNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy dữ liệu yêu cầu.'**
+  String get apiErrorNotFound;
+
+  /// No description provided for @apiErrorProfileNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy hồ sơ người dùng.'**
+  String get apiErrorProfileNotFound;
+
+  /// No description provided for @apiErrorCategoryNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy danh mục dịch vụ.'**
+  String get apiErrorCategoryNotFound;
+
+  /// No description provided for @apiErrorBookingNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy đơn đặt lịch.'**
+  String get apiErrorBookingNotFound;
+
+  /// No description provided for @apiErrorDispatchNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy thông tin phân công.'**
+  String get apiErrorDispatchNotFound;
+
+  /// No description provided for @apiErrorWalletNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy ví tiền.'**
+  String get apiErrorWalletNotFound;
+
+  /// No description provided for @apiErrorWithdrawalNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy yêu cầu rút tiền.'**
+  String get apiErrorWithdrawalNotFound;
+
+  /// No description provided for @apiErrorAssetNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy thiết bị.'**
+  String get apiErrorAssetNotFound;
+
+  /// No description provided for @apiErrorProfileConflict.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ đã tồn tại.'**
+  String get apiErrorProfileConflict;
+
+  /// No description provided for @apiErrorAccountExists.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản đã tồn tại.'**
+  String get apiErrorAccountExists;
+
+  /// No description provided for @apiErrorTransactionInProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch đang được xử lý, vui lòng thử lại.'**
+  String get apiErrorTransactionInProgress;
+
+  /// No description provided for @apiErrorAssetUnderWarranty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết bị đang có bảo hành, không thể xoá.'**
+  String get apiErrorAssetUnderWarranty;
+
+  /// No description provided for @apiErrorChatClosed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đoạn chat đã kết thúc.'**
+  String get apiErrorChatClosed;
+
+  /// No description provided for @apiErrorTooManyRequests.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn thao tác quá nhanh, vui lòng thử lại sau.'**
+  String get apiErrorTooManyRequests;
+
+  /// No description provided for @apiErrorDispatchUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hệ thống phân công tạm thời không khả dụng.'**
+  String get apiErrorDispatchUnavailable;
 }
 
 class _AppLocalizationsDelegate

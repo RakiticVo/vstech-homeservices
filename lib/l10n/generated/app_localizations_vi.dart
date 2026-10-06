@@ -3209,4 +3209,135 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get orderDetailReportIssue => 'Báo vấn đề';
+
+  @override
+  String get apiErrorTimeout => 'Kết nối mạng quá chậm, vui lòng thử lại.';
+
+  @override
+  String get apiErrorNoConnection =>
+      'Không có kết nối mạng. Vui lòng kiểm tra Wi-Fi hoặc 4G.';
+
+  @override
+  String get apiErrorUnknown => 'Đã có lỗi xảy ra, vui lòng thử lại sau.';
+
+  @override
+  String get apiErrorSessionExpired =>
+      'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.';
+
+  @override
+  String get apiErrorInvalidInput =>
+      'Thông tin chưa hợp lệ, vui lòng kiểm tra lại.';
+
+  @override
+  String get apiErrorScheduleInvalid => 'Thời gian đặt lịch phải ở tương lai.';
+
+  @override
+  String get apiErrorLocationInvalid => 'Vui lòng chọn vị trí chính xác.';
+
+  @override
+  String get apiErrorInvalidTransition =>
+      'Không thể thực hiện thao tác này ở trạng thái hiện tại.';
+
+  @override
+  String get apiErrorMissingIdempotency =>
+      'Thiếu mã xác nhận giao dịch, vui lòng thử lại.';
+
+  @override
+  String get apiErrorPriceLimit => 'Giá vượt quá giới hạn cho phép.';
+
+  @override
+  String get apiErrorBookingCompleted => 'Đơn đặt lịch này đã hoàn thành.';
+
+  @override
+  String get apiErrorDisputeInvalid => 'Không thể tạo khiếu nại cho đơn này.';
+
+  @override
+  String get apiErrorDisputeResolveInvalid =>
+      'Giải quyết khiếu nại không hợp lệ.';
+
+  @override
+  String get apiErrorInsufficientBalance =>
+      'Số dư ví không đủ để thực hiện giao dịch.';
+
+  @override
+  String get apiErrorWithdrawalProcessed => 'Yêu cầu rút tiền đã được xử lý.';
+
+  @override
+  String get apiErrorWeakPassword =>
+      'Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường và số.';
+
+  @override
+  String get apiErrorApplianceTypeInvalid => 'Loại thiết bị không được hỗ trợ.';
+
+  @override
+  String get apiErrorNoFieldToUpdate =>
+      'Vui lòng chọn ít nhất một trường để cập nhật.';
+
+  @override
+  String get apiErrorInvalidCredentials =>
+      'Số điện thoại/email hoặc mật khẩu không chính xác.';
+
+  @override
+  String get apiErrorForbidden => 'Bạn không có quyền thực hiện thao tác này.';
+
+  @override
+  String get apiErrorChatForbidden =>
+      'Bạn không có quyền truy cập đoạn chat này.';
+
+  @override
+  String get apiErrorCallLogForbidden =>
+      'Bạn không có quyền xem thông tin cuộc gọi.';
+
+  @override
+  String get apiErrorNotificationForbidden =>
+      'Bạn không có quyền truy cập thông báo này.';
+
+  @override
+  String get apiErrorNotFound => 'Không tìm thấy dữ liệu yêu cầu.';
+
+  @override
+  String get apiErrorProfileNotFound => 'Không tìm thấy hồ sơ người dùng.';
+
+  @override
+  String get apiErrorCategoryNotFound => 'Không tìm thấy danh mục dịch vụ.';
+
+  @override
+  String get apiErrorBookingNotFound => 'Không tìm thấy đơn đặt lịch.';
+
+  @override
+  String get apiErrorDispatchNotFound => 'Không tìm thấy thông tin phân công.';
+
+  @override
+  String get apiErrorWalletNotFound => 'Không tìm thấy ví tiền.';
+
+  @override
+  String get apiErrorWithdrawalNotFound => 'Không tìm thấy yêu cầu rút tiền.';
+
+  @override
+  String get apiErrorAssetNotFound => 'Không tìm thấy thiết bị.';
+
+  @override
+  String get apiErrorProfileConflict => 'Hồ sơ đã tồn tại.';
+
+  @override
+  String get apiErrorAccountExists => 'Tài khoản đã tồn tại.';
+
+  @override
+  String get apiErrorTransactionInProgress =>
+      'Giao dịch đang được xử lý, vui lòng thử lại.';
+
+  @override
+  String get apiErrorAssetUnderWarranty =>
+      'Thiết bị đang có bảo hành, không thể xoá.';
+
+  @override
+  String get apiErrorChatClosed => 'Đoạn chat đã kết thúc.';
+
+  @override
+  String get apiErrorTooManyRequests =>
+      'Bạn thao tác quá nhanh, vui lòng thử lại sau.';
+
+  @override
+  String get apiErrorDispatchUnavailable =>
+      'Hệ thống phân công tạm thời không khả dụng.';
 }

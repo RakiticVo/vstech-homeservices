@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/router/go_router_refresh_stream.dart';
+import 'package:vstech_home_services/core/session/session_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/change_password_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/customer_profile_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/customer_settings_page.dart';
@@ -85,8 +87,10 @@ import 'package:vstech_home_services/features/worker_kyc/presentation/pages/work
 /// Root GoRouter config. Auth guards belong here as `redirect` callbacks — never as
 /// widget-level conditions (see CLAUDE.md Authentication rules). Route-level BLoCs are wrapped
 /// with `BlocProvider` inside each route's `builder`, not at the app root.
-final GoRouter appRouter = GoRouter(
+GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
   initialLocation: AppRoutes.splash,
+  refreshListenable: GoRouterRefreshStream(session.stream),
+  redirect: (context, state) => sessionRedirect(session.state, state.matchedLocation),
   routes: [
     GoRoute(path: AppRoutes.splash, builder: (context, state) => const SplashPage()),
     GoRoute(path: AppRoutes.onboarding, builder: (context, state) => const OnboardingPage()),
@@ -474,3 +478,19 @@ final GoRouter appRouter = GoRouter(
   ],
 );
 
+/// Routes reachable without a session (splash, onboarding, auth flows).
+bool isPublicLocation(String location) =>
+    location == AppRoutes.splash ||
+    location == AppRoutes.onboarding ||
+    location == AppRoutes.intro ||
+    location == AppRoutes.roleGateway ||
+    location.startsWith('/auth/');
+
+/// Sends the user back to login when their session expired (refresh token rejected) while on a
+/// protected screen. Phase 1 extends this to every unauthenticated access once login is live.
+String? sessionRedirect(SessionState session, String location) {
+  if (session is SessionUnauthenticatedState && session.expired && !isPublicLocation(location)) {
+    return AppRoutes.login;
+  }
+  return null;
+}

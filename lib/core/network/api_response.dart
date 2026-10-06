@@ -9,10 +9,7 @@ class ApiResponse<T> {
     required this.timestamp,
   });
 
-  factory ApiResponse.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object? json) fromDataJson,
-  ) {
+  factory ApiResponse.fromJson(Map<String, dynamic> json, T Function(Object? json) fromDataJson) {
     final rawData = json['data'];
     return ApiResponse<T>(
       status: json['status'] as int,
@@ -30,6 +27,15 @@ class ApiResponse<T> {
   final String? timestamp;
 
   bool get isSuccess => errorCode == null && status >= 200 && status < 300;
+
+  /// [data] for successful responses that must carry a body; throws if the server sent none.
+  T get requireData {
+    final value = data;
+    if (value == null) {
+      throw StateError('ApiResponse(status: $status) has no data');
+    }
+    return value;
+  }
 }
 
 /// Pagination envelope used by most list endpoints. Chat and Notifications are the documented
@@ -44,10 +50,7 @@ class PagedResponse<T> {
     required this.totalPages,
   });
 
-  factory PagedResponse.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object? json) fromItemJson,
-  ) {
+  factory PagedResponse.fromJson(Map<String, dynamic> json, T Function(Object? json) fromItemJson) {
     return PagedResponse<T>(
       content: (json['content'] as List<dynamic>).map(fromItemJson).toList(),
       page: json['page'] as int,
@@ -62,4 +65,6 @@ class PagedResponse<T> {
   final int size;
   final int totalItems;
   final int totalPages;
+
+  bool get hasMore => page + 1 < totalPages;
 }

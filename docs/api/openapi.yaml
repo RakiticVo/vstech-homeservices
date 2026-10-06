@@ -1,0 +1,2674 @@
+---
+openapi: 3.1.0
+tags:
+- name: Assets
+  description: Thiết bị khách hàng & bảo hành
+- name: Auth
+  description: Xác thực và quản lý phiên đăng nhập
+- name: Bookings
+  description: "Đặt lịch, ước tính, chuyển trạng thái và khiếu nại booking"
+- name: Chat
+  description: In-app chat room and messaging
+- name: Devices
+  description: FCM device token registration & unregistration
+- name: Dispatch
+  description: Điều phối thủ công
+- name: Notifications
+  description: System notifications push center
+- name: Payments
+  description: "Thanh toán, nạp & rút ví"
+- name: Profiles
+  description: Hồ sơ người dùng
+- name: Quotes
+  description: Báo giá dịch vụ
+- name: ServiceCategories
+  description: Quản lý danh mục dịch vụ
+- name: Technician
+  description: Cập nhật vị trí GPS kỹ thuật viên
+- name: VoIP
+  description: VoIP anonymous call logging
+- name: VoIP Admin
+  description: Admin VoIP call recording access
+- name: Wallet
+  description: Ví ảo & số dư
+- name: Withdrawals
+  description: Rút tiền về ngân hàng
+components:
+  schemas:
+    ApiResponseAssetDetailResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/AssetDetailResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseAssetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/AssetResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseAuthResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/AuthResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseChatMessagePageResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/ChatMessagePageResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseChatMessageResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/ChatMessageResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseDeviceRegistrationResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/DeviceRegistrationResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseEstimateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/EstimateResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseLedgerTransactionResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/LedgerTransactionResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseListAssetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseListMapStringObject:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseListVoipCallResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/VoipCallResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseMapStringObject:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: {}
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseNotificationPageResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/NotificationPageResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseNotificationSettingsResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/NotificationSettingsResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponsePagedResponseBookingResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PagedResponseBookingResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponsePagedResponseServiceCategoryResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PagedResponseServiceCategoryResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponsePagedResponseWalletTransactionResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PagedResponseWalletTransactionResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponsePagedResponseWithdrawalRequestResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/PagedResponseWithdrawalRequestResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseQuoteResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/QuoteResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseServiceCategoryResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/ServiceCategoryResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseStatusTransitionResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/StatusTransitionResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseString:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: string
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseTokenResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/TokenResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseUserProfileResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/UserProfileResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseVoid:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data: {}
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseVoipCallResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/VoipCallResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseWalletResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/WalletResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ApiResponseWithdrawalRequestResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/WithdrawalRequestResponse"
+        errorCode:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    AssetDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        applianceType:
+          type: string
+        brand:
+          type: string
+        modelNumber:
+          type: string
+        roomLocation:
+          type: string
+        installationDate:
+          $ref: "#/components/schemas/LocalDate"
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+        activeWarrantyCount:
+          type: integer
+          format: int32
+        maintenanceHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/MaintenanceHistoryItem"
+    AssetResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        applianceType:
+          type: string
+        brand:
+          type: string
+        modelNumber:
+          type: string
+        roomLocation:
+          type: string
+        installationDate:
+          $ref: "#/components/schemas/LocalDate"
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+        activeWarrantyCount:
+          type: integer
+          format: int32
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserInfo"
+    BookingResponse:
+      type: object
+      properties:
+        requestId:
+          type: integer
+          format: int64
+        customerId:
+          type: integer
+          format: int64
+        categoryId:
+          type: integer
+          format: int64
+        assignedWorkerId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        estimatedPrice:
+          type: number
+        finalPrice:
+          type: number
+        description:
+          type: string
+        addressDetail:
+          type: string
+        scheduledTime:
+          $ref: "#/components/schemas/OffsetDateTime"
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ChatMessagePageResponse:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatMessageResponse"
+    ChatMessageRequest:
+      type: object
+      required:
+      - messageText
+      properties:
+        messageText:
+          type: string
+          pattern: \S
+        mediaUrls:
+          type: array
+          items:
+            type: string
+    ChatMessageResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        roomId:
+          type: integer
+          format: int64
+        senderId:
+          type: integer
+          format: int64
+        messageText:
+          type: string
+        mediaUrls:
+          type: array
+          items:
+            type: string
+        isRead:
+          type: boolean
+        sentAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    CompleteBookingRequest:
+      type: object
+      properties:
+        actualPrice:
+          type: number
+    CreateAssetRequest:
+      type: object
+      properties:
+        applianceType:
+          type: string
+        brand:
+          type: string
+        modelNumber:
+          type: string
+        roomLocation:
+          type: string
+        installationDate:
+          $ref: "#/components/schemas/LocalDate"
+    CreateBookingRequest:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int64
+        description:
+          type: string
+        addressDetail:
+          type: string
+        locationLat:
+          type: number
+        locationLng:
+          type: number
+        scheduledTime:
+          $ref: "#/components/schemas/OffsetDateTime"
+        applianceId:
+          type: integer
+          format: int64
+        deviceIp:
+          type: string
+    CreateRoomRequest:
+      type: object
+      required:
+      - bookingId
+      properties:
+        bookingId:
+          type: integer
+          format: int64
+    CreateServiceCategoryRequest:
+      type: object
+      required:
+      - name
+      - basePrice
+      - commissionRate
+      properties:
+        name:
+          type: string
+          pattern: \S
+        description:
+          type: string
+        basePrice:
+          type: number
+          exclusiveMinimum: 0
+        commissionRate:
+          type: number
+        imageUrl:
+          type: string
+    DeviceRegistrationResponse:
+      type: object
+      properties:
+        deviceId:
+          type: integer
+          format: int64
+        registeredAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    EndCallRequest:
+      type: object
+      required:
+      - callId
+      - durationSeconds
+      - recordingUrl
+      properties:
+        callId:
+          type: integer
+          format: int64
+        durationSeconds:
+          type: integer
+          format: int32
+        recordingUrl:
+          type: string
+          pattern: \S
+    EstimateRequest:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int64
+        description:
+          type: string
+    EstimateResponse:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int64
+        categoryName:
+          type: string
+        estimatedPrice:
+          type: number
+        commissionFee:
+          type: number
+        totalEstimated:
+          type: number
+    Instant:
+      type: string
+      format: date-time
+      examples:
+      - "2022-03-10T16:15:50Z"
+    LedgerTransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          type: integer
+          format: int64
+        fromWalletId:
+          type: integer
+          format: int64
+        toWalletId:
+          type: integer
+          format: int64
+        referenceRequestId:
+          type: integer
+          format: int64
+        amount:
+          type: number
+        txType:
+          $ref: "#/components/schemas/TransactionType"
+        status:
+          $ref: "#/components/schemas/TransactionStatus"
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    LocalDate:
+      type: string
+      format: date
+      examples:
+      - "2022-03-10"
+    LocationUpdateRequest:
+      type: object
+      properties:
+        technicianId:
+          $ref: "#/components/schemas/UUID"
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    LoginRequest:
+      type: object
+      properties:
+        identifier:
+          type: string
+        password:
+          type: string
+    LogoutRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+    MaintenanceHistoryItem:
+      type: object
+      properties:
+        warrantyId:
+          type: integer
+          format: int64
+        reworkRequestId:
+          type: integer
+          format: int64
+        customerIssue:
+          type: string
+        status:
+          type: string
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    ManualAssignRequest:
+      type: object
+      properties:
+        technicianId:
+          $ref: "#/components/schemas/UUID"
+    NotificationPageResponse:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotificationResponse"
+    NotificationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        title:
+          type: string
+        body:
+          type: string
+        type:
+          type: string
+        isRead:
+          type: boolean
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    NotificationSettingsResponse:
+      type: object
+      properties:
+        systemEnabled:
+          type: boolean
+        bookingEnabled:
+          type: boolean
+        promoEnabled:
+          type: boolean
+    OffsetDateTime:
+      type: string
+      format: date-time
+      examples:
+      - "2022-03-10T12:15:50-04:00"
+    PagedResponseBookingResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BookingResponse"
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalItems:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+    PagedResponseServiceCategoryResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceCategoryResponse"
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalItems:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+    PagedResponseWalletTransactionResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/WalletTransactionResponse"
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalItems:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+    PagedResponseWithdrawalRequestResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/WithdrawalRequestResponse"
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalItems:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+    PaymentDepositDTO:
+      type: object
+      required:
+      - amount
+      - gateway
+      - gatewayTxId
+      properties:
+        amount:
+          type: number
+          exclusiveMinimum: 0
+        gateway:
+          type: string
+          pattern: \S
+        gatewayTxId:
+          type: string
+          pattern: \S
+    PaymentWithdrawDTO:
+      type: object
+      required:
+      - amount
+      - gateway
+      - gatewayTxId
+      properties:
+        amount:
+          type: number
+          exclusiveMinimum: 0
+        gateway:
+          type: string
+          pattern: \S
+        gatewayTxId:
+          type: string
+          pattern: \S
+    QuoteItem:
+      type: object
+      properties:
+        itemName:
+          type: string
+        amount:
+          type: number
+        receiptUrl:
+          type: string
+    QuoteItemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        itemName:
+          type: string
+        amount:
+          type: number
+        receiptUrl:
+          type: string
+    QuoteResponse:
+      type: object
+      properties:
+        requestId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuoteItemResponse"
+        evidencePhotoUrls:
+          type: array
+          items:
+            type: string
+        totalAmount:
+          type: number
+        submittedAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    RefreshRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+    RegisterDeviceRequest:
+      type: object
+      required:
+      - token
+      - platform
+      properties:
+        token:
+          type: string
+          maxLength: 512
+          pattern: \S
+        platform:
+          type: string
+          pattern: \S
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        fullName:
+          type: string
+        role:
+          $ref: "#/components/schemas/UserRole"
+    ResolveDisputeRequest:
+      type: object
+      properties:
+        resolution:
+          type: string
+        finalPrice:
+          type: number
+    ServiceCategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        basePrice:
+          type: number
+        commissionRate:
+          type: number
+        isActive:
+          type: boolean
+        imageUrl:
+          type: string
+    StartCallRequest:
+      type: object
+      required:
+      - bookingId
+      - callerId
+      - receiverId
+      properties:
+        bookingId:
+          type: integer
+          format: int64
+        callerId:
+          type: integer
+          format: int64
+        receiverId:
+          type: integer
+          format: int64
+    StatusTransitionResponse:
+      type: object
+      properties:
+        requestId:
+          type: integer
+          format: int64
+        previousStatus:
+          type: string
+        newStatus:
+          type: string
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+    SubmitQuoteRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuoteItem"
+        evidencePhotoUrls:
+          type: array
+          items:
+            type: string
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+        expiresIn:
+          type: integer
+          format: int64
+    TransactionStatus:
+      type: string
+      enum:
+      - PENDING
+      - COMPLETED
+      - FAILED
+    TransactionType:
+      type: string
+      enum:
+      - DEPOSIT
+      - COMMISSION
+      - EARNING
+      - TIP
+      - WITHDRAWAL
+      - REFUND
+    UUID:
+      type: string
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+    UpdateAssetRequest:
+      type: object
+      properties:
+        brand:
+          type: string
+        modelNumber:
+          type: string
+        roomLocation:
+          type: string
+    UpdateNotificationSettingsRequest:
+      type: object
+      required:
+      - systemEnabled
+      - bookingEnabled
+      - promoEnabled
+      properties:
+        systemEnabled:
+          type: boolean
+        bookingEnabled:
+          type: boolean
+        promoEnabled:
+          type: boolean
+    UpdateServiceCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        basePrice:
+          type: number
+        commissionRate:
+          type: number
+        isActive:
+          type: boolean
+        imageUrl:
+          type: string
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        identityId:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        fullName:
+          type: string
+        role:
+          type: string
+        avatarUrl:
+          type: string
+    UserProfileDTO:
+      type: object
+      properties:
+        defaultAddress:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+    UserProfileResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        identityId:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        fullName:
+          type: string
+        avatarUrl:
+          type: string
+        bio:
+          type: string
+        role:
+          type: string
+        verificationStatus:
+          type: string
+        rating:
+          type: number
+        totalJobs:
+          type: integer
+          format: int32
+        locale:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+        userProfile:
+          $ref: "#/components/schemas/UserProfileDTO"
+        workerKyc:
+          $ref: "#/components/schemas/WorkerKycDTO"
+        workerMetrics:
+          $ref: "#/components/schemas/WorkerMetricsDTO"
+        workerSkills:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkerSkillDTO"
+    UserProfileUpdateRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        avatarUrl:
+          type: string
+        bio:
+          type: string
+        locale:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        defaultAddress:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        idCardFrontUrl:
+          type: string
+        idCardBackUrl:
+          type: string
+    UserRole:
+      type: string
+      enum:
+      - CUSTOMER
+      - B2B_CUSTOMER
+      - WORKER
+      - SUPPLIER
+      - ADMIN
+    VoipCallResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        bookingId:
+          type: integer
+          format: int64
+        callerId:
+          type: integer
+          format: int64
+        receiverId:
+          type: integer
+          format: int64
+        durationSeconds:
+          type: integer
+          format: int32
+        recordingUrl:
+          type: string
+        startedAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+        endedAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    WalletResponse:
+      type: object
+      properties:
+        walletId:
+          type: integer
+          format: int64
+        ownerId:
+          type: integer
+          format: int64
+        balance:
+          type: number
+        frozenBalance:
+          type: number
+        currency:
+          type: string
+        walletType:
+          $ref: "#/components/schemas/WalletType"
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    WalletTransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          type: integer
+          format: int64
+        fromWalletId:
+          type: integer
+          format: int64
+        toWalletId:
+          type: integer
+          format: int64
+        referenceRequestId:
+          type: integer
+          format: int64
+        amount:
+          type: number
+        delta:
+          type: number
+        txType:
+          $ref: "#/components/schemas/TransactionType"
+        status:
+          $ref: "#/components/schemas/TransactionStatus"
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    WalletType:
+      type: string
+      enum:
+      - USER
+      - PLATFORM
+      - SUPPLIER
+    WithdrawalRejectDTO:
+      type: object
+      properties:
+        reason:
+          type: string
+          maxLength: 500
+    WithdrawalRequestDTO:
+      type: object
+      required:
+      - amount
+      - bankCode
+      - bankAccountNumber
+      properties:
+        amount:
+          type: number
+          exclusiveMinimum: 0
+        bankCode:
+          type: string
+          pattern: \S
+        bankAccountNumber:
+          type: string
+          pattern: \S
+    WithdrawalRequestResponse:
+      type: object
+      properties:
+        requestId:
+          type: integer
+          format: int64
+        workerId:
+          type: integer
+          format: int64
+        walletId:
+          type: integer
+          format: int64
+        amount:
+          type: number
+        bankCode:
+          type: string
+        bankAccountNumber:
+          type: string
+        status:
+          $ref: "#/components/schemas/WithdrawalStatus"
+        approvedBy:
+          type: integer
+          format: int64
+        rejectionReason:
+          type: string
+        createdAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/OffsetDateTime"
+    WithdrawalStatus:
+      type: string
+      enum:
+      - PENDING_APPROVAL
+      - APPROVED
+      - REJECTED
+      - CANCELLED
+    WorkerKycDTO:
+      type: object
+      properties:
+        approvalStatus:
+          type: string
+        idCardNumber:
+          type: string
+        idCardFrontUrl:
+          type: string
+        idCardBackUrl:
+          type: string
+    WorkerMetricsDTO:
+      type: object
+      properties:
+        totalCompletedJobs:
+          type: integer
+          format: int32
+        averageRating:
+          type: number
+        cancellationRate:
+          type: number
+        badgeTier:
+          type: string
+    WorkerSkillDTO:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int64
+        experienceYears:
+          type: integer
+          format: int32
+        certificateUrl:
+          type: string
+        isVerified:
+          type: boolean
+  securitySchemes:
+    jwtBearer:
+      description: Authentication
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /api/v1/admin/voip/calls/{callId}/recording:
+    get:
+      summary: Lấy recording_url của cuộc gọi (ADMIN)
+      tags:
+      - VoIP Admin
+      parameters:
+      - name: callId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Trả về recording_url
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseString"
+        "404":
+          description: Không tìm thấy cuộc gọi hoặc chưa có recording
+      security:
+      - jwtBearer: []
+  /api/v1/assets:
+    get:
+      summary: Danh sách thiết bị của tôi
+      tags:
+      - Assets
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseListAssetResponse"
+      security:
+      - jwtBearer: []
+    post:
+      summary: Thêm thiết bị mới
+      tags:
+      - Assets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAssetRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/assets/{id}:
+    put:
+      summary: Cập nhật thiết bị
+      tags:
+      - Assets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAssetRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseAssetResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+    get:
+      summary: Chi tiết thiết bị & lịch sử bảo hành
+      tags:
+      - Assets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseAssetDetailResponse"
+      security:
+      - jwtBearer: []
+    delete:
+      summary: Xoá thiết bị
+      tags:
+      - Assets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+      security:
+      - jwtBearer: []
+  /api/v1/auth/login:
+    post:
+      summary: Đăng nhập
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: Đăng nhập thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseAuthResponse"
+        "401":
+          description: Thông tin đăng nhập không chính xác
+        "400":
+          description: Bad Request
+  /api/v1/auth/logout:
+    post:
+      summary: Đăng xuất
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LogoutRequest"
+        required: true
+      responses:
+        "200":
+          description: Đăng xuất thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseVoid"
+        "400":
+          description: Bad Request
+  /api/v1/auth/refresh:
+    post:
+      summary: Làm mới access token
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshRequest"
+        required: true
+      responses:
+        "200":
+          description: Làm mới token thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseTokenResponse"
+        "401":
+          description: Refresh token không hợp lệ
+        "400":
+          description: Bad Request
+  /api/v1/auth/register:
+    post:
+      summary: Đăng ký tài khoản mới
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+        required: true
+      responses:
+        "201":
+          description: Đăng ký thành công
+        "409":
+          description: Email hoặc số điện thoại đã tồn tại
+        "400":
+          description: Bad Request
+  /api/v1/bookings:
+    get:
+      summary: Danh sách booking của user (phân trang)
+      tags:
+      - Bookings
+      parameters:
+      - description: Từ ngày (ISO)
+        name: fromDate
+        in: query
+        schema:
+          type: string
+      - description: Trang (mặc định 0)
+        name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - description: Kích thước trang (mặc định 10)
+        name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - description: Lọc theo trạng thái (PENDING/ACCEPTED/...)
+        name: status
+        in: query
+        schema:
+          type: string
+      - description: Đến ngày (ISO)
+        name: toDate
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Danh sách booking
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePagedResponseBookingResponse"
+      security:
+      - jwtBearer: []
+    post:
+      summary: Tạo booking mới
+      tags:
+      - Bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBookingRequest"
+        required: true
+      responses:
+        "201":
+          description: Đã tạo booking (không bọc ApiResponse)
+        "400":
+          description: Dữ liệu không hợp lệ (HS-400-0002/0003)
+        "404":
+          description: Không tìm thấy danh mục (HS-404-0003)
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/estimate:
+    post:
+      summary: Ước tính giá đặt lịch
+      tags:
+      - Bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EstimateRequest"
+        required: true
+      responses:
+        "200":
+          description: Kết quả ước tính (giá + phí hoa hồng)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseEstimateResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/accept:
+    post:
+      summary: Kỹ thuật viên nhận việc
+      tags:
+      - Bookings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Chuyển trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseStatusTransitionResponse"
+        "404":
+          description: Không tìm thấy đơn hàng (HS-404-0010)
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/cancel:
+    post:
+      summary: Huỷ booking
+      tags:
+      - Bookings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Chuyển trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseStatusTransitionResponse"
+        "404":
+          description: Không tìm thấy đơn hàng (HS-404-0010)
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/complete:
+    post:
+      summary: Hoàn thành booking
+      tags:
+      - Bookings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompleteBookingRequest"
+        required: true
+      responses:
+        "200":
+          description: Chuyển trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseStatusTransitionResponse"
+        "400":
+          description: Đơn đã hoàn thành (HS-400-0013)
+        "404":
+          description: Không tìm thấy đơn hàng (HS-404-0010)
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/dispute:
+    post:
+      summary: Khách khiếu nại booking
+      tags:
+      - Bookings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Chuyển trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseStatusTransitionResponse"
+        "404":
+          description: Không tìm thấy đơn hàng (HS-404-0010)
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/quote:
+    post:
+      summary: Kỹ thuật viên gửi báo giá
+      tags:
+      - Quotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitQuoteRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseQuoteResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/quote/approve:
+    post:
+      summary: Khách duyệt báo giá
+      tags:
+      - Quotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseQuoteResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/quote/reject:
+    post:
+      summary: Khách từ chối báo giá
+      tags:
+      - Quotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseQuoteResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/resolve-dispute:
+    post:
+      summary: Giải quyết khiếu nại
+      tags:
+      - Bookings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResolveDisputeRequest"
+        required: true
+      responses:
+        "200":
+          description: Chuyển trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseStatusTransitionResponse"
+        "404":
+          description: Không tìm thấy đơn hàng (HS-404-0010)
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/bookings/{id}/start:
+    post:
+      summary: Bắt đầu thực hiện booking
+      tags:
+      - Bookings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Chuyển trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseStatusTransitionResponse"
+        "404":
+          description: Không tìm thấy đơn hàng (HS-404-0010)
+      security:
+      - jwtBearer: []
+  /api/v1/chat/rooms:
+    post:
+      summary: Mở hoặc lấy phòng chat của booking
+      tags:
+      - Chat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRoomRequest"
+        required: true
+      responses:
+        "201":
+          description: Tạo phòng chat thành công
+        "404":
+          description: Không tìm thấy booking
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/chat/rooms/{roomId}/messages:
+    post:
+      summary: Gửi tin nhắn vào phòng chat
+      tags:
+      - Chat
+      parameters:
+      - name: roomId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageRequest"
+        required: true
+      responses:
+        "200":
+          description: Gửi tin nhắn thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseChatMessageResponse"
+        "403":
+          description: Không có quyền truy cập phòng chat (HS-403-0004)
+        "404":
+          description: Không tìm thấy phòng chat
+        "409":
+          description: Phòng chat đã đóng (HS-409-0005)
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+    get:
+      summary: Lấy lịch sử tin nhắn phân trang
+      tags:
+      - Chat
+      parameters:
+      - name: roomId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        "200":
+          description: Trả về lịch sử tin nhắn
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseChatMessagePageResponse"
+        "403":
+          description: Không có quyền truy cập phòng chat (HS-403-0004)
+        "404":
+          description: Không tìm thấy phòng chat
+      security:
+      - jwtBearer: []
+  /api/v1/devices:
+    delete:
+      summary: "Hủy đăng ký FCM device token (soft-delete, BOLA-safe)"
+      tags:
+      - Devices
+      parameters:
+      - name: token
+        in: query
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Token đã được hủy đăng ký
+        "401":
+          description: Thiếu Bearer hợp lệ (HS-401-0001)
+        "403":
+          description: Token không thuộc về caller (HS-403-0007)
+        "404":
+          description: Không tìm thấy token (HS-404-0040)
+      security:
+      - jwtBearer: []
+  /api/v1/devices/register:
+    post:
+      summary: "Đăng ký FCM device token (idempotent, soft cap 5 token/user)"
+      tags:
+      - Devices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterDeviceRequest"
+        required: true
+      responses:
+        "200":
+          description: Token đã được đăng ký hoặc cập nhật
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDeviceRegistrationResponse"
+        "400":
+          description: platform hoặc token không hợp lệ (HS-400-0001)
+        "401":
+          description: Thiếu Bearer hợp lệ (HS-401-0001)
+        "429":
+          description: Vượt giới hạn 5 device token / user (HS-429-0002)
+      security:
+      - jwtBearer: []
+  /api/v1/devices/{token}:
+    delete:
+      summary: Hủy đăng ký FCM device token qua path param (legacy)
+      tags:
+      - Devices
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+      security:
+      - jwtBearer: []
+  /api/v1/dispatch/manual-queue:
+    get:
+      summary: Hàng đợi phân công thủ công
+      tags:
+      - Dispatch
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseListMapStringObject"
+      security:
+      - jwtBearer: []
+  /api/v1/dispatch/manual-queue/{bookingId}/assign:
+    post:
+      summary: Gán kỹ thuật viên thủ công
+      tags:
+      - Dispatch
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ManualAssignRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseMapStringObject"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/notifications:
+    get:
+      summary: Lấy danh sách thông báo của user (chưa đọc lên đầu)
+      tags:
+      - Notifications
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: type
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Trả về danh sách thông báo phân trang
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseNotificationPageResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/notifications/read-all:
+    post:
+      summary: Đánh dấu tất cả thông báo của user đã đọc
+      tags:
+      - Notifications
+      responses:
+        "200":
+          description: Đánh dấu tất cả đã đọc thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseVoid"
+      security:
+      - jwtBearer: []
+  /api/v1/notifications/settings:
+    put:
+      summary: Cập nhật cài đặt bật/tắt thông báo theo loại
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateNotificationSettingsRequest"
+        required: true
+      responses:
+        "200":
+          description: Cập nhật cài đặt thông báo thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseNotificationSettingsResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+    get:
+      summary: Lấy cài đặt bật/tắt thông báo theo loại
+      tags:
+      - Notifications
+      responses:
+        "200":
+          description: Trả về cài đặt thông báo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseNotificationSettingsResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/notifications/{id}/read:
+    post:
+      summary: Đánh dấu một thông báo đã đọc
+      tags:
+      - Notifications
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Đánh dấu đã đọc thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseVoid"
+        "403":
+          description: Không có quyền truy cập thông báo (HS-403-0006)
+        "404":
+          description: Không tìm thấy thông báo
+      security:
+      - jwtBearer: []
+  /api/v1/profiles:
+    put:
+      summary: Cập nhật hồ sơ
+      tags:
+      - Profiles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseUserProfileResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+    get:
+      summary: Lấy hồ sơ người dùng
+      tags:
+      - Profiles
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseUserProfileResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/service-categories:
+    get:
+      summary: Danh sách danh mục (phân trang)
+      tags:
+      - ServiceCategories
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePagedResponseServiceCategoryResponse"
+      security:
+      - jwtBearer: []
+    post:
+      summary: Tạo danh mục mới
+      tags:
+      - ServiceCategories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateServiceCategoryRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/service-categories/{id}:
+    put:
+      summary: Cập nhật danh mục
+      tags:
+      - ServiceCategories
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateServiceCategoryRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseServiceCategoryResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+    get:
+      summary: Chi tiết danh mục
+      tags:
+      - ServiceCategories
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseServiceCategoryResponse"
+      security:
+      - jwtBearer: []
+    delete:
+      summary: Xoá danh mục
+      tags:
+      - ServiceCategories
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+      security:
+      - jwtBearer: []
+  /api/v1/technician/location:
+    put:
+      summary: Cập nhật vị trí GPS kỹ thuật viên
+      tags:
+      - Technician
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseVoid"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/voip/calls:
+    post:
+      summary: Bắt đầu cuộc gọi VoIP
+      tags:
+      - VoIP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartCallRequest"
+        required: true
+      responses:
+        "201":
+          description: Tạo log cuộc gọi thành công
+        "404":
+          description: Không tìm thấy booking
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+    get:
+      summary: Lấy danh sách cuộc gọi của booking
+      tags:
+      - VoIP
+      parameters:
+      - name: bookingId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Trả về danh sách log cuộc gọi
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseListVoipCallResponse"
+        "403":
+          description: Không có quyền xem log cuộc gọi (HS-403-0005)
+      security:
+      - jwtBearer: []
+  /api/v1/voip/calls/end:
+    post:
+      summary: Kết thúc cuộc gọi VoIP
+      tags:
+      - VoIP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EndCallRequest"
+        required: true
+      responses:
+        "200":
+          description: Cập nhật log cuộc gọi thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseVoipCallResponse"
+        "404":
+          description: Không tìm thấy log cuộc gọi
+        "400":
+          description: Thiếu recording_url bắt buộc
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/me:
+    get:
+      summary: Thông tin ví của tôi
+      tags:
+      - Wallet
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseWalletResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/me/transactions:
+    get:
+      summary: Lịch sử giao dịch ví
+      tags:
+      - Wallet
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: type
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePagedResponseWalletTransactionResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/payments/deposit:
+    post:
+      summary: Nạp tiền vào ví
+      tags:
+      - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentDepositDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseLedgerTransactionResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/payments/withdraw:
+    post:
+      summary: Rút tiền khỏi ví
+      tags:
+      - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentWithdrawDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseLedgerTransactionResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/withdrawals:
+    post:
+      summary: Tạo yêu cầu rút tiền
+      tags:
+      - Withdrawals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawalRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseWithdrawalRequestResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+    get:
+      summary: Danh sách yêu cầu rút của tôi
+      tags:
+      - Withdrawals
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePagedResponseWithdrawalRequestResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/withdrawals/all:
+    get:
+      summary: Tất cả yêu cầu rút (ADMIN)
+      tags:
+      - Withdrawals
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: status
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePagedResponseWithdrawalRequestResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/withdrawals/{id}/approve:
+    put:
+      summary: Duyệt yêu cầu rút (ADMIN)
+      tags:
+      - Withdrawals
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseWithdrawalRequestResponse"
+      security:
+      - jwtBearer: []
+  /api/v1/wallets/withdrawals/{id}/reject:
+    put:
+      summary: Từ chối yêu cầu rút (ADMIN)
+      tags:
+      - Withdrawals
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawalRejectDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseWithdrawalRequestResponse"
+        "400":
+          description: Bad Request
+      security:
+      - jwtBearer: []
+servers:
+- url: https://homeservice-uat.vitinhkimhung.com
+  description: UAT
+info:
+  title: homeservice-api API
+  version: unspecified
