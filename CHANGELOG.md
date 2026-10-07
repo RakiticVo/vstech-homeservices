@@ -8,6 +8,7 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 ## [Unreleased]
 
 ### Added
+- `docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`: Prompt Claude Design cho 4 batch UI còn thiếu so với API (Batch 14 Báo giá chi tiết, 15 Nạp tiền ví thợ, 16 Thông báo, 17 Lịch sử cuộc gọi — Cells 132–141).
 - **Pha 0 tích hợp API — nền tảng mạng:**
   - `AppEnv` (`core/config/app_env.dart`): `API_BASE_URL` / `WS_BASE_URL` qua `--dart-define`, mặc định UAT `https://homeservice-uat.vitinhkimhung.com`.
   - `ApiClient` viết lại: helper `get/post/put/delete` parse envelope `ApiResponse` và ném `NetworkException` khi có `errorCode`; refresh token dùng chung một lần cho các 401 đồng thời (Dio riêng, giữ refresh token cũ); tự gắn `X-Idempotency-Key` cho call `idempotent: true` (giữ nguyên key khi retry); `Accept-Language` theo locale; `sendUnwrapped` cho endpoint không bọc envelope (`POST /bookings`).
