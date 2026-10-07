@@ -17,38 +17,14 @@ Widget _createTestOperationsWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.workerSchedule,
-        builder: (context, state) => const WorkerScheduleWeekPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerAvailability,
-        builder: (context, state) => const WorkerAvailabilityPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerWorkZone,
-        builder: (context, state) => const WorkerWorkZonePage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerSkills,
-        builder: (context, state) => const WorkerSkillsPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerUploadCert,
-        builder: (context, state) => const WorkerUploadCertPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerPerformance,
-        builder: (context, state) => const WorkerPerformancePage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerProfile,
-        builder: (context, state) => const WorkerProfilePage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.workerSchedule, builder: (context, state) => const WorkerScheduleWeekPage()),
+      GoRoute(path: AppRoutes.workerAvailability, builder: (context, state) => const WorkerAvailabilityPage()),
+      GoRoute(path: AppRoutes.workerWorkZone, builder: (context, state) => const WorkerWorkZonePage()),
+      GoRoute(path: AppRoutes.workerSkills, builder: (context, state) => const WorkerSkillsPage()),
+      GoRoute(path: AppRoutes.workerUploadCert, builder: (context, state) => const WorkerUploadCertPage()),
+      GoRoute(path: AppRoutes.workerPerformance, builder: (context, state) => const WorkerPerformancePage()),
+      GoRoute(path: AppRoutes.workerProfile, builder: (context, state) => const WorkerProfilePage()),
       GoRoute(
         path: AppRoutes.roleGateway,
         builder: (context, state) => const Scaffold(body: Text('RoleGateway')),
@@ -77,10 +53,7 @@ Widget _createTestOperationsWidget(Widget child) {
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
     ],
-    supportedLocales: const [
-      Locale('vi'),
-      Locale('en'),
-    ],
+    supportedLocales: const [Locale('vi'), Locale('en')],
     locale: const Locale('vi'),
   );
 }

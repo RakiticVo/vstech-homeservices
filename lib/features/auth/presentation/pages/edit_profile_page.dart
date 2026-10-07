@@ -41,9 +41,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _saveProfile() {
     setState(() => _isSaved = true);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.l10n.editProfileSavedSuccess)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.editProfileSavedSuccess)));
   }
 
   @override
@@ -68,10 +66,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         title: Text(
           l10n.editProfileTitle,
-          style: AppTextStyles.headlineMd.copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
         ),
         centerTitle: false,
       ),
@@ -80,10 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.md,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
                 child: Column(
                   children: [
                     // Saved Success Banner
@@ -98,11 +90,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(
-                              Icons.check_circle,
-                              color: AppColors.primary,
-                              size: 20,
-                            ),
+                            const Icon(Icons.check_circle, color: AppColors.primary, size: 20),
                             const SizedBox(width: AppSpacing.sm),
                             Expanded(
                               child: Text(
@@ -125,10 +113,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           Container(
                             width: 88,
                             height: 88,
-                            decoration: const BoxDecoration(
-                              color: AppColors.secondarySurface,
-                              shape: BoxShape.circle,
-                            ),
+                            decoration: const BoxDecoration(color: AppColors.secondarySurface, shape: BoxShape.circle),
                             alignment: Alignment.center,
                             child: Text(
                               'M',
@@ -157,11 +142,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     const SizedBox(height: AppSpacing.md),
 
                     // Full name
-                    _buildField(
-                      keyName: 'name',
-                      label: l10n.editProfileFullName,
-                      controller: _nameController,
-                    ),
+                    _buildField(keyName: 'name', label: l10n.editProfileFullName, controller: _nameController),
                     const SizedBox(height: AppSpacing.md),
 
                     // Phone Number
@@ -174,19 +155,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     const SizedBox(height: AppSpacing.md),
 
                     // Email
-                    _buildField(
-                      keyName: 'email',
-                      label: l10n.editProfileEmail,
-                      controller: _emailController,
-                    ),
+                    _buildField(keyName: 'email', label: l10n.editProfileEmail, controller: _emailController),
                     const SizedBox(height: AppSpacing.md),
 
                     // Date of birth
-                    _buildField(
-                      keyName: 'dob',
-                      label: l10n.editProfileDob,
-                      controller: _dobController,
-                    ),
+                    _buildField(keyName: 'dob', label: l10n.editProfileDob, controller: _dobController),
                     const SizedBox(height: AppSpacing.lg),
                   ],
                 ),
@@ -195,10 +168,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
             // Save CTA
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.md,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
               decoration: const BoxDecoration(
                 color: AppColors.surface,
                 border: Border(top: BorderSide(color: AppColors.border)),
@@ -212,9 +182,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.full),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.full)),
                   ),
                   child: Text(
                     l10n.editProfileSaveCta,
@@ -247,10 +215,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           children: [
             Text(
               label,
-              style: AppTextStyles.caption.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.textSecondary,
-              ),
+              style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w700, color: AppColors.textSecondary),
             ),
             if (tag != null)
               Flexible(
@@ -280,14 +245,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: TextField(
             key: Key('edit_profile_$keyName'),
             controller: controller,
-            style: AppTextStyles.bodyMd.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w600,
-            ),
-            decoration: const InputDecoration(
-              isDense: true,
-              border: InputBorder.none,
-            ),
+            style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+            decoration: const InputDecoration(isDense: true, border: InputBorder.none),
           ),
         ),
       ],

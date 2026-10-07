@@ -32,19 +32,13 @@ class CustomerProfilePage extends StatelessWidget {
         ),
         title: Text(
           l10n.profileTitle,
-          style: AppTextStyles.headlineMd.copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
         ),
         centerTitle: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.sm,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
           child: Column(
             children: [
               // User header card
@@ -76,18 +70,11 @@ class CustomerProfilePage extends StatelessWidget {
           Container(
             width: 58,
             height: 58,
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
-              shape: BoxShape.circle,
-            ),
+            decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
             alignment: Alignment.center,
             child: Text(
               'M',
-              style: AppTextStyles.headlineMd.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w800,
-                fontSize: 22,
-              ),
+              style: AppTextStyles.headlineMd.copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 22),
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -104,12 +91,7 @@ class CustomerProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  'maingvyen@gmail.com',
-                  style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
+                Text('maingvyen@gmail.com', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
               ],
             ),
           ),
@@ -134,11 +116,7 @@ class CustomerProfilePage extends StatelessWidget {
     final l10n = context.l10n;
 
     final menuItems = [
-      _ProfileMenuItem(
-        icon: Icons.person_outline,
-        title: l10n.profileMenuPersonalInfo,
-        route: AppRoutes.editProfile,
-      ),
+      _ProfileMenuItem(icon: Icons.person_outline, title: l10n.profileMenuPersonalInfo, route: AppRoutes.editProfile),
       _ProfileMenuItem(
         icon: Icons.location_on_outlined,
         title: l10n.profileMenuAddresses,
@@ -190,24 +168,13 @@ class CustomerProfilePage extends StatelessWidget {
             key: Key('profile_menu_${item.route}'),
             onTap: () => context.push(item.route),
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.md - 1,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.md - 1),
               decoration: BoxDecoration(
-                border: isLast
-                    ? null
-                    : const Border(
-                        bottom: BorderSide(color: AppColors.border),
-                      ),
+                border: isLast ? null : const Border(bottom: BorderSide(color: AppColors.border)),
               ),
               child: Row(
                 children: [
-                  Icon(
-                    item.icon,
-                    color: AppColors.textSecondary,
-                    size: 20,
-                  ),
+                  Icon(item.icon, color: AppColors.textSecondary, size: 20),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(
@@ -222,18 +189,11 @@ class CustomerProfilePage extends StatelessWidget {
                   if (item.meta != null) ...[
                     Text(
                       item.meta!,
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textMuted,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(width: AppSpacing.sm),
                   ],
-                  const Icon(
-                    Icons.chevron_right,
-                    color: AppColors.textMuted,
-                    size: 18,
-                  ),
+                  const Icon(Icons.chevron_right, color: AppColors.textMuted, size: 18),
                 ],
               ),
             ),
@@ -245,12 +205,7 @@ class CustomerProfilePage extends StatelessWidget {
 }
 
 class _ProfileMenuItem {
-  const _ProfileMenuItem({
-    required this.icon,
-    required this.title,
-    required this.route,
-    this.meta,
-  });
+  const _ProfileMenuItem({required this.icon, required this.title, required this.route, this.meta});
 
   final IconData icon;
   final String title;

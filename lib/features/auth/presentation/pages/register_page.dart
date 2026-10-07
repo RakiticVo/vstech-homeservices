@@ -14,10 +14,7 @@ import 'package:vstech_home_services/features/auth/presentation/widgets/auth_rol
 /// Screen 06 — Registration Screen.
 /// Collects user details (Full name, Phone, Password) and triggers OTP verification.
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({
-    super.key,
-    this.initialRole = 'customer',
-  });
+  const RegisterPage({super.key, this.initialRole = 'customer'});
 
   final String initialRole;
 
@@ -99,9 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() => _isLoading = false);
       final roleStr = _isWorker ? 'worker' : 'customer';
       unawaited(
-        context.push(
-          '${AppRoutes.verifyOtp}?phone=${Uri.encodeComponent(phone)}&role=$roleStr&context=register',
-        ),
+        context.push('${AppRoutes.verifyOtp}?phone=${Uri.encodeComponent(phone)}&role=$roleStr&context=register'),
       );
     });
   }
@@ -121,10 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Padding(
             padding: const EdgeInsets.only(right: AppSpacing.md),
             child: Center(
-              child: AuthRoleBadge(
-                isWorker: _isWorker,
-                onSwitchRole: _toggleRole,
-              ),
+              child: AuthRoleBadge(isWorker: _isWorker, onSwitchRole: _toggleRole),
             ),
           ),
         ],
@@ -140,18 +132,10 @@ class _RegisterPageState extends State<RegisterPage> {
               // Title & Subtitle
               Text(
                 context.l10n.registerTitle,
-                style: AppTextStyles.headlineMd.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                ),
+                style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
               ),
               const SizedBox(height: AppSpacing.xs),
-              Text(
-                context.l10n.registerSubtitle,
-                style: AppTextStyles.bodyMd.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
+              Text(context.l10n.registerSubtitle, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
 
               const SizedBox(height: AppSpacing.xl),
 
@@ -162,11 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _fullNameController,
                 errorText: _fullNameError,
                 keyboardType: TextInputType.name,
-                prefixIcon: const Icon(
-                  Icons.person_outline,
-                  color: AppColors.textMuted,
-                  size: 20,
-                ),
+                prefixIcon: const Icon(Icons.person_outline, color: AppColors.textMuted, size: 20),
                 textInputAction: TextInputAction.next,
               ),
 
@@ -179,11 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _phoneController,
                 errorText: _phoneError,
                 keyboardType: TextInputType.phone,
-                prefixIcon: const Icon(
-                  Icons.phone_outlined,
-                  color: AppColors.textMuted,
-                  size: 20,
-                ),
+                prefixIcon: const Icon(Icons.phone_outlined, color: AppColors.textMuted, size: 20),
                 textInputAction: TextInputAction.next,
               ),
 
@@ -196,11 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 errorText: _passwordError,
-                prefixIcon: const Icon(
-                  Icons.lock_outline,
-                  color: AppColors.textMuted,
-                  size: 20,
-                ),
+                prefixIcon: const Icon(Icons.lock_outline, color: AppColors.textMuted, size: 20),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
@@ -221,21 +193,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _confirmPasswordController,
                 obscureText: _obscureConfirmPassword,
                 errorText: _confirmPasswordError,
-                prefixIcon: const Icon(
-                  Icons.lock_outline,
-                  color: AppColors.textMuted,
-                  size: 20,
-                ),
+                prefixIcon: const Icon(Icons.lock_outline, color: AppColors.textMuted, size: 20),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscureConfirmPassword
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
+                    _obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                     color: AppColors.textMuted,
                     size: 20,
                   ),
-                  onPressed: () =>
-                      setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                  onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
                 ),
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _onRegister(),
@@ -253,9 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Checkbox(
                       value: _agreedToTerms,
                       activeColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                       side: const BorderSide(color: AppColors.border),
                       onChanged: (val) {
                         setState(() {
@@ -306,20 +269,13 @@ class _RegisterPageState extends State<RegisterPage> {
               if (_termsError != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 4, left: 28),
-                  child: Text(
-                    _termsError!,
-                    style: AppTextStyles.caption.copyWith(color: AppColors.error),
-                  ),
+                  child: Text(_termsError!, style: AppTextStyles.caption.copyWith(color: AppColors.error)),
                 ),
 
               const SizedBox(height: AppSpacing.xl),
 
               // Primary CTA: Register
-              AppButton.primary(
-                label: context.l10n.registerCta,
-                onPressed: _onRegister,
-                isLoading: _isLoading,
-              ),
+              AppButton.primary(label: context.l10n.registerCta, onPressed: _onRegister, isLoading: _isLoading),
 
               const SizedBox(height: AppSpacing.xl),
 
@@ -329,9 +285,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Text(
                     context.l10n.registerAlreadyHaveAccount,
-                    style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                    style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   GestureDetector(
@@ -341,10 +295,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                     child: Text(
                       context.l10n.registerLoginNow,
-                      style: AppTextStyles.bodyMd.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: AppTextStyles.bodyMd.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
                     ),
                   ),
                 ],

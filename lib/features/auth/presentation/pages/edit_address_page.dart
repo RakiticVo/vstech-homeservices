@@ -24,9 +24,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
   final TextEditingController _addressController = TextEditingController(
     text: '123 Nguyễn Thị Minh Khai, Phường Bến Thành, Quận 1',
   );
-  final TextEditingController _noteController = TextEditingController(
-    text: 'Gửi xe ở hầm B2, gọi chuông cổng',
-  );
+  final TextEditingController _noteController = TextEditingController(text: 'Gửi xe ở hầm B2, gọi chuông cổng');
 
   @override
   void dispose() {
@@ -57,10 +55,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
         ),
         title: Text(
           l10n.addressEditTitle,
-          style: AppTextStyles.headlineMd.copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
         ),
         centerTitle: false,
       ),
@@ -69,10 +64,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.md,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -81,20 +73,11 @@ class _EditAddressPageState extends State<EditAddressPage> {
                     const SizedBox(height: AppSpacing.sm),
                     Row(
                       children: [
-                        _buildLabelChip(
-                          label: l10n.addressesTagHome,
-                          value: 'home',
-                        ),
+                        _buildLabelChip(label: l10n.addressesTagHome, value: 'home'),
                         const SizedBox(width: AppSpacing.sm),
-                        _buildLabelChip(
-                          label: l10n.addressesTagWork,
-                          value: 'work',
-                        ),
+                        _buildLabelChip(label: l10n.addressesTagWork, value: 'work'),
                         const SizedBox(width: AppSpacing.sm),
-                        _buildLabelChip(
-                          label: l10n.addressesTagOther,
-                          value: 'other',
-                        ),
+                        _buildLabelChip(label: l10n.addressesTagOther, value: 'other'),
                       ],
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -112,19 +95,11 @@ class _EditAddressPageState extends State<EditAddressPage> {
                       child: TextField(
                         key: const Key('address_search_input'),
                         controller: _addressController,
-                        style: AppTextStyles.bodyMd.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
                         decoration: InputDecoration(
                           hintText: l10n.addressEditSearchPlaceholder,
-                          hintStyle: AppTextStyles.bodyMd.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                          icon: const Icon(
-                            Icons.search,
-                            color: AppColors.textSecondary,
-                          ),
+                          hintStyle: AppTextStyles.bodyMd.copyWith(color: AppColors.textMuted),
+                          icon: const Icon(Icons.search, color: AppColors.textSecondary),
                           border: InputBorder.none,
                         ),
                       ),
@@ -142,19 +117,12 @@ class _EditAddressPageState extends State<EditAddressPage> {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          const Icon(
-                            Icons.map,
-                            color: AppColors.textMuted,
-                            size: 48,
-                          ),
+                          const Icon(Icons.map, color: AppColors.textMuted, size: 48),
                           Positioned(
                             bottom: 10,
                             left: 10,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
                                 color: const Color(0xCC0F172A),
                                 borderRadius: BorderRadius.circular(AppRadius.chip),
@@ -188,15 +156,9 @@ class _EditAddressPageState extends State<EditAddressPage> {
                         children: [
                           Row(
                             children: [
-                              _buildHouseTypeOption(
-                                label: l10n.addressEditTownhouse,
-                                value: 'nha',
-                              ),
+                              _buildHouseTypeOption(label: l10n.addressEditTownhouse, value: 'nha'),
                               const SizedBox(width: AppSpacing.sm),
-                              _buildHouseTypeOption(
-                                label: l10n.addressEditApartment,
-                                value: 'cc',
-                              ),
+                              _buildHouseTypeOption(label: l10n.addressEditApartment, value: 'cc'),
                             ],
                           ),
                           if (_houseType == 'cc') ...[
@@ -247,15 +209,9 @@ class _EditAddressPageState extends State<EditAddressPage> {
                             // Elevator toggle
                             Row(
                               children: [
-                                _buildElevatorOption(
-                                  label: l10n.addressEditHasElevator,
-                                  value: true,
-                                ),
+                                _buildElevatorOption(label: l10n.addressEditHasElevator, value: true),
                                 const SizedBox(width: AppSpacing.sm),
-                                _buildElevatorOption(
-                                  label: l10n.addressEditNoElevator,
-                                  value: false,
-                                ),
+                                _buildElevatorOption(label: l10n.addressEditNoElevator, value: false),
                               ],
                             ),
                           ],
@@ -277,13 +233,8 @@ class _EditAddressPageState extends State<EditAddressPage> {
                       child: TextField(
                         key: const Key('address_note_input'),
                         controller: _noteController,
-                        style: AppTextStyles.bodyMd.copyWith(
-                          color: AppColors.textPrimary,
-                        ),
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                        ),
+                        style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary),
+                        decoration: const InputDecoration(isDense: true, border: InputBorder.none),
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -317,10 +268,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
 
             // Save CTA
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.md,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
               decoration: const BoxDecoration(
                 color: AppColors.surface,
                 border: Border(top: BorderSide(color: AppColors.border)),
@@ -336,9 +284,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.full),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.full)),
                   ),
                   child: Text(
                     l10n.addressEditSaveCta,
@@ -360,11 +306,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
   Widget _buildSectionHeader(String title) {
     return Text(
       title,
-      style: AppTextStyles.titleLg.copyWith(
-        fontSize: 14,
-        fontWeight: FontWeight.w800,
-        color: AppColors.textPrimary,
-      ),
+      style: AppTextStyles.titleLg.copyWith(fontSize: 14, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
     );
   }
 
@@ -379,10 +321,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
           decoration: BoxDecoration(
             color: isSelected ? AppColors.secondarySurface : AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadius.control),
-            border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
-              width: 1.5,
-            ),
+            border: Border.all(color: isSelected ? AppColors.primary : AppColors.border, width: 1.5),
           ),
           alignment: Alignment.center,
           child: Text(
@@ -409,10 +348,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
           decoration: BoxDecoration(
             color: isSelected ? AppColors.secondarySurface : AppColors.background,
             borderRadius: BorderRadius.circular(AppRadius.control),
-            border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
-              width: 1.5,
-            ),
+            border: Border.all(color: isSelected ? AppColors.primary : AppColors.border, width: 1.5),
           ),
           alignment: Alignment.center,
           child: Text(
@@ -439,10 +375,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
           decoration: BoxDecoration(
             color: isSelected ? AppColors.secondarySurface : AppColors.background,
             borderRadius: BorderRadius.circular(AppRadius.control),
-            border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
-              width: 1.5,
-            ),
+            border: Border.all(color: isSelected ? AppColors.primary : AppColors.border, width: 1.5),
           ),
           alignment: Alignment.center,
           child: Text(

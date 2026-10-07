@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_assets.dart';
@@ -23,10 +24,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _progressController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2200),
-    )..forward();
+    _progressController = AnimationController(vsync: this, duration: const Duration(milliseconds: 2200))..forward();
 
     _navigationTimer = Timer(const Duration(milliseconds: 2500), _navigateToNext);
   }
@@ -63,18 +61,12 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.home_work_outlined,
-                      size: 72,
-                      color: AppColors.primary,
-                    ),
+                    const Icon(Icons.home_work_outlined, size: 72, color: AppColors.primary),
                     const SizedBox(height: AppSpacing.md),
                     Text(
                       'HomeService',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

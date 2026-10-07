@@ -15,10 +15,7 @@ import 'package:vstech_home_services/features/auth/presentation/widgets/social_a
 /// Screen 05 — Role-Aware Login Screen.
 /// Supports both Customer (Phone/Email + Social) and Worker (Phone only).
 class LoginPage extends StatefulWidget {
-  const LoginPage({
-    super.key,
-    this.initialRole = 'customer',
-  });
+  const LoginPage({super.key, this.initialRole = 'customer'});
 
   final String initialRole;
 
@@ -78,9 +75,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => _isLoading = false);
       final roleStr = _isWorker ? 'worker' : 'customer';
       unawaited(
-        context.push(
-          '${AppRoutes.verifyOtp}?phone=${Uri.encodeComponent(identifier)}&role=$roleStr&context=login',
-        ),
+        context.push('${AppRoutes.verifyOtp}?phone=${Uri.encodeComponent(identifier)}&role=$roleStr&context=login'),
       );
     });
   }
@@ -88,11 +83,7 @@ class _LoginPageState extends State<LoginPage> {
   void _onForgotPassword() {
     final roleStr = _isWorker ? 'worker' : 'customer';
     final phone = _identifierController.text.trim();
-    unawaited(
-      context.push(
-        '${AppRoutes.forgotPassword}?role=$roleStr&phone=${Uri.encodeComponent(phone)}',
-      ),
-    );
+    unawaited(context.push('${AppRoutes.forgotPassword}?role=$roleStr&phone=${Uri.encodeComponent(phone)}'));
   }
 
   void _onNavigateToRegister() {
@@ -115,10 +106,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.only(right: AppSpacing.md),
             child: Center(
-              child: AuthRoleBadge(
-                isWorker: _isWorker,
-                onSwitchRole: _toggleRole,
-              ),
+              child: AuthRoleBadge(isWorker: _isWorker, onSwitchRole: _toggleRole),
             ),
           ),
         ],
@@ -134,29 +122,17 @@ class _LoginPageState extends State<LoginPage> {
               // Title & Welcome
               Text(
                 context.l10n.loginTitle,
-                style: AppTextStyles.headlineMd.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                ),
+                style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
               ),
               const SizedBox(height: AppSpacing.xs),
-              Text(
-                context.l10n.loginWelcome,
-                style: AppTextStyles.bodyMd.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
+              Text(context.l10n.loginWelcome, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
 
               const SizedBox(height: AppSpacing.xl),
 
               // Identifier input field (Phone or Email for customer, Phone for worker)
               AppTextField(
-                label: _isWorker
-                    ? context.l10n.loginPhoneWorkerLabel
-                    : context.l10n.loginPhoneOrEmailLabel,
-                hintText: _isWorker
-                    ? context.l10n.loginPhoneWorkerHint
-                    : context.l10n.loginPhoneOrEmailHint,
+                label: _isWorker ? context.l10n.loginPhoneWorkerLabel : context.l10n.loginPhoneOrEmailLabel,
+                hintText: _isWorker ? context.l10n.loginPhoneWorkerHint : context.l10n.loginPhoneOrEmailHint,
                 controller: _identifierController,
                 errorText: _identifierError,
                 keyboardType: _isWorker ? TextInputType.phone : TextInputType.emailAddress,
@@ -179,11 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                 errorText: _passwordError,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _onLogin(),
-                prefixIcon: const Icon(
-                  Icons.lock_outline,
-                  color: AppColors.textMuted,
-                  size: 20,
-                ),
+                prefixIcon: const Icon(Icons.lock_outline, color: AppColors.textMuted, size: 20),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
@@ -209,10 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Text(
                     context.l10n.loginForgotPassword,
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
                   ),
                 ),
               ),
@@ -220,11 +189,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: AppSpacing.md),
 
               // Primary CTA: Sign In
-              AppButton.primary(
-                label: context.l10n.loginCta,
-                onPressed: _onLogin,
-                isLoading: _isLoading,
-              ),
+              AppButton.primary(label: context.l10n.loginCta, onPressed: _onLogin, isLoading: _isLoading),
 
               // Social Logins (Customer only per DESIGN.md §6b)
               if (!_isWorker) ...[
@@ -243,17 +208,9 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 const SizedBox(height: AppSpacing.lg),
-                SocialAuthButton(
-                  provider: SocialProvider.google,
-                  label: context.l10n.loginGoogle,
-                  onPressed: () {},
-                ),
+                SocialAuthButton(provider: SocialProvider.google, label: context.l10n.loginGoogle, onPressed: () {}),
                 const SizedBox(height: AppSpacing.sm),
-                SocialAuthButton(
-                  provider: SocialProvider.apple,
-                  label: context.l10n.loginApple,
-                  onPressed: () {},
-                ),
+                SocialAuthButton(provider: SocialProvider.apple, label: context.l10n.loginApple, onPressed: () {}),
                 const SizedBox(height: AppSpacing.sm),
                 SocialAuthButton(
                   provider: SocialProvider.facebook,
@@ -270,19 +227,14 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     context.l10n.loginNoAccount,
-                    style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                    style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   GestureDetector(
                     onTap: _onNavigateToRegister,
                     child: Text(
                       context.l10n.loginRegisterNow,
-                      style: AppTextStyles.bodyMd.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: AppTextStyles.bodyMd.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
                     ),
                   ),
                 ],

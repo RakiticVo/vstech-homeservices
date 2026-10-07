@@ -19,30 +19,12 @@ Widget _createTestAuthWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.editProfile,
-        builder: (context, state) => const EditProfilePage(),
-      ),
-      GoRoute(
-        path: AppRoutes.myAddresses,
-        builder: (context, state) => const MyAddressesPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.editAddress,
-        builder: (context, state) => const EditAddressPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.paymentMethods,
-        builder: (context, state) => const PaymentMethodsPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.linkWallet,
-        builder: (context, state) => const LinkWalletPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.editProfile, builder: (context, state) => const EditProfilePage()),
+      GoRoute(path: AppRoutes.myAddresses, builder: (context, state) => const MyAddressesPage()),
+      GoRoute(path: AppRoutes.editAddress, builder: (context, state) => const EditAddressPage()),
+      GoRoute(path: AppRoutes.paymentMethods, builder: (context, state) => const PaymentMethodsPage()),
+      GoRoute(path: AppRoutes.linkWallet, builder: (context, state) => const LinkWalletPage()),
       GoRoute(
         path: AppRoutes.favouritePros,
         builder: (context, state) => const Scaffold(body: Text('FavouritePros')),
@@ -51,18 +33,9 @@ Widget _createTestAuthWidget(Widget child) {
         path: AppRoutes.customerNotificationSettings,
         builder: (context, state) => const Scaffold(body: Text('NotificationSettings')),
       ),
-      GoRoute(
-        path: AppRoutes.customerSettings,
-        builder: (context, state) => const CustomerSettingsPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.changePassword,
-        builder: (context, state) => const ChangePasswordPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.deleteAccount,
-        builder: (context, state) => const DeleteAccountPage(),
-      ),
+      GoRoute(path: AppRoutes.customerSettings, builder: (context, state) => const CustomerSettingsPage()),
+      GoRoute(path: AppRoutes.changePassword, builder: (context, state) => const ChangePasswordPage()),
+      GoRoute(path: AppRoutes.deleteAccount, builder: (context, state) => const DeleteAccountPage()),
       GoRoute(
         path: AppRoutes.customerDisputeList,
         builder: (context, state) => const Scaffold(body: Text('DisputeList')),
@@ -87,10 +60,7 @@ Widget _createTestAuthWidget(Widget child) {
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
     ],
-    supportedLocales: const [
-      Locale('vi'),
-      Locale('en'),
-    ],
+    supportedLocales: const [Locale('vi'), Locale('en')],
     locale: const Locale('vi'),
   );
 }
@@ -103,9 +73,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const CustomerProfilePage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const CustomerProfilePage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Hồ sơ cá nhân'), findsOneWidget);
@@ -130,9 +98,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const EditProfilePage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const EditProfilePage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Họ và tên'), findsOneWidget);
@@ -150,9 +116,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const MyAddressesPage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const MyAddressesPage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Địa chỉ của tôi'), findsOneWidget);
@@ -177,9 +141,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const EditAddressPage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const EditAddressPage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Thêm / Sửa địa chỉ'), findsOneWidget);
@@ -209,9 +171,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const PaymentMethodsPage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const PaymentMethodsPage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Phương thức thanh toán'), findsOneWidget);
@@ -233,9 +193,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const LinkWalletPage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const LinkWalletPage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Liên kết ví điện tử'), findsOneWidget);
@@ -262,9 +220,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const CustomerSettingsPage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const CustomerSettingsPage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Cài đặt & Lịch sử'), findsOneWidget);
@@ -298,9 +254,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const ChangePasswordPage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const ChangePasswordPage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Đổi mật khẩu'), findsOneWidget);
@@ -322,9 +276,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        _createTestAuthWidget(const DeleteAccountPage()),
-      );
+      await tester.pumpWidget(_createTestAuthWidget(const DeleteAccountPage()));
       await tester.pumpAndSettle();
 
       expect(find.text('Xoá tài khoản'), findsOneWidget);
