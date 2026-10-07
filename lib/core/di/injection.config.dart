@@ -28,8 +28,12 @@ import 'package:vstech_home_services/features/auth/data/repositories/auth_reposi
     as _i408;
 import 'package:vstech_home_services/features/auth/data/repositories/profile_repository_impl.dart'
     as _i117;
+import 'package:vstech_home_services/features/auth/data/repositories/secure_credentials_repository.dart'
+    as _i1020;
 import 'package:vstech_home_services/features/auth/domain/repositories/auth_repository.dart'
     as _i731;
+import 'package:vstech_home_services/features/auth/domain/repositories/credentials_repository.dart'
+    as _i483;
 import 'package:vstech_home_services/features/auth/domain/repositories/profile_repository.dart'
     as _i1025;
 import 'package:vstech_home_services/features/auth/domain/usecases/get_profile_use_case.dart'
@@ -63,6 +67,10 @@ extension GetItInjectableX on _i174.GetIt {
     final registerModule = _$RegisterModule();
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => registerModule.secureStorage,
+    );
+    gh.lazySingleton<_i483.CredentialsRepository>(
+      () =>
+          _i1020.SecureCredentialsRepository(gh<_i558.FlutterSecureStorage>()),
     );
     gh.lazySingleton<_i381.AuthTokenStore>(
       () => _i602.SecureAuthTokenStore(gh<_i558.FlutterSecureStorage>()),
@@ -101,6 +109,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i516.RegisterCubit(
         gh<_i1073.RegisterUseCase>(),
         gh<_i371.SessionCubit>(),
+        gh<_i483.CredentialsRepository>(),
+      ),
+    );
+    gh.factory<_i242.LoginCubit>(
+      () => _i242.LoginCubit(
+        gh<_i873.LoginUseCase>(),
+        gh<_i371.SessionCubit>(),
+        gh<_i483.CredentialsRepository>(),
       ),
     );
     gh.factory<_i188.LogoutCubit>(
@@ -111,10 +127,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1025.ProfileRepository>(
       () => _i117.ProfileRepositoryImpl(gh<_i599.ProfileRemoteDataSource>()),
-    );
-    gh.factory<_i242.LoginCubit>(
-      () =>
-          _i242.LoginCubit(gh<_i873.LoginUseCase>(), gh<_i371.SessionCubit>()),
     );
     gh.factory<_i294.GetProfileUseCase>(
       () => _i294.GetProfileUseCase(gh<_i1025.ProfileRepository>()),

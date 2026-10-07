@@ -41,8 +41,8 @@ void main() {
       expect(sessionRedirect(customer, AppRoutes.forgotPassword), AppRoutes.customerHome);
     });
 
-    test('splash, login and register are left alone so they can navigate themselves', () {
-      for (final location in [AppRoutes.splash, AppRoutes.login, AppRoutes.register]) {
+    test('splash, login, register and OTP are left alone so they can navigate themselves', () {
+      for (final location in [AppRoutes.splash, AppRoutes.login, AppRoutes.register, AppRoutes.verifyOtp]) {
         expect(sessionRedirect(customer, location), isNull, reason: location);
       }
     });

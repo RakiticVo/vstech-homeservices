@@ -7,6 +7,7 @@ import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/core/session/session_cubit.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/app_user.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/profile_update.dart';
+import 'package:vstech_home_services/features/auth/domain/entities/remembered_credentials.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/login_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/logout_cubit.dart';
@@ -22,15 +23,20 @@ const _badCredentials = Failure(kind: NetworkErrorKind.server, errorCode: 'HS-40
 
 void main() {
   late MockSessionCubit session;
+  late MockCredentialsRepository credentials;
 
   setUpAll(() {
     registerFallbackValue(const ProfileUpdate());
     registerFallbackValue(UserRole.customer);
+    registerFallbackValue(const RememberedCredentials(identifier: '', password: ''));
   });
 
   setUp(() {
     session = MockSessionCubit();
     when(() => session.signOut()).thenAnswer((_) async {});
+    credentials = MockCredentialsRepository();
+    when(() => credentials.save(any(), any())).thenAnswer((_) async {});
+    when(() => credentials.clear(any())).thenAnswer((_) async {});
   });
 
   group('SplashCubit', () {
@@ -120,7 +126,7 @@ void main() {
           password: any(named: 'password'),
         ),
       ).thenAnswer((_) async => const Ok<AppUser>(workerUser)),
-      build: () => LoginCubit(login, session),
+      build: () => LoginCubit(login, session, credentials),
       act: (cubit) => cubit.login(identifier: '0909', password: 'p'),
       expect: () => [const AuthFormSubmittingState(), const AuthFormSuccessState(UserRole.worker)],
       verify: (_) => verify(() => session.markAuthenticated(role: UserRole.worker)).called(1),
@@ -134,15 +140,18 @@ void main() {
           password: any(named: 'password'),
         ),
       ).thenAnswer((_) async => const Err<AppUser>(_badCredentials)),
-      build: () => LoginCubit(login, session),
+      build: () => LoginCubit(login, session, credentials),
       act: (cubit) => cubit.login(identifier: '0909', password: 'wrong'),
       expect: () => [const AuthFormSubmittingState(), const AuthFormFailureState(_badCredentials)],
-      verify: (_) => verifyNever(() => session.markAuthenticated(role: any(named: 'role'))),
+      verify: (_) {
+        verifyNever(() => session.markAuthenticated(role: any(named: 'role')));
+        verifyNever(() => credentials.save(any(), any()));
+      },
     );
 
     blocTest<LoginCubit, AuthFormState>(
       'ignores taps while submitting',
-      build: () => LoginCubit(login, session),
+      build: () => LoginCubit(login, session, credentials),
       seed: () => const AuthFormSubmittingState(),
       act: (cubit) => cubit.login(identifier: '0909', password: 'p'),
       expect: () => <AuthFormState>[],
@@ -164,10 +173,15 @@ void main() {
           role: UserRole.customer,
         ),
       ).thenAnswer((_) async => const Ok<AppUser>(customerUser)),
-      build: () => RegisterCubit(register, session),
+      build: () => RegisterCubit(register, session, credentials),
       act: (cubit) => cubit.register(fullName: 'Mai', phone: '0901', password: 'p', role: UserRole.customer),
       expect: () => [const AuthFormSubmittingState(), const AuthFormSuccessState(UserRole.customer)],
-      verify: (_) => verify(() => session.markAuthenticated(role: UserRole.customer)).called(1),
+      verify: (_) {
+        verify(
+          () => credentials.save(UserRole.customer, const RememberedCredentials(identifier: '0901', password: 'p')),
+        ).called(1);
+        verify(() => session.markAuthenticated(role: UserRole.customer)).called(1);
+      },
     );
 
     blocTest<RegisterCubit, AuthFormState>(
@@ -180,7 +194,7 @@ void main() {
           role: any(named: 'role'),
         ),
       ).thenAnswer((_) async => const Err<AppUser>(_offline)),
-      build: () => RegisterCubit(register, session),
+      build: () => RegisterCubit(register, session, credentials),
       act: (cubit) => cubit.register(fullName: 'Mai', phone: '0901', password: 'p', role: UserRole.customer),
       expect: () => [const AuthFormSubmittingState(), const AuthFormFailureState(_offline)],
     );

@@ -1340,5 +1340,6 @@
   "apiErrorChatClosed": "This chat has ended.",
   "apiErrorTooManyRequests": "You're going too fast, please try again shortly.",
   "apiErrorDispatchUnavailable": "Dispatch is temporarily unavailable.",
-  "authErrorUnsupportedRole": "This account can't be used in the app. Please contact support."
+  "authErrorUnsupportedRole": "This account can't be used in the app. Please contact support.",
+  "loginRememberMe": "Remember me"
 }

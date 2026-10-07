@@ -21,11 +21,10 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthTokenStore _tokenStore;
 
   @override
-  Future<Result<AppUser>> login({required String identifier, required String password}) =>
-      Result.guard(() async {
-        final auth = await _remote.login(LoginRequest(identifier: identifier, password: password));
-        return await _startSession(auth);
-      });
+  Future<Result<AppUser>> login({required String identifier, required String password}) => Result.guard(() async {
+    final auth = await _remote.login(LoginRequest(identifier: identifier, password: password));
+    return await _startSession(auth);
+  });
 
   @override
   Future<Result<AppUser>> register({

@@ -13,6 +13,10 @@ import 'package:vstech_home_services/features/auth/presentation/widgets/otp_pin_
 /// Screen 07 — Shared OTP Verification Screen.
 /// Shared across Register, Login, Forgot Password, and Worker KYC.
 /// Includes 60s countdown resend timer and 1-tap "From SMS: 123456" quick fill banner.
+///
+/// The code check is simulated (demo code 123456) until the backend ships an OTP API. For login and
+/// register the account is already signed in when this screen opens; verifying replaces the whole
+/// auth stack with the role's landing screen.
 class OtpVerificationPage extends StatefulWidget {
   const OtpVerificationPage({
     super.key,
@@ -102,15 +106,13 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
         // Routing based on context
         if (widget.otpContext == 'forgot') {
-          unawaited(
-            context.push('${AppRoutes.resetPassword}?role=${widget.role}'),
-          );
+          unawaited(context.push('${AppRoutes.resetPassword}?role=${widget.role}'));
         } else if (widget.role == 'customer') {
-          unawaited(context.push(AppRoutes.customerHome));
+          context.go(AppRoutes.customerHome);
         } else if (widget.otpContext == 'register') {
-          unawaited(context.push(AppRoutes.workerKyc));
+          context.go(AppRoutes.workerKyc);
         } else {
-          unawaited(context.push(AppRoutes.workerDashboard));
+          context.go(AppRoutes.workerDashboard);
         }
       } else {
         setState(() => _hasError = true);
@@ -141,10 +143,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               // Title & Subtitle
               Text(
                 context.l10n.otpTitle,
-                style: AppTextStyles.headlineMd.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                ),
+                style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
               ),
               const SizedBox(height: AppSpacing.xs),
               RichText(
@@ -154,10 +153,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     TextSpan(text: '${context.l10n.otpSubtitle} '),
                     TextSpan(
                       text: widget.phone,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                     ),
                   ],
                 ),
@@ -216,18 +212,11 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
-                          Icons.sms_outlined,
-                          size: 16,
-                          color: AppColors.primary,
-                        ),
+                        const Icon(Icons.sms_outlined, size: 16, color: AppColors.primary),
                         const SizedBox(width: AppSpacing.xs),
                         Text(
                           context.l10n.otpQuickFillLabel,
-                          style: AppTextStyles.caption.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -251,18 +240,13 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                 child: _countdownSeconds > 0
                     ? Text(
                         context.l10n.otpResendCountdown(_countdownSeconds),
-                        style: AppTextStyles.bodyMd.copyWith(
-                          color: AppColors.textMuted,
-                        ),
+                        style: AppTextStyles.bodyMd.copyWith(color: AppColors.textMuted),
                       )
                     : TextButton(
                         onPressed: _onResendOtp,
                         child: Text(
                           context.l10n.otpResendAction,
-                          style: AppTextStyles.bodyMd.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppTextStyles.bodyMd.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
                         ),
                       ),
               ),

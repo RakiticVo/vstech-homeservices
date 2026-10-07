@@ -3341,4 +3341,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authErrorUnsupportedRole =>
       'This account can\'t be used in the app. Please contact support.';
+
+  @override
+  String get loginRememberMe => 'Remember me';
 }

@@ -3344,4 +3344,7 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get authErrorUnsupportedRole =>
       'Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ.';
+
+  @override
+  String get loginRememberMe => 'Ghi nhớ đăng nhập';
 }

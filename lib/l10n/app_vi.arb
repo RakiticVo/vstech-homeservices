@@ -1433,5 +1433,6 @@
   "apiErrorChatClosed": "Đoạn chat đã kết thúc.",
   "apiErrorTooManyRequests": "Bạn thao tác quá nhanh, vui lòng thử lại sau.",
   "apiErrorDispatchUnavailable": "Hệ thống phân công tạm thời không khả dụng.",
-  "authErrorUnsupportedRole": "Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ."
+  "authErrorUnsupportedRole": "Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ.",
+  "loginRememberMe": "Ghi nhớ đăng nhập"
 }

@@ -8,6 +8,7 @@ import 'package:vstech_home_services/core/session/session_cubit.dart';
 import 'package:vstech_home_services/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:vstech_home_services/features/auth/data/datasources/profile_remote_data_source.dart';
 import 'package:vstech_home_services/features/auth/domain/repositories/auth_repository.dart';
+import 'package:vstech_home_services/features/auth/domain/repositories/credentials_repository.dart';
 import 'package:vstech_home_services/features/auth/domain/repositories/profile_repository.dart';
 import 'package:vstech_home_services/features/auth/domain/usecases/get_profile_use_case.dart';
 import 'package:vstech_home_services/features/auth/domain/usecases/login_use_case.dart';
@@ -38,6 +39,8 @@ class MockProfileRemoteDataSource extends Mock implements ProfileRemoteDataSourc
 class MockAuthRepository extends Mock implements AuthRepository;
 
 class MockProfileRepository extends Mock implements ProfileRepository;
+
+class MockCredentialsRepository extends Mock implements CredentialsRepository;
 
 class MockLoginUseCase extends Mock implements LoginUseCase;
 

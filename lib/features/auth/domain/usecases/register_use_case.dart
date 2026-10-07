@@ -16,10 +16,5 @@ class RegisterUseCase {
     required String phone,
     required String password,
     required UserRole role,
-  }) => _repository.register(
-    fullName: fullName.trim(),
-    phone: normalizePhone(phone),
-    password: password,
-    role: role,
-  );
+  }) => _repository.register(fullName: fullName.trim(), phone: normalizePhone(phone), password: password, role: role);
 }

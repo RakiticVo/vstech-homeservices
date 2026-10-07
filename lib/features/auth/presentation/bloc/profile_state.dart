@@ -38,7 +38,8 @@ sealed class ProfileWithDataState extends ProfileState {
   UserProfile get profile => data;
 
   @override
-  bool operator ==(Object other) => other.runtimeType == runtimeType && other is ProfileWithDataState && other.data == data;
+  bool operator ==(Object other) =>
+      other.runtimeType == runtimeType && other is ProfileWithDataState && other.data == data;
 
   @override
   int get hashCode => Object.hash(runtimeType, data);

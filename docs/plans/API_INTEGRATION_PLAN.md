@@ -110,7 +110,8 @@ khi đăng nhập.
 
 > **Kết quả Pha 1 (2026-10-07):**
 > - Splash → `SplashCubit`: chưa đăng nhập → onboarding; có token → `GET /profiles` → home theo role; lỗi mạng → thông báo + Thử lại.
-> - Login/Register gọi API thật; **bỏ bước OTP** (chưa có API OTP) — đăng ký xong: khách → Home, thợ → KYC wizard. Bỏ số điện thoại demo điền sẵn ở Login. Mật khẩu tối thiểu 8 ký tự (khớp `HS-400-0022`).
+> - Login/Register gọi API thật, rồi **đi qua màn OTP mô phỏng** (mã demo `123456`, chưa có API OTP) — xác thực xong: khách → Home, thợ đăng ký → KYC wizard, thợ đăng nhập → Dashboard. Mật khẩu tối thiểu 8 ký tự (khớp `HS-400-0022`).
+> - **Ghi nhớ đăng nhập:** ô "Ghi nhớ đăng nhập" (mặc định bật) lưu SĐT/email + mật khẩu theo từng vai trò trong Keychain/Keystore (`flutter_secure_storage`); đăng xuất không xoá, mở Login sẽ tự điền; bỏ chọn khi đăng nhập → quên thông tin đã lưu. Đăng ký thành công cũng được ghi nhớ.
 > - Router guard: chưa đăng nhập vào màn cần đăng nhập → Login; đã đăng nhập vào onboarding/role gateway → Home; khách vào `/worker/*` (hoặc ngược lại) → Home của mình. Tài khoản ADMIN/SUPPLIER bị từ chối.
 > - Hồ sơ khách, Sửa hồ sơ, Sửa địa chỉ, Hồ sơ thợ đọc/ghi `GET/PUT /profiles`. Ngày sinh, nhãn/tầng/ghi chú địa chỉ chưa có field API → chỉ giữ trên màn hình. Mã đối tác hiển thị `id` số của user.
 > - Đăng xuất (Settings khách, Hồ sơ thợ) gọi `POST /auth/logout` rồi luôn xoá token cục bộ.

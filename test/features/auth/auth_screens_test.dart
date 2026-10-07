@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/session/user_role.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/auth/domain/entities/remembered_credentials.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/login_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/login_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/otp_verification_page.dart';
@@ -17,7 +21,7 @@ import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
 import '../../helpers/auth_test_providers.dart';
 
-Widget _createTestWidget(Widget child) {
+Widget _createTestWidget(Widget child, {AuthTestProviders? providers}) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
@@ -53,7 +57,7 @@ Widget _createTestWidget(Widget child) {
     ],
   );
 
-  return AuthTestProviders().wrap(
+  return (providers ?? AuthTestProviders()).wrap(
     MaterialApp.router(
       theme: AppTheme.light,
       routerConfig: router,
@@ -91,6 +95,66 @@ void main() {
 
       // Verify social buttons are hidden for worker
       expect(find.byType(SocialAuthButton), findsNothing);
+    });
+
+    testWidgets('LoginPage prefills remembered credentials and logs in with remember me', (tester) async {
+      final providers = AuthTestProviders();
+      addTearDown(providers.dispose);
+      when(
+        () => providers.login.login(
+          identifier: any(named: 'identifier'),
+          password: any(named: 'password'),
+          remember: any(named: 'remember'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await tester.pumpWidget(_createTestWidget(const LoginPage(), providers: providers));
+      await tester.pumpAndSettle();
+      verify(() => providers.login.prefill(UserRole.customer)).called(1);
+
+      providers.loginStates.add(
+        const AuthFormPrefilledState(RememberedCredentials(identifier: '0901 234 567', password: 'Secret123')),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('0901 234 567'), findsOneWidget);
+      expect(find.text('Ghi nhớ đăng nhập'), findsOneWidget);
+
+      await tester.tap(find.text('Đăng nhập').last);
+      await tester.pumpAndSettle();
+      verify(() => providers.login.login(identifier: '0901 234 567', password: 'Secret123')).called(1);
+
+      // Unticking remember me is forwarded to the cubit.
+      await tester.tap(find.byKey(const Key('login_remember_me')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Đăng nhập').last);
+      await tester.pumpAndSettle();
+      verify(() => providers.login.login(identifier: '0901 234 567', password: 'Secret123', remember: false)).called(1);
+    });
+
+    testWidgets('LoginPage continues to the OTP step after a successful login', (tester) async {
+      final providers = AuthTestProviders();
+      addTearDown(providers.dispose);
+
+      await tester.pumpWidget(_createTestWidget(const LoginPage(), providers: providers));
+      await tester.pumpAndSettle();
+
+      providers.loginStates.add(const AuthFormSuccessState(UserRole.customer));
+      await tester.pumpAndSettle();
+
+      expect(find.text('VerifyOtpTarget'), findsOneWidget);
+    });
+
+    testWidgets('RegisterPage continues to the OTP step after registering', (tester) async {
+      final providers = AuthTestProviders();
+      addTearDown(providers.dispose);
+
+      await tester.pumpWidget(_createTestWidget(const RegisterPage(), providers: providers));
+      await tester.pumpAndSettle();
+
+      providers.registerStates.add(const AuthFormSuccessState(UserRole.worker));
+      await tester.pumpAndSettle();
+
+      expect(find.text('VerifyOtpTarget'), findsOneWidget);
     });
 
     testWidgets('RegisterPage renders all form inputs and terms checkbox', (tester) async {

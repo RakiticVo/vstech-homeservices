@@ -6216,6 +6216,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ.'**
   String get authErrorUnsupportedRole;
+
+  /// No description provided for @loginRememberMe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi nhớ đăng nhập'**
+  String get loginRememberMe;
 }
 
 class _AppLocalizationsDelegate

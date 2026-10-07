@@ -14,6 +14,11 @@ abstract final class AppRoutes {
   static const String resetPassword = '/auth/reset-password';
   static const String resetPasswordSuccess = '/auth/reset-password/success';
 
+  /// OTP step location. [otpContext] is `register`, `login` or `forgot`; [role] is `customer` or
+  /// `worker` (decides where a verified login/register continues).
+  static String verifyOtpLocation({required String phone, required String role, required String otpContext}) =>
+      '$verifyOtp?phone=${Uri.encodeComponent(phone)}&role=$role&context=$otpContext';
+
   // --- customer home & categories ---
   static const String customerHome = '/customer/home';
   static const String categories = '/customer/categories';

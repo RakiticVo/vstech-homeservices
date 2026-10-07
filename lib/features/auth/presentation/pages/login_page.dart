@@ -8,8 +8,8 @@ import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
-import 'package:vstech_home_services/core/router/app_router.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/session/user_role.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
 import 'package:vstech_home_services/core/widgets/app_text_field.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/login_cubit.dart';
@@ -18,7 +18,8 @@ import 'package:vstech_home_services/features/auth/presentation/widgets/social_a
 
 /// Screen 05 — Role-Aware Login Screen.
 /// Supports both Customer (Phone/Email + Social) and Worker (Phone only). Signs in through
-/// [LoginCubit] (`POST /auth/login`) and opens the home of the account's actual role.
+/// [LoginCubit] (`POST /auth/login`), then continues through the (simulated) OTP step to the home
+/// of the account's actual role. "Remember me" prefills phone + password per role after logout.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, this.initialRole = 'customer'});
 
@@ -35,11 +36,15 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
   String? _identifierError;
   String? _passwordError;
+  bool _rememberMe = true;
+
+  UserRole get _selectedRole => _isWorker ? UserRole.worker : UserRole.customer;
 
   @override
   void initState() {
     super.initState();
     _isWorker = widget.initialRole == 'worker';
+    unawaited(context.read<LoginCubit>().prefill(_selectedRole));
   }
 
   @override
@@ -54,7 +59,10 @@ class _LoginPageState extends State<LoginPage> {
       _isWorker = !_isWorker;
       _identifierError = null;
       _passwordError = null;
+      _identifierController.clear();
+      _passwordController.clear();
     });
+    unawaited(context.read<LoginCubit>().prefill(_selectedRole));
   }
 
   void _onLogin() {
@@ -69,13 +77,21 @@ class _LoginPageState extends State<LoginPage> {
     if (_identifierError != null || _passwordError != null) return;
 
     FocusScope.of(context).unfocus();
-    unawaited(context.read<LoginCubit>().login(identifier: identifier, password: password));
+    unawaited(context.read<LoginCubit>().login(identifier: identifier, password: password, remember: _rememberMe));
   }
 
   void _onStateChanged(BuildContext context, AuthFormState state) {
     switch (state) {
+      case AuthFormPrefilledState(:final credentials):
+        if (credentials == null) return;
+        _identifierController.text = credentials.identifier;
+        _passwordController.text = credentials.password;
       case AuthFormSuccessState(:final role):
-        context.go(homeRouteFor(role));
+        unawaited(
+          context.push(
+            AppRoutes.verifyOtpLocation(phone: _identifierController.text.trim(), role: role.name, otpContext: 'login'),
+          ),
+        );
       case AuthFormFailureState(:final failure):
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
@@ -177,20 +193,53 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: AppSpacing.xs),
 
-                // Forgot password link
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: _onForgotPassword,
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      visualDensity: VisualDensity.compact,
+                // Remember me + forgot password
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        key: const Key('login_remember_me'),
+                        borderRadius: BorderRadius.circular(AppRadius.chip),
+                        onTap: () => setState(() => _rememberMe = !_rememberMe),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(minHeight: 44),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Checkbox(
+                                  value: _rememberMe,
+                                  activeColor: AppColors.primary,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                  side: const BorderSide(color: AppColors.border),
+                                  onChanged: (value) => setState(() => _rememberMe = value ?? false),
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.sm),
+                              Flexible(
+                                child: Text(
+                                  context.l10n.loginRememberMe,
+                                  style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      context.l10n.loginForgotPassword,
-                      style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
+                    TextButton(
+                      onPressed: _onForgotPassword,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                      child: Text(
+                        context.l10n.loginForgotPassword,
+                        style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
 
                 const SizedBox(height: AppSpacing.md),

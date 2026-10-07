@@ -528,7 +528,7 @@ String homeRouteFor(UserRole role) => role == UserRole.worker ? AppRoutes.worker
 
 /// Auth guard + role guard, evaluated on every navigation and whenever [SessionCubit] changes:
 /// - signed out (or session expired) on a protected screen → login;
-/// - signed in on onboarding/auth screens (except login/register, which navigate themselves) →
+/// - signed in on onboarding/auth screens (except login/register/OTP, which navigate themselves) →
 ///   the role's home;
 /// - a customer on `/worker/*` (or a worker on `/customer/*`) → the role's home.
 /// While the role is still unknown (splash is fetching the profile) nothing is redirected.
@@ -539,9 +539,10 @@ String? sessionRedirect(SessionState session, String location) {
     case SessionUnauthenticatedState():
       return isPublicLocation(location) ? null : AppRoutes.login;
     case SessionAuthenticatedState(:final role):
-      // Splash, login and register navigate on their own right after signing in (register sends
-      // workers to KYC), so the guard must not race them.
-      if (role == null || const {AppRoutes.splash, AppRoutes.login, AppRoutes.register}.contains(location)) {
+      // Splash, login, register and the OTP step navigate on their own right after signing in
+      // (register sends workers to KYC), so the guard must not race them.
+      if (role == null ||
+          const {AppRoutes.splash, AppRoutes.login, AppRoutes.register, AppRoutes.verifyOtp}.contains(location)) {
         return null;
       }
       final home = homeRouteFor(role);

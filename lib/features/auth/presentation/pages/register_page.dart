@@ -17,8 +17,8 @@ import 'package:vstech_home_services/features/auth/presentation/widgets/auth_rol
 
 /// Screen 06 — Registration Screen.
 /// Collects user details (Full name, Phone, Password) and creates the account through
-/// [RegisterCubit] (`POST /auth/register`). OTP verification is skipped until the backend ships an
-/// OTP API (see docs/plans/API_INTEGRATION_PLAN.md §6); workers continue to the KYC wizard.
+/// [RegisterCubit] (`POST /auth/register`), then continues through the OTP step — simulated
+/// (demo code 123456) until the backend ships an OTP API (docs/plans/API_INTEGRATION_PLAN.md §6).
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key, this.initialRole = 'customer'});
 
@@ -108,12 +108,16 @@ class _RegisterPageState extends State<RegisterPage> {
   void _onStateChanged(BuildContext context, AuthFormState state) {
     switch (state) {
       case AuthFormSuccessState(:final role):
-        context.go(role == UserRole.worker ? AppRoutes.workerKyc : AppRoutes.customerHome);
+        unawaited(
+          context.push(
+            AppRoutes.verifyOtpLocation(phone: _phoneController.text.trim(), role: role.name, otpContext: 'register'),
+          ),
+        );
       case AuthFormFailureState(:final failure):
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(SnackBar(content: Text(context.l10n.failureMessage(failure, context: FailureContext.auth))));
-      case AuthFormInitialState() || AuthFormSubmittingState():
+      case AuthFormInitialState() || AuthFormPrefilledState() || AuthFormSubmittingState():
         break;
     }
   }
