@@ -30,7 +30,7 @@ copies in `docs/reference/`.
 | **Framework** | Flutter ≥ 3.22 |
 | **State Management** | flutter_bloc / Cubit |
 | **Navigation** | go_router |
-| **HTTP Client** | dio (+ pretty_dio_logger in debug builds only) |
+| **HTTP Client** | dio (+ `NetworkLogInterceptor` in debug/profile builds only) |
 | **Dependency Injection** | get_it + injectable |
 | **JSON Serialization** | freezed + json_serializable + json_annotation |
 | **Local DB / Cache** | hive_flutter |
@@ -46,7 +46,7 @@ copies in `docs/reference/`.
 | **Image/file pick** | image_picker |
 | **Formatting / L10n** | intl (NumberFormat currency, DateFormat, Pluralization) |
 | **System Utilities** | url_launcher (dialer tel:, navigation geo:, deep link), uuid |
-| **Logging** | logger (`appLogger` via PrettyPrinter) + pretty_dio_logger (debug only) |
+| **Logging** | logger — colour-coded `appLogger` / `networkLogger` / `blocLogger` (PrettyPrinter, see `core/utils/logger.dart`) |
 | **Linter** | very_good_analysis |
 | **Testing** | bloc_test, mocktail, golden_toolkit |
 
@@ -217,7 +217,7 @@ Full details: `docs/reference/api/00-foundation.md` + per-module files. Key rule
 
 - All errors are caught and surfaced through BLoC/Cubit state — never `try/catch` directly in UI code.
 - Transient errors → `SnackBar`; fatal errors → dedicated `ErrorPage`.
-- `pretty_dio_logger` for HTTP inspection, debug builds only.
+- HTTP inspection via `NetworkLogInterceptor` on `networkLogger` (debug/profile only): request/response paired, tokens & passwords masked. Never log full state objects — `AppBlocObserver` prints state types only.
 - Report only server-side/system failures (5xx, `SocketException`, unhandled crashes) to Crashlytics.
   Do not report client-side validation errors (400/422).
 

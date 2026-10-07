@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'package:vstech_home_services/core/network/api_endpoints.dart';
 import 'package:vstech_home_services/core/network/api_response.dart';
@@ -14,6 +13,7 @@ import 'package:vstech_home_services/core/network/auth_token_store.dart';
 import 'package:vstech_home_services/core/network/models/refresh_token_request.dart';
 import 'package:vstech_home_services/core/network/models/refresh_token_response.dart';
 import 'package:vstech_home_services/core/network/network_exception.dart';
+import 'package:vstech_home_services/core/network/network_log_interceptor.dart';
 import 'package:vstech_home_services/core/utils/idempotency_key.dart';
 import 'package:vstech_home_services/core/utils/logger.dart';
 
@@ -63,8 +63,8 @@ class ApiClient {
       _refreshDio.httpClientAdapter = httpClientAdapter;
     }
     dio.interceptors.add(InterceptorsWrapper(onRequest: _onRequest, onError: _onError));
-    if (kDebugMode) {
-      final logger = PrettyDioLogger(requestHeader: true, requestBody: true);
+    if (!kReleaseMode) {
+      final logger = NetworkLogInterceptor();
       dio.interceptors.add(logger);
       _refreshDio.interceptors.add(logger);
     }

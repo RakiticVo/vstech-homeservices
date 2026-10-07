@@ -8,6 +8,11 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 ## [Unreleased]
 
 ### Added
+- **Log màu theo kênh** (`core/utils/logger.dart`, chỉ bật ở debug/profile, tắt ở release; lọc bằng `--dart-define=LOG_LEVEL=info|warning|…`):
+  - `appLogger` — màu theo mức độ (trace xám, debug xanh dương, info xanh lá, warning cam, error đỏ).
+  - `networkLogger` + `NetworkLogInterceptor` — request ➡️ cyan, 2xx ✅ xanh lá, 4xx ⚠️ cam, 5xx/mất mạng ❌ đỏ; mỗi entry kèm thời gian xử lý, `errorCode`, phần Request (query + body) và Response; luôn che `Authorization`, `password`, `accessToken`, `refreshToken`, `token`; body dài bị cắt ở 3.000 ký tự.
+  - Test khoá màu: mỗi kênh/mức độ phải xuất mã màu ANSI riêng (`test/unit/core/utils/logger_test.dart`).
+  - `blocLogger` + `AppBlocObserver` — log chuyển state của mọi Cubit/BLoC 🧩 (chỉ tên kiểu state, không in dữ liệu cá nhân) và lỗi 💥.
 - **Ghi nhớ đăng nhập:** ô "Ghi nhớ đăng nhập" ở màn Login; `CredentialsRepository` + `SecureCredentialsRepository` lưu SĐT/mật khẩu theo vai trò trong secure storage, tự điền lại sau khi đăng xuất (`LoginCubit.prefill`, state `AuthFormPrefilledState`); tài khoản vừa đăng ký cũng được ghi nhớ.
 - **Pha 1 tích hợp API — Auth & Profile:**
   - Lớp data/domain `features/auth`: DTO request/response riêng (login, register, logout, auth, user info, profile + KYC/metrics/skills, profile update), `AuthRemoteDataSource`, `ProfileRemoteDataSource`, `AuthRepositoryImpl`, `ProfileRepositoryImpl`, use case Login/Register/Logout/GetProfile/UpdateProfile (chuẩn hoá số điện thoại), entity `AppUser`, `UserProfile`, `ProfileUpdate`.
@@ -28,6 +33,10 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 - `docs/plans/API_INTEGRATION_PLAN.md`: Kế hoạch tích hợp API theo `docs/api/openapi.json` với môi trường UAT `https://homeservice-uat.vitinhkimhung.com` — Pha 0 nền tảng + 5 pha theo feature, danh sách lỗ hổng contract cần backend xác nhận.
 
 ### Changed
+- `ApiClient` dùng `NetworkLogInterceptor` thay cho `PrettyDioLogger` (không có màu, không che token/mật khẩu).
+
+### Removed
+- Thư viện `pretty_dio_logger` (đã được `NetworkLogInterceptor` thay thế); cập nhật bảng tech stack trong `CLAUDE.md`.
 - Splash, Login, Register, Hồ sơ khách, Sửa hồ sơ, Sửa địa chỉ, Settings (đăng xuất), Hồ sơ thợ dùng dữ liệu API thay cho dữ liệu mock.
 - Đăng ký/đăng nhập gọi API rồi đi qua màn OTP mô phỏng (mã demo `123456`) trước khi vào app; màn OTP thay toàn bộ stack auth bằng màn đích (`go` thay cho `push`). Login không còn điền sẵn số điện thoại demo (thay bằng dữ liệu đã ghi nhớ).
 - Mật khẩu đăng ký tối thiểu 8 ký tự (khớp quy tắc backend `HS-400-0022`).
