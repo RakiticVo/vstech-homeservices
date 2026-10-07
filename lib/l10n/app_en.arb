@@ -102,7 +102,7 @@
   "forgotPasswordBackToLogin": "Back to Sign In",
   "errorFieldRequired": "This field is required",
   "errorInvalidPhone": "Invalid phone number",
-  "errorPasswordTooShort": "Password must be at least 6 characters",
+  "errorPasswordTooShort": "Password must be at least 8 characters",
   "errorPasswordNotMatch": "Passwords do not match",
   "errorMustAgreeTerms": "Please agree to the Terms of Service",
   "homeGreeting": "Hello,",
@@ -1339,5 +1339,6 @@
   "apiErrorAssetUnderWarranty": "This appliance is under warranty and can't be deleted.",
   "apiErrorChatClosed": "This chat has ended.",
   "apiErrorTooManyRequests": "You're going too fast, please try again shortly.",
-  "apiErrorDispatchUnavailable": "Dispatch is temporarily unavailable."
+  "apiErrorDispatchUnavailable": "Dispatch is temporarily unavailable.",
+  "authErrorUnsupportedRole": "This account can't be used in the app. Please contact support."
 }

@@ -5,7 +5,36 @@
 > Môi trường: **UAT** `https://homeservice-uat.vitinhkimhung.com` (đã probe 2026-10-06: server sống,
 > trả đúng envelope `{status, message, errorCode, timestamp}`).
 
-## 1. Hiện trạng
+## 0. Lộ trình & tiến độ (cập nhật mỗi khi xong một phần)
+
+### A. Tích hợp API vào app (mình làm)
+
+| Pha | Nội dung | Trạng thái |
+| :--- | :--- | :--- |
+| 0 | Nền tảng: env, ApiClient, lỗi/l10n, token, session, DI | ✅ Xong 2026-10-06 (commit `ae54ec0`) |
+| 1 | Auth & Profile: login, register, logout, splash/role routing, profile/edit/address, guard router | ✅ Code xong 2026-10-07 — ⏳ chờ tài khoản test UAT để smoke test đăng nhập thật |
+| 2 | Khách: danh mục, ước tính, tạo booking, danh sách đơn, huỷ, khiếu nại, duyệt/từ chối báo giá | ⏳ Chưa làm |
+| 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ⏳ Chưa làm |
+| 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ⏳ Chưa làm |
+| 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ⏳ Chưa làm |
+
+### B. UI còn thiếu cho API có sẵn (bạn làm trên Claude Design → mình chuyển sang Flutter + nối API)
+
+Prompt: `docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`
+
+| Batch | Nội dung | Cells | Thiết kế | Flutter + API |
+| :--- | :--- | :--- | :--- | :--- |
+| 14 | Báo giá chi tiết (thợ gửi, khách duyệt) | 132–135 | ⏳ | ⏳ (gắn với Pha 2/3) |
+| 15 | Nạp tiền ví thợ (⚠ cần BA xác nhận ví nào) | 136–138 | ⏳ | ⏳ (gắn với Pha 4) |
+| 16 | Đọc tất cả thông báo (khách) + cài đặt thông báo (thợ) | 139–140 | ⏳ | ⏳ (gắn với Pha 5) |
+| 17 | Lịch sử cuộc gọi của đơn | 141 | ⏳ | ⏳ (gắn với Pha 5) |
+
+### C. Màn hình thiếu API (backend đang bổ sung — chờ API doc mới)
+
+Xem mục 6. Khi có doc mới: đối chiếu lại, cập nhật `ApiEndpoints` + bảng này, rồi xếp vào pha phù hợp.
+Trong lúc chờ, các màn này **giữ dữ liệu mock**.
+
+## 1. Hiện trạng (trước Pha 0)
 
 - Toàn bộ 14 feature đang là **UI-only** với dữ liệu mock — chưa có `data/` / `domain/`, chưa có
   Cubit/BLoC nào.
@@ -79,6 +108,14 @@ refreshToken + huỷ FCM token), Splash kiểm tra token → `GET /profiles` →
 (CUSTOMER / WORKER). Profile/Edit profile/Edit address dùng `PUT /profiles`. Đăng ký FCM token sau
 khi đăng nhập.
 
+> **Kết quả Pha 1 (2026-10-07):**
+> - Splash → `SplashCubit`: chưa đăng nhập → onboarding; có token → `GET /profiles` → home theo role; lỗi mạng → thông báo + Thử lại.
+> - Login/Register gọi API thật; **bỏ bước OTP** (chưa có API OTP) — đăng ký xong: khách → Home, thợ → KYC wizard. Bỏ số điện thoại demo điền sẵn ở Login. Mật khẩu tối thiểu 8 ký tự (khớp `HS-400-0022`).
+> - Router guard: chưa đăng nhập vào màn cần đăng nhập → Login; đã đăng nhập vào onboarding/role gateway → Home; khách vào `/worker/*` (hoặc ngược lại) → Home của mình. Tài khoản ADMIN/SUPPLIER bị từ chối.
+> - Hồ sơ khách, Sửa hồ sơ, Sửa địa chỉ, Hồ sơ thợ đọc/ghi `GET/PUT /profiles`. Ngày sinh, nhãn/tầng/ghi chú địa chỉ chưa có field API → chỉ giữ trên màn hình. Mã đối tác hiển thị `id` số của user.
+> - Đăng xuất (Settings khách, Hồ sơ thợ) gọi `POST /auth/logout` rồi luôn xoá token cục bộ.
+> - **Hoãn:** đăng ký FCM (`/devices/*`) — dự án chưa cấu hình Firebase (`google-services.json`/`GoogleService-Info.plist`), làm cùng Pha 5.
+
 **Pha 2 — Luồng khách đặt lịch**
 Home/Categories/Service detail ← `service-categories`. Booking step 1–3: estimate → create
 (⚠ response 201 **không bọc** `ApiResponse`). Orders tabs ← `GET /bookings?status=`. Huỷ/khiếu nại,
@@ -115,7 +152,14 @@ VoIP chỉ ghi log cuộc gọi.
 | 6 | `LocationUpdateRequest.technicianId` là **UUID** trong khi user id là int64 | Không biết gửi giá trị nào |
 | 7 | Không có khởi tạo thanh toán VNPay/ZaloPay (chỉ `deposit` với `gatewayTxId` có sẵn) | PaymentGatewayPage |
 | 8 | Không có GET báo giá, đánh giá/rating, danh sách phòng chat | Order detail, review |
-| 9 | Enum trạng thái booking không được định nghĩa trong spec | Mapping tab đơn hàng / chip trạng thái |
+| 9 | Enum trạng thái booking không có trong OpenAPI (chỉ có ở `11-appendices.md`: PENDING/ACCEPTED/IN_PROGRESS/COMPLETED/CANCELLED/DISPUTE/DISPATCH_FAILED), không có trạng thái "đang đến/đã đến" | Mapping tab đơn hàng / chip trạng thái, màn En Route/Arrived |
 | 10 | `GET /service-categories` yêu cầu JWT → khách chưa đăng nhập không xem được danh mục | Onboarding/Home guest |
 | 11 | `POST /auth/login` body rỗng trả **500 HS-500-0001** thay vì 400 | Bug backend (đã probe UAT) |
-| 12 | Không có PIN ví cho rút tiền | WorkerWithdrawPinPage |
+| 12 | Không có PIN ví cho rút tiền, không lưu tài khoản ngân hàng | WorkerWithdrawPinPage, WorkerWithdrawPage |
+| 13 | `POST /bookings/{id}/cancel` và `/dispute` **không nhận body** (lý do, ảnh) | Customer Cancellation, Dispute Report |
+| 14 | Không có API thợ huỷ đơn / báo khách vắng mặt | Worker Cancellation, Customer No-show |
+| 15 | Không có API lịch làm việc, vùng làm việc, kỹ năng, chứng chỉ | Worker Schedule/Availability/Zone/Skills/Upload Cert |
+| 16 | Không có API thanh toán đơn, nghiệm thu, hoá đơn, đánh giá & tip | Checkout (Inspection, Payment, Receipt, Review) |
+| 17 | Không có API tạo yêu cầu bảo hành | 5 màn Warranty |
+| 18 | Chỉ 1 `defaultAddress`, không có danh sách địa chỉ; không có phương thức thanh toán / liên kết ví | My Addresses, Payment Methods, Link Wallet |
+| 19 | `voip/calls/end` bắt buộc `recordingUrl` nhưng app không tự ghi âm | VoIP Call |

@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/logout_cubit.dart';
 
 /// Screen representing customer settings and logout dialog (Cells 113 & 116 `settings`).
 class CustomerSettingsPage extends StatefulWidget {
@@ -90,7 +92,7 @@ class _CustomerSettingsPageState extends State<CustomerSettingsPage> {
                       key: const Key('confirm_logout_button'),
                       onPressed: () {
                         Navigator.of(sheetCtx).pop();
-                        context.go(AppRoutes.login);
+                        unawaited(context.read<LogoutCubit>().logout());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.error,
@@ -137,41 +139,46 @@ class _CustomerSettingsPageState extends State<CustomerSettingsPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
+    return BlocListener<LogoutCubit, LogoutState>(
+      listener: (context, state) {
+        if (state is LogoutDoneState) context.go(AppRoutes.login);
+      },
+      child: Scaffold(
         backgroundColor: AppColors.background,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppRoutes.customerProfile);
-            }
-          },
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go(AppRoutes.customerProfile);
+              }
+            },
+          ),
+          title: Text(
+            l10n.settingsTitle,
+            style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+          ),
+          centerTitle: false,
         ),
-        title: Text(
-          l10n.settingsTitle,
-          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
-        ),
-        centerTitle: false,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-          child: Column(
-            children: [
-              // Tabs
-              _buildTabBar(context),
-              const SizedBox(height: AppSpacing.md),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+            child: Column(
+              children: [
+                // Tabs
+                _buildTabBar(context),
+                const SizedBox(height: AppSpacing.md),
 
-              if (_selectedTabIndex == 0) _buildSettingsTab(context) else _buildHistoryTab(context),
+                if (_selectedTabIndex == 0) _buildSettingsTab(context) else _buildHistoryTab(context),
 
-              const SizedBox(height: AppSpacing.xl),
-            ],
+                const SizedBox(height: AppSpacing.xl),
+              ],
+            ),
           ),
         ),
       ),

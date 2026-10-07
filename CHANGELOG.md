@@ -8,6 +8,11 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 ## [Unreleased]
 
 ### Added
+- **Pha 1 tích hợp API — Auth & Profile:**
+  - Lớp data/domain `features/auth`: DTO request/response riêng (login, register, logout, auth, user info, profile + KYC/metrics/skills, profile update), `AuthRemoteDataSource`, `ProfileRemoteDataSource`, `AuthRepositoryImpl`, `ProfileRepositoryImpl`, use case Login/Register/Logout/GetProfile/UpdateProfile (chuẩn hoá số điện thoại), entity `AppUser`, `UserProfile`, `ProfileUpdate`.
+  - Cubit: `SplashCubit`, `LoginCubit`, `RegisterCubit`, `LogoutCubit`, `ProfileCubit` (state sealed), cấp theo từng route.
+  - `UserRole` (core) + `SessionCubit.markAuthenticated(role:)`; router guard theo đăng nhập và vai trò; `AppException` cho lỗi nghiệp vụ phía client (`APP-UNSUPPORTED-ROLE`).
+  - Test: datasource/repository/use case, bloc test cho 5 cubit, mock cubit dùng chung `test/helpers/auth_test_providers.dart`, fixtures `test/fixtures/auth/`.
 - `docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`: Prompt Claude Design cho 4 batch UI còn thiếu so với API (Batch 14 Báo giá chi tiết, 15 Nạp tiền ví thợ, 16 Thông báo, 17 Lịch sử cuộc gọi — Cells 132–141).
 - **Pha 0 tích hợp API — nền tảng mạng:**
   - `AppEnv` (`core/config/app_env.dart`): `API_BASE_URL` / `WS_BASE_URL` qua `--dart-define`, mặc định UAT `https://homeservice-uat.vitinhkimhung.com`.
@@ -22,6 +27,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 - `docs/plans/API_INTEGRATION_PLAN.md`: Kế hoạch tích hợp API theo `docs/api/openapi.json` với môi trường UAT `https://homeservice-uat.vitinhkimhung.com` — Pha 0 nền tảng + 5 pha theo feature, danh sách lỗ hổng contract cần backend xác nhận.
 
 ### Changed
+- Splash, Login, Register, Hồ sơ khách, Sửa hồ sơ, Sửa địa chỉ, Settings (đăng xuất), Hồ sơ thợ dùng dữ liệu API thay cho dữ liệu mock.
+- Đăng ký/đăng nhập không còn qua màn OTP (chưa có API OTP); Login không còn điền sẵn số điện thoại demo.
+- Mật khẩu đăng ký tối thiểu 8 ký tự (khớp quy tắc backend `HS-400-0022`).
 - `GoRouter` tạo qua `createAppRouter(session:)`; `VstechHomeServicesApp` nhận `router` qua constructor; `main.dart` khởi tạo DI và khôi phục phiên trước `runApp`.
 - `NetworkException` không còn chứa chuỗi tiếng Việt viết cứng — chỉ mang `kind`/`errorCode`/`statusCode`.
 

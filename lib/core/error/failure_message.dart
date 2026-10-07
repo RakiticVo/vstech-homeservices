@@ -55,6 +55,7 @@ extension FailureMessageX on AppLocalizations {
     'HS-409-0005' => apiErrorChatClosed,
     'HS-429-0001' || 'HS-429-0002' => apiErrorTooManyRequests,
     'HS-503-0001' => apiErrorDispatchUnavailable,
+    AppException.unsupportedRole => authErrorUnsupportedRole,
     _ => null,
   };
 }

@@ -34,6 +34,14 @@ void main() {
   );
 
   blocTest<SessionCubit, SessionState>(
+    'markAuthenticated records the role',
+    build: () => SessionCubit(tokenStore),
+    act: (cubit) => cubit.markAuthenticated(role: UserRole.worker),
+    expect: () => [const SessionAuthenticatedState(role: UserRole.worker)],
+    verify: (cubit) => expect(cubit.role, UserRole.worker),
+  );
+
+  blocTest<SessionCubit, SessionState>(
     'expire emits an expired unauthenticated state',
     build: () => SessionCubit(tokenStore),
     seed: () => const SessionAuthenticatedState(),

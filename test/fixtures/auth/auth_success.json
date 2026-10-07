@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "message": "Đăng nhập thành công",
+  "data": {
+    "accessToken": "access-1",
+    "refreshToken": "refresh-1",
+    "user": {
+      "id": 9,
+      "identityId": "c1a2",
+      "email": "maingvyen@gmail.com",
+      "phoneNumber": "0901234567",
+      "fullName": "Nguyễn Thị Mai",
+      "role": "CUSTOMER",
+      "avatarUrl": null
+    }
+  },
+  "errorCode": null,
+  "timestamp": "2026-10-07T08:00:00Z"
+}

@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vstech_home_services/core/network/auth_token_store.dart';
+import 'package:vstech_home_services/core/session/user_role.dart';
+
+export 'package:vstech_home_services/core/session/user_role.dart';
 
 part 'session_state.dart';
 
@@ -21,7 +24,13 @@ class SessionCubit extends Cubit<SessionState> {
     emit(refreshToken == null ? const SessionUnauthenticatedState() : const SessionAuthenticatedState());
   }
 
-  void markAuthenticated() => emit(const SessionAuthenticatedState());
+  void markAuthenticated({UserRole? role}) => emit(SessionAuthenticatedState(role: role));
+
+  /// Role of the signed-in user, or null when signed out / not resolved yet.
+  UserRole? get role => switch (state) {
+    SessionAuthenticatedState(:final role) => role,
+    _ => null,
+  };
 
   /// Called by `ApiClient` after tokens were cleared because refresh failed.
   void expire() => emit(const SessionUnauthenticatedState(expired: true));

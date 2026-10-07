@@ -671,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorPasswordTooShort.
   ///
   /// In vi, this message translates to:
-  /// **'Mật khẩu phải có ít nhất 6 ký tự'**
+  /// **'Mật khẩu phải có ít nhất 8 ký tự'**
   String get errorPasswordTooShort;
 
   /// No description provided for @errorPasswordNotMatch.
@@ -6210,6 +6210,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Hệ thống phân công tạm thời không khả dụng.'**
   String get apiErrorDispatchUnavailable;
+
+  /// No description provided for @authErrorUnsupportedRole.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ.'**
+  String get authErrorUnsupportedRole;
 }
 
 class _AppLocalizationsDelegate

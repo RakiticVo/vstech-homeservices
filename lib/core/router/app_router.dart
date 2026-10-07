@@ -1,7 +1,17 @@
+import 'dart:async';
+
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vstech_home_services/core/di/injection.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/router/go_router_refresh_stream.dart';
 import 'package:vstech_home_services/core/session/session_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/login_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/logout_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/register_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/splash_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/change_password_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/customer_profile_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/customer_settings_page.dart';
@@ -92,7 +102,10 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
   refreshListenable: GoRouterRefreshStream(session.stream),
   redirect: (context, state) => sessionRedirect(session.state, state.matchedLocation),
   routes: [
-    GoRoute(path: AppRoutes.splash, builder: (context, state) => const SplashPage()),
+    GoRoute(
+      path: AppRoutes.splash,
+      builder: (context, state) => BlocProvider(create: (_) => getIt<SplashCubit>(), child: const SplashPage()),
+    ),
     GoRoute(path: AppRoutes.onboarding, builder: (context, state) => const OnboardingPage()),
     GoRoute(path: AppRoutes.intro, builder: (context, state) => const IntroValuePage()),
     GoRoute(path: AppRoutes.roleGateway, builder: (context, state) => const RoleGatewayPage()),
@@ -100,14 +113,20 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       path: AppRoutes.login,
       builder: (context, state) {
         final role = state.uri.queryParameters['role'] ?? 'customer';
-        return LoginPage(initialRole: role);
+        return BlocProvider(
+          create: (_) => getIt<LoginCubit>(),
+          child: LoginPage(initialRole: role),
+        );
       },
     ),
     GoRoute(
       path: AppRoutes.register,
       builder: (context, state) {
         final role = state.uri.queryParameters['role'] ?? 'customer';
-        return RegisterPage(initialRole: role);
+        return BlocProvider(
+          create: (_) => getIt<RegisterCubit>(),
+          child: RegisterPage(initialRole: role),
+        );
       },
     ),
     GoRoute(
@@ -433,15 +452,19 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(path: AppRoutes.myHomeDevices, builder: (context, state) => const MyHomeDevicesPage()),
     GoRoute(path: AppRoutes.aiAssistant, builder: (context, state) => const AiAssistantPage()),
     GoRoute(path: AppRoutes.aiSuggestions, builder: (context, state) => const AiSuggestionsPage()),
-    GoRoute(path: AppRoutes.customerProfile, builder: (context, state) => const CustomerProfilePage()),
-    GoRoute(path: AppRoutes.editProfile, builder: (context, state) => const EditProfilePage()),
+    GoRoute(path: AppRoutes.customerProfile, builder: (context, state) => _withProfile(const CustomerProfilePage())),
+    GoRoute(path: AppRoutes.editProfile, builder: (context, state) => _withProfile(const EditProfilePage())),
     GoRoute(path: AppRoutes.myAddresses, builder: (context, state) => const MyAddressesPage()),
-    GoRoute(path: AppRoutes.editAddress, builder: (context, state) => const EditAddressPage()),
+    GoRoute(path: AppRoutes.editAddress, builder: (context, state) => _withProfile(const EditAddressPage())),
     GoRoute(path: AppRoutes.paymentMethods, builder: (context, state) => const PaymentMethodsPage()),
     GoRoute(path: AppRoutes.linkWallet, builder: (context, state) => const LinkWalletPage()),
     GoRoute(path: AppRoutes.favouritePros, builder: (context, state) => const FavouriteProsPage()),
     GoRoute(path: AppRoutes.workerProfilePreview, builder: (context, state) => const WorkerProfilePreviewPage()),
-    GoRoute(path: AppRoutes.customerSettings, builder: (context, state) => const CustomerSettingsPage()),
+    GoRoute(
+      path: AppRoutes.customerSettings,
+      builder: (context, state) =>
+          BlocProvider(create: (_) => getIt<LogoutCubit>(), child: const CustomerSettingsPage()),
+    ),
     GoRoute(path: AppRoutes.changePassword, builder: (context, state) => const ChangePasswordPage()),
     GoRoute(path: AppRoutes.deleteAccount, builder: (context, state) => const DeleteAccountPage()),
     // --- Batch 13: Worker Wallet, Withdrawals, Schedule & Operations ---
@@ -474,8 +497,22 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(path: AppRoutes.workerSkills, builder: (context, state) => const WorkerSkillsPage()),
     GoRoute(path: AppRoutes.workerUploadCert, builder: (context, state) => const WorkerUploadCertPage()),
     GoRoute(path: AppRoutes.workerPerformance, builder: (context, state) => const WorkerPerformancePage()),
-    GoRoute(path: AppRoutes.workerProfile, builder: (context, state) => const WorkerProfilePage()),
+    GoRoute(
+      path: AppRoutes.workerProfile,
+      builder: (context, state) =>
+          BlocProvider(create: (_) => getIt<LogoutCubit>(), child: _withProfile(const WorkerProfilePage())),
+    ),
   ],
+);
+
+/// Provides a [ProfileCubit] that starts loading `GET /profiles` immediately.
+Widget _withProfile(Widget page) => BlocProvider(
+  create: (_) {
+    final cubit = getIt<ProfileCubit>();
+    unawaited(cubit.load());
+    return cubit;
+  },
+  child: page,
 );
 
 /// Routes reachable without a session (splash, onboarding, auth flows).
@@ -486,11 +523,30 @@ bool isPublicLocation(String location) =>
     location == AppRoutes.roleGateway ||
     location.startsWith('/auth/');
 
-/// Sends the user back to login when their session expired (refresh token rejected) while on a
-/// protected screen. Phase 1 extends this to every unauthenticated access once login is live.
+/// Landing screen for a signed-in [role].
+String homeRouteFor(UserRole role) => role == UserRole.worker ? AppRoutes.workerDashboard : AppRoutes.customerHome;
+
+/// Auth guard + role guard, evaluated on every navigation and whenever [SessionCubit] changes:
+/// - signed out (or session expired) on a protected screen → login;
+/// - signed in on onboarding/auth screens (except login/register, which navigate themselves) →
+///   the role's home;
+/// - a customer on `/worker/*` (or a worker on `/customer/*`) → the role's home.
+/// While the role is still unknown (splash is fetching the profile) nothing is redirected.
 String? sessionRedirect(SessionState session, String location) {
-  if (session is SessionUnauthenticatedState && session.expired && !isPublicLocation(location)) {
-    return AppRoutes.login;
+  switch (session) {
+    case SessionInitialState():
+      return null;
+    case SessionUnauthenticatedState():
+      return isPublicLocation(location) ? null : AppRoutes.login;
+    case SessionAuthenticatedState(:final role):
+      // Splash, login and register navigate on their own right after signing in (register sends
+      // workers to KYC), so the guard must not race them.
+      if (role == null || const {AppRoutes.splash, AppRoutes.login, AppRoutes.register}.contains(location)) {
+        return null;
+      }
+      final home = homeRouteFor(role);
+      if (isPublicLocation(location)) return home;
+      final foreignPrefix = role == UserRole.worker ? '/customer/' : '/worker/';
+      return location.startsWith(foreignPrefix) ? home : null;
   }
-  return null;
 }

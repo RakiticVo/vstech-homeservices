@@ -102,7 +102,7 @@
   "forgotPasswordBackToLogin": "Quay lại Đăng nhập",
   "errorFieldRequired": "Vui lòng nhập trường này",
   "errorInvalidPhone": "Số điện thoại không hợp lệ",
-  "errorPasswordTooShort": "Mật khẩu phải có ít nhất 6 ký tự",
+  "errorPasswordTooShort": "Mật khẩu phải có ít nhất 8 ký tự",
   "errorPasswordNotMatch": "Mật khẩu xác nhận không khớp",
   "errorMustAgreeTerms": "Vui lòng đồng ý với điều khoản dịch vụ",
   "homeGreeting": "Chào bạn,",
@@ -1432,5 +1432,6 @@
   "apiErrorAssetUnderWarranty": "Thiết bị đang có bảo hành, không thể xoá.",
   "apiErrorChatClosed": "Đoạn chat đã kết thúc.",
   "apiErrorTooManyRequests": "Bạn thao tác quá nhanh, vui lòng thử lại sau.",
-  "apiErrorDispatchUnavailable": "Hệ thống phân công tạm thời không khả dụng."
+  "apiErrorDispatchUnavailable": "Hệ thống phân công tạm thời không khả dụng.",
+  "authErrorUnsupportedRole": "Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ."
 }

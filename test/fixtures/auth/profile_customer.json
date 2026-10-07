@@ -1,0 +1,14 @@
+{
+  "status": 200,
+  "message": "OK",
+  "data": {
+    "id": 9,
+    "email": "maingvyen@gmail.com",
+    "phoneNumber": "0901234567",
+    "fullName": "Nguyễn Thị Mai",
+    "role": "CUSTOMER",
+    "userProfile": { "defaultAddress": "123 Nguyễn Thị Minh Khai, Quận 1", "lat": 10.77, "lng": 106.69 }
+  },
+  "errorCode": null,
+  "timestamp": "2026-10-07T08:00:00Z"
+}

@@ -13,6 +13,9 @@ import 'package:vstech_home_services/features/worker_dashboard/presentation/page
 import 'package:vstech_home_services/features/worker_dashboard/presentation/pages/worker_work_zone_page.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
+import '../../fixtures/auth/auth_fixtures.dart';
+import '../../helpers/auth_test_providers.dart';
+
 Widget _createTestOperationsWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
@@ -44,17 +47,19 @@ Widget _createTestOperationsWidget(Widget child) {
     ],
   );
 
-  return MaterialApp.router(
-    theme: AppTheme.light,
-    routerConfig: router,
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('vi'), Locale('en')],
-    locale: const Locale('vi'),
+  return AuthTestProviders(profile: workerProfile).wrap(
+    MaterialApp.router(
+      theme: AppTheme.light,
+      routerConfig: router,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('vi'), Locale('en')],
+      locale: const Locale('vi'),
+    ),
   );
 }
 
@@ -229,7 +234,7 @@ void main() {
       expect(find.text('Hồ sơ đối tác'), findsOneWidget);
       expect(find.text('Trần Văn Hùng'), findsOneWidget);
       expect(find.text('0909 123 456'), findsOneWidget);
-      expect(find.text('Mã đối tác: TH-8821'), findsOneWidget);
+      expect(find.text('Mã đối tác: 8821'), findsOneWidget);
 
       // Menu items
       expect(find.byKey(const Key('menu_worker_skills')), findsOneWidget);

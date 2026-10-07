@@ -310,7 +310,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorInvalidPhone => 'Invalid phone number';
 
   @override
-  String get errorPasswordTooShort => 'Password must be at least 6 characters';
+  String get errorPasswordTooShort => 'Password must be at least 8 characters';
 
   @override
   String get errorPasswordNotMatch => 'Passwords do not match';
@@ -3337,4 +3337,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get apiErrorDispatchUnavailable =>
       'Dispatch is temporarily unavailable.';
+
+  @override
+  String get authErrorUnsupportedRole =>
+      'This account can\'t be used in the app. Please contact support.';
 }

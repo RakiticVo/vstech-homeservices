@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
 
 /// Screen representing customer profile overview & menu options (Cell 104 `profile`).
+/// User card data comes from [ProfileCubit] (`GET /profiles`).
 class CustomerProfilePage extends StatelessWidget {
   const CustomerProfilePage({super.key});
 
@@ -14,41 +21,57 @@ class CustomerProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
+    return BlocListener<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is! ProfileLoadErrorState) return;
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(l10n.failureMessage(state.failure)),
+              action: SnackBarAction(
+                label: l10n.retry,
+                onPressed: () => unawaited(context.read<ProfileCubit>().load()),
+              ),
+            ),
+          );
+      },
+      child: Scaffold(
         backgroundColor: AppColors.background,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppRoutes.customerHome);
-            }
-          },
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go(AppRoutes.customerHome);
+              }
+            },
+          ),
+          title: Text(
+            l10n.profileTitle,
+            style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+          ),
+          centerTitle: false,
         ),
-        title: Text(
-          l10n.profileTitle,
-          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
-        ),
-        centerTitle: false,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-          child: Column(
-            children: [
-              // User header card
-              _buildUserCard(context),
-              const SizedBox(height: AppSpacing.md),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+            child: Column(
+              children: [
+                // User header card
+                _buildUserCard(context),
+                const SizedBox(height: AppSpacing.md),
 
-              // Menu Options Card
-              _buildMenuCard(context),
-              const SizedBox(height: AppSpacing.xl),
-            ],
+                // Menu Options Card
+                _buildMenuCard(context),
+                const SizedBox(height: AppSpacing.xl),
+              ],
+            ),
           ),
         ),
       ),
@@ -56,6 +79,7 @@ class CustomerProfilePage extends StatelessWidget {
   }
 
   Widget _buildUserCard(BuildContext context) {
+    final profile = context.select<ProfileCubit, UserProfile?>((cubit) => cubit.state.profile);
     final l10n = context.l10n;
 
     return Container(
@@ -73,7 +97,7 @@ class CustomerProfilePage extends StatelessWidget {
             decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
             alignment: Alignment.center,
             child: Text(
-              'M',
+              profile?.initials ?? '',
               style: AppTextStyles.headlineMd.copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 22),
             ),
           ),
@@ -83,7 +107,7 @@ class CustomerProfilePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Nguyễn Thị Mai',
+                  profile?.fullName ?? '',
                   style: AppTextStyles.titleLg.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
@@ -91,13 +115,21 @@ class CustomerProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text('maingvyen@gmail.com', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                Text(
+                  profile?.email ?? profile?.phoneNumber ?? '',
+                  style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                ),
               ],
             ),
           ),
           TextButton(
             key: const Key('profile_edit_link'),
-            onPressed: () => context.push(AppRoutes.editProfile),
+            onPressed: () async {
+              final cubit = context.read<ProfileCubit>();
+              await context.push(AppRoutes.editProfile);
+              // Pick up whatever was saved on the edit screen.
+              unawaited(cubit.load());
+            },
             child: Text(
               l10n.profileEditLink,
               style: AppTextStyles.caption.copyWith(

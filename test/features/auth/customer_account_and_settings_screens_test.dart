@@ -15,6 +15,9 @@ import 'package:vstech_home_services/features/auth/presentation/pages/my_address
 import 'package:vstech_home_services/features/auth/presentation/pages/payment_methods_page.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
+import '../../fixtures/auth/auth_fixtures.dart';
+import '../../helpers/auth_test_providers.dart';
+
 Widget _createTestAuthWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
@@ -51,17 +54,19 @@ Widget _createTestAuthWidget(Widget child) {
     ],
   );
 
-  return MaterialApp.router(
-    theme: AppTheme.light,
-    routerConfig: router,
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('vi'), Locale('en')],
-    locale: const Locale('vi'),
+  return AuthTestProviders(profile: customerProfile).wrap(
+    MaterialApp.router(
+      theme: AppTheme.light,
+      routerConfig: router,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('vi'), Locale('en')],
+      locale: const Locale('vi'),
+    ),
   );
 }
 

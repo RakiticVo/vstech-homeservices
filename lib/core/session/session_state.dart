@@ -10,8 +10,17 @@ final class SessionInitialState extends SessionState {
   const SessionInitialState();
 }
 
+/// Tokens are stored. [role] is null until the profile has been fetched (splash resolves it).
 final class SessionAuthenticatedState extends SessionState {
-  const SessionAuthenticatedState();
+  const SessionAuthenticatedState({this.role});
+
+  final UserRole? role;
+
+  @override
+  bool operator ==(Object other) => other is SessionAuthenticatedState && other.role == role;
+
+  @override
+  int get hashCode => role.hashCode;
 }
 
 /// [expired] is true when the user was signed out by a failed token refresh, so the router

@@ -311,7 +311,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get errorInvalidPhone => 'Số điện thoại không hợp lệ';
 
   @override
-  String get errorPasswordTooShort => 'Mật khẩu phải có ít nhất 6 ký tự';
+  String get errorPasswordTooShort => 'Mật khẩu phải có ít nhất 8 ký tự';
 
   @override
   String get errorPasswordNotMatch => 'Mật khẩu xác nhận không khớp';
@@ -3340,4 +3340,8 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get apiErrorDispatchUnavailable =>
       'Hệ thống phân công tạm thời không khả dụng.';
+
+  @override
+  String get authErrorUnsupportedRole =>
+      'Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ.';
 }

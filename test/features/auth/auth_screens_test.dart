@@ -15,6 +15,8 @@ import 'package:vstech_home_services/features/auth/presentation/widgets/otp_pin_
 import 'package:vstech_home_services/features/auth/presentation/widgets/social_auth_button.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
+import '../../helpers/auth_test_providers.dart';
+
 Widget _createTestWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
@@ -51,17 +53,19 @@ Widget _createTestWidget(Widget child) {
     ],
   );
 
-  return MaterialApp.router(
-    theme: AppTheme.light,
-    routerConfig: router,
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: AppLocalizations.supportedLocales,
-    locale: const Locale('vi'),
+  return AuthTestProviders().wrap(
+    MaterialApp.router(
+      theme: AppTheme.light,
+      routerConfig: router,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('vi'),
+    ),
   );
 }
 

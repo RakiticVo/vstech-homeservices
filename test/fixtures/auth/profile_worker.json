@@ -1,0 +1,23 @@
+{
+  "status": 200,
+  "message": "OK",
+  "data": {
+    "id": 8821,
+    "email": null,
+    "phoneNumber": "0909123456",
+    "fullName": "Trần Văn Hùng",
+    "role": "WORKER",
+    "verificationStatus": "VERIFIED",
+    "rating": 4.7,
+    "totalJobs": 120,
+    "locale": "vi",
+    "isActive": true,
+    "createdAt": "2026-01-02T03:04:05Z",
+    "userProfile": null,
+    "workerKyc": { "approvalStatus": "APPROVED", "idCardNumber": "0790", "idCardFrontUrl": null, "idCardBackUrl": null },
+    "workerMetrics": { "totalCompletedJobs": 118, "averageRating": 4.9, "cancellationRate": 0.02, "badgeTier": "GOLD" },
+    "workerSkills": [{ "categoryId": 1, "experienceYears": 5, "certificateUrl": null, "isVerified": true }]
+  },
+  "errorCode": null,
+  "timestamp": "2026-10-07T08:00:00Z"
+}
