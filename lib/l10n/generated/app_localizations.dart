@@ -4262,12 +4262,6 @@ abstract class AppLocalizations {
   /// **'Email'**
   String get editProfileEmail;
 
-  /// No description provided for @editProfileDob.
-  ///
-  /// In vi, this message translates to:
-  /// **'Ngày sinh'**
-  String get editProfileDob;
-
   /// No description provided for @editProfileOtpNotice.
   ///
   /// In vi, this message translates to:
@@ -6240,6 +6234,36 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Email không hợp lệ'**
   String get errorInvalidEmail;
+
+  /// No description provided for @errorFullNameLength.
+  ///
+  /// In vi, this message translates to:
+  /// **'Họ tên phải từ 2 đến 100 ký tự'**
+  String get errorFullNameLength;
+
+  /// No description provided for @editProfileBio.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giới thiệu ngắn'**
+  String get editProfileBio;
+
+  /// No description provided for @editProfileBioHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vài dòng về bạn (không bắt buộc)'**
+  String get editProfileBioHint;
+
+  /// No description provided for @wprofileSkillsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'{verified}/{total} kỹ năng đã xác minh'**
+  String wprofileSkillsSubtitle(int verified, int total);
+
+  /// No description provided for @wprofilePerfSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'{rating}★ · {jobs} việc hoàn thành'**
+  String wprofilePerfSubtitle(String rating, int jobs);
 }
 
 class _AppLocalizationsDelegate

@@ -37,6 +37,9 @@ void main() {
     expect(profile.completedJobs, 118);
     expect(profile.kycApprovalStatus, 'APPROVED');
     expect(profile.initials, 'TH');
+    expect(profile.isVerified, isTrue, reason: 'KYC approved');
+    expect(profile.skillCount, 1);
+    expect(profile.verifiedSkillCount, 1);
   });
 
   test('maps the customer default address', () async {
@@ -47,6 +50,7 @@ void main() {
     expect(profile.role, UserRole.customer);
     expect(profile.defaultAddress, '123 Nguyễn Thị Minh Khai, Quận 1');
     expect(profile.lat, 10.77);
+    expect(profile.isVerified, isFalse);
   });
 
   test('update forwards only the provided fields', () async {

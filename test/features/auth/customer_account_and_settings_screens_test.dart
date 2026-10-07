@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/auth/domain/entities/profile_update.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/change_password_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/customer_profile_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/customer_settings_page.dart';
@@ -18,7 +20,7 @@ import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 import '../../fixtures/auth/auth_fixtures.dart';
 import '../../helpers/auth_test_providers.dart';
 
-Widget _createTestAuthWidget(Widget child) {
+Widget _createTestAuthWidget(Widget child, {AuthTestProviders? providers}) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
@@ -54,7 +56,7 @@ Widget _createTestAuthWidget(Widget child) {
     ],
   );
 
-  return AuthTestProviders(profile: customerProfile).wrap(
+  return (providers ?? AuthTestProviders(profile: customerProfile)).wrap(
     MaterialApp.router(
       theme: AppTheme.light,
       routerConfig: router,
@@ -115,6 +117,41 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Đã lưu thay đổi thông tin thành công'), findsWidgets);
+    });
+
+    testWidgets('EditProfilePage matches UserProfileUpdateRequest: validates and sends bio', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final providers = AuthTestProviders(profile: customerProfile);
+      addTearDown(providers.dispose);
+
+      await tester.pumpWidget(_createTestAuthWidget(const EditProfilePage(), providers: providers));
+      await tester.pumpAndSettle();
+
+      // Date of birth is not part of the API any more; bio is.
+      expect(find.text('Ngày sinh'), findsNothing);
+      expect(find.text('Giới thiệu ngắn'), findsOneWidget);
+
+      // Invalid phone + one-letter name are rejected locally.
+      await tester.enterText(find.byKey(const Key('edit_profile_name')), 'M');
+      await tester.enterText(find.byKey(const Key('edit_profile_phone')), '0123');
+      await tester.tap(find.byKey(const Key('save_profile_button')));
+      await tester.pumpAndSettle();
+      expect(find.text('Họ tên phải từ 2 đến 100 ký tự'), findsOneWidget);
+      expect(find.text('Số điện thoại không hợp lệ'), findsOneWidget);
+      verifyNever(() => providers.profile.save(any()));
+
+      await tester.enterText(find.byKey(const Key('edit_profile_name')), 'Nguyễn Thị Mai');
+      await tester.enterText(find.byKey(const Key('edit_profile_phone')), '0901 234 567');
+      await tester.enterText(find.byKey(const Key('edit_profile_bio')), 'Thích nhà sạch');
+      await tester.tap(find.byKey(const Key('save_profile_button')));
+      await tester.pumpAndSettle();
+
+      final sent = verify(() => providers.profile.save(captureAny())).captured.single as ProfileUpdate;
+      expect(sent.fullName, 'Nguyễn Thị Mai');
+      expect(sent.phoneNumber, '0901 234 567');
+      expect(sent.email, 'maingvyen@gmail.com');
+      expect(sent.bio, 'Thích nhà sạch');
     });
 
     testWidgets('MyAddressesPage renders addresses and toggles default address', (tester) async {

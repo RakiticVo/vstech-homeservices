@@ -235,6 +235,10 @@ void main() {
       expect(find.text('Trần Văn Hùng'), findsOneWidget);
       expect(find.text('0909 123 456'), findsOneWidget);
       expect(find.text('Mã đối tác: 8821'), findsOneWidget);
+      // Header and menu figures come from GET /profiles (KYC, metrics, skills).
+      expect(find.byIcon(Icons.verified), findsOneWidget);
+      expect(find.text('1/2 kỹ năng đã xác minh'), findsOneWidget);
+      expect(find.text('4.9★ · 118 việc hoàn thành'), findsOneWidget);
 
       // Menu items
       expect(find.byKey(const Key('menu_worker_skills')), findsOneWidget);

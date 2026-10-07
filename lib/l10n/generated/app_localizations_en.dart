@@ -2274,9 +2274,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editProfileEmail => 'Email';
 
   @override
-  String get editProfileDob => 'Date of Birth';
-
-  @override
   String get editProfileOtpNotice =>
       'OTP verification needed when changing phone number';
 
@@ -3353,4 +3350,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorInvalidEmail => 'Invalid email address';
+
+  @override
+  String get errorFullNameLength => 'Full name must be 2–100 characters';
+
+  @override
+  String get editProfileBio => 'Short bio';
+
+  @override
+  String get editProfileBioHint => 'A few lines about you (optional)';
+
+  @override
+  String wprofileSkillsSubtitle(int verified, int total) {
+    return '$verified/$total skills verified';
+  }
+
+  @override
+  String wprofilePerfSubtitle(String rating, int jobs) {
+    return '$rating★ · $jobs jobs completed';
+  }
 }

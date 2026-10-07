@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfile {
 
- String get id; UserRole get role; String get fullName; String? get email; String? get phoneNumber; String? get avatarUrl; String? get bio; String? get locale; String? get defaultAddress; double? get lat; double? get lng; double? get rating; int? get totalJobs; String? get verificationStatus; String? get kycApprovalStatus; int? get completedJobs; double? get cancellationRate; String? get badgeTier;
+ String get id; UserRole get role; String get fullName; String? get email; String? get phoneNumber; String? get avatarUrl; String? get bio; String? get locale; String? get defaultAddress; double? get lat; double? get lng; double? get rating; int? get totalJobs; String? get verificationStatus; String? get kycApprovalStatus; int? get completedJobs; double? get cancellationRate; String? get badgeTier; int get skillCount; int get verifiedSkillCount;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $UserProfileCopyWith<UserProfile> get copyWith => _$UserProfileCopyWithImpl<User
 @override
 bool operator ==(Object other) {
   final _this = this as UserProfile;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.role, _this.role) || other.role == _this.role)&&(identical(other.fullName, _this.fullName) || other.fullName == _this.fullName)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.phoneNumber, _this.phoneNumber) || other.phoneNumber == _this.phoneNumber)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.bio, _this.bio) || other.bio == _this.bio)&&(identical(other.locale, _this.locale) || other.locale == _this.locale)&&(identical(other.defaultAddress, _this.defaultAddress) || other.defaultAddress == _this.defaultAddress)&&(identical(other.lat, _this.lat) || other.lat == _this.lat)&&(identical(other.lng, _this.lng) || other.lng == _this.lng)&&(identical(other.rating, _this.rating) || other.rating == _this.rating)&&(identical(other.totalJobs, _this.totalJobs) || other.totalJobs == _this.totalJobs)&&(identical(other.verificationStatus, _this.verificationStatus) || other.verificationStatus == _this.verificationStatus)&&(identical(other.kycApprovalStatus, _this.kycApprovalStatus) || other.kycApprovalStatus == _this.kycApprovalStatus)&&(identical(other.completedJobs, _this.completedJobs) || other.completedJobs == _this.completedJobs)&&(identical(other.cancellationRate, _this.cancellationRate) || other.cancellationRate == _this.cancellationRate)&&(identical(other.badgeTier, _this.badgeTier) || other.badgeTier == _this.badgeTier));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.role, _this.role) || other.role == _this.role)&&(identical(other.fullName, _this.fullName) || other.fullName == _this.fullName)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.phoneNumber, _this.phoneNumber) || other.phoneNumber == _this.phoneNumber)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.bio, _this.bio) || other.bio == _this.bio)&&(identical(other.locale, _this.locale) || other.locale == _this.locale)&&(identical(other.defaultAddress, _this.defaultAddress) || other.defaultAddress == _this.defaultAddress)&&(identical(other.lat, _this.lat) || other.lat == _this.lat)&&(identical(other.lng, _this.lng) || other.lng == _this.lng)&&(identical(other.rating, _this.rating) || other.rating == _this.rating)&&(identical(other.totalJobs, _this.totalJobs) || other.totalJobs == _this.totalJobs)&&(identical(other.verificationStatus, _this.verificationStatus) || other.verificationStatus == _this.verificationStatus)&&(identical(other.kycApprovalStatus, _this.kycApprovalStatus) || other.kycApprovalStatus == _this.kycApprovalStatus)&&(identical(other.completedJobs, _this.completedJobs) || other.completedJobs == _this.completedJobs)&&(identical(other.cancellationRate, _this.cancellationRate) || other.cancellationRate == _this.cancellationRate)&&(identical(other.badgeTier, _this.badgeTier) || other.badgeTier == _this.badgeTier)&&(identical(other.skillCount, _this.skillCount) || other.skillCount == _this.skillCount)&&(identical(other.verifiedSkillCount, _this.verifiedSkillCount) || other.verifiedSkillCount == _this.verifiedSkillCount));
 }
 
 
 @override
 int get hashCode {
   final _this = this as UserProfile;
-  return Object.hash(runtimeType,_this.id,_this.role,_this.fullName,_this.email,_this.phoneNumber,_this.avatarUrl,_this.bio,_this.locale,_this.defaultAddress,_this.lat,_this.lng,_this.rating,_this.totalJobs,_this.verificationStatus,_this.kycApprovalStatus,_this.completedJobs,_this.cancellationRate,_this.badgeTier);
+  return Object.hashAll([runtimeType,_this.id,_this.role,_this.fullName,_this.email,_this.phoneNumber,_this.avatarUrl,_this.bio,_this.locale,_this.defaultAddress,_this.lat,_this.lng,_this.rating,_this.totalJobs,_this.verificationStatus,_this.kycApprovalStatus,_this.completedJobs,_this.cancellationRate,_this.badgeTier,_this.skillCount,_this.verifiedSkillCount]);
 }
 
 @override
 String toString() {
   final _this = this as UserProfile;
-  return 'UserProfile(id: ${_this.id}, role: ${_this.role}, fullName: ${_this.fullName}, email: ${_this.email}, phoneNumber: ${_this.phoneNumber}, avatarUrl: ${_this.avatarUrl}, bio: ${_this.bio}, locale: ${_this.locale}, defaultAddress: ${_this.defaultAddress}, lat: ${_this.lat}, lng: ${_this.lng}, rating: ${_this.rating}, totalJobs: ${_this.totalJobs}, verificationStatus: ${_this.verificationStatus}, kycApprovalStatus: ${_this.kycApprovalStatus}, completedJobs: ${_this.completedJobs}, cancellationRate: ${_this.cancellationRate}, badgeTier: ${_this.badgeTier})';
+  return 'UserProfile(id: ${_this.id}, role: ${_this.role}, fullName: ${_this.fullName}, email: ${_this.email}, phoneNumber: ${_this.phoneNumber}, avatarUrl: ${_this.avatarUrl}, bio: ${_this.bio}, locale: ${_this.locale}, defaultAddress: ${_this.defaultAddress}, lat: ${_this.lat}, lng: ${_this.lng}, rating: ${_this.rating}, totalJobs: ${_this.totalJobs}, verificationStatus: ${_this.verificationStatus}, kycApprovalStatus: ${_this.kycApprovalStatus}, completedJobs: ${_this.completedJobs}, cancellationRate: ${_this.cancellationRate}, badgeTier: ${_this.badgeTier}, skillCount: ${_this.skillCount}, verifiedSkillCount: ${_this.verifiedSkillCount})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
- String id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier
+ String id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier, int skillCount, int verifiedSkillCount
 });
 
 
@@ -68,7 +68,7 @@ class _$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? role = null,Object? fullName = null,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? locale = freezed,Object? defaultAddress = freezed,Object? lat = freezed,Object? lng = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? verificationStatus = freezed,Object? kycApprovalStatus = freezed,Object? completedJobs = freezed,Object? cancellationRate = freezed,Object? badgeTier = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? role = null,Object? fullName = null,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? locale = freezed,Object? defaultAddress = freezed,Object? lat = freezed,Object? lng = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? verificationStatus = freezed,Object? kycApprovalStatus = freezed,Object? completedJobs = freezed,Object? cancellationRate = freezed,Object? badgeTier = freezed,Object? skillCount = null,Object? verifiedSkillCount = null,}) {
   return _then(UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
@@ -88,7 +88,9 @@ as String?,kycApprovalStatus: freezed == kycApprovalStatus ? _self.kycApprovalSt
 as String?,completedJobs: freezed == completedJobs ? _self.completedJobs : completedJobs // ignore: cast_nullable_to_non_nullable
 as int?,cancellationRate: freezed == cancellationRate ? _self.cancellationRate : cancellationRate // ignore: cast_nullable_to_non_nullable
 as double?,badgeTier: freezed == badgeTier ? _self.badgeTier : badgeTier // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,skillCount: null == skillCount ? _self.skillCount : skillCount // ignore: cast_nullable_to_non_nullable
+as int,verifiedSkillCount: null == verifiedSkillCount ? _self.verifiedSkillCount : verifiedSkillCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -173,10 +175,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier,  int skillCount,  int verifiedSkillCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier);case _:
+return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier,_that.skillCount,_that.verifiedSkillCount);case _:
   return orElse();
 
 }
@@ -194,10 +196,10 @@ return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier,  int skillCount,  int verifiedSkillCount)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile():
-return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier);case _:
+return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier,_that.skillCount,_that.verifiedSkillCount);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -214,10 +216,10 @@ return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier,  int skillCount,  int verifiedSkillCount)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier);case _:
+return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier,_that.skillCount,_that.verifiedSkillCount);case _:
   return null;
 
 }
@@ -229,7 +231,7 @@ return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber
 
 
 class _UserProfile extends UserProfile {
-  const _UserProfile({required this.id, required this.role, this.fullName = '', this.email, this.phoneNumber, this.avatarUrl, this.bio, this.locale, this.defaultAddress, this.lat, this.lng, this.rating, this.totalJobs, this.verificationStatus, this.kycApprovalStatus, this.completedJobs, this.cancellationRate, this.badgeTier}): super._();
+  const _UserProfile({required this.id, required this.role, this.fullName = '', this.email, this.phoneNumber, this.avatarUrl, this.bio, this.locale, this.defaultAddress, this.lat, this.lng, this.rating, this.totalJobs, this.verificationStatus, this.kycApprovalStatus, this.completedJobs, this.cancellationRate, this.badgeTier, this.skillCount = 0, this.verifiedSkillCount = 0}): super._();
   
 
 @override final  String id;
@@ -250,6 +252,8 @@ class _UserProfile extends UserProfile {
 @override final  int? completedJobs;
 @override final  double? cancellationRate;
 @override final  String? badgeTier;
+@override@JsonKey() final  int skillCount;
+@override@JsonKey() final  int verifiedSkillCount;
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
@@ -261,18 +265,18 @@ _$UserProfileCopyWith<_UserProfile> get copyWith => __$UserProfileCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.role, role) || other.role == role)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.defaultAddress, defaultAddress) || other.defaultAddress == defaultAddress)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.totalJobs, totalJobs) || other.totalJobs == totalJobs)&&(identical(other.verificationStatus, verificationStatus) || other.verificationStatus == verificationStatus)&&(identical(other.kycApprovalStatus, kycApprovalStatus) || other.kycApprovalStatus == kycApprovalStatus)&&(identical(other.completedJobs, completedJobs) || other.completedJobs == completedJobs)&&(identical(other.cancellationRate, cancellationRate) || other.cancellationRate == cancellationRate)&&(identical(other.badgeTier, badgeTier) || other.badgeTier == badgeTier));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.role, role) || other.role == role)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.defaultAddress, defaultAddress) || other.defaultAddress == defaultAddress)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.totalJobs, totalJobs) || other.totalJobs == totalJobs)&&(identical(other.verificationStatus, verificationStatus) || other.verificationStatus == verificationStatus)&&(identical(other.kycApprovalStatus, kycApprovalStatus) || other.kycApprovalStatus == kycApprovalStatus)&&(identical(other.completedJobs, completedJobs) || other.completedJobs == completedJobs)&&(identical(other.cancellationRate, cancellationRate) || other.cancellationRate == cancellationRate)&&(identical(other.badgeTier, badgeTier) || other.badgeTier == badgeTier)&&(identical(other.skillCount, skillCount) || other.skillCount == skillCount)&&(identical(other.verifiedSkillCount, verifiedSkillCount) || other.verifiedSkillCount == verifiedSkillCount));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,role,fullName,email,phoneNumber,avatarUrl,bio,locale,defaultAddress,lat,lng,rating,totalJobs,verificationStatus,kycApprovalStatus,completedJobs,cancellationRate,badgeTier);
+    return Object.hashAll([runtimeType,id,role,fullName,email,phoneNumber,avatarUrl,bio,locale,defaultAddress,lat,lng,rating,totalJobs,verificationStatus,kycApprovalStatus,completedJobs,cancellationRate,badgeTier,skillCount,verifiedSkillCount]);
 }
 
 @override
 String toString() {
-    return 'UserProfile(id: $id, role: $role, fullName: $fullName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, bio: $bio, locale: $locale, defaultAddress: $defaultAddress, lat: $lat, lng: $lng, rating: $rating, totalJobs: $totalJobs, verificationStatus: $verificationStatus, kycApprovalStatus: $kycApprovalStatus, completedJobs: $completedJobs, cancellationRate: $cancellationRate, badgeTier: $badgeTier)';
+    return 'UserProfile(id: $id, role: $role, fullName: $fullName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, bio: $bio, locale: $locale, defaultAddress: $defaultAddress, lat: $lat, lng: $lng, rating: $rating, totalJobs: $totalJobs, verificationStatus: $verificationStatus, kycApprovalStatus: $kycApprovalStatus, completedJobs: $completedJobs, cancellationRate: $cancellationRate, badgeTier: $badgeTier, skillCount: $skillCount, verifiedSkillCount: $verifiedSkillCount)';
 }
 
 
@@ -283,7 +287,7 @@ abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith
   factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier
+ String id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier, int skillCount, int verifiedSkillCount
 });
 
 
@@ -300,7 +304,7 @@ class __$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? role = null,Object? fullName = null,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? locale = freezed,Object? defaultAddress = freezed,Object? lat = freezed,Object? lng = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? verificationStatus = freezed,Object? kycApprovalStatus = freezed,Object? completedJobs = freezed,Object? cancellationRate = freezed,Object? badgeTier = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? role = null,Object? fullName = null,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? locale = freezed,Object? defaultAddress = freezed,Object? lat = freezed,Object? lng = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? verificationStatus = freezed,Object? kycApprovalStatus = freezed,Object? completedJobs = freezed,Object? cancellationRate = freezed,Object? badgeTier = freezed,Object? skillCount = null,Object? verifiedSkillCount = null,}) {
   return _then(_UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
@@ -320,7 +324,9 @@ as String?,kycApprovalStatus: freezed == kycApprovalStatus ? _self.kycApprovalSt
 as String?,completedJobs: freezed == completedJobs ? _self.completedJobs : completedJobs // ignore: cast_nullable_to_non_nullable
 as int?,cancellationRate: freezed == cancellationRate ? _self.cancellationRate : cancellationRate // ignore: cast_nullable_to_non_nullable
 as double?,badgeTier: freezed == badgeTier ? _self.badgeTier : badgeTier // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,skillCount: null == skillCount ? _self.skillCount : skillCount // ignore: cast_nullable_to_non_nullable
+as int,verifiedSkillCount: null == verifiedSkillCount ? _self.verifiedSkillCount : verifiedSkillCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

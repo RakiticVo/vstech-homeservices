@@ -16,6 +16,7 @@ class UpdateProfileUseCase {
       fullName: update.fullName?.trim(),
       phoneNumber: update.phoneNumber == null ? null : normalizePhone(update.phoneNumber!),
       email: update.email?.trim(),
+      bio: update.bio?.trim(),
       defaultAddress: update.defaultAddress?.trim(),
       lat: update.lat,
       lng: update.lng,

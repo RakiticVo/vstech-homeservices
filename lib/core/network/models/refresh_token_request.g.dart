@@ -9,6 +9,6 @@ part of 'refresh_token_request.dart';
 _RefreshTokenRequest _$RefreshTokenRequestFromJson(Map<String, dynamic> json) =>
     _RefreshTokenRequest(refreshToken: json['refreshToken'] as String);
 
-Map<String, dynamic> _$RefreshTokenRequestToJson(
-  _RefreshTokenRequest instance,
-) => <String, dynamic>{'refreshToken': instance.refreshToken};
+Map<String, dynamic> _$RefreshTokenRequestToJson(_RefreshTokenRequest instance) => <String, dynamic>{
+  'refreshToken': instance.refreshToken,
+};

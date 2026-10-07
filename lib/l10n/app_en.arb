@@ -988,7 +988,6 @@
   "editProfileFullName": "Full Name",
   "editProfilePhone": "Phone Number",
   "editProfileEmail": "Email",
-  "editProfileDob": "Date of Birth",
   "editProfileOtpNotice": "OTP verification needed when changing phone number",
   "editProfileSavedSuccess": "Profile changes saved successfully",
   "editProfileSaveCta": "Save Changes",
@@ -1344,5 +1343,10 @@
   "loginRememberMe": "Remember me",
   "registerEmailLabel": "Email",
   "registerEmailHint": "e.g. name@gmail.com",
-  "errorInvalidEmail": "Invalid email address"
+  "errorInvalidEmail": "Invalid email address",
+  "errorFullNameLength": "Full name must be 2–100 characters",
+  "editProfileBio": "Short bio",
+  "editProfileBioHint": "A few lines about you (optional)",
+  "wprofileSkillsSubtitle": "{verified}/{total} skills verified",
+  "wprofilePerfSubtitle": "{rating}★ · {jobs} jobs completed"
 }

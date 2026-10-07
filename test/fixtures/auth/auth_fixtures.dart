@@ -21,4 +21,8 @@ const workerProfile = UserProfile(
   fullName: 'Trần Văn Hùng',
   phoneNumber: '0909 123 456',
   rating: 4.9,
+  completedJobs: 118,
+  kycApprovalStatus: 'APPROVED',
+  skillCount: 2,
+  verifiedSkillCount: 1,
 );

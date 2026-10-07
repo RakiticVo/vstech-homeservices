@@ -78,10 +78,12 @@ class _RegisterPageState extends State<RegisterPage> {
     final confirmPassword = _confirmPasswordController.text;
 
     setState(() {
-      _fullNameError = fullName.isEmpty ? context.l10n.errorFieldRequired : null;
+      _fullNameError = fullName.isEmpty
+          ? context.l10n.errorFieldRequired
+          : (CredentialRules.isValidFullName(fullName) ? null : context.l10n.errorFullNameLength);
       _phoneError = phone.isEmpty
           ? context.l10n.errorFieldRequired
-          : (phone.length < 9 ? context.l10n.errorInvalidPhone : null);
+          : (CredentialRules.isValidVietnamesePhone(phone) ? null : context.l10n.errorInvalidPhone);
       _emailError = email.isEmpty
           ? context.l10n.errorFieldRequired
           : (CredentialRules.isValidEmail(email) ? null : context.l10n.errorInvalidEmail);

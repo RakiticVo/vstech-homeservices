@@ -108,6 +108,13 @@ void main() {
     expect(CredentialRules.isStrongPassword('PASSWORD123'), isFalse, reason: 'no lower case');
     expect(CredentialRules.isStrongPassword('Passwordabc'), isFalse, reason: 'no digit');
     expect(CredentialRules.isStrongPassword('Pass12'), isFalse, reason: 'too short');
+    expect(CredentialRules.isValidVietnamesePhone('0901 234 567'), isTrue);
+    expect(CredentialRules.isValidVietnamesePhone('+84901234567'), isTrue);
+    expect(CredentialRules.isValidVietnamesePhone('0123456789'), isFalse, reason: 'invalid prefix');
+    expect(CredentialRules.isValidVietnamesePhone('090123456'), isFalse, reason: 'too short');
+    expect(CredentialRules.isValidFullName('A'), isFalse);
+    expect(CredentialRules.isValidFullName('An'), isTrue);
+    expect(CredentialRules.isValidFullName('a' * 101), isFalse);
   });
 
   test('UserProfile.initials', () {

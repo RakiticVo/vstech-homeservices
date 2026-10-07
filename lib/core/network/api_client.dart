@@ -279,7 +279,8 @@ class ApiClient {
       );
       final accessToken = envelope.data?.accessToken;
       if (!envelope.isSuccess || accessToken == null) return false;
-      await _tokenStore.saveTokens(accessToken: accessToken, refreshToken: refreshToken);
+      // Keep the current refresh token unless the server rotated it.
+      await _tokenStore.saveTokens(accessToken: accessToken, refreshToken: envelope.data?.refreshToken ?? refreshToken);
       return true;
     } on Object catch (e) {
       appLogger.w('Token refresh failed', error: e);

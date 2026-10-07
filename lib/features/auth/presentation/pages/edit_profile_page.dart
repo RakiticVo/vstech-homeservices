@@ -11,11 +11,14 @@ import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/profile_update.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
+import 'package:vstech_home_services/features/auth/domain/usecases/credential_rules.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/widgets/avatar_image_or_initials.dart';
 
 /// Screen representing customer profile editing (Cell 105 `eprof`). Prefilled from
-/// [ProfileCubit] and saved with `PUT /profiles`. Date of birth has no API field yet and stays
-/// local to the screen.
+/// [ProfileCubit] and saved with `PUT /profiles` — fields mirror `UserProfileUpdateRequest`
+/// (full name, phone, email, bio) and are validated with the rules in
+/// docs/reference/api/01-auth-profiles.md §4 before sending.
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
@@ -27,7 +30,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late final TextEditingController _nameController;
   late final TextEditingController _phoneController;
   late final TextEditingController _emailController;
-  late final TextEditingController _dobController;
+  late final TextEditingController _bioController;
+  String? _nameError;
+  String? _phoneError;
+  String? _emailError;
   bool _isSaved = false;
 
   @override
@@ -36,7 +42,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _nameController = TextEditingController();
     _phoneController = TextEditingController();
     _emailController = TextEditingController();
-    _dobController = TextEditingController();
+    _bioController = TextEditingController();
     final profile = context.read<ProfileCubit>().state.profile;
     if (profile != null) _fill(profile);
   }
@@ -45,6 +51,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _nameController.text = profile.fullName;
     _phoneController.text = profile.phoneNumber ?? '';
     _emailController.text = profile.email ?? '';
+    _bioController.text = profile.bio ?? '';
   }
 
   @override
@@ -52,18 +59,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _nameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
-    _dobController.dispose();
+    _bioController.dispose();
     super.dispose();
   }
 
   void _saveProfile() {
+    final name = _nameController.text.trim();
+    final phone = _phoneController.text.trim();
     final email = _emailController.text.trim();
+    final l10n = context.l10n;
+    setState(() {
+      _nameError = CredentialRules.isValidFullName(name) ? null : l10n.errorFullNameLength;
+      _phoneError = phone.isEmpty
+          ? l10n.errorFieldRequired
+          : (CredentialRules.isValidVietnamesePhone(phone) ? null : l10n.errorInvalidPhone);
+      _emailError = email.isEmpty || CredentialRules.isValidEmail(email) ? null : l10n.errorInvalidEmail;
+    });
+    if (_nameError != null || _phoneError != null || _emailError != null) return;
+
+    final bio = _bioController.text.trim();
     unawaited(
       context.read<ProfileCubit>().save(
         ProfileUpdate(
-          fullName: _nameController.text,
-          phoneNumber: _phoneController.text,
+          fullName: name,
+          phoneNumber: phone,
           email: email.isEmpty ? null : email,
+          bio: bio.isEmpty ? null : bio,
         ),
       ),
     );
@@ -162,8 +183,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 shape: BoxShape.circle,
                               ),
                               alignment: Alignment.center,
-                              child: Text(
-                                profile?.initials ?? '',
+                              child: AvatarImageOrInitials(
+                                avatarUrl: profile?.avatarUrl,
+                                initials: profile?.initials ?? '',
                                 style: AppTextStyles.headlineLg.copyWith(
                                   fontSize: 36,
                                   fontWeight: FontWeight.w800,
@@ -189,7 +211,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       const SizedBox(height: AppSpacing.md),
 
                       // Full name
-                      _buildField(keyName: 'name', label: l10n.editProfileFullName, controller: _nameController),
+                      _buildField(
+                        keyName: 'name',
+                        label: l10n.editProfileFullName,
+                        controller: _nameController,
+                        errorText: _nameError,
+                      ),
                       const SizedBox(height: AppSpacing.md),
 
                       // Phone Number
@@ -198,15 +225,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         label: l10n.editProfilePhone,
                         controller: _phoneController,
                         tag: l10n.editProfileOtpNotice,
+                        errorText: _phoneError,
+                        keyboardType: TextInputType.phone,
                       ),
                       const SizedBox(height: AppSpacing.md),
 
                       // Email
-                      _buildField(keyName: 'email', label: l10n.editProfileEmail, controller: _emailController),
+                      _buildField(
+                        keyName: 'email',
+                        label: l10n.editProfileEmail,
+                        controller: _emailController,
+                        errorText: _emailError,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
                       const SizedBox(height: AppSpacing.md),
 
-                      // Date of birth
-                      _buildField(keyName: 'dob', label: l10n.editProfileDob, controller: _dobController),
+                      // Bio (UserProfileUpdateRequest.bio)
+                      _buildField(
+                        keyName: 'bio',
+                        label: l10n.editProfileBio,
+                        hintText: l10n.editProfileBioHint,
+                        controller: _bioController,
+                        maxLines: 3,
+                      ),
                       const SizedBox(height: AppSpacing.lg),
                     ],
                   ),
@@ -254,6 +295,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     required String label,
     required TextEditingController controller,
     String? tag,
+    String? errorText,
+    String? hintText,
+    TextInputType? keyboardType,
+    int maxLines = 1,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,21 +327,40 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         const SizedBox(height: 6),
         Container(
-          height: 50,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          height: maxLines == 1 ? 50 : null,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: maxLines == 1 ? 0 : 12),
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadius.control),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: errorText == null ? AppColors.border : AppColors.error),
           ),
           alignment: Alignment.center,
           child: TextField(
             key: Key('edit_profile_$keyName'),
             controller: controller,
+            keyboardType: keyboardType,
+            maxLines: maxLines,
             style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-            decoration: const InputDecoration(isDense: true, border: InputBorder.none),
+            decoration: InputDecoration(
+              isDense: true,
+              border: InputBorder.none,
+              hintText: hintText,
+              hintStyle: AppTextStyles.bodyMd.copyWith(color: AppColors.textMuted),
+            ),
           ),
         ),
+        if (errorText != null) ...[
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              const Icon(Icons.error_outline, size: 16, color: AppColors.error),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(errorText, style: AppTextStyles.caption.copyWith(color: AppColors.error)),
+              ),
+            ],
+          ),
+        ],
       ],
     );
   }

@@ -7,6 +7,13 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Changed (đối chiếu UI với API doc Auth & Profile)
+- Sửa hồ sơ: bỏ ô Ngày sinh (không có trong API), thêm ô "Giới thiệu ngắn" (`bio`); kiểm tra họ tên 2–100 ký tự, SĐT Việt Nam, email trước khi `PUT /profiles`; lỗi hiển thị Icon + chữ dưới từng ô.
+- Đăng ký: kiểm tra họ tên 2–100 ký tự và SĐT Việt Nam (`0`/`+84` + đầu số 3/5/7/8/9) theo doc §4.
+- Ảnh đại diện (Hồ sơ khách, Sửa hồ sơ, Hồ sơ thợ) hiện ảnh `avatarUrl` khi có, không thì chữ viết tắt (`AvatarImageOrInitials`).
+- Hồ sơ thợ: dấu xác minh chỉ hiện khi `verificationStatus = VERIFIED` hoặc KYC `APPROVED`; dòng phụ Kỹ năng và Hiệu suất lấy từ `workerSkills` / `workerMetrics` thay cho chữ viết cứng.
+- Làm mới token: lưu refresh token mới nếu server trả về (doc), giữ cái cũ nếu không (OpenAPI).
+
 ### Fixed
 - **Đăng ký trả 500 (`HS-500-0001`)**: request thiếu `email` — trường bắt buộc theo `docs/reference/api/01-auth-profiles.md`. Form Đăng ký thêm ô Email (kiểm tra định dạng); `RegisterRequest`/use case/cubit truyền `email`.
 - Kiểm tra mật khẩu phía client theo đúng regex backend (≥ 8 ký tự, có chữ hoa, chữ thường, số) qua `CredentialRules`.

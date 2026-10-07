@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RefreshTokenResponse {
 
- String get accessToken; String? get tokenType; int? get expiresIn;
+ String get accessToken; String? get refreshToken; String? get tokenType; int? get expiresIn;
 /// Create a copy of RefreshTokenResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $RefreshTokenResponseCopyWith<RefreshTokenResponse> get copyWith => _$RefreshTok
 @override
 bool operator ==(Object other) {
   final _this = this as RefreshTokenResponse;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RefreshTokenResponse&&(identical(other.accessToken, _this.accessToken) || other.accessToken == _this.accessToken)&&(identical(other.tokenType, _this.tokenType) || other.tokenType == _this.tokenType)&&(identical(other.expiresIn, _this.expiresIn) || other.expiresIn == _this.expiresIn));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RefreshTokenResponse&&(identical(other.accessToken, _this.accessToken) || other.accessToken == _this.accessToken)&&(identical(other.refreshToken, _this.refreshToken) || other.refreshToken == _this.refreshToken)&&(identical(other.tokenType, _this.tokenType) || other.tokenType == _this.tokenType)&&(identical(other.expiresIn, _this.expiresIn) || other.expiresIn == _this.expiresIn));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as RefreshTokenResponse;
-  return Object.hash(runtimeType,_this.accessToken,_this.tokenType,_this.expiresIn);
+  return Object.hash(runtimeType,_this.accessToken,_this.refreshToken,_this.tokenType,_this.expiresIn);
 }
 
 @override
 String toString() {
   final _this = this as RefreshTokenResponse;
-  return 'RefreshTokenResponse(accessToken: ${_this.accessToken}, tokenType: ${_this.tokenType}, expiresIn: ${_this.expiresIn})';
+  return 'RefreshTokenResponse(accessToken: ${_this.accessToken}, refreshToken: ${_this.refreshToken}, tokenType: ${_this.tokenType}, expiresIn: ${_this.expiresIn})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $RefreshTokenResponseCopyWith<$Res>  {
   factory $RefreshTokenResponseCopyWith(RefreshTokenResponse value, $Res Function(RefreshTokenResponse) _then) = _$RefreshTokenResponseCopyWithImpl;
 @useResult
 $Res call({
- String accessToken, String? tokenType, int? expiresIn
+ String accessToken, String? refreshToken, String? tokenType, int? expiresIn
 });
 
 
@@ -71,10 +71,11 @@ class _$RefreshTokenResponseCopyWithImpl<$Res>
 
 /// Create a copy of RefreshTokenResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? accessToken = null,Object? tokenType = freezed,Object? expiresIn = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? accessToken = null,Object? refreshToken = freezed,Object? tokenType = freezed,Object? expiresIn = freezed,}) {
   return _then(RefreshTokenResponse(
 accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
-as String,tokenType: freezed == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
+as String,refreshToken: freezed == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
+as String?,tokenType: freezed == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
 as String?,expiresIn: freezed == expiresIn ? _self.expiresIn : expiresIn // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
@@ -161,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String accessToken,  String? tokenType,  int? expiresIn)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String accessToken,  String? refreshToken,  String? tokenType,  int? expiresIn)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RefreshTokenResponse() when $default != null:
-return $default(_that.accessToken,_that.tokenType,_that.expiresIn);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.tokenType,_that.expiresIn);case _:
   return orElse();
 
 }
@@ -182,10 +183,10 @@ return $default(_that.accessToken,_that.tokenType,_that.expiresIn);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String accessToken,  String? tokenType,  int? expiresIn)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String accessToken,  String? refreshToken,  String? tokenType,  int? expiresIn)  $default,) {final _that = this;
 switch (_that) {
 case _RefreshTokenResponse():
-return $default(_that.accessToken,_that.tokenType,_that.expiresIn);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.tokenType,_that.expiresIn);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +203,10 @@ return $default(_that.accessToken,_that.tokenType,_that.expiresIn);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String accessToken,  String? tokenType,  int? expiresIn)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String accessToken,  String? refreshToken,  String? tokenType,  int? expiresIn)?  $default,) {final _that = this;
 switch (_that) {
 case _RefreshTokenResponse() when $default != null:
-return $default(_that.accessToken,_that.tokenType,_that.expiresIn);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.tokenType,_that.expiresIn);case _:
   return null;
 
 }
@@ -217,10 +218,11 @@ return $default(_that.accessToken,_that.tokenType,_that.expiresIn);case _:
 @JsonSerializable()
 
 class _RefreshTokenResponse implements RefreshTokenResponse {
-  const _RefreshTokenResponse({required this.accessToken, this.tokenType, this.expiresIn});
+  const _RefreshTokenResponse({required this.accessToken, this.refreshToken, this.tokenType, this.expiresIn});
   factory _RefreshTokenResponse.fromJson(Map<String, dynamic> json) => _$RefreshTokenResponseFromJson(json);
 
 @override final  String accessToken;
+@override final  String? refreshToken;
 @override final  String? tokenType;
 @override final  int? expiresIn;
 
@@ -237,18 +239,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RefreshTokenResponse&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RefreshTokenResponse&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,accessToken,tokenType,expiresIn);
+    return Object.hash(runtimeType,accessToken,refreshToken,tokenType,expiresIn);
 }
 
 @override
 String toString() {
-    return 'RefreshTokenResponse(accessToken: $accessToken, tokenType: $tokenType, expiresIn: $expiresIn)';
+    return 'RefreshTokenResponse(accessToken: $accessToken, refreshToken: $refreshToken, tokenType: $tokenType, expiresIn: $expiresIn)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$RefreshTokenResponseCopyWith<$Res> implements $RefreshTok
   factory _$RefreshTokenResponseCopyWith(_RefreshTokenResponse value, $Res Function(_RefreshTokenResponse) _then) = __$RefreshTokenResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String accessToken, String? tokenType, int? expiresIn
+ String accessToken, String? refreshToken, String? tokenType, int? expiresIn
 });
 
 
@@ -276,10 +278,11 @@ class __$RefreshTokenResponseCopyWithImpl<$Res>
 
 /// Create a copy of RefreshTokenResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? accessToken = null,Object? tokenType = freezed,Object? expiresIn = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? accessToken = null,Object? refreshToken = freezed,Object? tokenType = freezed,Object? expiresIn = freezed,}) {
   return _then(_RefreshTokenResponse(
 accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
-as String,tokenType: freezed == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
+as String,refreshToken: freezed == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
+as String?,tokenType: freezed == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
 as String?,expiresIn: freezed == expiresIn ? _self.expiresIn : expiresIn // ignore: cast_nullable_to_non_nullable
 as int?,
   ));

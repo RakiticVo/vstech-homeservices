@@ -11,6 +11,8 @@ abstract class AuthResponse with _$AuthResponse {
     required String accessToken,
     required String refreshToken,
     required UserInfoResponse user,
+    int? expiresIn,
+    String? tokenType,
   }) = _AuthResponse;
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);

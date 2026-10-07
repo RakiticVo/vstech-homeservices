@@ -2276,9 +2276,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get editProfileEmail => 'Email';
 
   @override
-  String get editProfileDob => 'Ngày sinh';
-
-  @override
   String get editProfileOtpNotice => 'Cần xác thực OTP khi đổi số điện thoại';
 
   @override
@@ -3356,4 +3353,23 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get errorInvalidEmail => 'Email không hợp lệ';
+
+  @override
+  String get errorFullNameLength => 'Họ tên phải từ 2 đến 100 ký tự';
+
+  @override
+  String get editProfileBio => 'Giới thiệu ngắn';
+
+  @override
+  String get editProfileBioHint => 'Vài dòng về bạn (không bắt buộc)';
+
+  @override
+  String wprofileSkillsSubtitle(int verified, int total) {
+    return '$verified/$total kỹ năng đã xác minh';
+  }
+
+  @override
+  String wprofilePerfSubtitle(String rating, int jobs) {
+    return '$rating★ · $jobs việc hoàn thành';
+  }
 }

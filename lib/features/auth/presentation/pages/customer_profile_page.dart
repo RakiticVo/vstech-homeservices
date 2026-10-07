@@ -11,6 +11,7 @@ import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/widgets/avatar_image_or_initials.dart';
 
 /// Screen representing customer profile overview & menu options (Cell 104 `profile`).
 /// User card data comes from [ProfileCubit] (`GET /profiles`).
@@ -96,8 +97,9 @@ class CustomerProfilePage extends StatelessWidget {
             height: 58,
             decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
             alignment: Alignment.center,
-            child: Text(
-              profile?.initials ?? '',
+            child: AvatarImageOrInitials(
+              avatarUrl: profile?.avatarUrl,
+              initials: profile?.initials ?? '',
               style: AppTextStyles.headlineMd.copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 22),
             ),
           ),

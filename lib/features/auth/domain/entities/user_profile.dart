@@ -26,9 +26,14 @@ abstract class UserProfile with _$UserProfile {
     int? completedJobs,
     double? cancellationRate,
     String? badgeTier,
+    @Default(0) int skillCount,
+    @Default(0) int verifiedSkillCount,
   }) = _UserProfile;
 
   const UserProfile._();
+
+  /// Verified by an admin (`verificationStatus`) or, for workers, KYC approved.
+  bool get isVerified => verificationStatus == 'VERIFIED' || kycApprovalStatus == 'APPROVED';
 
   /// Up to two initials for the avatar placeholder, e.g. "Nguyễn Thị Mai" → "NM".
   String get initials {

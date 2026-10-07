@@ -24,6 +24,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
         fullName: update.fullName,
         phoneNumber: update.phoneNumber,
         email: update.email,
+        bio: update.bio,
         defaultAddress: update.defaultAddress,
         lat: update.lat,
         lng: update.lng,
@@ -51,5 +52,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     completedJobs: r.workerMetrics?.totalCompletedJobs,
     cancellationRate: r.workerMetrics?.cancellationRate,
     badgeTier: r.workerMetrics?.badgeTier,
+    skillCount: r.workerSkills.length,
+    verifiedSkillCount: r.workerSkills.where((skill) => skill.isVerified ?? false).length,
   );
 }

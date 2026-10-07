@@ -176,6 +176,34 @@ void main() {
       expect(sessionExpiredCalls, 0);
     });
 
+    test('saves a rotated refresh token when the server returns one', () async {
+      var accessToken = 'old-access';
+      when(() => tokenStore.readAccessToken()).thenAnswer((_) async => accessToken);
+      when(
+        () => tokenStore.saveTokens(
+          accessToken: any(named: 'accessToken'),
+          refreshToken: any(named: 'refreshToken'),
+        ),
+      ).thenAnswer((invocation) async {
+        accessToken = invocation.namedArguments[#accessToken] as String;
+      });
+      respond((options) {
+        if (options.path == ApiEndpoints.authRefresh) {
+          return _json(
+            '{"status":200,"data":{"accessToken":"new-access","refreshToken":"rotated","expiresIn":900}}',
+            200,
+          );
+        }
+        return options.headers['Authorization'] == 'Bearer new-access'
+            ? _json(fixture('core/profile_success.json'), 200)
+            : _json('{"status":401,"errorCode":"HS-401-0001"}', 401);
+      });
+
+      await client.get(ApiEndpoints.profiles, decode: decodeMap);
+
+      verify(() => tokenStore.saveTokens(accessToken: 'new-access', refreshToken: 'rotated')).called(1);
+    });
+
     test('concurrent 401s share a single refresh call', () async {
       var accessToken = 'old-access';
       when(() => tokenStore.readAccessToken()).thenAnswer((_) async => accessToken);

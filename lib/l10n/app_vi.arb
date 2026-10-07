@@ -988,7 +988,6 @@
   "editProfileFullName": "Họ và tên",
   "editProfilePhone": "Số điện thoại",
   "editProfileEmail": "Email",
-  "editProfileDob": "Ngày sinh",
   "editProfileOtpNotice": "Cần xác thực OTP khi đổi số điện thoại",
   "editProfileSavedSuccess": "Đã lưu thay đổi thông tin thành công",
   "editProfileSaveCta": "Lưu thay đổi",
@@ -1437,5 +1436,30 @@
   "loginRememberMe": "Ghi nhớ đăng nhập",
   "registerEmailLabel": "Email",
   "registerEmailHint": "VD: ten@gmail.com",
-  "errorInvalidEmail": "Email không hợp lệ"
+  "errorInvalidEmail": "Email không hợp lệ",
+  "errorFullNameLength": "Họ tên phải từ 2 đến 100 ký tự",
+  "editProfileBio": "Giới thiệu ngắn",
+  "editProfileBioHint": "Vài dòng về bạn (không bắt buộc)",
+  "wprofileSkillsSubtitle": "{verified}/{total} kỹ năng đã xác minh",
+  "wprofilePerfSubtitle": "{rating}★ · {jobs} việc hoàn thành",
+  "@wprofileSkillsSubtitle": {
+    "placeholders": {
+      "verified": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@wprofilePerfSubtitle": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      },
+      "jobs": {
+        "type": "int"
+      }
+    }
+  }
 }

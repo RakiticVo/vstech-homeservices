@@ -164,4 +164,6 @@ VoIP chỉ ghi log cuộc gọi.
 | 17 | Không có API tạo yêu cầu bảo hành | 5 màn Warranty |
 | 18 | Chỉ 1 `defaultAddress`, không có danh sách địa chỉ; không có phương thức thanh toán / liên kết ví | My Addresses, Payment Methods, Link Wallet |
 | 20 | `user.id`: OpenAPI ghi int64, doc module ví dụ `"uuid"` | App parse được cả hai (lưu dạng chuỗi) — cần backend chốt một kiểu |
+| 21 | `PUT /profiles`: doc module lồng địa chỉ trong `userProfile: {defaultAddress, lat, lng}`, OpenAPI để phẳng; doc không có `phoneNumber/email` nhưng OpenAPI có | App gửi theo OpenAPI (phẳng) — cần backend xác nhận |
+| 22 | `/auth/refresh`: doc trả cả `refreshToken` mới, OpenAPI chỉ `accessToken` | App lưu refresh mới nếu có, không thì giữ cái cũ |
 | 19 | `voip/calls/end` bắt buộc `recordingUrl` nhưng app không tự ghi âm | VoIP Call |

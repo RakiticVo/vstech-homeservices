@@ -11,6 +11,7 @@ import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/logout_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
+import 'package:vstech_home_services/features/auth/presentation/widgets/avatar_image_or_initials.dart';
 import 'package:vstech_home_services/features/auth/presentation/widgets/language_toggle_button.dart';
 
 /// Worker partner profile & settings screen (Cell 106 `wprofile`). Header data comes from
@@ -122,8 +123,9 @@ class WorkerProfilePage extends StatelessWidget {
                           border: Border.all(color: AppColors.primary, width: 2),
                         ),
                         alignment: Alignment.center,
-                        child: Text(
-                          profile?.initials ?? '',
+                        child: AvatarImageOrInitials(
+                          avatarUrl: profile?.avatarUrl,
+                          initials: profile?.initials ?? '',
                           style: AppTextStyles.headlineSm.copyWith(
                             fontWeight: FontWeight.w800,
                             color: AppColors.primary,
@@ -145,7 +147,8 @@ class WorkerProfilePage extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 4),
-                                const Icon(Icons.verified, color: AppColors.primary, size: 18),
+                                if (profile?.isVerified ?? false)
+                                  const Icon(Icons.verified, color: AppColors.primary, size: 18),
                               ],
                             ),
                             const SizedBox(height: 2),
@@ -211,7 +214,10 @@ class WorkerProfilePage extends StatelessWidget {
                         key: const Key('menu_worker_skills'),
                         icon: Icons.psychology_outlined,
                         title: l10n.wprofileMenuSkills,
-                        subtitle: '1 chứng chỉ hết hạn',
+                        subtitle: l10n.wprofileSkillsSubtitle(
+                          profile?.verifiedSkillCount ?? 0,
+                          profile?.skillCount ?? 0,
+                        ),
                         subtitleColor: AppColors.error,
                         onTap: () => context.push(AppRoutes.workerSkills),
                       ),
@@ -236,7 +242,10 @@ class WorkerProfilePage extends StatelessWidget {
                         key: const Key('menu_worker_perf'),
                         icon: Icons.speed_outlined,
                         title: l10n.wprofileMenuPerf,
-                        subtitle: '4.9★ · Nhận việc 96%',
+                        subtitle: l10n.wprofilePerfSubtitle(
+                          profile?.rating?.toStringAsFixed(1) ?? '–',
+                          profile?.completedJobs ?? profile?.totalJobs ?? 0,
+                        ),
                         onTap: () => context.push(AppRoutes.workerPerformance),
                       ),
                       const Divider(height: 1, color: AppColors.border),
