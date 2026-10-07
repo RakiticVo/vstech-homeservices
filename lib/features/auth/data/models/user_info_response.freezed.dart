@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserInfoResponse {
 
- int get id; String? get identityId; String? get email; String? get phoneNumber; String? get fullName; String? get role; String? get avatarUrl;
+@IdConverter() String get id; String? get identityId; String? get email; String? get phoneNumber; String? get fullName; String? get role; String? get avatarUrl;
 /// Create a copy of UserInfoResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $UserInfoResponseCopyWith<$Res>  {
   factory $UserInfoResponseCopyWith(UserInfoResponse value, $Res Function(UserInfoResponse) _then) = _$UserInfoResponseCopyWithImpl;
 @useResult
 $Res call({
- int id, String? identityId, String? email, String? phoneNumber, String? fullName, String? role, String? avatarUrl
+@IdConverter() String id, String? identityId, String? email, String? phoneNumber, String? fullName, String? role, String? avatarUrl
 });
 
 
@@ -74,7 +74,7 @@ class _$UserInfoResponseCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? identityId = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? fullName = freezed,Object? role = freezed,Object? avatarUrl = freezed,}) {
   return _then(UserInfoResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
+as String,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
@@ -165,7 +165,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? role,  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@IdConverter()  String id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? role,  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserInfoResponse() when $default != null:
 return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fullName,_that.role,_that.avatarUrl);case _:
@@ -186,7 +186,7 @@ return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? role,  String? avatarUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@IdConverter()  String id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? role,  String? avatarUrl)  $default,) {final _that = this;
 switch (_that) {
 case _UserInfoResponse():
 return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fullName,_that.role,_that.avatarUrl);case _:
@@ -206,7 +206,7 @@ return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? role,  String? avatarUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@IdConverter()  String id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? role,  String? avatarUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _UserInfoResponse() when $default != null:
 return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fullName,_that.role,_that.avatarUrl);case _:
@@ -221,10 +221,10 @@ return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fu
 @JsonSerializable()
 
 class _UserInfoResponse implements UserInfoResponse {
-  const _UserInfoResponse({required this.id, this.identityId, this.email, this.phoneNumber, this.fullName, this.role, this.avatarUrl});
+  const _UserInfoResponse({@IdConverter() required this.id, this.identityId, this.email, this.phoneNumber, this.fullName, this.role, this.avatarUrl});
   factory _UserInfoResponse.fromJson(Map<String, dynamic> json) => _$UserInfoResponseFromJson(json);
 
-@override final  int id;
+@override@IdConverter() final  String id;
 @override final  String? identityId;
 @override final  String? email;
 @override final  String? phoneNumber;
@@ -267,7 +267,7 @@ abstract mixin class _$UserInfoResponseCopyWith<$Res> implements $UserInfoRespon
   factory _$UserInfoResponseCopyWith(_UserInfoResponse value, $Res Function(_UserInfoResponse) _then) = __$UserInfoResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? identityId, String? email, String? phoneNumber, String? fullName, String? role, String? avatarUrl
+@IdConverter() String id, String? identityId, String? email, String? phoneNumber, String? fullName, String? role, String? avatarUrl
 });
 
 
@@ -287,7 +287,7 @@ class __$UserInfoResponseCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? identityId = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? fullName = freezed,Object? role = freezed,Object? avatarUrl = freezed,}) {
   return _then(_UserInfoResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
+as String,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable

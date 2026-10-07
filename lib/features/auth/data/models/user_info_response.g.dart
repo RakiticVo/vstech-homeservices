@@ -8,7 +8,7 @@ part of 'user_info_response.dart';
 
 _UserInfoResponse _$UserInfoResponseFromJson(Map<String, dynamic> json) =>
     _UserInfoResponse(
-      id: (json['id'] as num).toInt(),
+      id: const IdConverter().fromJson(json['id'] as Object),
       identityId: json['identityId'] as String?,
       email: json['email'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
@@ -19,7 +19,7 @@ _UserInfoResponse _$UserInfoResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UserInfoResponseToJson(_UserInfoResponse instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'id': const IdConverter().toJson(instance.id),
       'identityId': instance.identityId,
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,

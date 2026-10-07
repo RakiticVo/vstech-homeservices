@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfile {
 
- int get id; UserRole get role; String get fullName; String? get email; String? get phoneNumber; String? get avatarUrl; String? get bio; String? get locale; String? get defaultAddress; double? get lat; double? get lng; double? get rating; int? get totalJobs; String? get verificationStatus; String? get kycApprovalStatus; int? get completedJobs; double? get cancellationRate; String? get badgeTier;
+ String get id; UserRole get role; String get fullName; String? get email; String? get phoneNumber; String? get avatarUrl; String? get bio; String? get locale; String? get defaultAddress; double? get lat; double? get lng; double? get rating; int? get totalJobs; String? get verificationStatus; String? get kycApprovalStatus; int? get completedJobs; double? get cancellationRate; String? get badgeTier;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -51,7 +51,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
- int id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier
+ String id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier
 });
 
 
@@ -71,7 +71,7 @@ class _$UserProfileCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? role = null,Object? fullName = null,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? locale = freezed,Object? defaultAddress = freezed,Object? lat = freezed,Object? lng = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? verificationStatus = freezed,Object? kycApprovalStatus = freezed,Object? completedJobs = freezed,Object? cancellationRate = freezed,Object? badgeTier = freezed,}) {
   return _then(UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as UserRole,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -173,7 +173,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
 return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier);case _:
@@ -194,7 +194,7 @@ return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile():
 return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier);case _:
@@ -214,7 +214,7 @@ return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserRole role,  String fullName,  String? email,  String? phoneNumber,  String? avatarUrl,  String? bio,  String? locale,  String? defaultAddress,  double? lat,  double? lng,  double? rating,  int? totalJobs,  String? verificationStatus,  String? kycApprovalStatus,  int? completedJobs,  double? cancellationRate,  String? badgeTier)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
 return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl,_that.bio,_that.locale,_that.defaultAddress,_that.lat,_that.lng,_that.rating,_that.totalJobs,_that.verificationStatus,_that.kycApprovalStatus,_that.completedJobs,_that.cancellationRate,_that.badgeTier);case _:
@@ -232,7 +232,7 @@ class _UserProfile extends UserProfile {
   const _UserProfile({required this.id, required this.role, this.fullName = '', this.email, this.phoneNumber, this.avatarUrl, this.bio, this.locale, this.defaultAddress, this.lat, this.lng, this.rating, this.totalJobs, this.verificationStatus, this.kycApprovalStatus, this.completedJobs, this.cancellationRate, this.badgeTier}): super._();
   
 
-@override final  int id;
+@override final  String id;
 @override final  UserRole role;
 @override@JsonKey() final  String fullName;
 @override final  String? email;
@@ -283,7 +283,7 @@ abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith
   factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
- int id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier
+ String id, UserRole role, String fullName, String? email, String? phoneNumber, String? avatarUrl, String? bio, String? locale, String? defaultAddress, double? lat, double? lng, double? rating, int? totalJobs, String? verificationStatus, String? kycApprovalStatus, int? completedJobs, double? cancellationRate, String? badgeTier
 });
 
 
@@ -303,7 +303,7 @@ class __$UserProfileCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? role = null,Object? fullName = null,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? locale = freezed,Object? defaultAddress = freezed,Object? lat = freezed,Object? lng = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? verificationStatus = freezed,Object? kycApprovalStatus = freezed,Object? completedJobs = freezed,Object? cancellationRate = freezed,Object? badgeTier = freezed,}) {
   return _then(_UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as UserRole,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable

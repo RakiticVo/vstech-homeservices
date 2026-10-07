@@ -1341,5 +1341,8 @@
   "apiErrorTooManyRequests": "You're going too fast, please try again shortly.",
   "apiErrorDispatchUnavailable": "Dispatch is temporarily unavailable.",
   "authErrorUnsupportedRole": "This account can't be used in the app. Please contact support.",
-  "loginRememberMe": "Remember me"
+  "loginRememberMe": "Remember me",
+  "registerEmailLabel": "Email",
+  "registerEmailHint": "e.g. name@gmail.com",
+  "errorInvalidEmail": "Invalid email address"
 }

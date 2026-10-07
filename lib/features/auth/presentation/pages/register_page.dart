@@ -12,6 +12,7 @@ import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/session/user_role.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
 import 'package:vstech_home_services/core/widgets/app_text_field.dart';
+import 'package:vstech_home_services/features/auth/domain/usecases/credential_rules.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/register_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/widgets/auth_role_badge.dart';
 
@@ -32,6 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
   late bool _isWorker;
   final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -41,6 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String? _fullNameError;
   String? _phoneError;
+  String? _emailError;
   String? _passwordError;
   String? _confirmPasswordError;
   String? _termsError;
@@ -55,6 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     _fullNameController.dispose();
     _phoneController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -69,6 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _onRegister() {
     final fullName = _fullNameController.text.trim();
     final phone = _phoneController.text.trim();
+    final email = _emailController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
 
@@ -77,9 +82,14 @@ class _RegisterPageState extends State<RegisterPage> {
       _phoneError = phone.isEmpty
           ? context.l10n.errorFieldRequired
           : (phone.length < 9 ? context.l10n.errorInvalidPhone : null);
+      _emailError = email.isEmpty
+          ? context.l10n.errorFieldRequired
+          : (CredentialRules.isValidEmail(email) ? null : context.l10n.errorInvalidEmail);
       _passwordError = password.isEmpty
           ? context.l10n.errorFieldRequired
-          : (password.length < 8 ? context.l10n.errorPasswordTooShort : null);
+          : password.length < 8
+          ? context.l10n.errorPasswordTooShort
+          : (CredentialRules.isStrongPassword(password) ? null : context.l10n.apiErrorWeakPassword);
       _confirmPasswordError = confirmPassword.isEmpty
           ? context.l10n.errorFieldRequired
           : (confirmPassword != password ? context.l10n.errorPasswordNotMatch : null);
@@ -88,6 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (_fullNameError != null ||
         _phoneError != null ||
+        _emailError != null ||
         _passwordError != null ||
         _confirmPasswordError != null ||
         _termsError != null) {
@@ -98,6 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
     unawaited(
       context.read<RegisterCubit>().register(
         fullName: fullName,
+        email: email,
         phone: phone,
         password: password,
         role: _isWorker ? UserRole.worker : UserRole.customer,
@@ -186,6 +198,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   errorText: _phoneError,
                   keyboardType: TextInputType.phone,
                   prefixIcon: const Icon(Icons.phone_outlined, color: AppColors.textMuted, size: 20),
+                  textInputAction: TextInputAction.next,
+                ),
+
+                const SizedBox(height: AppSpacing.md),
+
+                // Email field (required by POST /auth/register)
+                AppTextField(
+                  key: const Key('register_email_field'),
+                  label: context.l10n.registerEmailLabel,
+                  hintText: context.l10n.registerEmailHint,
+                  controller: _emailController,
+                  errorText: _emailError,
+                  keyboardType: TextInputType.emailAddress,
+                  prefixIcon: const Icon(Icons.mail_outline, color: AppColors.textMuted, size: 20),
                   textInputAction: TextInputAction.next,
                 ),
 

@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RegisterRequest {
 
- String get fullName; String get phone; String get password; String get role;@JsonKey(includeIfNull: false) String? get email;
+ String get fullName; String get phone; String get password; String get role; String get email;
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $RegisterRequestCopyWith<$Res>  {
   factory $RegisterRequestCopyWith(RegisterRequest value, $Res Function(RegisterRequest) _then) = _$RegisterRequestCopyWithImpl;
 @useResult
 $Res call({
- String fullName, String phone, String password, String role,@JsonKey(includeIfNull: false) String? email
+ String fullName, String phone, String password, String role, String email
 });
 
 
@@ -71,14 +71,14 @@ class _$RegisterRequestCopyWithImpl<$Res>
 
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? fullName = null,Object? phone = null,Object? password = null,Object? role = null,Object? email = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? fullName = null,Object? phone = null,Object? password = null,Object? role = null,Object? email = null,}) {
   return _then(RegisterRequest(
 fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -163,7 +163,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String fullName,  String phone,  String password,  String role, @JsonKey(includeIfNull: false)  String? email)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String fullName,  String phone,  String password,  String role,  String email)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RegisterRequest() when $default != null:
 return $default(_that.fullName,_that.phone,_that.password,_that.role,_that.email);case _:
@@ -184,7 +184,7 @@ return $default(_that.fullName,_that.phone,_that.password,_that.role,_that.email
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String fullName,  String phone,  String password,  String role, @JsonKey(includeIfNull: false)  String? email)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String fullName,  String phone,  String password,  String role,  String email)  $default,) {final _that = this;
 switch (_that) {
 case _RegisterRequest():
 return $default(_that.fullName,_that.phone,_that.password,_that.role,_that.email);case _:
@@ -204,7 +204,7 @@ return $default(_that.fullName,_that.phone,_that.password,_that.role,_that.email
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String fullName,  String phone,  String password,  String role, @JsonKey(includeIfNull: false)  String? email)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String fullName,  String phone,  String password,  String role,  String email)?  $default,) {final _that = this;
 switch (_that) {
 case _RegisterRequest() when $default != null:
 return $default(_that.fullName,_that.phone,_that.password,_that.role,_that.email);case _:
@@ -219,14 +219,14 @@ return $default(_that.fullName,_that.phone,_that.password,_that.role,_that.email
 @JsonSerializable()
 
 class _RegisterRequest implements RegisterRequest {
-  const _RegisterRequest({required this.fullName, required this.phone, required this.password, required this.role, @JsonKey(includeIfNull: false) this.email});
+  const _RegisterRequest({required this.fullName, required this.phone, required this.password, required this.role, required this.email});
   factory _RegisterRequest.fromJson(Map<String, dynamic> json) => _$RegisterRequestFromJson(json);
 
 @override final  String fullName;
 @override final  String phone;
 @override final  String password;
 @override final  String role;
-@override@JsonKey(includeIfNull: false) final  String? email;
+@override final  String email;
 
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -263,7 +263,7 @@ abstract mixin class _$RegisterRequestCopyWith<$Res> implements $RegisterRequest
   factory _$RegisterRequestCopyWith(_RegisterRequest value, $Res Function(_RegisterRequest) _then) = __$RegisterRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String fullName, String phone, String password, String role,@JsonKey(includeIfNull: false) String? email
+ String fullName, String phone, String password, String role, String email
 });
 
 
@@ -280,14 +280,14 @@ class __$RegisterRequestCopyWithImpl<$Res>
 
 /// Create a copy of RegisterRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? fullName = null,Object? phone = null,Object? password = null,Object? role = null,Object? email = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? fullName = null,Object? phone = null,Object? password = null,Object? role = null,Object? email = null,}) {
   return _then(_RegisterRequest(
 fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

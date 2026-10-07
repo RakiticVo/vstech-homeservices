@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vstech_home_services/core/utils/json_converters.dart';
 
 part 'user_info_response.freezed.dart';
 part 'user_info_response.g.dart';
@@ -7,7 +8,7 @@ part 'user_info_response.g.dart';
 @freezed
 abstract class UserInfoResponse with _$UserInfoResponse {
   const factory UserInfoResponse({
-    required int id,
+    @IdConverter() required String id,
     String? identityId,
     String? email,
     String? phoneNumber,

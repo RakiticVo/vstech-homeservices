@@ -2,12 +2,12 @@ import 'package:vstech_home_services/core/session/user_role.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/app_user.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
 
-const customerUser = AppUser(id: 9, role: UserRole.customer, fullName: 'Nguyễn Thị Mai');
+const customerUser = AppUser(id: '9', role: UserRole.customer, fullName: 'Nguyễn Thị Mai');
 
-const workerUser = AppUser(id: 8821, role: UserRole.worker, fullName: 'Trần Văn Hùng');
+const workerUser = AppUser(id: '8821', role: UserRole.worker, fullName: 'Trần Văn Hùng');
 
 const customerProfile = UserProfile(
-  id: 9,
+  id: '9',
   role: UserRole.customer,
   fullName: 'Nguyễn Thị Mai',
   email: 'maingvyen@gmail.com',
@@ -16,7 +16,7 @@ const customerProfile = UserProfile(
 );
 
 const workerProfile = UserProfile(
-  id: 8821,
+  id: '8821',
   role: UserRole.worker,
   fullName: 'Trần Văn Hùng',
   phoneNumber: '0909 123 456',

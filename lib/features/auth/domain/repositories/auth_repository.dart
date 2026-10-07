@@ -9,6 +9,7 @@ abstract interface class AuthRepository {
   /// Creates the account and signs in (tokens stored).
   Future<Result<AppUser>> register({
     required String fullName,
+    required String email,
     required String phone,
     required String password,
     required UserRole role,

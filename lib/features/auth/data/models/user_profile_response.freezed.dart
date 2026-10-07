@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfileResponse {
 
- int get id; String? get identityId; String? get email; String? get phoneNumber; String? get fullName; String? get avatarUrl; String? get bio; String? get role; String? get verificationStatus; double? get rating; int? get totalJobs; String? get locale; bool? get isActive; String? get createdAt; UserProfileDetailResponse? get userProfile; WorkerKycResponse? get workerKyc; WorkerMetricsResponse? get workerMetrics; List<WorkerSkillResponse> get workerSkills;
+@IdConverter() String get id; String? get identityId; String? get email; String? get phoneNumber; String? get fullName; String? get avatarUrl; String? get bio; String? get role; String? get verificationStatus; double? get rating; int? get totalJobs; String? get locale; bool? get isActive; String? get createdAt; UserProfileDetailResponse? get userProfile; WorkerKycResponse? get workerKyc; WorkerMetricsResponse? get workerMetrics; List<WorkerSkillResponse> get workerSkills;
 /// Create a copy of UserProfileResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $UserProfileResponseCopyWith<$Res>  {
   factory $UserProfileResponseCopyWith(UserProfileResponse value, $Res Function(UserProfileResponse) _then) = _$UserProfileResponseCopyWithImpl;
 @useResult
 $Res call({
- int id, String? identityId, String? email, String? phoneNumber, String? fullName, String? avatarUrl, String? bio, String? role, String? verificationStatus, double? rating, int? totalJobs, String? locale, bool? isActive, String? createdAt, UserProfileDetailResponse? userProfile, WorkerKycResponse? workerKyc, WorkerMetricsResponse? workerMetrics, List<WorkerSkillResponse> workerSkills
+@IdConverter() String id, String? identityId, String? email, String? phoneNumber, String? fullName, String? avatarUrl, String? bio, String? role, String? verificationStatus, double? rating, int? totalJobs, String? locale, bool? isActive, String? createdAt, UserProfileDetailResponse? userProfile, WorkerKycResponse? workerKyc, WorkerMetricsResponse? workerMetrics, List<WorkerSkillResponse> workerSkills
 });
 
 
@@ -74,7 +74,7 @@ class _$UserProfileResponseCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? identityId = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? fullName = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? role = freezed,Object? verificationStatus = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? locale = freezed,Object? isActive = freezed,Object? createdAt = freezed,Object? userProfile = freezed,Object? workerKyc = freezed,Object? workerMetrics = freezed,Object? workerSkills = null,}) {
   return _then(UserProfileResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
+as String,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
@@ -212,7 +212,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? avatarUrl,  String? bio,  String? role,  String? verificationStatus,  double? rating,  int? totalJobs,  String? locale,  bool? isActive,  String? createdAt,  UserProfileDetailResponse? userProfile,  WorkerKycResponse? workerKyc,  WorkerMetricsResponse? workerMetrics,  List<WorkerSkillResponse> workerSkills)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@IdConverter()  String id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? avatarUrl,  String? bio,  String? role,  String? verificationStatus,  double? rating,  int? totalJobs,  String? locale,  bool? isActive,  String? createdAt,  UserProfileDetailResponse? userProfile,  WorkerKycResponse? workerKyc,  WorkerMetricsResponse? workerMetrics,  List<WorkerSkillResponse> workerSkills)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfileResponse() when $default != null:
 return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fullName,_that.avatarUrl,_that.bio,_that.role,_that.verificationStatus,_that.rating,_that.totalJobs,_that.locale,_that.isActive,_that.createdAt,_that.userProfile,_that.workerKyc,_that.workerMetrics,_that.workerSkills);case _:
@@ -233,7 +233,7 @@ return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? avatarUrl,  String? bio,  String? role,  String? verificationStatus,  double? rating,  int? totalJobs,  String? locale,  bool? isActive,  String? createdAt,  UserProfileDetailResponse? userProfile,  WorkerKycResponse? workerKyc,  WorkerMetricsResponse? workerMetrics,  List<WorkerSkillResponse> workerSkills)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@IdConverter()  String id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? avatarUrl,  String? bio,  String? role,  String? verificationStatus,  double? rating,  int? totalJobs,  String? locale,  bool? isActive,  String? createdAt,  UserProfileDetailResponse? userProfile,  WorkerKycResponse? workerKyc,  WorkerMetricsResponse? workerMetrics,  List<WorkerSkillResponse> workerSkills)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileResponse():
 return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fullName,_that.avatarUrl,_that.bio,_that.role,_that.verificationStatus,_that.rating,_that.totalJobs,_that.locale,_that.isActive,_that.createdAt,_that.userProfile,_that.workerKyc,_that.workerMetrics,_that.workerSkills);case _:
@@ -253,7 +253,7 @@ return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? avatarUrl,  String? bio,  String? role,  String? verificationStatus,  double? rating,  int? totalJobs,  String? locale,  bool? isActive,  String? createdAt,  UserProfileDetailResponse? userProfile,  WorkerKycResponse? workerKyc,  WorkerMetricsResponse? workerMetrics,  List<WorkerSkillResponse> workerSkills)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@IdConverter()  String id,  String? identityId,  String? email,  String? phoneNumber,  String? fullName,  String? avatarUrl,  String? bio,  String? role,  String? verificationStatus,  double? rating,  int? totalJobs,  String? locale,  bool? isActive,  String? createdAt,  UserProfileDetailResponse? userProfile,  WorkerKycResponse? workerKyc,  WorkerMetricsResponse? workerMetrics,  List<WorkerSkillResponse> workerSkills)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileResponse() when $default != null:
 return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fullName,_that.avatarUrl,_that.bio,_that.role,_that.verificationStatus,_that.rating,_that.totalJobs,_that.locale,_that.isActive,_that.createdAt,_that.userProfile,_that.workerKyc,_that.workerMetrics,_that.workerSkills);case _:
@@ -268,10 +268,10 @@ return $default(_that.id,_that.identityId,_that.email,_that.phoneNumber,_that.fu
 @JsonSerializable()
 
 class _UserProfileResponse implements UserProfileResponse {
-  const _UserProfileResponse({required this.id, this.identityId, this.email, this.phoneNumber, this.fullName, this.avatarUrl, this.bio, this.role, this.verificationStatus, this.rating, this.totalJobs, this.locale, this.isActive, this.createdAt, this.userProfile, this.workerKyc, this.workerMetrics,  List<WorkerSkillResponse> workerSkills = const <WorkerSkillResponse>[]}): _workerSkills = workerSkills;
+  const _UserProfileResponse({@IdConverter() required this.id, this.identityId, this.email, this.phoneNumber, this.fullName, this.avatarUrl, this.bio, this.role, this.verificationStatus, this.rating, this.totalJobs, this.locale, this.isActive, this.createdAt, this.userProfile, this.workerKyc, this.workerMetrics,  List<WorkerSkillResponse> workerSkills = const <WorkerSkillResponse>[]}): _workerSkills = workerSkills;
   factory _UserProfileResponse.fromJson(Map<String, dynamic> json) => _$UserProfileResponseFromJson(json);
 
-@override final  int id;
+@override@IdConverter() final  String id;
 @override final  String? identityId;
 @override final  String? email;
 @override final  String? phoneNumber;
@@ -331,7 +331,7 @@ abstract mixin class _$UserProfileResponseCopyWith<$Res> implements $UserProfile
   factory _$UserProfileResponseCopyWith(_UserProfileResponse value, $Res Function(_UserProfileResponse) _then) = __$UserProfileResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? identityId, String? email, String? phoneNumber, String? fullName, String? avatarUrl, String? bio, String? role, String? verificationStatus, double? rating, int? totalJobs, String? locale, bool? isActive, String? createdAt, UserProfileDetailResponse? userProfile, WorkerKycResponse? workerKyc, WorkerMetricsResponse? workerMetrics, List<WorkerSkillResponse> workerSkills
+@IdConverter() String id, String? identityId, String? email, String? phoneNumber, String? fullName, String? avatarUrl, String? bio, String? role, String? verificationStatus, double? rating, int? totalJobs, String? locale, bool? isActive, String? createdAt, UserProfileDetailResponse? userProfile, WorkerKycResponse? workerKyc, WorkerMetricsResponse? workerMetrics, List<WorkerSkillResponse> workerSkills
 });
 
 
@@ -351,7 +351,7 @@ class __$UserProfileResponseCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? identityId = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? fullName = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? role = freezed,Object? verificationStatus = freezed,Object? rating = freezed,Object? totalJobs = freezed,Object? locale = freezed,Object? isActive = freezed,Object? createdAt = freezed,Object? userProfile = freezed,Object? workerKyc = freezed,Object? workerMetrics = freezed,Object? workerSkills = null,}) {
   return _then(_UserProfileResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
+as String,identityId: freezed == identityId ? _self.identityId : identityId // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable

@@ -17,7 +17,7 @@ import '../../../helpers/mocks.dart';
 AuthResponse _auth(String role) => AuthResponse(
   accessToken: 'a',
   refreshToken: 'r',
-  user: UserInfoResponse(id: 9, fullName: 'Mai', role: role),
+  user: UserInfoResponse(id: '9', fullName: 'Mai', role: role),
 );
 
 void main() {
@@ -27,7 +27,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(const LoginRequest(identifier: '', password: ''));
-    registerFallbackValue(const RegisterRequest(fullName: '', phone: '', password: '', role: ''));
+    registerFallbackValue(const RegisterRequest(fullName: '', email: '', phone: '', password: '', role: ''));
     registerFallbackValue(const LogoutRequest(refreshToken: ''));
   });
 
@@ -82,11 +82,19 @@ void main() {
     test('uses the tokens returned by register', () async {
       when(() => remote.register(any())).thenAnswer((_) async => _auth('CUSTOMER'));
 
-      final result = await repository.register(fullName: 'Mai', phone: '0901', password: 'p', role: UserRole.customer);
+      final result = await repository.register(
+        fullName: 'Mai',
+        email: 'mai@x.vn',
+        phone: '0901',
+        password: 'p',
+        role: UserRole.customer,
+      );
 
       expect(result, isA<Ok<AppUser>>());
       verify(
-        () => remote.register(const RegisterRequest(fullName: 'Mai', phone: '0901', password: 'p', role: 'CUSTOMER')),
+        () => remote.register(
+          const RegisterRequest(fullName: 'Mai', email: 'mai@x.vn', phone: '0901', password: 'p', role: 'CUSTOMER'),
+        ),
       ).called(1);
       verifyNever(() => remote.login(any()));
     });
@@ -95,7 +103,13 @@ void main() {
       when(() => remote.register(any())).thenAnswer((_) async => null);
       when(() => remote.login(any())).thenAnswer((_) async => _auth('WORKER'));
 
-      final result = await repository.register(fullName: 'Hùng', phone: '0909', password: 'p', role: UserRole.worker);
+      final result = await repository.register(
+        fullName: 'Hùng',
+        email: 'mai@x.vn',
+        phone: '0909',
+        password: 'p',
+        role: UserRole.worker,
+      );
 
       expect(result, isA<Ok<AppUser>>().having((r) => r.value.role, 'role', UserRole.worker));
       verify(() => remote.login(const LoginRequest(identifier: '0909', password: 'p'))).called(1);

@@ -20,13 +20,14 @@ class RegisterCubit extends Cubit<AuthFormState> {
 
   Future<void> register({
     required String fullName,
+    required String email,
     required String phone,
     required String password,
     required UserRole role,
   }) async {
     if (state is AuthFormSubmittingState) return;
     emit(const AuthFormSubmittingState());
-    switch (await _register(fullName: fullName, phone: phone, password: password, role: role)) {
+    switch (await _register(fullName: fullName, email: email, phone: phone, password: password, role: role)) {
       case Ok(:final value):
         // Remember the new account so the login form is prefilled after the first logout.
         await _credentials.save(value.role, RememberedCredentials(identifier: phone.trim(), password: password));

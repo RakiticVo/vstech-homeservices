@@ -9,7 +9,7 @@ part of 'user_profile_response.dart';
 _UserProfileResponse _$UserProfileResponseFromJson(
   Map<String, dynamic> json,
 ) => _UserProfileResponse(
-  id: (json['id'] as num).toInt(),
+  id: const IdConverter().fromJson(json['id'] as Object),
   identityId: json['identityId'] as String?,
   email: json['email'] as String?,
   phoneNumber: json['phoneNumber'] as String?,
@@ -46,7 +46,7 @@ _UserProfileResponse _$UserProfileResponseFromJson(
 Map<String, dynamic> _$UserProfileResponseToJson(
   _UserProfileResponse instance,
 ) => <String, dynamic>{
-  'id': instance.id,
+  'id': const IdConverter().toJson(instance.id),
   'identityId': instance.identityId,
   'email': instance.email,
   'phoneNumber': instance.phoneNumber,

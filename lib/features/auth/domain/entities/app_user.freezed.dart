@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppUser {
 
- int get id; UserRole get role; String? get fullName; String? get email; String? get phoneNumber; String? get avatarUrl;
+ String get id; UserRole get role; String? get fullName; String? get email; String? get phoneNumber; String? get avatarUrl;
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -51,7 +51,7 @@ abstract mixin class $AppUserCopyWith<$Res>  {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) _then) = _$AppUserCopyWithImpl;
 @useResult
 $Res call({
- int id, UserRole role, String? fullName, String? email, String? phoneNumber, String? avatarUrl
+ String id, UserRole role, String? fullName, String? email, String? phoneNumber, String? avatarUrl
 });
 
 
@@ -71,7 +71,7 @@ class _$AppUserCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? role = null,Object? fullName = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,}) {
   return _then(AppUser(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as UserRole,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  UserRole role,  String? fullName,  String? email,  String? phoneNumber,  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserRole role,  String? fullName,  String? email,  String? phoneNumber,  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
 return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl);case _:
@@ -182,7 +182,7 @@ return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  UserRole role,  String? fullName,  String? email,  String? phoneNumber,  String? avatarUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserRole role,  String? fullName,  String? email,  String? phoneNumber,  String? avatarUrl)  $default,) {final _that = this;
 switch (_that) {
 case _AppUser():
 return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl);case _:
@@ -202,7 +202,7 @@ return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  UserRole role,  String? fullName,  String? email,  String? phoneNumber,  String? avatarUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserRole role,  String? fullName,  String? email,  String? phoneNumber,  String? avatarUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
 return $default(_that.id,_that.role,_that.fullName,_that.email,_that.phoneNumber,_that.avatarUrl);case _:
@@ -220,7 +220,7 @@ class _AppUser implements AppUser {
   const _AppUser({required this.id, required this.role, this.fullName, this.email, this.phoneNumber, this.avatarUrl});
   
 
-@override final  int id;
+@override final  String id;
 @override final  UserRole role;
 @override final  String? fullName;
 @override final  String? email;
@@ -259,7 +259,7 @@ abstract mixin class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$AppUserCopyWith(_AppUser value, $Res Function(_AppUser) _then) = __$AppUserCopyWithImpl;
 @override @useResult
 $Res call({
- int id, UserRole role, String? fullName, String? email, String? phoneNumber, String? avatarUrl
+ String id, UserRole role, String? fullName, String? email, String? phoneNumber, String? avatarUrl
 });
 
 
@@ -279,7 +279,7 @@ class __$AppUserCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? role = null,Object? fullName = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? avatarUrl = freezed,}) {
   return _then(_AppUser(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as UserRole,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable

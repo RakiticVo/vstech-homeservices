@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vstech_home_services/core/utils/json_converters.dart';
 import 'package:vstech_home_services/features/auth/data/models/user_profile_detail_response.dart';
 import 'package:vstech_home_services/features/auth/data/models/worker_kyc_response.dart';
 import 'package:vstech_home_services/features/auth/data/models/worker_metrics_response.dart';
@@ -11,7 +12,7 @@ part 'user_profile_response.g.dart';
 @freezed
 abstract class UserProfileResponse with _$UserProfileResponse {
   const factory UserProfileResponse({
-    required int id,
+    @IdConverter() required String id,
     String? identityId,
     String? email,
     String? phoneNumber,

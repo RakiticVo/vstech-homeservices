@@ -29,12 +29,13 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Result<AppUser>> register({
     required String fullName,
+    required String email,
     required String phone,
     required String password,
     required UserRole role,
   }) => Result.guard(() async {
     final auth = await _remote.register(
-      RegisterRequest(fullName: fullName, phone: phone, password: password, role: role.apiValue),
+      RegisterRequest(fullName: fullName, email: email, phone: phone, password: password, role: role.apiValue),
     );
     return await _startSession(auth ?? await _remote.login(LoginRequest(identifier: phone, password: password)));
   });

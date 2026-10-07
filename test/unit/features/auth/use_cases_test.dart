@@ -5,6 +5,7 @@ import 'package:vstech_home_services/core/session/user_role.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/app_user.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/profile_update.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
+import 'package:vstech_home_services/features/auth/domain/usecases/credential_rules.dart';
 import 'package:vstech_home_services/features/auth/domain/usecases/login_use_case.dart';
 import 'package:vstech_home_services/features/auth/domain/usecases/phone_normalizer.dart';
 import 'package:vstech_home_services/features/auth/domain/usecases/register_use_case.dart';
@@ -49,10 +50,11 @@ void main() {
     });
   });
 
-  test('RegisterUseCase trims the name and normalizes the phone', () async {
+  test('RegisterUseCase trims name/email and normalizes the phone', () async {
     when(
       () => authRepository.register(
         fullName: any(named: 'fullName'),
+        email: any(named: 'email'),
         phone: any(named: 'phone'),
         password: any(named: 'password'),
         role: UserRole.worker,
@@ -61,14 +63,20 @@ void main() {
 
     await RegisterUseCase(authRepository)(
       fullName: ' Trần Văn Hùng ',
+      email: ' hung@x.vn ',
       phone: '0909 123 456',
       password: 'p',
       role: UserRole.worker,
     );
 
     verify(
-      () =>
-          authRepository.register(fullName: 'Trần Văn Hùng', phone: '0909123456', password: 'p', role: UserRole.worker),
+      () => authRepository.register(
+        fullName: 'Trần Văn Hùng',
+        email: 'hung@x.vn',
+        phone: '0909123456',
+        password: 'p',
+        role: UserRole.worker,
+      ),
     ).called(1);
   });
 
@@ -91,9 +99,20 @@ void main() {
     expect(UserRole.fromApi(null), UserRole.unsupported);
   });
 
+  test('CredentialRules mirror the backend rules', () {
+    expect(CredentialRules.isValidEmail('mai@gmail.com'), isTrue);
+    expect(CredentialRules.isValidEmail('mai@gmail'), isFalse);
+    expect(CredentialRules.isValidEmail('0901234567'), isFalse);
+    expect(CredentialRules.isStrongPassword('Password123'), isTrue);
+    expect(CredentialRules.isStrongPassword('password123'), isFalse, reason: 'no upper case');
+    expect(CredentialRules.isStrongPassword('PASSWORD123'), isFalse, reason: 'no lower case');
+    expect(CredentialRules.isStrongPassword('Passwordabc'), isFalse, reason: 'no digit');
+    expect(CredentialRules.isStrongPassword('Pass12'), isFalse, reason: 'too short');
+  });
+
   test('UserProfile.initials', () {
     expect(customerProfile.initials, 'NM');
-    expect(const UserProfile(id: 1, role: UserRole.customer, fullName: 'mai').initials, 'M');
-    expect(const UserProfile(id: 1, role: UserRole.customer).initials, '');
+    expect(const UserProfile(id: '1', role: UserRole.customer, fullName: 'mai').initials, 'M');
+    expect(const UserProfile(id: '1', role: UserRole.customer).initials, '');
   });
 }

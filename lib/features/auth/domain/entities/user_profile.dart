@@ -8,7 +8,7 @@ part 'user_profile.freezed.dart';
 @freezed
 abstract class UserProfile with _$UserProfile {
   const factory UserProfile({
-    required int id,
+    required String id,
     required UserRole role,
     @Default('') String fullName,
     String? email,

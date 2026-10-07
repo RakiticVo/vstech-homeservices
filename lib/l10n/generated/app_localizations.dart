@@ -6222,6 +6222,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ghi nhớ đăng nhập'**
   String get loginRememberMe;
+
+  /// No description provided for @registerEmailLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Email'**
+  String get registerEmailLabel;
+
+  /// No description provided for @registerEmailHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: ten@gmail.com'**
+  String get registerEmailHint;
+
+  /// No description provided for @errorInvalidEmail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Email không hợp lệ'**
+  String get errorInvalidEmail;
 }
 
 class _AppLocalizationsDelegate

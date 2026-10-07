@@ -65,19 +65,31 @@ void main() {
     stubPost(ApiEndpoints.authRegister, null);
 
     final result = await dataSource.register(
-      const RegisterRequest(fullName: 'A', phone: '0901', password: 'Secret123', role: 'WORKER'),
+      const RegisterRequest(fullName: 'A', email: 'a@x.vn', phone: '0901', password: 'Secret123', role: 'WORKER'),
     );
 
     expect(result, isNull);
     verify(
       () => client.post<AuthResponse>(
         ApiEndpoints.authRegister,
-        body: {'fullName': 'A', 'phone': '0901', 'password': 'Secret123', 'role': 'WORKER'},
+        body: {'fullName': 'A', 'phone': '0901', 'password': 'Secret123', 'role': 'WORKER', 'email': 'a@x.vn'},
         authenticated: false,
         idempotent: true,
         decode: any(named: 'decode'),
       ),
     ).called(1);
+  });
+
+  test('user ids parse whether the backend sends a number or a UUID string', () {
+    final numeric = AuthResponse.fromJson(jsonFixture('auth/auth_success.json')['data'] as Map<String, dynamic>);
+    expect(numeric.user.id, '9');
+
+    final uuid = AuthResponse.fromJson({
+      'accessToken': 'a',
+      'refreshToken': 'r',
+      'user': {'id': '3f0c-uuid', 'role': 'WORKER'},
+    });
+    expect(uuid.user.id, '3f0c-uuid');
   });
 
   test('logout posts the refresh token', () async {

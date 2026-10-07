@@ -43,3 +43,15 @@ class NullableUtcDateTimeConverter implements JsonConverter<DateTime?, String?> 
   @override
   String? toJson(DateTime? object) => object?.toUtc().toIso8601String();
 }
+
+/// Entity ids: the OpenAPI spec types them as int64 but module docs show UUID strings — accept
+/// both and keep them as strings.
+class IdConverter implements JsonConverter<String, Object> {
+  const IdConverter();
+
+  @override
+  String fromJson(Object json) => json.toString();
+
+  @override
+  Object toJson(String object) => int.tryParse(object) ?? object;
+}

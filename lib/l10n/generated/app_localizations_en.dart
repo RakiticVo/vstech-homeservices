@@ -3344,4 +3344,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginRememberMe => 'Remember me';
+
+  @override
+  String get registerEmailLabel => 'Email';
+
+  @override
+  String get registerEmailHint => 'e.g. name@gmail.com';
+
+  @override
+  String get errorInvalidEmail => 'Invalid email address';
 }

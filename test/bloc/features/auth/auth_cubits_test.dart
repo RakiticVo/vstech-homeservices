@@ -81,7 +81,7 @@ void main() {
       setUp: () {
         when(() => session.state).thenReturn(const SessionAuthenticatedState());
         when(() => getProfile())
-            .thenAnswer((_) async => const Ok<UserProfile>(UserProfile(id: 1, role: UserRole.unsupported)));
+            .thenAnswer((_) async => const Ok<UserProfile>(UserProfile(id: '1', role: UserRole.unsupported)));
       },
       build: () => SplashCubit(session, getProfile),
       act: (cubit) => cubit.resolve(),
@@ -168,13 +168,15 @@ void main() {
       setUp: () => when(
         () => register(
           fullName: any(named: 'fullName'),
+          email: any(named: 'email'),
           phone: any(named: 'phone'),
           password: any(named: 'password'),
           role: UserRole.customer,
         ),
       ).thenAnswer((_) async => const Ok<AppUser>(customerUser)),
       build: () => RegisterCubit(register, session, credentials),
-      act: (cubit) => cubit.register(fullName: 'Mai', phone: '0901', password: 'p', role: UserRole.customer),
+      act: (cubit) =>
+          cubit.register(fullName: 'Mai', email: 'mai@x.vn', phone: '0901', password: 'p', role: UserRole.customer),
       expect: () => [const AuthFormSubmittingState(), const AuthFormSuccessState(UserRole.customer)],
       verify: (_) {
         verify(
@@ -189,13 +191,15 @@ void main() {
       setUp: () => when(
         () => register(
           fullName: any(named: 'fullName'),
+          email: any(named: 'email'),
           phone: any(named: 'phone'),
           password: any(named: 'password'),
           role: any(named: 'role'),
         ),
       ).thenAnswer((_) async => const Err<AppUser>(_offline)),
       build: () => RegisterCubit(register, session, credentials),
-      act: (cubit) => cubit.register(fullName: 'Mai', phone: '0901', password: 'p', role: UserRole.customer),
+      act: (cubit) =>
+          cubit.register(fullName: 'Mai', email: 'mai@x.vn', phone: '0901', password: 'p', role: UserRole.customer),
       expect: () => [const AuthFormSubmittingState(), const AuthFormFailureState(_offline)],
     );
   });

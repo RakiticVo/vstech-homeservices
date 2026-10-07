@@ -164,7 +164,7 @@ class WorkerProfilePage extends StatelessWidget {
                                     border: Border.all(color: AppColors.primary),
                                   ),
                                   child: Text(
-                                    l10n.wprofileWorkerId('${profile?.id ?? ''}'),
+                                    l10n.wprofileWorkerId(profile?.id ?? ''),
                                     style: AppTextStyles.caption.copyWith(
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.primary,

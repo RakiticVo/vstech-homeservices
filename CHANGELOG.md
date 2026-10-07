@@ -7,6 +7,11 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Fixed
+- **Đăng ký trả 500 (`HS-500-0001`)**: request thiếu `email` — trường bắt buộc theo `docs/reference/api/01-auth-profiles.md`. Form Đăng ký thêm ô Email (kiểm tra định dạng); `RegisterRequest`/use case/cubit truyền `email`.
+- Kiểm tra mật khẩu phía client theo đúng regex backend (≥ 8 ký tự, có chữ hoa, chữ thường, số) qua `CredentialRules`.
+- `id` của user/profile chấp nhận cả số (OpenAPI) lẫn chuỗi UUID (doc module) — lưu dạng `String` (`IdConverter`).
+
 ### Added
 - **Log màu theo kênh** (`core/utils/logger.dart`, chỉ bật ở debug/profile, tắt ở release; lọc bằng `--dart-define=LOG_LEVEL=info|warning|…`):
   - `appLogger` — màu theo mức độ (trace xám, debug xanh dương, info xanh lá, warning cam, error đỏ).

@@ -3347,4 +3347,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get loginRememberMe => 'Ghi nhớ đăng nhập';
+
+  @override
+  String get registerEmailLabel => 'Email';
+
+  @override
+  String get registerEmailHint => 'VD: ten@gmail.com';
+
+  @override
+  String get errorInvalidEmail => 'Email không hợp lệ';
 }
