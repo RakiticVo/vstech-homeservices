@@ -259,7 +259,7 @@ class _WorkerProfilePreviewPageState extends State<WorkerProfilePreviewPage> {
                 height: 52,
                 child: ElevatedButton(
                   key: const Key('book_worker_profile_button'),
-                  onPressed: () => context.push(AppRoutes.bookingStep1),
+                  onPressed: () => context.push(AppRoutes.categories),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     elevation: 0,

@@ -13,7 +13,7 @@
 | :--- | :--- | :--- |
 | 0 | Nền tảng: env, ApiClient, lỗi/l10n, token, session, DI | ✅ Xong 2026-10-06 (commit `ae54ec0`) |
 | 1 | Auth & Profile: login, register, logout, splash/role routing, profile/edit/address, guard router | ✅ Code xong 2026-10-07 — ⏳ chờ tài khoản test UAT để smoke test đăng nhập thật |
-| 2 | Khách: danh mục, ước tính, tạo booking, danh sách đơn, huỷ, khiếu nại, duyệt/từ chối báo giá | ⏳ Chưa làm |
+| 2 | Khách: danh mục, ước tính, tạo booking, danh sách đơn, huỷ, khiếu nại, duyệt/từ chối báo giá | ✅ Code xong 2026-10-10 (hướng "Gọn theo API") — ⏳ chờ tài khoản test UAT; UI duyệt báo giá chờ Batch 14 |
 | 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ⏳ Chưa làm |
 | 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ⏳ Chưa làm |
 | 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ⏳ Chưa làm |
@@ -122,6 +122,15 @@ Home/Categories/Service detail ← `service-categories`. Booking step 1–3: est
 (⚠ response 201 **không bọc** `ApiResponse`). Orders tabs ← `GET /bookings?status=`. Huỷ/khiếu nại,
 duyệt/từ chối báo giá.
 
+> **Kết quả Pha 2 (2026-10-10) — hướng "Gọn theo API":**
+> - Home (8 danh mục đầu), Danh mục (tìm kiếm cục bộ), Chi tiết dịch vụ đọc `GET /service-categories[/{id}]`; ảnh `imageUrl` (có ảnh dự phòng). Bỏ khu "Ưu đãi", chip lọc nhóm, rating — không có API.
+> - Đặt lịch dùng 1 `BookingFlowBloc` (ShellRoute) cho 4 màn: **B1** mô tả vấn đề → `POST /bookings/estimate`; **B2** ngày (hôm nay/mai, ngày thật) + khung giờ 2 tiếng (khung đã qua bị khoá) → `scheduledTime` UTC, địa chỉ (điền từ hồ sơ) → `addressDetail`, toạ độ từ hồ sơ hoặc GPS (`geolocator`, đã khai báo quyền iOS/Android) → `locationLat/Lng`, ghi chú nối vào `description`; **B3** tóm tắt + giá dịch vụ / phí nền tảng / tổng từ server → `POST /bookings` (idempotent, nhận cả response có/không bọc envelope); **Hoàn tất** hiện `requestId` thật. Bỏ gói/add-on/phụ phí loại nhà/ảnh/voucher/chọn thanh toán.
+> - Đơn hàng: `GET /bookings` phân trang ("Xem thêm"), kéo để làm mới; 3 tab theo trạng thái (Đang làm: ACCEPTED/IN_PROGRESS/DISPUTE · Đang chờ: PENDING/DISPATCH_FAILED · Hoàn thành: COMPLETED/CANCELLED); chip trạng thái Icon + Nhãn + Màu.
+> - Chi tiết đơn: dựng lại chỉ với field `BookingResponse`; lấy từ cache repository, không có thì dò tối đa 5 trang (chưa có `GET /bookings/{id}`). Nút theo state machine: Theo dõi (ACCEPTED/IN_PROGRESS), Huỷ (PENDING/ACCEPTED), Báo vấn đề (COMPLETED).
+> - Huỷ / Khiếu nại: màn xác nhận → `POST /bookings/{id}/cancel|dispute` (idempotent). Bỏ lý do huỷ, phí huỷ, loại vấn đề, mô tả, ảnh — API không nhận body.
+> - Duyệt/từ chối báo giá: có datasource + use case, chờ UI Batch 14.
+> - Màn còn mock (chưa có API): theo dõi thợ, tìm thợ (radar), thanh toán/nghiệm thu/đánh giá, bảo hành, gợi ý AI, thợ yêu thích.
+
 **Pha 3 — Luồng thợ**
 Nhận việc (accept), bắt đầu (start), gửi báo giá (quote), hoàn thành (complete). Stream GPS
 `geolocator` → `PUT /technician/location` mỗi 2s, chỉ khi online, gói trong `LocationTrackingBloc`.
@@ -157,7 +166,9 @@ VoIP chỉ ghi log cuộc gọi.
 | 10 | `GET /service-categories` yêu cầu JWT → khách chưa đăng nhập không xem được danh mục | Onboarding/Home guest |
 | 11 | Thiếu field bắt buộc trả **500 HS-500-0001** thay vì 400: `POST /auth/login` body rỗng; `POST /auth/register` thiếu `email` (2026-10-07). OpenAPI cũng không đánh dấu `required` cho `RegisterRequest` dù doc module ghi tất cả bắt buộc | Bug backend (đã probe UAT) — app đã gửi đủ field |
 | 12 | Không có PIN ví cho rút tiền, không lưu tài khoản ngân hàng | WorkerWithdrawPinPage, WorkerWithdrawPage |
-| 13 | `POST /bookings/{id}/cancel` và `/dispute` **không nhận body** (lý do, ảnh) | Customer Cancellation, Dispute Report |
+| 13 | `POST /bookings/{id}/cancel` và `/dispute` **không nhận body** (lý do, ảnh) | Customer Cancellation, Dispute Report — đã ẩn phần nhập lý do/ảnh |
+| 23 | `POST /bookings` 201: OpenAPI nói không bọc envelope, doc nói `ApiResponse<BookingResponse>`; state machine nói khiếu nại từ IN_PROGRESS nhưng ghi chú nói chỉ khi COMPLETED | App chấp nhận cả hai dạng response; cho khiếu nại khi COMPLETED |
+| 24 | Không có API khuyến mãi, phụ phí loại nhà, gói/add-on, voucher, chọn phương thức thanh toán khi đặt lịch | Các phần này đã ẩn khỏi Home/Đặt lịch |
 | 14 | Không có API thợ huỷ đơn / báo khách vắng mặt | Worker Cancellation, Customer No-show |
 | 15 | Không có API lịch làm việc, vùng làm việc, kỹ năng, chứng chỉ | Worker Schedule/Availability/Zone/Skills/Upload Cert |
 | 16 | Không có API thanh toán đơn, nghiệm thu, hoá đơn, đánh giá & tip | Checkout (Inspection, Payment, Receipt, Review) |

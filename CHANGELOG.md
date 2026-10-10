@@ -7,6 +7,23 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Pha 2 tích hợp API (khách đặt lịch, hướng "Gọn theo API")
+- Danh mục dịch vụ: `CategoryRemoteDataSource`, `CategoryRepositoryImpl` (gộp mọi trang, lọc `isActive`), use case + `CategoriesCubit`, `CategoryDetailCubit`; widget `CategoryThumbnail` (ảnh `imageUrl`, có ảnh dự phòng).
+- Bookings: DTO request/response riêng (estimate, create, booking, status transition, quote), `BookingRemoteDataSource` (create chấp nhận response có/không bọc envelope, mọi POST đổi trạng thái gửi `X-Idempotency-Key`), `BookingRepositoryImpl` (cache đơn theo id), entity `Booking`/`BookingStatus`/`PriceEstimate`, use case Estimate/Create (chặn giờ quá khứ → `HS-400-0002`)/GetMyBookings/GetBooking/Cancel/Dispute/ApproveQuote/RejectQuote.
+- `BookingFlowBloc` + `BookingDraft` dùng chung cho 4 màn đặt lịch qua `ShellRoute`; `LocationService` (geolocator) + khai báo quyền vị trí iOS (`NSLocationWhenInUseUsageDescription`) và Android.
+- `CustomerOrdersCubit` (phân trang, tên dịch vụ), `OrderDetailCubit`, `BookingActionCubit`; widget `BookingStatusChip`, `ErrorRetryView` (core), `BookingActionConfirmScaffold`.
+- Test: unit (datasource/repository/use case danh mục + booking), bloc (6 cubit/bloc mới), widget (Home, Danh mục, Chi tiết dịch vụ, 4 bước đặt lịch, Đơn hàng, Chi tiết đơn, Huỷ, Khiếu nại); fixtures `test/fixtures/home`, `test/fixtures/booking`.
+
+### Changed — Pha 2
+- Home: lưới 8 danh mục lấy từ API; bỏ khu "Ưu đãi đặc quyền" (không có API khuyến mãi). Danh mục: bỏ chip lọc nhóm và rating, giữ tìm kiếm cục bộ. Chi tiết dịch vụ: đọc theo id, bỏ danh sách "Gói dịch vụ bao gồm" viết cứng; CTA mở đặt lịch kèm `categoryId`.
+- Đặt lịch: B1 = mô tả vấn đề + ước tính giá từ server (bỏ gói/add-on); B2 = ngày thật + khung giờ (khoá khung đã qua), địa chỉ chỉnh được, trạng thái vị trí + "Dùng vị trí hiện tại" (bỏ phụ phí loại nhà, ảnh); B3 = tóm tắt + giá dịch vụ/phí nền tảng/tổng từ server (bỏ voucher, chọn thanh toán; CTA đổi sang màu primary); Hoàn tất hiện mã đơn thật.
+- Đơn hàng: dữ liệu thật, 3 tab theo trạng thái, "Xem thêm", kéo làm mới. Chi tiết đơn dựng lại theo `BookingResponse` với nút theo trạng thái. Huỷ / Khiếu nại thành màn xác nhận gọi API (bỏ lý do, phí huỷ, loại vấn đề, ảnh).
+- Gợi ý AI, Thợ yêu thích, Hồ sơ thợ: nút đặt lịch mở danh sách dịch vụ (cần chọn dịch vụ trước). Màn "Đã khiếu nại" quay về danh sách đơn.
+- `ApiEndpoints`: tham số id dạng `String`.
+
+### Removed — Pha 2
+- Test thẻ bảo hành mock trên màn Đơn hàng (bảo hành là post-MVP, không có API).
+
 ### Changed (đối chiếu UI với API doc Auth & Profile)
 - Sửa hồ sơ: bỏ ô Ngày sinh (không có trong API), thêm ô "Giới thiệu ngắn" (`bio`); kiểm tra họ tên 2–100 ký tự, SĐT Việt Nam, email trước khi `PUT /profiles`; lỗi hiển thị Icon + chữ dưới từng ô.
 - Đăng ký: kiểm tra họ tên 2–100 ký tự và SĐT Việt Nam (`0`/`+84` + đầu số 3/5/7/8/9) theo doc §4.

@@ -1,0 +1,38 @@
+{
+  "status": 200,
+  "message": "OK",
+  "data": {
+    "content": [
+      {
+        "requestId": 501,
+        "customerId": 9,
+        "categoryId": 1,
+        "assignedWorkerId": null,
+        "status": "PENDING",
+        "estimatedPrice": "500000",
+        "finalPrice": null,
+        "description": "Máy lạnh không mát",
+        "addressDetail": "123 Đường ABC, Quận 1",
+        "scheduledTime": "2026-10-11T07:00:00Z",
+        "createdAt": "2026-10-10T08:00:00Z",
+        "updatedAt": "2026-10-10T08:00:00Z"
+      },
+      {
+        "requestId": "b-uuid-2",
+        "categoryId": "2",
+        "status": "COMPLETED",
+        "estimatedPrice": 300000,
+        "finalPrice": "320000",
+        "description": "Vệ sinh tổng quát",
+        "addressDetail": "45 Lê Lợi",
+        "scheduledTime": "2026-10-01T02:00:00Z"
+      }
+    ],
+    "page": 0,
+    "size": 20,
+    "totalItems": 2,
+    "totalPages": 1
+  },
+  "errorCode": null,
+  "timestamp": "2026-10-10T08:00:00Z"
+}

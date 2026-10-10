@@ -742,7 +742,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get bookingStep1Title => 'Select Package & Add-ons';
+  String get bookingStep1Title => 'Describe the issue';
 
   @override
   String get bookingStep2Title => 'Schedule & Address';
@@ -3369,4 +3369,97 @@ class AppLocalizationsEn extends AppLocalizations {
   String wprofilePerfSubtitle(String rating, int jobs) {
     return '$rating★ · $jobs jobs completed';
   }
+
+  @override
+  String get categoriesEmpty => 'No services available yet.';
+
+  @override
+  String get categoriesNoMatch => 'No matching services.';
+
+  @override
+  String get bookingDescribeLabel => 'Describe the issue';
+
+  @override
+  String get bookingDescribeHint =>
+      'e.g. Bedroom air conditioner isn\'t cooling and makes a strange noise';
+
+  @override
+  String get bookingEstimateCta => 'Estimate price & continue';
+
+  @override
+  String get bookingServicePriceLabel => 'Service price (estimate)';
+
+  @override
+  String get bookingPlatformFeeLabel => 'Platform fee';
+
+  @override
+  String get bookingAddressHint => 'House number, street, ward, district';
+
+  @override
+  String get bookingLocationReady => 'Work location set';
+
+  @override
+  String get bookingLocationMissing =>
+      'No location yet — needed so the pro can find you';
+
+  @override
+  String get bookingUseCurrentLocation => 'Use current location';
+
+  @override
+  String get bookingLocationDenied =>
+      'Location permission is off. Please enable it in your phone\'s Settings.';
+
+  @override
+  String get bookingLocationServiceOff =>
+      'Location services are turned off on this phone.';
+
+  @override
+  String get bookingLocationUnavailable =>
+      'Couldn\'t get your current location, please try again.';
+
+  @override
+  String get bookingProblemLabel => 'Issue';
+
+  @override
+  String get bookingPayAfterInspection => 'After you inspect the work';
+
+  @override
+  String get ordersLoadMore => 'Load more bookings';
+
+  @override
+  String get ordersFinalPrice => 'Final price';
+
+  @override
+  String get bookingStatusPending => 'Finding a pro';
+
+  @override
+  String get bookingStatusAccepted => 'Pro accepted';
+
+  @override
+  String get bookingStatusInProgress => 'In progress';
+
+  @override
+  String get bookingStatusCompleted => 'Completed';
+
+  @override
+  String get bookingStatusCancelled => 'Cancelled';
+
+  @override
+  String get bookingStatusDispute => 'In dispute';
+
+  @override
+  String get bookingStatusDispatchFailed => 'No pro found';
+
+  @override
+  String get bookingStatusUnknown => 'Unknown';
+
+  @override
+  String get disputeConfirmNotice =>
+      'The booking will move to dispute for our support team to review. Payment is held until it is resolved.';
+
+  @override
+  String get disputeConfirmBtn => 'Submit dispute';
+
+  @override
+  String get cancelDoneMessage => 'Booking cancelled';
 }

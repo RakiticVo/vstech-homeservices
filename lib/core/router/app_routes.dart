@@ -32,6 +32,10 @@ abstract final class AppRoutes {
 
   // --- customer booking & dispatch matching ---
   static const String bookingStep1 = '/customer/booking/step-1';
+
+  /// Step 1 of the booking flow for one service category.
+  static String bookingStep1Location({required String categoryId}) =>
+      '$bookingStep1?categoryId=${Uri.encodeComponent(categoryId)}';
   static const String bookingStep2 = '/customer/booking/step-2';
   static const String bookingStep3 = '/customer/booking/step-3';
   static const String bookingSuccess = '/customer/booking/success';
@@ -56,6 +60,8 @@ abstract final class AppRoutes {
   // --- orders hub & notifications (Batch 8) ---
   static const String customerOrders = '/customer/orders';
   static const String customerOrderDetail = '/customer/orders/detail';
+  static String customerOrderDetailLocation(String bookingId) =>
+      '$customerOrderDetail?id=${Uri.encodeComponent(bookingId)}';
   static const String workerJobsHub = '/worker/jobs';
   static const String customerNotifications = '/customer/notifications';
   static const String customerNotificationSettings = '/customer/settings/notifications';
@@ -63,9 +69,11 @@ abstract final class AppRoutes {
 
   // --- exceptions, cancellation & escrow dispute (Batch 9) ---
   static const String customerCancel = '/customer/booking/cancel';
+  static String customerCancelLocation(String bookingId) => '$customerCancel?id=${Uri.encodeComponent(bookingId)}';
   static const String workerCancel = '/worker/job/cancel';
   static const String customerNoShow = '/worker/job/no-show';
   static const String disputeReport = '/customer/order/dispute';
+  static String disputeReportLocation(String bookingId) => '$disputeReport?id=${Uri.encodeComponent(bookingId)}';
   static const String orderDisputed = '/customer/order/disputed';
   static const String customerDisputeList = '/customer/disputes';
   static const String disputeDetail = '/customer/disputes/detail';

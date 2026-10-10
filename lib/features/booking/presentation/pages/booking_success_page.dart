@@ -1,62 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/utils/money_formatter.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
+import 'package:vstech_home_services/features/booking/presentation/bloc/booking_flow_bloc.dart';
+import 'package:vstech_home_services/features/booking/presentation/widgets/booking_schedule_label.dart';
 
 /// Booking Step 4 — Done (`done` — Concept 02: Cell 46).
-/// Highlights the order code and restates that payment happens after sign-off.
+/// Shows the booking just created by `POST /bookings` (its `requestId` as the order code) and
+/// restates that payment happens after sign-off.
 class BookingSuccessPage extends StatelessWidget {
-  const BookingSuccessPage({
-    super.key,
-    this.orderCode = 'HS-2026-0012',
-    this.total = 350000,
-    this.date = 'today',
-    this.slot = '14:00 - 16:00',
-    this.paymentMethod = 'vietqr',
-  });
-
-  final String orderCode;
-  final int total;
-
-  /// 'today' or 'tomorrow', matching the booking step 2/3 query params.
-  final String date;
-  final String slot;
-
-  /// 'vietqr', 'vnpay' or 'cash', matching booking step 3.
-  final String paymentMethod;
-
-  String _formatPrice(int amount) {
-    final formatter = NumberFormat('#,###', 'vi_VN');
-    return '${formatter.format(amount)}đ';
-  }
-
-  String _methodLabel(BuildContext context) {
-    switch (paymentMethod) {
-      case 'vnpay':
-        return context.l10n.bookingPaymentVnPay;
-      case 'cash':
-        return context.l10n.bookingPaymentCash;
-      default:
-        return context.l10n.bookingPaymentVietQR;
-    }
-  }
+  const BookingSuccessPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final dayLabel =
-        date == 'today' ? l10n.bookingScheduleToday : l10n.bookingScheduleTomorrow;
+    final draft = context.watch<BookingFlowBloc>().state.draft;
+    final booking = draft.booking;
+    final scheduledTime = booking?.scheduledTime ?? draft.scheduledTime;
+    final estimate = booking?.estimatedPrice ?? draft.estimate?.totalEstimated;
+    final orderCode = booking?.id ?? '';
     final rows = <(String, String)>[
-      (l10n.bookingSuccessServiceLabel, l10n.jobSampleCleaningTitle),
-      (l10n.bookingSuccessTimeLabel, '$dayLabel · $slot'),
-      (l10n.bookingSuccessAddressLabel, l10n.jobSampleCustomerAddress),
-      (l10n.bookingSuccessEstimateLabel, _formatPrice(total)),
-      (l10n.bookingSuccessPaymentLabel, l10n.bookingSuccessPayAfter(_methodLabel(context))),
+      (l10n.bookingSuccessServiceLabel, draft.category?.name ?? ''),
+      if (scheduledTime != null) (l10n.bookingSuccessTimeLabel, bookingScheduleLabel(context, scheduledTime)),
+      (l10n.bookingSuccessAddressLabel, booking?.addressDetail ?? draft.address),
+      if (estimate != null) (l10n.bookingSuccessEstimateLabel, MoneyFormatter.format(estimate)),
+      (l10n.bookingSuccessPaymentLabel, l10n.bookingPayAfterInspection),
     ];
 
     return Scaffold(
@@ -116,6 +90,7 @@ class BookingSuccessPage extends StatelessWidget {
                       ),
                       child: Text(
                         '#$orderCode',
+                        key: const Key('booking_order_code'),
                         style: AppTextStyles.bodyLarge.copyWith(
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,

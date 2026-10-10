@@ -14,6 +14,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:vstech_home_services/core/di/register_module.dart' as _i723;
+import 'package:vstech_home_services/core/location/location_service.dart'
+    as _i69;
 import 'package:vstech_home_services/core/network/api_client.dart' as _i223;
 import 'package:vstech_home_services/core/network/auth_token_store.dart'
     as _i381;
@@ -56,6 +58,46 @@ import 'package:vstech_home_services/features/auth/presentation/bloc/register_cu
     as _i516;
 import 'package:vstech_home_services/features/auth/presentation/bloc/splash_cubit.dart'
     as _i857;
+import 'package:vstech_home_services/features/booking/data/datasources/booking_remote_data_source.dart'
+    as _i261;
+import 'package:vstech_home_services/features/booking/data/repositories/booking_repository_impl.dart'
+    as _i511;
+import 'package:vstech_home_services/features/booking/domain/repositories/booking_repository.dart'
+    as _i362;
+import 'package:vstech_home_services/features/booking/domain/usecases/change_booking_status_use_case.dart'
+    as _i118;
+import 'package:vstech_home_services/features/booking/domain/usecases/create_booking_use_case.dart'
+    as _i112;
+import 'package:vstech_home_services/features/booking/domain/usecases/estimate_price_use_case.dart'
+    as _i54;
+import 'package:vstech_home_services/features/booking/domain/usecases/get_booking_use_case.dart'
+    as _i736;
+import 'package:vstech_home_services/features/booking/domain/usecases/get_my_bookings_use_case.dart'
+    as _i16;
+import 'package:vstech_home_services/features/booking/domain/usecases/quote_decision_use_case.dart'
+    as _i528;
+import 'package:vstech_home_services/features/booking/presentation/bloc/booking_flow_bloc.dart'
+    as _i541;
+import 'package:vstech_home_services/features/exceptions/presentation/bloc/booking_action_cubit.dart'
+    as _i859;
+import 'package:vstech_home_services/features/home/data/datasources/category_remote_data_source.dart'
+    as _i754;
+import 'package:vstech_home_services/features/home/data/repositories/category_repository_impl.dart'
+    as _i870;
+import 'package:vstech_home_services/features/home/domain/repositories/category_repository.dart'
+    as _i887;
+import 'package:vstech_home_services/features/home/domain/usecases/get_categories_use_case.dart'
+    as _i894;
+import 'package:vstech_home_services/features/home/domain/usecases/get_category_use_case.dart'
+    as _i653;
+import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart'
+    as _i728;
+import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart'
+    as _i983;
+import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart'
+    as _i1063;
+import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart'
+    as _i23;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -67,6 +109,9 @@ extension GetItInjectableX on _i174.GetIt {
     final registerModule = _$RegisterModule();
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => registerModule.secureStorage,
+    );
+    gh.lazySingleton<_i69.LocationService>(
+      () => const _i69.GeolocatorLocationService(),
     );
     gh.lazySingleton<_i483.CredentialsRepository>(
       () =>
@@ -90,11 +135,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i599.ProfileRemoteDataSource>(
       () => _i599.ProfileRemoteDataSource(gh<_i223.ApiClient>()),
     );
+    gh.factory<_i261.BookingRemoteDataSource>(
+      () => _i261.BookingRemoteDataSource(gh<_i223.ApiClient>()),
+    );
+    gh.factory<_i754.CategoryRemoteDataSource>(
+      () => _i754.CategoryRemoteDataSource(gh<_i223.ApiClient>()),
+    );
     gh.lazySingleton<_i731.AuthRepository>(
       () => _i408.AuthRepositoryImpl(
         gh<_i116.AuthRemoteDataSource>(),
         gh<_i381.AuthTokenStore>(),
       ),
+    );
+    gh.lazySingleton<_i887.CategoryRepository>(
+      () => _i870.CategoryRepositoryImpl(gh<_i754.CategoryRemoteDataSource>()),
     );
     gh.factory<_i873.LoginUseCase>(
       () => _i873.LoginUseCase(gh<_i731.AuthRepository>()),
@@ -112,11 +166,44 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i483.CredentialsRepository>(),
       ),
     );
+    gh.lazySingleton<_i362.BookingRepository>(
+      () => _i511.BookingRepositoryImpl(gh<_i261.BookingRemoteDataSource>()),
+    );
     gh.factory<_i242.LoginCubit>(
       () => _i242.LoginCubit(
         gh<_i873.LoginUseCase>(),
         gh<_i371.SessionCubit>(),
         gh<_i483.CredentialsRepository>(),
+      ),
+    );
+    gh.factory<_i118.CancelBookingUseCase>(
+      () => _i118.CancelBookingUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i118.DisputeBookingUseCase>(
+      () => _i118.DisputeBookingUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i112.CreateBookingUseCase>(
+      () => _i112.CreateBookingUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i54.EstimatePriceUseCase>(
+      () => _i54.EstimatePriceUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i736.GetBookingUseCase>(
+      () => _i736.GetBookingUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i16.GetMyBookingsUseCase>(
+      () => _i16.GetMyBookingsUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i528.ApproveQuoteUseCase>(
+      () => _i528.ApproveQuoteUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i528.RejectQuoteUseCase>(
+      () => _i528.RejectQuoteUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i859.BookingActionCubit>(
+      () => _i859.BookingActionCubit(
+        gh<_i118.CancelBookingUseCase>(),
+        gh<_i118.DisputeBookingUseCase>(),
       ),
     );
     gh.factory<_i188.LogoutCubit>(
@@ -128,6 +215,27 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1025.ProfileRepository>(
       () => _i117.ProfileRepositoryImpl(gh<_i599.ProfileRemoteDataSource>()),
     );
+    gh.factory<_i894.GetCategoriesUseCase>(
+      () => _i894.GetCategoriesUseCase(gh<_i887.CategoryRepository>()),
+    );
+    gh.factory<_i653.GetCategoryUseCase>(
+      () => _i653.GetCategoryUseCase(gh<_i887.CategoryRepository>()),
+    );
+    gh.factory<_i23.OrderDetailCubit>(
+      () => _i23.OrderDetailCubit(
+        gh<_i736.GetBookingUseCase>(),
+        gh<_i653.GetCategoryUseCase>(),
+      ),
+    );
+    gh.factory<_i1063.CustomerOrdersCubit>(
+      () => _i1063.CustomerOrdersCubit(
+        gh<_i16.GetMyBookingsUseCase>(),
+        gh<_i894.GetCategoriesUseCase>(),
+      ),
+    );
+    gh.factory<_i983.CategoryDetailCubit>(
+      () => _i983.CategoryDetailCubit(gh<_i653.GetCategoryUseCase>()),
+    );
     gh.factory<_i294.GetProfileUseCase>(
       () => _i294.GetProfileUseCase(gh<_i1025.ProfileRepository>()),
     );
@@ -138,6 +246,18 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i275.ProfileCubit(
         gh<_i294.GetProfileUseCase>(),
         gh<_i661.UpdateProfileUseCase>(),
+      ),
+    );
+    gh.factory<_i728.CategoriesCubit>(
+      () => _i728.CategoriesCubit(gh<_i894.GetCategoriesUseCase>()),
+    );
+    gh.factory<_i541.BookingFlowBloc>(
+      () => _i541.BookingFlowBloc(
+        gh<_i653.GetCategoryUseCase>(),
+        gh<_i294.GetProfileUseCase>(),
+        gh<_i54.EstimatePriceUseCase>(),
+        gh<_i112.CreateBookingUseCase>(),
+        gh<_i69.LocationService>(),
       ),
     );
     gh.factory<_i857.SplashCubit>(

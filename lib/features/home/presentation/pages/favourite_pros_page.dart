@@ -210,7 +210,7 @@ class _FavouriteProsPageState extends State<FavouriteProsPage> {
             height: 42,
             child: OutlinedButton(
               key: Key('rebook_${worker.id}'),
-              onPressed: () => context.push(AppRoutes.bookingStep1),
+              onPressed: () => context.push(AppRoutes.categories),
               style: OutlinedButton.styleFrom(
                 backgroundColor: AppColors.secondarySurface,
                 side: const BorderSide(color: AppColors.border),

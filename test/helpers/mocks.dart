@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:vstech_home_services/core/location/location_service.dart';
 import 'package:vstech_home_services/core/network/api_client.dart';
 import 'package:vstech_home_services/core/network/auth_token_store.dart';
 import 'package:vstech_home_services/core/session/session_cubit.dart';
@@ -19,6 +20,23 @@ import 'package:vstech_home_services/features/auth/presentation/bloc/login_cubit
 import 'package:vstech_home_services/features/auth/presentation/bloc/logout_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
 import 'package:vstech_home_services/features/auth/presentation/bloc/register_cubit.dart';
+import 'package:vstech_home_services/features/booking/data/datasources/booking_remote_data_source.dart';
+import 'package:vstech_home_services/features/booking/domain/repositories/booking_repository.dart';
+import 'package:vstech_home_services/features/booking/domain/usecases/change_booking_status_use_case.dart';
+import 'package:vstech_home_services/features/booking/domain/usecases/create_booking_use_case.dart';
+import 'package:vstech_home_services/features/booking/domain/usecases/estimate_price_use_case.dart';
+import 'package:vstech_home_services/features/booking/domain/usecases/get_booking_use_case.dart';
+import 'package:vstech_home_services/features/booking/domain/usecases/get_my_bookings_use_case.dart';
+import 'package:vstech_home_services/features/booking/presentation/bloc/booking_flow_bloc.dart';
+import 'package:vstech_home_services/features/exceptions/presentation/bloc/booking_action_cubit.dart';
+import 'package:vstech_home_services/features/home/data/datasources/category_remote_data_source.dart';
+import 'package:vstech_home_services/features/home/domain/repositories/category_repository.dart';
+import 'package:vstech_home_services/features/home/domain/usecases/get_categories_use_case.dart';
+import 'package:vstech_home_services/features/home/domain/usecases/get_category_use_case.dart';
+import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart';
+import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 
 // --- core ---
 class MockAuthTokenStore extends Mock implements AuthTokenStore;
@@ -60,3 +78,43 @@ class MockRegisterCubit extends MockCubit<AuthFormState> implements RegisterCubi
 class MockLogoutCubit extends MockCubit<LogoutState> implements LogoutCubit;
 
 class MockProfileCubit extends MockCubit<ProfileState> implements ProfileCubit;
+
+class MockLocationService extends Mock implements LocationService;
+
+// --- categories ---
+class MockCategoryRemoteDataSource extends Mock implements CategoryRemoteDataSource;
+
+class MockCategoryRepository extends Mock implements CategoryRepository;
+
+class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase;
+
+class MockGetCategoryUseCase extends Mock implements GetCategoryUseCase;
+
+class MockCategoriesCubit extends MockCubit<CategoriesState> implements CategoriesCubit;
+
+class MockCategoryDetailCubit extends MockCubit<CategoryDetailState> implements CategoryDetailCubit;
+
+// --- bookings ---
+class MockBookingRemoteDataSource extends Mock implements BookingRemoteDataSource;
+
+class MockBookingRepository extends Mock implements BookingRepository;
+
+class MockEstimatePriceUseCase extends Mock implements EstimatePriceUseCase;
+
+class MockCreateBookingUseCase extends Mock implements CreateBookingUseCase;
+
+class MockGetMyBookingsUseCase extends Mock implements GetMyBookingsUseCase;
+
+class MockGetBookingUseCase extends Mock implements GetBookingUseCase;
+
+class MockCancelBookingUseCase extends Mock implements CancelBookingUseCase;
+
+class MockDisputeBookingUseCase extends Mock implements DisputeBookingUseCase;
+
+class MockBookingFlowBloc extends MockBloc<BookingFlowEvent, BookingFlowState> implements BookingFlowBloc;
+
+class MockCustomerOrdersCubit extends MockCubit<CustomerOrdersState> implements CustomerOrdersCubit;
+
+class MockOrderDetailCubit extends MockCubit<OrderDetailState> implements OrderDetailCubit;
+
+class MockBookingActionCubit extends MockCubit<BookingActionState> implements BookingActionCubit;

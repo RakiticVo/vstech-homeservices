@@ -1,9 +1,18 @@
+import 'dart:async';
+
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:vstech_home_services/core/error/failure.dart';
+import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
+import 'package:vstech_home_services/features/exceptions/presentation/bloc/booking_action_cubit.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/customer_cancellation_page.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/customer_dispute_list_page.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/customer_no_show_page.dart';
@@ -14,42 +23,32 @@ import 'package:vstech_home_services/features/exceptions/presentation/pages/work
 import 'package:vstech_home_services/features/exceptions/presentation/pages/worker_dispute_notification_page.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
-Widget _createTestExceptionsWidget(Widget child) {
+import '../../helpers/mocks.dart';
+
+Widget _createTestExceptionsWidget(Widget child, {MockBookingActionCubit? action}) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
       GoRoute(
         path: AppRoutes.customerCancel,
-        builder: (context, state) => const CustomerCancellationPage(),
+        builder: (context, state) => BlocProvider<BookingActionCubit>.value(
+          value: action ?? MockBookingActionCubit(),
+          child: CustomerCancellationPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+        ),
       ),
-      GoRoute(
-        path: AppRoutes.workerCancel,
-        builder: (context, state) => const WorkerCancellationPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.customerNoShow,
-        builder: (context, state) => const CustomerNoShowPage(),
-      ),
+      GoRoute(path: AppRoutes.workerCancel, builder: (context, state) => const WorkerCancellationPage()),
+      GoRoute(path: AppRoutes.customerNoShow, builder: (context, state) => const CustomerNoShowPage()),
       GoRoute(
         path: AppRoutes.disputeReport,
-        builder: (context, state) => const DisputeReportPage(),
+        builder: (context, state) => BlocProvider<BookingActionCubit>.value(
+          value: action ?? MockBookingActionCubit(),
+          child: DisputeReportPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+        ),
       ),
-      GoRoute(
-        path: AppRoutes.orderDisputed,
-        builder: (context, state) => const OrderDisputedPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.customerDisputeList,
-        builder: (context, state) => const CustomerDisputeListPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.disputeDetail,
-        builder: (context, state) => const DisputeDetailPage(),
-      ),
+      GoRoute(path: AppRoutes.orderDisputed, builder: (context, state) => const OrderDisputedPage()),
+      GoRoute(path: AppRoutes.customerDisputeList, builder: (context, state) => const CustomerDisputeListPage()),
+      GoRoute(path: AppRoutes.disputeDetail, builder: (context, state) => const DisputeDetailPage()),
       GoRoute(
         path: AppRoutes.workerDisputeNotification,
         builder: (context, state) => const WorkerDisputeNotificationPage(),
@@ -73,44 +72,76 @@ Widget _createTestExceptionsWidget(Widget child) {
 
 void main() {
   group('Batch 9: Exceptions, Cancellation & Escrow Dispute Widget Tests', () {
-    testWidgets('CustomerCancellationPage renders free cancellation mode and handles reason selection', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestExceptionsWidget(const CustomerCancellationPage()));
+    testWidgets('CustomerCancellationPage confirms and cancels the booking by id', (tester) async {
+      final action = MockBookingActionCubit();
+      final states = StreamController<BookingActionState>.broadcast();
+      addTearDown(states.close);
+      whenListen(action, states.stream, initialState: const BookingActionIdleState());
+      when(() => action.cancel(any()))
+          .thenAnswer((_) async => states.add(const BookingActionDoneState(BookingStatus.cancelled)));
+
+      await tester.pumpWidget(
+        _createTestExceptionsWidget(const _Launcher(location: '/customer/booking/cancel?id=501'), action: action),
+      );
+      await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
 
-      // Header and order code
-      expect(find.textContaining('Huỷ đặt lịch'), findsOneWidget);
-      expect(find.text('HS-2026-0012'), findsOneWidget);
-      expect(find.textContaining('miễn phí'), findsWidgets);
+      expect(find.text('Huỷ đặt lịch'), findsOneWidget);
+      expect(find.text('Mã đơn hàng: #501'), findsOneWidget);
+      // The API takes no reason, so none is asked for.
+      expect(find.text('Lý do huỷ'), findsNothing);
 
-      // Reason chips
-      expect(find.textContaining('Thay đổi lịch bận đột xuất'), findsOneWidget);
-      expect(find.textContaining('Tìm được giải pháp khác'), findsOneWidget);
-
-      // Policy note
-      expect(find.textContaining('không phát sinh bất kỳ khoản phí nào'), findsOneWidget);
-
-      // Confirm button (Free mode)
-      expect(find.textContaining('Xác nhận huỷ miễn phí'), findsOneWidget);
-
-      // Select 'Lý do khác'
-      await tester.tap(find.textContaining('Lý do khác'));
+      await tester.tap(find.byKey(const Key('booking_action_confirm_button')));
       await tester.pumpAndSettle();
-      expect(find.byType(TextField), findsOneWidget);
+
+      verify(() => action.cancel('501')).called(1);
+      expect(find.text('Đã huỷ đơn đặt lịch'), findsOneWidget);
+      expect(find.text('open'), findsOneWidget, reason: 'returns to the previous screen');
     });
 
-    testWidgets('CustomerCancellationPage renders fee cancellation mode with 50.000đ penalty', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestExceptionsWidget(const CustomerCancellationPage(hasFee: true)));
+    testWidgets('CustomerCancellationPage shows API errors without leaving', (tester) async {
+      final action = MockBookingActionCubit();
+      final states = StreamController<BookingActionState>.broadcast();
+      addTearDown(states.close);
+      whenListen(action, states.stream, initialState: const BookingActionIdleState());
+      when(() => action.cancel(any())).thenAnswer(
+        (_) async => states.add(
+          const BookingActionFailedState(Failure(kind: NetworkErrorKind.server, errorCode: 'HS-400-0010')),
+        ),
+      );
+
+      await tester.pumpWidget(
+        _createTestExceptionsWidget(const _Launcher(location: '/customer/booking/cancel?id=501'), action: action),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('booking_action_confirm_button')));
       await tester.pumpAndSettle();
 
-      // Fee subtitle
-      expect(find.textContaining('50.000đ'), findsWidgets);
-      expect(find.textContaining('Phí huỷ 50.000đ sẽ được trừ vào tài khoản'), findsOneWidget);
+      expect(find.text('Không thể thực hiện thao tác này ở trạng thái hiện tại.'), findsOneWidget);
+      expect(find.byType(CustomerCancellationPage), findsOneWidget);
+    });
 
-      // Confirm button with Amber CTA
-      expect(find.textContaining('Xác nhận huỷ & Trả 50.000đ'), findsOneWidget);
-      expect(find.textContaining('Giữ lại đơn hàng'), findsOneWidget);
+    testWidgets('DisputeReportPage disputes the booking and opens the disputed screen', (tester) async {
+      final action = MockBookingActionCubit();
+      final states = StreamController<BookingActionState>.broadcast();
+      addTearDown(states.close);
+      whenListen(action, states.stream, initialState: const BookingActionIdleState());
+      when(() => action.dispute(any()))
+          .thenAnswer((_) async => states.add(const BookingActionDoneState(BookingStatus.dispute)));
+
+      await tester.pumpWidget(
+        _createTestExceptionsWidget(const _Launcher(location: '/customer/order/dispute?id=503'), action: action),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Mã đơn hàng: #503'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('booking_action_confirm_button')));
+      await tester.pumpAndSettle();
+
+      verify(() => action.dispute('503')).called(1);
+      expect(find.byType(OrderDisputedPage), findsOneWidget);
     });
 
     testWidgets('WorkerCancellationPage renders penalty warning and options', (tester) async {
@@ -131,7 +162,9 @@ void main() {
       expect(find.textContaining('Xác nhận huỷ việc'), findsOneWidget);
     });
 
-    testWidgets('CustomerNoShowPage navigates from waiting timer to reporting and completion with compensation', (tester) async {
+    testWidgets('CustomerNoShowPage navigates from waiting timer to reporting and completion with compensation', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1400));
       await tester.pumpWidget(_createTestExceptionsWidget(const CustomerNoShowPage()));
       await tester.pump();
@@ -159,31 +192,6 @@ void main() {
       expect(find.textContaining('Đã ghi nhận vắng mặt'), findsWidgets);
       expect(find.text('+50.000đ'), findsOneWidget);
       expect(find.textContaining('Về danh sách việc'), findsOneWidget);
-    });
-
-    testWidgets('DisputeReportPage validates issue selection and triggers escrow freeze', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestExceptionsWidget(const DisputeReportPage()));
-      await tester.pumpAndSettle();
-
-      // Header
-      expect(find.textContaining('Báo vấn đề & Khiếu nại'), findsOneWidget);
-      expect(find.textContaining('HS-2026-0012'), findsOneWidget);
-
-      // Categories
-      expect(find.textContaining('Chất lượng dịch vụ không đạt'), findsOneWidget);
-      expect(find.textContaining('Gây hư hỏng'), findsOneWidget);
-      expect(find.textContaining('Thái độ thợ'), findsOneWidget);
-
-      // Escrow notice
-      expect(find.textContaining('Bảo vệ Escrow: Số tiền 400.000đ'), findsOneWidget);
-
-      // Pick an issue type
-      await tester.tap(find.textContaining('Chất lượng dịch vụ không đạt'));
-      await tester.pumpAndSettle();
-
-      // Submit CTA
-      expect(find.textContaining('Gửi khiếu nại & Đóng băng tiền'), findsOneWidget);
     });
 
     testWidgets('OrderDisputedPage renders complaint code and 3-step resolution timeline', (tester) async {
@@ -251,4 +259,16 @@ void main() {
       expect(find.textContaining('Gửi giải trình'), findsOneWidget);
     });
   });
+}
+
+/// Root screen that pushes [location], so pages that pop on success have somewhere to return to.
+class _Launcher extends StatelessWidget {
+  const _Launcher({required this.location});
+
+  final String location;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: TextButton(onPressed: () => context.push(location), child: const Text('open')),
+  );
 }

@@ -31,6 +31,7 @@ import 'package:vstech_home_services/features/auth/presentation/pages/reset_pass
 import 'package:vstech_home_services/features/auth/presentation/pages/reset_password_success_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/role_gateway_page.dart';
 import 'package:vstech_home_services/features/auth/presentation/pages/splash_page.dart';
+import 'package:vstech_home_services/features/booking/presentation/bloc/booking_flow_bloc.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step1_service_option_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step2_schedule_address_page.dart';
 import 'package:vstech_home_services/features/booking/presentation/pages/booking_step3_confirm_page.dart';
@@ -44,6 +45,7 @@ import 'package:vstech_home_services/features/checkout/presentation/pages/order_
 import 'package:vstech_home_services/features/checkout/presentation/pages/payment_gateway_page.dart';
 import 'package:vstech_home_services/features/checkout/presentation/pages/payment_success_page.dart';
 import 'package:vstech_home_services/features/checkout/presentation/pages/worker_job_completion_page.dart';
+import 'package:vstech_home_services/features/exceptions/presentation/bloc/booking_action_cubit.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/customer_cancellation_page.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/customer_dispute_list_page.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/customer_no_show_page.dart';
@@ -52,6 +54,8 @@ import 'package:vstech_home_services/features/exceptions/presentation/pages/disp
 import 'package:vstech_home_services/features/exceptions/presentation/pages/order_disputed_page.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/worker_cancellation_page.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/pages/worker_dispute_notification_page.dart';
+import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart';
+import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
 import 'package:vstech_home_services/features/home/presentation/pages/ai_assistant_page.dart';
 import 'package:vstech_home_services/features/home/presentation/pages/ai_suggestions_page.dart';
 import 'package:vstech_home_services/features/home/presentation/pages/categories_page.dart';
@@ -62,6 +66,8 @@ import 'package:vstech_home_services/features/home/presentation/pages/service_de
 import 'package:vstech_home_services/features/home/presentation/pages/worker_profile_preview_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/chat_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/voip_call_page.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_notification_settings_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_notifications_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_order_detail_page.dart';
@@ -154,14 +160,14 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       path: AppRoutes.resetPasswordSuccess,
       builder: (context, state) => ResetPasswordSuccessPage(role: state.uri.queryParameters['role'] ?? 'customer'),
     ),
-    GoRoute(path: AppRoutes.customerHome, builder: (context, state) => const CustomerHomePage()),
-    GoRoute(path: AppRoutes.categories, builder: (context, state) => const CategoriesPage()),
+    GoRoute(path: AppRoutes.customerHome, builder: (context, state) => _withCategories(const CustomerHomePage())),
+    GoRoute(path: AppRoutes.categories, builder: (context, state) => _withCategories(const CategoriesPage())),
     GoRoute(
       path: AppRoutes.serviceDetail,
-      builder: (context, state) {
-        final id = state.uri.queryParameters['id'] ?? 'clean';
-        return ServiceDetailPage(serviceId: id);
-      },
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<CategoryDetailCubit>(),
+        child: ServiceDetailPage(serviceId: state.uri.queryParameters['id'] ?? ''),
+      ),
     ),
     GoRoute(path: AppRoutes.workerDashboard, builder: (context, state) => const WorkerDashboardPage()),
     GoRoute(path: AppRoutes.workerJobDetail, builder: (context, state) => const WorkerJobDetailPage()),
@@ -179,50 +185,19 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         return WorkerKycStatusPage(initialStatus: status);
       },
     ),
-    GoRoute(path: AppRoutes.bookingStep1, builder: (context, state) => const BookingStep1ServiceOptionPage()),
-    GoRoute(
-      path: AppRoutes.bookingStep2,
-      builder: (context, state) {
-        final basePrice = int.tryParse(state.uri.queryParameters['basePrice'] ?? '350000') ?? 350000;
-        final addonsPrice = int.tryParse(state.uri.queryParameters['addonsPrice'] ?? '30000') ?? 30000;
-        final scopeId = state.uri.queryParameters['scopeId'] ?? 'small';
-        final addons = state.uri.queryParameters['addons'] ?? 'trash';
-        return BookingStep2ScheduleAddressPage(
-          basePrice: basePrice,
-          addonsPrice: addonsPrice,
-          scopeId: scopeId,
-          addons: addons,
-        );
-      },
-    ),
-    GoRoute(
-      path: AppRoutes.bookingStep3,
-      builder: (context, state) {
-        final basePrice = int.tryParse(state.uri.queryParameters['basePrice'] ?? '350000') ?? 350000;
-        final addonsPrice = int.tryParse(state.uri.queryParameters['addonsPrice'] ?? '30000') ?? 30000;
-        final premisesPrice = int.tryParse(state.uri.queryParameters['premisesPrice'] ?? '20000') ?? 20000;
-        final premisesId = state.uri.queryParameters['premisesId'] ?? 'elevator';
-        final date = state.uri.queryParameters['date'] ?? 'today';
-        final slot = state.uri.queryParameters['slot'] ?? '14:00 - 16:00';
-        return BookingStep3ConfirmPage(
-          basePrice: basePrice,
-          addonsPrice: addonsPrice,
-          premisesPrice: premisesPrice,
-          premisesId: premisesId,
-          date: date,
-          slot: slot,
-        );
-      },
-    ),
-    GoRoute(
-      path: AppRoutes.bookingSuccess,
-      builder: (context, state) {
-        final total = int.tryParse(state.uri.queryParameters['total'] ?? '350000') ?? 350000;
-        final date = state.uri.queryParameters['date'] ?? 'today';
-        final slot = state.uri.queryParameters['slot'] ?? '14:00 - 16:00';
-        final method = state.uri.queryParameters['method'] ?? 'vietqr';
-        return BookingSuccessPage(total: total, date: date, slot: slot, paymentMethod: method);
-      },
+    // One BookingFlowBloc shared by every step of the booking wizard (draft survives back/forward).
+    ShellRoute(
+      builder: (context, state, child) => BlocProvider(create: (_) => getIt<BookingFlowBloc>(), child: child),
+      routes: [
+        GoRoute(
+          path: AppRoutes.bookingStep1,
+          builder: (context, state) =>
+              BookingStep1ServiceOptionPage(categoryId: state.uri.queryParameters['categoryId'] ?? ''),
+        ),
+        GoRoute(path: AppRoutes.bookingStep2, builder: (context, state) => const BookingStep2ScheduleAddressPage()),
+        GoRoute(path: AppRoutes.bookingStep3, builder: (context, state) => const BookingStep3ConfirmPage()),
+        GoRoute(path: AppRoutes.bookingSuccess, builder: (context, state) => const BookingSuccessPage()),
+      ],
     ),
     GoRoute(
       path: AppRoutes.bookingMatching,
@@ -316,17 +291,23 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       path: AppRoutes.customerOrders,
       builder: (context, state) {
         final tab = int.tryParse(state.uri.queryParameters['tab'] ?? '0') ?? 0;
-        final activeEmpty = state.uri.queryParameters['activeEmpty'] == 'true';
-        return CustomerOrdersPage(initialTab: tab, isActiveTabEmpty: activeEmpty);
+        return BlocProvider(
+          create: (_) {
+            final cubit = getIt<CustomerOrdersCubit>();
+            unawaited(cubit.load());
+            return cubit;
+          },
+          child: CustomerOrdersPage(initialTab: tab),
+        );
       },
     ),
     GoRoute(
       path: AppRoutes.customerOrderDetail,
       builder: (context, state) {
-        final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        final status = state.uri.queryParameters['status'] ?? 'active';
-        final price = int.tryParse(state.uri.queryParameters['price'] ?? '400000') ?? 400000;
-        return CustomerOrderDetailPage(orderCode: code, status: status, totalPrice: price);
+        return BlocProvider(
+          create: (_) => getIt<OrderDetailCubit>(),
+          child: CustomerOrderDetailPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+        );
       },
     ),
     GoRoute(
@@ -345,9 +326,10 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.customerCancel,
       builder: (context, state) {
-        final fee = state.uri.queryParameters['fee'] == 'true';
-        final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        return CustomerCancellationPage(hasFee: fee, orderCode: code);
+        return BlocProvider(
+          create: (_) => getIt<BookingActionCubit>(),
+          child: CustomerCancellationPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+        );
       },
     ),
     GoRoute(
@@ -367,8 +349,10 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.disputeReport,
       builder: (context, state) {
-        final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        return DisputeReportPage(orderCode: code);
+        return BlocProvider(
+          create: (_) => getIt<BookingActionCubit>(),
+          child: DisputeReportPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+        );
       },
     ),
     GoRoute(
@@ -503,6 +487,16 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
           BlocProvider(create: (_) => getIt<LogoutCubit>(), child: _withProfile(const WorkerProfilePage())),
     ),
   ],
+);
+
+/// Provides a [CategoriesCubit] that starts loading `GET /service-categories` immediately.
+Widget _withCategories(Widget page) => BlocProvider(
+  create: (_) {
+    final cubit = getIt<CategoriesCubit>();
+    unawaited(cubit.load());
+    return cubit;
+  },
+  child: page,
 );
 
 /// Provides a [ProfileCubit] that starts loading `GET /profiles` immediately.

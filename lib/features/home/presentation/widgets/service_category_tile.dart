@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/features/home/presentation/widgets/category_thumbnail.dart';
 
 /// Single service category tile in Customer Home grid.
-/// White card, 16px radius, hairline border, 48px icon container, 2-line label.
+/// White card, 16px radius, hairline border, 48px photo thumbnail, 2-line label.
 class ServiceCategoryTile extends StatelessWidget {
   const ServiceCategoryTile({
     required this.title,
-    required this.iconAsset,
+    required this.imageUrl,
     required this.onTap,
     super.key,
   });
 
   final String title;
-  final String iconAsset;
+  final String? imageUrl;
   final VoidCallback onTap;
 
   @override
@@ -32,21 +33,7 @@ class ServiceCategoryTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Icon container
-            Container(
-              width: 48,
-              height: 48,
-              padding: const EdgeInsets.all(AppSpacing.xs),
-              child: Image.asset(
-                iconAsset,
-                fit: BoxFit.contain,
-                errorBuilder: (_, _, _) => const Icon(
-                  Icons.handyman_outlined,
-                  size: 28,
-                  color: AppColors.primary,
-                ),
-              ),
-            ),
+            CategoryThumbnail(imageUrl: imageUrl, size: 48),
             const SizedBox(height: 6),
 
             // Two-line Title

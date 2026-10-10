@@ -24,8 +24,8 @@ Widget _createTestHomeDevicesWidget(Widget child) {
         builder: (context, state) => const AiSuggestionsPage(),
       ),
       GoRoute(
-        path: AppRoutes.bookingStep1,
-        builder: (context, state) => const Scaffold(body: Text('BookingStep1')),
+        path: AppRoutes.categories,
+        builder: (context, state) => const Scaffold(body: Text('CategoriesTarget')),
       ),
       GoRoute(
         path: AppRoutes.myAddresses,
@@ -139,7 +139,7 @@ void main() {
       // Tap book now
       await tester.tap(find.byKey(const Key('book_suggested_heater_button')));
       await tester.pumpAndSettle();
-      expect(find.text('BookingStep1'), findsOneWidget);
+      expect(find.text('CategoriesTarget'), findsOneWidget);
     });
 
     testWidgets('FavouriteProsPage renders technicians, toggles heart and navigates', (tester) async {
@@ -163,7 +163,7 @@ void main() {
       // Tap rebook on Duc
       await tester.tap(find.byKey(const Key('rebook_duc')));
       await tester.pumpAndSettle();
-      expect(find.text('BookingStep1'), findsOneWidget);
+      expect(find.text('CategoriesTarget'), findsOneWidget);
     });
 
     testWidgets('WorkerProfilePreviewPage renders bio, skills, review quote and CTA', (tester) async {

@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
-import 'package:vstech_home_services/features/orders/presentation/pages/customer_orders_page.dart';
 import 'package:vstech_home_services/features/warranty/presentation/pages/warranty_certificate_page.dart';
 import 'package:vstech_home_services/features/warranty/presentation/pages/warranty_request_page.dart';
 import 'package:vstech_home_services/features/warranty/presentation/pages/warranty_status_page.dart';
@@ -43,7 +42,7 @@ Widget _createTestWarrantyWidget(Widget child) {
       ),
       GoRoute(
         path: AppRoutes.customerOrders,
-        builder: (context, state) => const CustomerOrdersPage(),
+        builder: (context, state) => const Scaffold(body: Text('Customer Orders')),
       ),
       GoRoute(
         path: AppRoutes.workerJobsHub,
@@ -199,25 +198,6 @@ void main() {
       // Confirm button is now active
       await tester.tap(confirmBtn);
       await tester.pumpAndSettle();
-    });
-
-    testWidgets('CustomerOrdersPage displays warranty tag and active warranty job (Cell 91)', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestWarrantyWidget(const CustomerOrdersPage()));
-      await tester.pumpAndSettle();
-
-      // Active tab shows warranty active order
-      expect(find.text('BẢO HÀNH'), findsOneWidget);
-      expect(find.text('#BH20250425-0087'), findsOneWidget);
-      expect(find.text('Bảo hành: Vệ sinh máy lạnh'), findsOneWidget);
-
-      // Tap Completed tab (tab index 2)
-      await tester.tap(find.text('Hoàn thành'));
-      await tester.pumpAndSettle();
-
-      // Completed tab displays warranty active chip on completed card
-      expect(find.textContaining('Còn bảo hành 22 ngày · đến 17/05'), findsOneWidget);
-      expect(find.text('Xem phiếu bảo hành'), findsOneWidget);
     });
   });
 }

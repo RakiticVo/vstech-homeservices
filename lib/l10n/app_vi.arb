@@ -298,7 +298,7 @@
       }
     }
   },
-  "bookingStep1Title": "Chọn gói & Dịch vụ kèm",
+  "bookingStep1Title": "Mô tả vấn đề",
   "bookingStep2Title": "Thời gian & Địa điểm",
   "bookingStep3Title": "Xác nhận & Chốt đơn",
   "bookingSelectScope": "Quy mô căn hộ / diện tích",
@@ -1461,5 +1461,34 @@
         "type": "int"
       }
     }
-  }
+  },
+  "categoriesEmpty": "Chưa có dịch vụ nào.",
+  "categoriesNoMatch": "Không tìm thấy dịch vụ phù hợp.",
+  "bookingDescribeLabel": "Mô tả vấn đề cần xử lý",
+  "bookingDescribeHint": "VD: Máy lạnh phòng ngủ chạy không mát, có tiếng kêu lạ",
+  "bookingEstimateCta": "Ước tính giá & tiếp tục",
+  "bookingServicePriceLabel": "Giá dịch vụ (ước tính)",
+  "bookingPlatformFeeLabel": "Phí nền tảng",
+  "bookingAddressHint": "Số nhà, đường, phường, quận/huyện",
+  "bookingLocationReady": "Đã xác định vị trí làm việc",
+  "bookingLocationMissing": "Chưa có vị trí — cần để thợ tìm đường",
+  "bookingUseCurrentLocation": "Dùng vị trí hiện tại",
+  "bookingLocationDenied": "Ứng dụng chưa được cấp quyền vị trí. Hãy bật trong Cài đặt của máy.",
+  "bookingLocationServiceOff": "Dịch vụ định vị trên máy đang tắt.",
+  "bookingLocationUnavailable": "Không lấy được vị trí hiện tại, vui lòng thử lại.",
+  "bookingProblemLabel": "Vấn đề",
+  "bookingPayAfterInspection": "Sau khi nghiệm thu",
+  "ordersLoadMore": "Xem thêm đơn",
+  "ordersFinalPrice": "Giá chốt",
+  "bookingStatusPending": "Đang tìm thợ",
+  "bookingStatusAccepted": "Thợ đã nhận việc",
+  "bookingStatusInProgress": "Đang thực hiện",
+  "bookingStatusCompleted": "Hoàn thành",
+  "bookingStatusCancelled": "Đã huỷ",
+  "bookingStatusDispute": "Đang khiếu nại",
+  "bookingStatusDispatchFailed": "Chưa tìm được thợ",
+  "bookingStatusUnknown": "Không xác định",
+  "disputeConfirmNotice": "Đơn sẽ chuyển sang trạng thái khiếu nại để bộ phận hỗ trợ xem xét. Khoản thanh toán được giữ lại cho đến khi có kết quả.",
+  "disputeConfirmBtn": "Gửi khiếu nại",
+  "cancelDoneMessage": "Đã huỷ đơn đặt lịch"
 }

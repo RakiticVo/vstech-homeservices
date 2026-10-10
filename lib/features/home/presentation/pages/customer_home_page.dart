@@ -1,22 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_assets.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
+import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart';
 import 'package:vstech_home_services/features/home/presentation/widgets/customer_floating_dock.dart';
 import 'package:vstech_home_services/features/home/presentation/widgets/home_devices_card.dart';
 import 'package:vstech_home_services/features/home/presentation/widgets/home_top_header.dart';
 import 'package:vstech_home_services/features/home/presentation/widgets/service_category_tile.dart';
-import 'package:vstech_home_services/features/home/presentation/widgets/service_offer_card.dart';
 
 /// Screen 09 — Customer Home Screen.
 /// The primary entry point for Customer role.
-/// Features top greeting, search bar, hero banner, 8 services grid, special offers,
+/// Features top greeting, search bar, hero banner, 8 services grid (`GET /service-categories`),
 /// home devices status, and a fixed floating bottom dock with 128px scroll clearance.
 class CustomerHomePage extends StatefulWidget {
   const CustomerHomePage({super.key});
@@ -38,49 +41,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = [
-      _CategoryData(
-        id: 'clean',
-        title: context.l10n.svcCleanTitle,
-        iconAsset: AppAssets.svcClean,
-      ),
-      _CategoryData(
-        id: 'plumb',
-        title: context.l10n.svcPlumbTitle,
-        iconAsset: AppAssets.svcPlumb,
-      ),
-      _CategoryData(
-        id: 'ac',
-        title: context.l10n.svcAcTitle,
-        iconAsset: AppAssets.svcAc,
-      ),
-      _CategoryData(
-        id: 'laundry',
-        title: context.l10n.svcLaundryTitle,
-        iconAsset: AppAssets.svcLaundry,
-      ),
-      _CategoryData(
-        id: 'maid',
-        title: context.l10n.svcMaidTitle,
-        iconAsset: AppAssets.svcMaid,
-      ),
-      _CategoryData(
-        id: 'pest',
-        title: context.l10n.svcPestTitle,
-        iconAsset: AppAssets.svcPest,
-      ),
-      _CategoryData(
-        id: 'install',
-        title: context.l10n.svcInstallTitle,
-        iconAsset: AppAssets.svcInstall,
-      ),
-      _CategoryData(
-        id: 'appliance',
-        title: context.l10n.svcApplianceTitle,
-        iconAsset: AppAssets.svcAppliance,
-      ),
-    ];
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -195,79 +155,33 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                   ),
                   const SizedBox(height: AppSpacing.md),
 
-                  // 3-column Grid for 8 service items
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: categories.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      mainAxisSpacing: AppSpacing.sm,
-                      crossAxisSpacing: AppSpacing.sm,
-                      childAspectRatio: 0.82,
-                    ),
-                    itemBuilder: (context, index) {
-                      final item = categories[index];
-                      return ServiceCategoryTile(
-                        title: item.title,
-                        iconAsset: item.iconAsset,
-                        onTap: () => _onCategoryTapped(item.id),
-                      );
+                  // Up to 8 categories from GET /service-categories in a 4-column grid
+                  BlocBuilder<CategoriesCubit, CategoriesState>(
+                    builder: (context, state) => switch (state) {
+                      CategoriesErrorState(:final failure) => ErrorRetryView(
+                        message: context.l10n.failureMessage(failure),
+                        onRetry: () => unawaited(context.read<CategoriesCubit>().load()),
+                      ),
+                      CategoriesLoadedState(:final categories) when categories.isEmpty => Text(
+                        context.l10n.categoriesEmpty,
+                        style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+                      ),
+                      CategoriesLoadedState(:final categories) => _CategoryGrid(
+                        itemCount: categories.length.clamp(0, _homeCategoryCount),
+                        itemBuilder: (context, index) {
+                          final category = categories[index];
+                          return ServiceCategoryTile(
+                            title: category.name,
+                            imageUrl: category.imageUrl,
+                            onTap: () => _onCategoryTapped(category.id),
+                          );
+                        },
+                      ),
+                      CategoriesInitialState() || CategoriesLoadingState() => _CategoryGrid(
+                        itemCount: _homeCategoryCount,
+                        itemBuilder: (_, _) => const _CategoryTilePlaceholder(),
+                      ),
                     },
-                  ),
-
-                  const SizedBox(height: AppSpacing.xl),
-
-                  // Section 2: Special Offers
-                  Text(
-                    context.l10n.homeSectionOffers,
-                    style: AppTextStyles.headlineMd.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-
-                  // Horizontal Offers List
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ServiceOfferCard(
-                          title: context.l10n.svcAcTitle.replaceAll('\n', ' '),
-                          description: context.l10n.acServiceDesc,
-                          priceText: context.l10n.startingFrom('150.000đ'),
-                          tagText: context.l10n.offerTag15,
-                          speedText: context.l10n.offerTagFast,
-                          ratingText: '4.9 ★',
-                          iconAsset: AppAssets.svcAc,
-                          onTap: () => _onCategoryTapped('ac'),
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        ServiceOfferCard(
-                          title: context.l10n.svcCleanTitle.replaceAll('\n', ' '),
-                          description: context.l10n.cleanServiceDesc,
-                          priceText: context.l10n.startingFrom('120.000đ'),
-                          tagText: context.l10n.offerTag15,
-                          speedText: context.l10n.offerTagFast,
-                          ratingText: '4.8 ★',
-                          iconAsset: AppAssets.svcClean,
-                          onTap: () => _onCategoryTapped('clean'),
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        ServiceOfferCard(
-                          title: context.l10n.svcPlumbTitle.replaceAll('\n', ' '),
-                          description: context.l10n.plumbServiceDesc,
-                          priceText: context.l10n.startingFrom('180.000đ'),
-                          tagText: context.l10n.offerTag15,
-                          speedText: context.l10n.offerTagFast,
-                          ratingText: '4.9 ★',
-                          iconAsset: AppAssets.svcPlumb,
-                          onTap: () => _onCategoryTapped('plumb'),
-                        ),
-                      ],
-                    ),
                   ),
 
                   const SizedBox(height: AppSpacing.xl),
@@ -297,14 +211,43 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   }
 }
 
-class _CategoryData {
-  const _CategoryData({
-    required this.id,
-    required this.title,
-    required this.iconAsset,
-  });
+/// Number of categories shown on Home; the full list is on the Categories screen.
+const int _homeCategoryCount = 8;
 
-  final String id;
-  final String title;
-  final String iconAsset;
+class _CategoryGrid extends StatelessWidget {
+  const _CategoryGrid({required this.itemCount, required this.itemBuilder});
+
+  final int itemCount;
+  final NullableIndexedWidgetBuilder itemBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: itemCount,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        mainAxisSpacing: AppSpacing.sm,
+        crossAxisSpacing: AppSpacing.sm,
+        childAspectRatio: 0.82,
+      ),
+      itemBuilder: itemBuilder,
+    );
+  }
+}
+
+class _CategoryTilePlaceholder extends StatelessWidget {
+  const _CategoryTilePlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        border: Border.all(color: AppColors.border),
+      ),
+    );
+  }
 }

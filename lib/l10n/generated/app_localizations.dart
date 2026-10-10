@@ -1475,7 +1475,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookingStep1Title.
   ///
   /// In vi, this message translates to:
-  /// **'Chọn gói & Dịch vụ kèm'**
+  /// **'Mô tả vấn đề'**
   String get bookingStep1Title;
 
   /// No description provided for @bookingStep2Title.
@@ -6264,6 +6264,180 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'{rating}★ · {jobs} việc hoàn thành'**
   String wprofilePerfSubtitle(String rating, int jobs);
+
+  /// No description provided for @categoriesEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có dịch vụ nào.'**
+  String get categoriesEmpty;
+
+  /// No description provided for @categoriesNoMatch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy dịch vụ phù hợp.'**
+  String get categoriesNoMatch;
+
+  /// No description provided for @bookingDescribeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả vấn đề cần xử lý'**
+  String get bookingDescribeLabel;
+
+  /// No description provided for @bookingDescribeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: Máy lạnh phòng ngủ chạy không mát, có tiếng kêu lạ'**
+  String get bookingDescribeHint;
+
+  /// No description provided for @bookingEstimateCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ước tính giá & tiếp tục'**
+  String get bookingEstimateCta;
+
+  /// No description provided for @bookingServicePriceLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá dịch vụ (ước tính)'**
+  String get bookingServicePriceLabel;
+
+  /// No description provided for @bookingPlatformFeeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí nền tảng'**
+  String get bookingPlatformFeeLabel;
+
+  /// No description provided for @bookingAddressHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số nhà, đường, phường, quận/huyện'**
+  String get bookingAddressHint;
+
+  /// No description provided for @bookingLocationReady.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xác định vị trí làm việc'**
+  String get bookingLocationReady;
+
+  /// No description provided for @bookingLocationMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có vị trí — cần để thợ tìm đường'**
+  String get bookingLocationMissing;
+
+  /// No description provided for @bookingUseCurrentLocation.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng vị trí hiện tại'**
+  String get bookingUseCurrentLocation;
+
+  /// No description provided for @bookingLocationDenied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ứng dụng chưa được cấp quyền vị trí. Hãy bật trong Cài đặt của máy.'**
+  String get bookingLocationDenied;
+
+  /// No description provided for @bookingLocationServiceOff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịch vụ định vị trên máy đang tắt.'**
+  String get bookingLocationServiceOff;
+
+  /// No description provided for @bookingLocationUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không lấy được vị trí hiện tại, vui lòng thử lại.'**
+  String get bookingLocationUnavailable;
+
+  /// No description provided for @bookingProblemLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vấn đề'**
+  String get bookingProblemLabel;
+
+  /// No description provided for @bookingPayAfterInspection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sau khi nghiệm thu'**
+  String get bookingPayAfterInspection;
+
+  /// No description provided for @ordersLoadMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem thêm đơn'**
+  String get ordersLoadMore;
+
+  /// No description provided for @ordersFinalPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá chốt'**
+  String get ordersFinalPrice;
+
+  /// No description provided for @bookingStatusPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tìm thợ'**
+  String get bookingStatusPending;
+
+  /// No description provided for @bookingStatusAccepted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thợ đã nhận việc'**
+  String get bookingStatusAccepted;
+
+  /// No description provided for @bookingStatusInProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang thực hiện'**
+  String get bookingStatusInProgress;
+
+  /// No description provided for @bookingStatusCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn thành'**
+  String get bookingStatusCompleted;
+
+  /// No description provided for @bookingStatusCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã huỷ'**
+  String get bookingStatusCancelled;
+
+  /// No description provided for @bookingStatusDispute.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang khiếu nại'**
+  String get bookingStatusDispute;
+
+  /// No description provided for @bookingStatusDispatchFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tìm được thợ'**
+  String get bookingStatusDispatchFailed;
+
+  /// No description provided for @bookingStatusUnknown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không xác định'**
+  String get bookingStatusUnknown;
+
+  /// No description provided for @disputeConfirmNotice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn sẽ chuyển sang trạng thái khiếu nại để bộ phận hỗ trợ xem xét. Khoản thanh toán được giữ lại cho đến khi có kết quả.'**
+  String get disputeConfirmNotice;
+
+  /// No description provided for @disputeConfirmBtn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi khiếu nại'**
+  String get disputeConfirmBtn;
+
+  /// No description provided for @cancelDoneMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã huỷ đơn đặt lịch'**
+  String get cancelDoneMessage;
 }
 
 class _AppLocalizationsDelegate

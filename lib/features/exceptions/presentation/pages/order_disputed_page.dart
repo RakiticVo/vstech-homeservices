@@ -182,7 +182,7 @@ class OrderDisputedPage extends StatelessWidget {
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () {
-                    unawaited(context.push(AppRoutes.customerOrderDetail));
+                    unawaited(context.push(AppRoutes.customerOrders));
                   },
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(color: AppColors.border),

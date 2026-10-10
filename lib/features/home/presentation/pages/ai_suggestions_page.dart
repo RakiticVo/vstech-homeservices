@@ -176,7 +176,7 @@ class AiSuggestionsPage extends StatelessWidget {
             height: 46,
             child: ElevatedButton(
               key: const Key('book_suggested_heater_button'),
-              onPressed: () => context.push(AppRoutes.bookingStep1),
+              onPressed: () => context.push(AppRoutes.categories),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 elevation: 0,
@@ -208,7 +208,7 @@ class AiSuggestionsPage extends StatelessWidget {
         border: Border.all(color: AppColors.border),
       ),
       child: InkWell(
-        onTap: () => context.push(AppRoutes.bookingStep1),
+        onTap: () => context.push(AppRoutes.categories),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

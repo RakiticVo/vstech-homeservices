@@ -742,7 +742,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get bookingStep1Title => 'Chọn gói & Dịch vụ kèm';
+  String get bookingStep1Title => 'Mô tả vấn đề';
 
   @override
   String get bookingStep2Title => 'Thời gian & Địa điểm';
@@ -3372,4 +3372,95 @@ class AppLocalizationsVi extends AppLocalizations {
   String wprofilePerfSubtitle(String rating, int jobs) {
     return '$rating★ · $jobs việc hoàn thành';
   }
+
+  @override
+  String get categoriesEmpty => 'Chưa có dịch vụ nào.';
+
+  @override
+  String get categoriesNoMatch => 'Không tìm thấy dịch vụ phù hợp.';
+
+  @override
+  String get bookingDescribeLabel => 'Mô tả vấn đề cần xử lý';
+
+  @override
+  String get bookingDescribeHint =>
+      'VD: Máy lạnh phòng ngủ chạy không mát, có tiếng kêu lạ';
+
+  @override
+  String get bookingEstimateCta => 'Ước tính giá & tiếp tục';
+
+  @override
+  String get bookingServicePriceLabel => 'Giá dịch vụ (ước tính)';
+
+  @override
+  String get bookingPlatformFeeLabel => 'Phí nền tảng';
+
+  @override
+  String get bookingAddressHint => 'Số nhà, đường, phường, quận/huyện';
+
+  @override
+  String get bookingLocationReady => 'Đã xác định vị trí làm việc';
+
+  @override
+  String get bookingLocationMissing => 'Chưa có vị trí — cần để thợ tìm đường';
+
+  @override
+  String get bookingUseCurrentLocation => 'Dùng vị trí hiện tại';
+
+  @override
+  String get bookingLocationDenied =>
+      'Ứng dụng chưa được cấp quyền vị trí. Hãy bật trong Cài đặt của máy.';
+
+  @override
+  String get bookingLocationServiceOff => 'Dịch vụ định vị trên máy đang tắt.';
+
+  @override
+  String get bookingLocationUnavailable =>
+      'Không lấy được vị trí hiện tại, vui lòng thử lại.';
+
+  @override
+  String get bookingProblemLabel => 'Vấn đề';
+
+  @override
+  String get bookingPayAfterInspection => 'Sau khi nghiệm thu';
+
+  @override
+  String get ordersLoadMore => 'Xem thêm đơn';
+
+  @override
+  String get ordersFinalPrice => 'Giá chốt';
+
+  @override
+  String get bookingStatusPending => 'Đang tìm thợ';
+
+  @override
+  String get bookingStatusAccepted => 'Thợ đã nhận việc';
+
+  @override
+  String get bookingStatusInProgress => 'Đang thực hiện';
+
+  @override
+  String get bookingStatusCompleted => 'Hoàn thành';
+
+  @override
+  String get bookingStatusCancelled => 'Đã huỷ';
+
+  @override
+  String get bookingStatusDispute => 'Đang khiếu nại';
+
+  @override
+  String get bookingStatusDispatchFailed => 'Chưa tìm được thợ';
+
+  @override
+  String get bookingStatusUnknown => 'Không xác định';
+
+  @override
+  String get disputeConfirmNotice =>
+      'Đơn sẽ chuyển sang trạng thái khiếu nại để bộ phận hỗ trợ xem xét. Khoản thanh toán được giữ lại cho đến khi có kết quả.';
+
+  @override
+  String get disputeConfirmBtn => 'Gửi khiếu nại';
+
+  @override
+  String get cancelDoneMessage => 'Đã huỷ đơn đặt lịch';
 }

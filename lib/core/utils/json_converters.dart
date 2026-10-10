@@ -55,3 +55,13 @@ class IdConverter implements JsonConverter<String, Object> {
   @override
   Object toJson(String object) => int.tryParse(object) ?? object;
 }
+
+class NullableIdConverter implements JsonConverter<String?, Object?> {
+  const NullableIdConverter();
+
+  @override
+  String? fromJson(Object? json) => json?.toString();
+
+  @override
+  Object? toJson(String? object) => object == null ? null : const IdConverter().toJson(object);
+}

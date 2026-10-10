@@ -1,0 +1,17 @@
+{
+  "status": 200,
+  "message": "OK",
+  "data": {
+    "content": [
+      { "id": 1, "name": "Sửa máy lạnh", "description": "Sửa chữa máy lạnh các loại", "basePrice": "200000", "commissionRate": "0.1", "isActive": true, "imageUrl": "https://img.test/ac.jpg" },
+      { "id": 2, "name": "Vệ sinh nhà", "description": null, "basePrice": 150000, "commissionRate": 0.1, "isActive": true, "imageUrl": null },
+      { "id": 3, "name": "Ngừng phục vụ", "basePrice": "100000", "isActive": false }
+    ],
+    "page": 0,
+    "size": 50,
+    "totalItems": 3,
+    "totalPages": 1
+  },
+  "errorCode": null,
+  "timestamp": "2026-10-10T08:00:00Z"
+}
