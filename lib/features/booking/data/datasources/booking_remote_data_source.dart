@@ -4,13 +4,15 @@ import 'package:vstech_home_services/core/network/api_endpoints.dart';
 import 'package:vstech_home_services/core/network/api_response.dart';
 import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/features/booking/data/models/booking_response.dart';
+import 'package:vstech_home_services/features/booking/data/models/complete_booking_request.dart';
 import 'package:vstech_home_services/features/booking/data/models/create_booking_request.dart';
 import 'package:vstech_home_services/features/booking/data/models/estimate_request.dart';
 import 'package:vstech_home_services/features/booking/data/models/estimate_response.dart';
 import 'package:vstech_home_services/features/booking/data/models/quote_response.dart';
 import 'package:vstech_home_services/features/booking/data/models/status_transition_response.dart';
+import 'package:vstech_home_services/features/booking/data/models/submit_quote_request.dart';
 
-/// `/api/v1/bookings` — customer side (worker transitions are added with the worker flow).
+/// `/api/v1/bookings` — customer and worker actions.
 /// Every state-changing call sends `X-Idempotency-Key`.
 @injectable
 class BookingRemoteDataSource {
@@ -71,22 +73,38 @@ class BookingRemoteDataSource {
 
   Future<StatusTransitionResponse> dispute(String bookingId) => _transition(ApiEndpoints.bookingDispute(bookingId));
 
+  // --- worker ---
+
+  Future<StatusTransitionResponse> accept(String bookingId) => _transition(ApiEndpoints.bookingAccept(bookingId));
+
+  Future<StatusTransitionResponse> start(String bookingId) => _transition(ApiEndpoints.bookingStart(bookingId));
+
+  Future<StatusTransitionResponse> complete(String bookingId, CompleteBookingRequest request) =>
+      _transition(ApiEndpoints.bookingComplete(bookingId), body: request.toJson());
+
+  Future<QuoteResponse> submitQuote(String bookingId, SubmitQuoteRequest request) =>
+      _quoteDecision(ApiEndpoints.bookingQuote(bookingId), body: request.toJson());
+
+  // --- customer quote decision ---
+
   Future<QuoteResponse> approveQuote(String bookingId) => _quoteDecision(ApiEndpoints.bookingQuoteApprove(bookingId));
 
   Future<QuoteResponse> rejectQuote(String bookingId) => _quoteDecision(ApiEndpoints.bookingQuoteReject(bookingId));
 
-  Future<StatusTransitionResponse> _transition(String path) async {
+  Future<StatusTransitionResponse> _transition(String path, {Object? body}) async {
     final response = await _client.post(
       path,
+      body: body,
       idempotent: true,
       decode: (json) => StatusTransitionResponse.fromJson(json! as Map<String, dynamic>),
     );
     return response.requireData;
   }
 
-  Future<QuoteResponse> _quoteDecision(String path) async {
+  Future<QuoteResponse> _quoteDecision(String path, {Object? body}) async {
     final response = await _client.post(
       path,
+      body: body,
       idempotent: true,
       decode: (json) => QuoteResponse.fromJson(json! as Map<String, dynamic>),
     );

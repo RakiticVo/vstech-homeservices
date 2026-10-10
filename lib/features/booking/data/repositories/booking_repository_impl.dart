@@ -2,14 +2,18 @@ import 'package:injectable/injectable.dart';
 import 'package:vstech_home_services/core/error/result.dart';
 import 'package:vstech_home_services/features/booking/data/datasources/booking_remote_data_source.dart';
 import 'package:vstech_home_services/features/booking/data/models/booking_response.dart';
+import 'package:vstech_home_services/features/booking/data/models/complete_booking_request.dart';
 import 'package:vstech_home_services/features/booking/data/models/create_booking_request.dart';
 import 'package:vstech_home_services/features/booking/data/models/estimate_request.dart';
+import 'package:vstech_home_services/features/booking/data/models/quote_item_request.dart';
 import 'package:vstech_home_services/features/booking/data/models/status_transition_response.dart';
+import 'package:vstech_home_services/features/booking/data/models/submit_quote_request.dart';
 import 'package:vstech_home_services/features/booking/domain/entities/booking.dart';
 import 'package:vstech_home_services/features/booking/domain/entities/booking_page.dart';
 import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
 import 'package:vstech_home_services/features/booking/domain/entities/new_booking.dart';
 import 'package:vstech_home_services/features/booking/domain/entities/price_estimate.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/quote_line.dart';
 import 'package:vstech_home_services/features/booking/domain/repositories/booking_repository.dart';
 
 /// Singleton so the in-memory cache of fetched bookings survives between screens — order detail
@@ -76,16 +80,36 @@ class BookingRepositoryImpl implements BookingRepository {
   @override
   Future<Result<void>> rejectQuote(String bookingId) => Result.guard(() => _remote.rejectQuote(bookingId));
 
+  @override
+  Future<Result<BookingStatus>> accept(String bookingId) => _transition(bookingId, _remote.accept);
+
+  @override
+  Future<Result<BookingStatus>> start(String bookingId) => _transition(bookingId, _remote.start);
+
+  @override
+  Future<Result<BookingStatus>> complete(String bookingId, {required num actualPrice}) =>
+      _transition(bookingId, (id) => _remote.complete(id, CompleteBookingRequest(actualPrice: actualPrice)));
+
+  @override
+  Future<Result<void>> submitQuote(String bookingId, List<QuoteLine> lines) => Result.guard(
+    () => _remote.submitQuote(
+      bookingId,
+      SubmitQuoteRequest(
+        items: [for (final line in lines) QuoteItemRequest(itemName: line.itemName, amount: line.amount)],
+      ),
+    ),
+  );
+
   Future<Result<BookingStatus>> _transition(
     String bookingId,
     Future<StatusTransitionResponse> Function(String bookingId) call,
   ) => Result.guard(() async {
-        final response = await call(bookingId);
-        final status = BookingStatus.fromApi(response.newStatus);
-        final cached = _cache[bookingId];
-        if (cached != null) _cache[bookingId] = cached.copyWith(status: status);
-        return status;
-      });
+    final response = await call(bookingId);
+    final status = BookingStatus.fromApi(response.newStatus);
+    final cached = _cache[bookingId];
+    if (cached != null) _cache[bookingId] = cached.copyWith(status: status);
+    return status;
+  });
 
   Booking _remember(Booking booking) => _cache[booking.id] = booking;
 

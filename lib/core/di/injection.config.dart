@@ -76,6 +76,8 @@ import 'package:vstech_home_services/features/booking/domain/usecases/get_my_boo
     as _i16;
 import 'package:vstech_home_services/features/booking/domain/usecases/quote_decision_use_case.dart'
     as _i528;
+import 'package:vstech_home_services/features/booking/domain/usecases/worker_booking_use_cases.dart'
+    as _i1056;
 import 'package:vstech_home_services/features/booking/presentation/bloc/booking_flow_bloc.dart'
     as _i541;
 import 'package:vstech_home_services/features/exceptions/presentation/bloc/booking_action_cubit.dart'
@@ -199,6 +201,18 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i528.RejectQuoteUseCase>(
       () => _i528.RejectQuoteUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i1056.AcceptBookingUseCase>(
+      () => _i1056.AcceptBookingUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i1056.StartBookingUseCase>(
+      () => _i1056.StartBookingUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i1056.CompleteBookingUseCase>(
+      () => _i1056.CompleteBookingUseCase(gh<_i362.BookingRepository>()),
+    );
+    gh.factory<_i1056.SubmitQuoteUseCase>(
+      () => _i1056.SubmitQuoteUseCase(gh<_i362.BookingRepository>()),
     );
     gh.factory<_i859.BookingActionCubit>(
       () => _i859.BookingActionCubit(

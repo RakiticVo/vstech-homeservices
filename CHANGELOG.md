@@ -7,6 +7,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Pha 3 tích hợp API (luồng thợ)
+- **3.1** Thao tác của thợ trên đơn: DTO `CompleteBookingRequest`, `SubmitQuoteRequest`/`QuoteItemRequest`; `accept`, `start`, `complete`, `submitQuote` trong datasource/repository (đều gửi `X-Idempotency-Key`); use case Accept/Start/Complete (chặn `actualPrice` > 1,5 × giá ước tính → `HS-400-0012`)/SubmitQuote (bắt buộc ≥ 1 dòng có tên và số tiền dương); unit test.
+
 ### Added — Pha 2 tích hợp API (khách đặt lịch, hướng "Gọn theo API")
 - Danh mục dịch vụ: `CategoryRemoteDataSource`, `CategoryRepositoryImpl` (gộp mọi trang, lọc `isActive`), use case + `CategoriesCubit`, `CategoryDetailCubit`; widget `CategoryThumbnail` (ảnh `imageUrl`, có ảnh dự phòng).
 - Bookings: DTO request/response riêng (estimate, create, booking, status transition, quote), `BookingRemoteDataSource` (create chấp nhận response có/không bọc envelope, mọi POST đổi trạng thái gửi `X-Idempotency-Key`), `BookingRepositoryImpl` (cache đơn theo id), entity `Booking`/`BookingStatus`/`PriceEstimate`, use case Estimate/Create (chặn giờ quá khứ → `HS-400-0002`)/GetMyBookings/GetBooking/Cancel/Dispute/ApproveQuote/RejectQuote.
