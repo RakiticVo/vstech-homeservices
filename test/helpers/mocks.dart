@@ -35,7 +35,7 @@ import 'package:vstech_home_services/features/home/domain/usecases/get_categorie
 import 'package:vstech_home_services/features/home/domain/usecases/get_category_use_case.dart';
 import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart';
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
-import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart';
 import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart';
@@ -116,7 +116,7 @@ class MockDisputeBookingUseCase extends Mock implements DisputeBookingUseCase;
 
 class MockBookingFlowBloc extends MockBloc<BookingFlowEvent, BookingFlowState> implements BookingFlowBloc;
 
-class MockCustomerOrdersCubit extends MockCubit<CustomerOrdersState> implements CustomerOrdersCubit;
+class MockBookingListCubit extends MockCubit<BookingListState> implements BookingListCubit;
 
 class MockOrderDetailCubit extends MockCubit<OrderDetailState> implements OrderDetailCubit;
 

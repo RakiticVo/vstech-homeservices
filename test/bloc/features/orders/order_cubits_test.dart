@@ -9,7 +9,7 @@ import 'package:vstech_home_services/features/booking/domain/entities/booking_pa
 import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/bloc/booking_action_cubit.dart';
 import 'package:vstech_home_services/features/home/domain/entities/service_category.dart';
-import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 
 import '../../../fixtures/booking/booking_fixtures.dart';
@@ -18,7 +18,7 @@ import '../../../helpers/mocks.dart';
 const _offline = Failure(kind: NetworkErrorKind.noConnection);
 
 void main() {
-  group('CustomerOrdersCubit', () {
+  group('BookingListCubit', () {
     late MockGetMyBookingsUseCase getBookings;
     late MockGetCategoriesUseCase getCategories;
 
@@ -28,16 +28,16 @@ void main() {
       when(() => getCategories()).thenAnswer((_) async => const Ok([acCategory, cleanCategory]));
     });
 
-    blocTest<CustomerOrdersCubit, CustomerOrdersState>(
+    blocTest<BookingListCubit, BookingListState>(
       'load emits bookings with category names',
       setUp: () => when(
         () => getBookings(),
       ).thenAnswer((_) async => Ok<BookingPage>(pageOf([pendingBooking], hasMore: true))),
-      build: () => CustomerOrdersCubit(getBookings, getCategories),
+      build: () => BookingListCubit(getBookings, getCategories),
       act: (cubit) => cubit.load(),
       expect: () => [
-        const CustomerOrdersLoadingState(),
-        CustomerOrdersLoadedState(
+        const BookingListLoadingState(),
+        BookingListLoadedState(
           bookings: [pendingBooking],
           categoryNames: const {'1': 'Sửa máy lạnh', '2': 'Vệ sinh nhà'},
           page: 0,
@@ -46,41 +46,41 @@ void main() {
       ],
     );
 
-    blocTest<CustomerOrdersCubit, CustomerOrdersState>(
+    blocTest<BookingListCubit, BookingListState>(
       'category failure still shows bookings, unnamed',
       setUp: () {
         when(() => getBookings()).thenAnswer((_) async => Ok<BookingPage>(pageOf([pendingBooking])));
         when(() => getCategories()).thenAnswer((_) async => const Err<List<ServiceCategory>>(_offline));
       },
-      build: () => CustomerOrdersCubit(getBookings, getCategories),
+      build: () => BookingListCubit(getBookings, getCategories),
       act: (cubit) => cubit.load(),
       skip: 1,
       expect: () => [
-        CustomerOrdersLoadedState(bookings: [pendingBooking], categoryNames: const {}, page: 0, hasMore: false),
+        BookingListLoadedState(bookings: [pendingBooking], categoryNames: const {}, page: 0, hasMore: false),
       ],
     );
 
-    blocTest<CustomerOrdersCubit, CustomerOrdersState>(
+    blocTest<BookingListCubit, BookingListState>(
       'booking failure is an error',
       setUp: () => when(() => getBookings()).thenAnswer((_) async => const Err<BookingPage>(_offline)),
-      build: () => CustomerOrdersCubit(getBookings, getCategories),
+      build: () => BookingListCubit(getBookings, getCategories),
       act: (cubit) => cubit.load(),
-      expect: () => [const CustomerOrdersLoadingState(), const CustomerOrdersErrorState(_offline)],
+      expect: () => [const BookingListLoadingState(), const BookingListErrorState(_offline)],
     );
 
-    final firstPage = CustomerOrdersLoadedState(
+    final firstPage = BookingListLoadedState(
       bookings: [pendingBooking],
       categoryNames: const {},
       page: 0,
       hasMore: true,
     );
 
-    blocTest<CustomerOrdersCubit, CustomerOrdersState>(
+    blocTest<BookingListCubit, BookingListState>(
       'loadMore appends the next page',
       setUp: () => when(
         () => getBookings(page: 1),
       ).thenAnswer((_) async => Ok<BookingPage>(pageOf([completedBooking], page: 1))),
-      build: () => CustomerOrdersCubit(getBookings, getCategories),
+      build: () => BookingListCubit(getBookings, getCategories),
       seed: () => firstPage,
       act: (cubit) => cubit.loadMore(),
       expect: () => [
@@ -89,12 +89,12 @@ void main() {
       ],
     );
 
-    blocTest<CustomerOrdersCubit, CustomerOrdersState>(
+    blocTest<BookingListCubit, BookingListState>(
       'loadMore does nothing on the last page',
-      build: () => CustomerOrdersCubit(getBookings, getCategories),
+      build: () => BookingListCubit(getBookings, getCategories),
       seed: () => firstPage.copyWith(hasMore: false),
       act: (cubit) => cubit.loadMore(),
-      expect: () => <CustomerOrdersState>[],
+      expect: () => <BookingListState>[],
     );
   });
 

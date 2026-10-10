@@ -96,8 +96,8 @@ import 'package:vstech_home_services/features/home/presentation/bloc/categories_
     as _i728;
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart'
     as _i983;
-import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart'
-    as _i1063;
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart'
+    as _i428;
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart'
     as _i23;
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart'
@@ -259,8 +259,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i653.GetCategoryUseCase>(),
       ),
     );
-    gh.factory<_i1063.CustomerOrdersCubit>(
-      () => _i1063.CustomerOrdersCubit(
+    gh.factory<_i428.BookingListCubit>(
+      () => _i428.BookingListCubit(
         gh<_i16.GetMyBookingsUseCase>(),
         gh<_i894.GetCategoriesUseCase>(),
       ),

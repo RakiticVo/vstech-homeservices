@@ -17,7 +17,7 @@ import 'package:vstech_home_services/features/booking/domain/entities/booking_st
 import 'package:vstech_home_services/features/booking/presentation/widgets/booking_schedule_label.dart';
 import 'package:vstech_home_services/features/booking/presentation/widgets/booking_status_chip.dart';
 import 'package:vstech_home_services/features/home/presentation/widgets/customer_floating_dock.dart';
-import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 
 /// Customer Orders Hub Screen (`orders` — Concept 02: Cells 36–39).
 /// The customer's bookings from `GET /bookings`, split into 3 tabs by status — Active (accepted,
@@ -101,21 +101,21 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
 
               // Tab Content Body
               Expanded(
-                child: BlocBuilder<CustomerOrdersCubit, CustomerOrdersState>(
+                child: BlocBuilder<BookingListCubit, BookingListState>(
                   builder: (context, state) => switch (state) {
-                    CustomerOrdersInitialState() || CustomerOrdersLoadingState() => const Center(
+                    BookingListInitialState() || BookingListLoadingState() => const Center(
                       child: CircularProgressIndicator(color: AppColors.primary),
                     ),
-                    CustomerOrdersErrorState(:final failure) => ListView(
+                    BookingListErrorState(:final failure) => ListView(
                       padding: const EdgeInsets.all(AppSpacing.lg),
                       children: [
                         ErrorRetryView(
                           message: context.l10n.failureMessage(failure),
-                          onRetry: () => unawaited(context.read<CustomerOrdersCubit>().load()),
+                          onRetry: () => unawaited(context.read<BookingListCubit>().load()),
                         ),
                       ],
                     ),
-                    final CustomerOrdersLoadedState loaded => _buildList(loaded),
+                    final BookingListLoadedState loaded => _buildList(loaded),
                   },
                 ),
               ),
@@ -137,7 +137,7 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
     );
   }
 
-  Widget _buildList(CustomerOrdersLoadedState state) {
+  Widget _buildList(BookingListLoadedState state) {
     final statuses = CustomerOrdersPage.tabStatuses[_selectedTab];
     final bookings = [
       for (final booking in state.bookings)
@@ -146,7 +146,7 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
     final showLoadMore = state.hasMore;
     return RefreshIndicator(
       color: AppColors.primary,
-      onRefresh: () => context.read<CustomerOrdersCubit>().load(),
+      onRefresh: () => context.read<BookingListCubit>().load(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.dockClearanceMax),
@@ -162,7 +162,7 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
                     label: context.l10n.ordersLoadMore,
                     icon: Icons.expand_more,
                     isFullWidth: true,
-                    onPressed: () => unawaited(context.read<CustomerOrdersCubit>().loadMore()),
+                    onPressed: () => unawaited(context.read<BookingListCubit>().loadMore()),
                   );
           }
           final booking = bookings[index];

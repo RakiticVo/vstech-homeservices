@@ -1377,5 +1377,7 @@
   "bookingStatusUnknown": "Unknown",
   "disputeConfirmNotice": "The booking will move to dispute for our support team to review. Payment is held until it is resolved.",
   "disputeConfirmBtn": "Submit dispute",
-  "cancelDoneMessage": "Booking cancelled"
+  "cancelDoneMessage": "Booking cancelled",
+  "workerStartTravelCta": "Start travelling",
+  "workerContinueJobCta": "Continue job"
 }

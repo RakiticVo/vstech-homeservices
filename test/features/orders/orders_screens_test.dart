@@ -9,7 +9,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
-import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_notification_settings_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_notifications_page.dart';
@@ -22,7 +23,7 @@ import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 import '../../fixtures/booking/booking_fixtures.dart';
 import '../../helpers/mocks.dart';
 
-Widget _createTestOrdersWidget(Widget child, {MockCustomerOrdersCubit? orders, MockOrderDetailCubit? detail}) {
+Widget _createTestOrdersWidget(Widget child, {MockBookingListCubit? orders, MockOrderDetailCubit? detail}) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
@@ -43,7 +44,10 @@ Widget _createTestOrdersWidget(Widget child, {MockCustomerOrdersCubit? orders, M
         path: AppRoutes.categories,
         builder: (context, state) => const Scaffold(body: Text('CategoriesTarget')),
       ),
-      GoRoute(path: AppRoutes.workerJobsHub, builder: (context, state) => const WorkerJobsHubPage()),
+      GoRoute(
+        path: AppRoutes.workerJobDetail,
+        builder: (context, state) => Scaffold(body: Text('JobDetail:${state.uri.queryParameters['id']}')),
+      ),
       GoRoute(path: AppRoutes.customerNotifications, builder: (context, state) => const CustomerNotificationsPage()),
       GoRoute(
         path: AppRoutes.customerNotificationSettings,
@@ -67,7 +71,7 @@ Widget _createTestOrdersWidget(Widget child, {MockCustomerOrdersCubit? orders, M
   );
   return MultiBlocProvider(
     providers: [
-      BlocProvider<CustomerOrdersCubit>.value(value: orders ?? MockCustomerOrdersCubit()),
+      BlocProvider<BookingListCubit>.value(value: orders ?? MockBookingListCubit()),
       BlocProvider<OrderDetailCubit>.value(value: detail ?? MockOrderDetailCubit()),
     ],
     child: app,
@@ -79,13 +83,13 @@ void main() {
     testWidgets('CustomerOrdersPage groups API bookings into Active / Waiting / Done tabs', (tester) async {
       await tester.binding.setSurfaceSize(const Size(800, 1600));
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      final orders = MockCustomerOrdersCubit();
+      final orders = MockBookingListCubit();
       when(orders.load).thenAnswer((_) async {});
       when(orders.loadMore).thenAnswer((_) async {});
       whenListen(
         orders,
-        const Stream<CustomerOrdersState>.empty(),
-        initialState: CustomerOrdersLoadedState(
+        const Stream<BookingListState>.empty(),
+        initialState: BookingListLoadedState(
           bookings: [pendingBooking, acceptedBooking, completedBooking],
           categoryNames: const {'1': 'Sửa máy lạnh', '2': 'Vệ sinh nhà'},
           page: 0,
@@ -129,11 +133,11 @@ void main() {
     testWidgets('CustomerOrdersPage shows the empty state with a CTA to book (Cell 74)', (tester) async {
       await tester.binding.setSurfaceSize(const Size(800, 1600));
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      final orders = MockCustomerOrdersCubit();
+      final orders = MockBookingListCubit();
       whenListen(
         orders,
-        const Stream<CustomerOrdersState>.empty(),
-        initialState: const CustomerOrdersLoadedState(bookings: [], categoryNames: {}, page: 0, hasMore: false),
+        const Stream<BookingListState>.empty(),
+        initialState: const BookingListLoadedState(bookings: [], categoryNames: {}, page: 0, hasMore: false),
       );
 
       await tester.pumpWidget(_createTestOrdersWidget(const CustomerOrdersPage(), orders: orders));
@@ -185,35 +189,52 @@ void main() {
       expect(find.text('320.000đ'), findsOneWidget);
     });
 
-    testWidgets('WorkerJobsHubPage renders Assigned, Active and Completed tabs with net payout and actions', (
-      tester,
-    ) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestOrdersWidget(const WorkerJobsHubPage()));
+    testWidgets('WorkerJobsHubPage lists the worker jobs by status with the next-step action', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final jobs = MockBookingListCubit();
+      whenListen(
+        jobs,
+        const Stream<BookingListState>.empty(),
+        initialState: BookingListLoadedState(
+          bookings: [
+            pendingBooking,
+            acceptedBooking,
+            completedBooking,
+            pendingBooking.copyWith(id: '504', status: BookingStatus.inProgress),
+          ],
+          categoryNames: const {'1': 'Sửa máy lạnh', '2': 'Vệ sinh nhà'},
+          page: 0,
+          hasMore: false,
+        ),
+      );
+
+      await tester.pumpWidget(_createTestOrdersWidget(const WorkerJobsHubPage(), orders: jobs));
       await tester.pumpAndSettle();
 
-      // Header
       expect(find.textContaining('Quản lý công việc'), findsOneWidget);
+      // Assigned: the offer (accept) and the accepted job (start travelling).
+      expect(find.text('#501'), findsOneWidget);
+      expect(find.text('#502'), findsOneWidget);
+      expect(find.text('Xem & Nhận việc'), findsOneWidget);
+      expect(find.text('Bắt đầu di chuyển'), findsOneWidget);
 
-      // Assigned tab job card
-      expect(find.text('HS-2026-0012'), findsOneWidget);
-      expect(find.textContaining('2.4 km'), findsOneWidget);
-      expect(find.textContaining('340.000đ'), findsWidgets);
-      expect(find.textContaining('Nhận việc ngay'), findsOneWidget);
-
-      // Tap on Active tab (Index 1)
-      await tester.tap(find.textContaining('Đang làm'));
+      await tester.tap(find.byKey(const Key('worker_job_action_501')));
+      await tester.pumpAndSettle();
+      expect(find.text('JobDetail:501'), findsOneWidget);
+      tester.state<NavigatorState>(find.byType(Navigator).last).pop();
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('00:35:12'), findsOneWidget);
-      expect(find.textContaining('Vào ca làm việc'), findsOneWidget);
-
-      // Tap on Completed tab (Index 2)
-      await tester.tap(find.textContaining('Đã hoàn tất'));
+      await tester.tap(find.text('Đang làm'));
       await tester.pumpAndSettle();
+      expect(find.text('#504'), findsOneWidget);
+      expect(find.text('Tiếp tục công việc'), findsOneWidget);
 
-      expect(find.text('HS-2026-0008'), findsOneWidget);
-      expect(find.textContaining('5.0 ★'), findsOneWidget);
+      await tester.tap(find.text('Đã hoàn tất'));
+      await tester.pumpAndSettle();
+      expect(find.text('#503'), findsOneWidget);
+      expect(find.text('320.000đ'), findsOneWidget);
+      expect(find.byKey(const Key('worker_job_action_503')), findsNothing);
     });
 
     testWidgets('CustomerNotificationsPage renders timeline sections, filter chips and notification tiles', (

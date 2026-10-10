@@ -1,20 +1,20 @@
-part of 'customer_orders_cubit.dart';
+part of 'booking_list_cubit.dart';
 
 @immutable
-sealed class CustomerOrdersState {
-  const CustomerOrdersState();
+sealed class BookingListState {
+  const BookingListState();
 }
 
-final class CustomerOrdersInitialState extends CustomerOrdersState {
-  const CustomerOrdersInitialState();
+final class BookingListInitialState extends BookingListState {
+  const BookingListInitialState();
 }
 
-final class CustomerOrdersLoadingState extends CustomerOrdersState {
-  const CustomerOrdersLoadingState();
+final class BookingListLoadingState extends BookingListState {
+  const BookingListLoadingState();
 }
 
-final class CustomerOrdersLoadedState extends CustomerOrdersState {
-  const CustomerOrdersLoadedState({
+final class BookingListLoadedState extends BookingListState {
+  const BookingListLoadedState({
     required this.bookings,
     required this.categoryNames,
     required this.page,
@@ -30,8 +30,8 @@ final class CustomerOrdersLoadedState extends CustomerOrdersState {
   final bool hasMore;
   final bool isLoadingMore;
 
-  CustomerOrdersLoadedState copyWith({List<Booking>? bookings, int? page, bool? hasMore, bool? isLoadingMore}) =>
-      CustomerOrdersLoadedState(
+  BookingListLoadedState copyWith({List<Booking>? bookings, int? page, bool? hasMore, bool? isLoadingMore}) =>
+      BookingListLoadedState(
         bookings: bookings ?? this.bookings,
         categoryNames: categoryNames,
         page: page ?? this.page,
@@ -41,7 +41,7 @@ final class CustomerOrdersLoadedState extends CustomerOrdersState {
 
   @override
   bool operator ==(Object other) =>
-      other is CustomerOrdersLoadedState &&
+      other is BookingListLoadedState &&
       listEquals(other.bookings, bookings) &&
       mapEquals(other.categoryNames, categoryNames) &&
       other.page == page &&
@@ -52,13 +52,13 @@ final class CustomerOrdersLoadedState extends CustomerOrdersState {
   int get hashCode => Object.hash(Object.hashAll(bookings), page, hasMore, isLoadingMore);
 }
 
-final class CustomerOrdersErrorState extends CustomerOrdersState {
-  const CustomerOrdersErrorState(this.failure);
+final class BookingListErrorState extends BookingListState {
+  const BookingListErrorState(this.failure);
 
   final Failure failure;
 
   @override
-  bool operator ==(Object other) => other is CustomerOrdersErrorState && other.failure == failure;
+  bool operator ==(Object other) => other is BookingListErrorState && other.failure == failure;
 
   @override
   int get hashCode => failure.hashCode;

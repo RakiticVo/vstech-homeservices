@@ -1490,5 +1490,7 @@
   "bookingStatusUnknown": "Không xác định",
   "disputeConfirmNotice": "Đơn sẽ chuyển sang trạng thái khiếu nại để bộ phận hỗ trợ xem xét. Khoản thanh toán được giữ lại cho đến khi có kết quả.",
   "disputeConfirmBtn": "Gửi khiếu nại",
-  "cancelDoneMessage": "Đã huỷ đơn đặt lịch"
+  "cancelDoneMessage": "Đã huỷ đơn đặt lịch",
+  "workerStartTravelCta": "Bắt đầu di chuyển",
+  "workerContinueJobCta": "Tiếp tục công việc"
 }

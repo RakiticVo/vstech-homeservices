@@ -9,6 +9,10 @@ import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/location/location_service.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/utils/money_formatter.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
+import 'package:vstech_home_services/features/booking/presentation/widgets/booking_schedule_label.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/widgets/worker_earnings_card.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/widgets/worker_floating_dock.dart';
@@ -19,7 +23,7 @@ import 'package:vstech_home_services/features/worker_dashboard/presentation/widg
 /// - Warm ivory background (#FAF9F6)
 /// - Top header with Online/Offline toggle ([WorkerPresenceCubit] — Online broadcasts GPS every ~2 s)
 /// - Deep Teal earnings card (#0E5952)
-/// - New job dispatch request card
+/// - New job card: the first PENDING booking from `GET /bookings` (no dispatch WebSocket format yet)
 /// - Today's schedule list
 /// - Fixed capsule 4-tab floating bottom dock with 128px scroll clearance.
 class WorkerDashboardPage extends StatefulWidget {
@@ -31,7 +35,9 @@ class WorkerDashboardPage extends StatefulWidget {
 
 class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
   int _currentTabIndex = 0;
-  bool _hasActiveJobRequest = true;
+
+  /// Offers hidden with the decline button on this device — the API has no decline endpoint yet.
+  final Set<String> _dismissedOfferIds = {};
 
   void _onPresenceChanged(BuildContext context, WorkerPresenceState state) {
     if (state is! WorkerPresenceErrorState) return;
@@ -49,6 +55,12 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
   Widget build(BuildContext context) {
     final presence = context.watch<WorkerPresenceCubit>().state;
     final isOnline = presence.isOnline;
+    final jobs = context.watch<BookingListCubit>().state;
+    final offer = jobs is BookingListLoadedState
+        ? jobs.bookings
+              .where((b) => b.status == BookingStatus.pending && !_dismissedOfferIds.contains(b.id))
+              .firstOrNull
+        : null;
     return BlocListener<WorkerPresenceCubit, WorkerPresenceState>(
       listener: _onPresenceChanged,
       child: Scaffold(
@@ -149,16 +161,20 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                         const SizedBox(height: AppSpacing.md),
 
                         // Incoming Job Dispatch Card
-                        if (isOnline && _hasActiveJobRequest) ...[
+                        if (isOnline && offer != null) ...[
                           WorkerJobRequestCard(
-                            onViewAndAccept: () {
-                              unawaited(context.push(AppRoutes.workerJobDetail));
-                            },
-                            onDecline: () {
-                              setState(() {
-                                _hasActiveJobRequest = false;
-                              });
-                            },
+                            key: Key('worker_job_offer_${offer.id}'),
+                            jobTitle:
+                                (jobs as BookingListLoadedState).categoryNames[offer.categoryId] ??
+                                offer.description ??
+                                '',
+                            schedule: offer.scheduledTime == null
+                                ? null
+                                : bookingScheduleLabel(context, offer.scheduledTime!),
+                            address: offer.addressDetail,
+                            price: offer.estimatedPrice == null ? null : MoneyFormatter.format(offer.estimatedPrice!),
+                            onViewAndAccept: () => unawaited(context.push(AppRoutes.workerJobDetailLocation(offer.id))),
+                            onDecline: () => setState(() => _dismissedOfferIds.add(offer.id)),
                           ),
                           const SizedBox(height: AppSpacing.lg),
                         ],

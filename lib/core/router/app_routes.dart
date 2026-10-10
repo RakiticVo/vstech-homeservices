@@ -27,6 +27,7 @@ abstract final class AppRoutes {
   // --- worker experience ---
   static const String workerDashboard = '/worker/dashboard';
   static const String workerJobDetail = '/worker/job-detail';
+  static String workerJobDetailLocation(String bookingId) => '$workerJobDetail?id=${Uri.encodeComponent(bookingId)}';
   static const String workerKyc = '/worker/kyc';
   static const String workerKycStatus = '/worker/kyc-status';
 
@@ -44,8 +45,11 @@ abstract final class AppRoutes {
   // --- tracking & real-time progress (Batch 6) ---
   static const String customerTracking = '/customer/tracking';
   static const String workerEnRoute = '/worker/job-en-route';
+  static String workerEnRouteLocation(String bookingId) => '$workerEnRoute?id=${Uri.encodeComponent(bookingId)}';
   static const String workerArrived = '/worker/job-arrived';
+  static String workerArrivedLocation(String bookingId) => '$workerArrived?id=${Uri.encodeComponent(bookingId)}';
   static const String workerExecuting = '/worker/job-executing';
+  static String workerExecutingLocation(String bookingId) => '$workerExecuting?id=${Uri.encodeComponent(bookingId)}';
 
   // --- checkout, inspection, payment & review (Batch 7) ---
   static const String inspectionSignoff = '/customer/order/inspect';

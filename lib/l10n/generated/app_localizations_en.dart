@@ -3462,4 +3462,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelDoneMessage => 'Booking cancelled';
+
+  @override
+  String get workerStartTravelCta => 'Start travelling';
+
+  @override
+  String get workerContinueJobCta => 'Continue job';
 }

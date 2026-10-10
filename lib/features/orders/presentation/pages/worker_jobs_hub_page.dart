@@ -1,26 +1,44 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/utils/money_formatter.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
+import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
+import 'package:vstech_home_services/features/booking/presentation/widgets/booking_schedule_label.dart';
+import 'package:vstech_home_services/features/booking/presentation/widgets/booking_status_chip.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/widgets/worker_floating_dock.dart';
 
 /// Worker Jobs Hub Screen (`wjobs` — Concept 02: Cells 40–42).
-/// Displays: Assigned (Mới phân công), Active (Đang làm), and Completed (Đã hoàn tất) jobs
-/// with fixed capsule bottom navigation dock for the Worker role.
+/// The worker's bookings from `GET /bookings` in 3 tabs — Assigned (new offers and accepted jobs),
+/// Active (in progress) and Completed — each card leading to the next step of the job.
 class WorkerJobsHubPage extends StatefulWidget {
-  const WorkerJobsHubPage({
-    super.key,
-    this.initialTab = 0,
-  });
+  const WorkerJobsHubPage({super.key, this.initialTab = 0});
 
   final int initialTab;
+
+  /// Statuses listed under each tab, in tab order.
+  static const List<Set<BookingStatus>> tabStatuses = [
+    {BookingStatus.pending, BookingStatus.accepted},
+    {BookingStatus.inProgress},
+    {
+      BookingStatus.completed,
+      BookingStatus.dispute,
+      BookingStatus.cancelled,
+      BookingStatus.dispatchFailed,
+      BookingStatus.unknown,
+    },
+  ];
 
   @override
   State<WorkerJobsHubPage> createState() => _WorkerJobsHubPageState();
@@ -32,21 +50,12 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
   @override
   void initState() {
     super.initState();
-    _selectedTab = widget.initialTab;
-  }
-
-  String _formatPrice(int amount) {
-    final formatter = NumberFormat('#,###', 'vi_VN');
-    return '${formatter.format(amount)}đ';
+    _selectedTab = widget.initialTab.clamp(0, WorkerJobsHubPage.tabStatuses.length - 1);
   }
 
   void _onDockTabSelected(int index) {
     if (index == 0) return; // already here
-    if (index == 1) {
-      // schedule / calendar
-    } else if (index == 2) {
-      // wallet
-    }
+    if (index == 2) unawaited(context.push(AppRoutes.workerWallet));
   }
 
   @override
@@ -69,9 +78,7 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none_rounded, color: AppColors.textPrimary),
-            onPressed: () {
-              unawaited(context.push(AppRoutes.workerNotifications));
-            },
+            onPressed: () => unawaited(context.push(AppRoutes.workerNotifications)),
           ),
         ],
         bottom: PreferredSize(
@@ -86,10 +93,7 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
               // 3-Segment Filter Bar
               Container(
                 color: AppColors.surface,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.md,
-                  vertical: AppSpacing.sm,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
                 child: Row(
                   children: [
                     _buildTabItem(0, context.l10n.workerJobsTabAssigned),
@@ -104,46 +108,22 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
 
               // Jobs List Body
               Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.lg,
-                    AppSpacing.lg,
-                    AppSpacing.dockClearanceMax,
-                  ),
-                  children: [
-                    if (_selectedTab == 0) ...[
-                      // Assigned Job Card (Cell 40)
-                      _buildAssignedJobCard(
-                        code: 'HS-2026-0012',
-                        serviceName: 'Dọn dẹp căn hộ tiêu chuẩn',
-                        schedule: 'Hôm nay · 14:00 - 16:00',
-                        address: 'Căn hộ 802, Tháp B, Flora Novia, TP. Thủ Đức',
-                        distanceKm: '2.4',
-                        netPayout: 340000,
-                      ),
-                    ] else if (_selectedTab == 1) ...[
-                      // Active Job Card (Cell 41)
-                      _buildActiveJobCard(
-                        code: 'HS-2026-0012',
-                        serviceName: 'Dọn dẹp căn hộ tiêu chuẩn',
-                        customerName: 'Chị Mai (0912***789)',
-                        timeElapsed: '00:35:12',
-                        address: 'Căn hộ 802, Tháp B, Flora Novia, TP. Thủ Đức',
-                        netPayout: 340000,
-                      ),
-                    ] else ...[
-                      // Completed Job Card (Cell 42)
-                      _buildCompletedJobCard(
-                        code: 'HS-2026-0008',
-                        serviceName: 'Sửa chữa & Thay ron vòi sen tăng áp',
-                        completedAt: '20/09/2026 · 15:30',
-                        netPayout: 340000,
-                        customerRating: '5.0 ★',
-                        customerComment: 'Thợ nhiệt tình, làm sạch sẽ, đúng giờ.',
-                      ),
-                    ],
-                  ],
+                child: BlocBuilder<BookingListCubit, BookingListState>(
+                  builder: (context, state) => switch (state) {
+                    BookingListInitialState() || BookingListLoadingState() => const Center(
+                      child: CircularProgressIndicator(color: AppColors.primary),
+                    ),
+                    BookingListErrorState(:final failure) => ListView(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      children: [
+                        ErrorRetryView(
+                          message: context.l10n.failureMessage(failure),
+                          onRetry: () => unawaited(context.read<BookingListCubit>().load()),
+                        ),
+                      ],
+                    ),
+                    final BookingListLoadedState loaded => _buildList(loaded),
+                  },
                 ),
               ),
             ],
@@ -154,12 +134,53 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: WorkerFloatingDock(
-              currentIndex: 0, // Jobs tab
-              onTabSelected: _onDockTabSelected,
-            ),
+            child: WorkerFloatingDock(currentIndex: 0, onTabSelected: _onDockTabSelected),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildList(BookingListLoadedState state) {
+    final statuses = WorkerJobsHubPage.tabStatuses[_selectedTab];
+    final jobs = [
+      for (final booking in state.bookings)
+        if (statuses.contains(booking.status)) booking,
+    ];
+    return RefreshIndicator(
+      color: AppColors.primary,
+      onRefresh: () => context.read<BookingListCubit>().load(),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.dockClearanceMax),
+        itemCount: (jobs.isEmpty ? 1 : jobs.length) + (state.hasMore ? 1 : 0),
+        separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+        itemBuilder: (context, index) {
+          if (jobs.isEmpty && index == 0) {
+            return Padding(
+              key: const Key('worker_jobs_empty'),
+              padding: const EdgeInsets.only(top: AppSpacing.xl),
+              child: Text(
+                context.l10n.workerJobsEmpty,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+              ),
+            );
+          }
+          if (index >= jobs.length) {
+            return state.isLoadingMore
+                ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+                : AppSecondaryButton(
+                    key: const Key('worker_jobs_load_more_button'),
+                    label: context.l10n.ordersLoadMore,
+                    icon: Icons.expand_more,
+                    isFullWidth: true,
+                    onPressed: () => unawaited(context.read<BookingListCubit>().loadMore()),
+                  );
+          }
+          final job = jobs[index];
+          return _JobCard(booking: job, serviceName: state.categoryNames[job.categoryId]);
+        },
       ),
     );
   }
@@ -175,10 +196,7 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
           decoration: BoxDecoration(
             color: isSelected ? AppColors.secondarySurface : AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadius.control),
-            border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
-              width: isSelected ? 1.5 : 1,
-            ),
+            border: Border.all(color: isSelected ? AppColors.primary : AppColors.border, width: isSelected ? 1.5 : 1),
           ),
           child: Center(
             child: Text(
@@ -193,16 +211,28 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
       ),
     );
   }
+}
 
-  Widget _buildAssignedJobCard({
-    required String code,
-    required String serviceName,
-    required String schedule,
-    required String address,
-    required String distanceKm,
-    required int netPayout,
-  }) {
+/// One job: code, status, service, time, address, price and the action for its next step.
+class _JobCard extends StatelessWidget {
+  const _JobCard({required this.booking, required this.serviceName});
+
+  final Booking booking;
+  final String? serviceName;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final scheduledTime = booking.scheduledTime;
+    final price = booking.finalPrice ?? booking.estimatedPrice;
+    final (String? label, String? location) = switch (booking.status) {
+      BookingStatus.pending => (l10n.workerViewAndAccept, AppRoutes.workerJobDetailLocation(booking.id)),
+      BookingStatus.accepted => (l10n.workerStartTravelCta, AppRoutes.workerEnRouteLocation(booking.id)),
+      BookingStatus.inProgress => (l10n.workerContinueJobCta, AppRoutes.workerExecutingLocation(booking.id)),
+      _ => (null, null),
+    };
     return Container(
+      key: Key('worker_job_card_${booking.id}'),
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -213,353 +243,83 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Text(
-                  code,
-                  style: AppTextStyles.labelLarge.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                  '#${booking.id}',
+                  style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                 ),
               ),
-              const SizedBox(width: AppSpacing.sm),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.secondarySurface,
-                  borderRadius: BorderRadius.circular(AppRadius.chip),
-                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.near_me_outlined, size: 14, color: AppColors.primary),
-                    const SizedBox(width: 4),
-                    Text(
-                      context.l10n.workerJobsDistance(distanceKm),
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              BookingStatusChip(status: booking.status),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            serviceName,
+            serviceName ?? booking.description ?? '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: AppTextStyles.headlineSmall.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w700,
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Icon(Icons.access_time_rounded, size: 16, color: AppColors.textMuted),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  schedule,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Icon(Icons.location_on_outlined, size: 16, color: AppColors.textMuted),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  address,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          const Divider(height: 1, color: AppColors.border),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  context.l10n.workerJobsEarningsEst(_formatPrice(netPayout)),
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: AppColors.successDark,
-                    fontWeight: FontWeight.w800,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    unawaited(context.push(AppRoutes.workerJobDetail));
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.border),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.control),
-                    ),
-                  ),
-                  child: Text(
-                    context.l10n.ordersViewDetailCta,
-                    style: AppTextStyles.labelMedium.copyWith(color: AppColors.textPrimary),
-                  ),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: AppButton(
-                  label: context.l10n.workerJobsAcceptJob,
-                  onPressed: () {
-                    unawaited(context.push(AppRoutes.workerEnRoute));
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActiveJobCard({
-    required String code,
-    required String serviceName,
-    required String customerName,
-    required String timeElapsed,
-    required String address,
-    required int netPayout,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  code,
-                  style: AppTextStyles.labelLarge.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.secondarySurface,
-                  borderRadius: BorderRadius.circular(AppRadius.chip),
-                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-                ),
-                child: Text(
-                  context.l10n.trackingStageExecuting,
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            serviceName,
-            style: AppTextStyles.headlineSmall.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            customerName,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            address,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          const Divider(height: 1, color: AppColors.border),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.timer_outlined, size: 16, color: AppColors.primary),
-                  const SizedBox(width: 4),
-                  Text(
-                    timeElapsed,
-                    style: AppTextStyles.labelMedium.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                '+${_formatPrice(netPayout)}',
-                style: AppTextStyles.labelLarge.copyWith(
-                  color: AppColors.successDark,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          AppButton(
-            label: context.l10n.workerJobsGoToWork,
-            icon: Icons.play_arrow_rounded,
-            onPressed: () {
-              unawaited(context.push(AppRoutes.workerExecuting));
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCompletedJobCard({
-    required String code,
-    required String serviceName,
-    required String completedAt,
-    required int netPayout,
-    required String customerRating,
-    required String customerComment,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  code,
-                  style: AppTextStyles.labelLarge.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8F5E9),
-                  borderRadius: BorderRadius.circular(AppRadius.chip),
-                  border: Border.all(color: AppColors.success),
-                ),
-                child: Text(
-                  context.l10n.workerJobsCompletedBadge,
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: AppColors.successDark,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            serviceName,
-            style: AppTextStyles.headlineSmall.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            completedAt,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: BoxDecoration(
-              color: AppColors.secondarySurface,
-              borderRadius: BorderRadius.circular(AppRadius.control),
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          if (scheduledTime != null)
+            _InfoRow(icon: Icons.access_time_rounded, text: bookingScheduleLabel(context, scheduledTime)),
+          if (booking.addressDetail?.isNotEmpty ?? false)
+            _InfoRow(icon: Icons.location_on_outlined, text: booking.addressDetail!),
+          if (booking.description?.isNotEmpty ?? false)
+            _InfoRow(icon: Icons.description_outlined, text: booking.description!),
+          if (price != null) ...[
+            const SizedBox(height: AppSpacing.md),
+            const Divider(height: 1, color: AppColors.border),
+            const SizedBox(height: AppSpacing.md),
+            Row(
               children: [
-                Row(
-                  children: [
-                    const Icon(Icons.star_rounded, size: 16, color: AppColors.warning),
-                    const SizedBox(width: 4),
-                    Text(
-                      customerRating,
-                      style: AppTextStyles.labelSmall.copyWith(fontWeight: FontWeight.w700),
-                    ),
-                  ],
+                Expanded(
+                  child: Text(
+                    booking.finalPrice != null ? l10n.ordersFinalPrice : l10n.bookingEstimatedPreview,
+                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                  ),
                 ),
-                const SizedBox(height: 4),
                 Text(
-                  '"$customerComment"',
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                  MoneyFormatter.format(price),
+                  style: AppTextStyles.labelLarge.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w800),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          const Divider(height: 1, color: AppColors.border),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  context.l10n.receiptWorkerPayout,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Text(
-                '+${_formatPrice(netPayout)}',
-                style: AppTextStyles.headlineSmall.copyWith(
-                  fontSize: 16,
-                  color: AppColors.successDark,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
+          ],
+          if (label != null && location != null) ...[
+            const SizedBox(height: AppSpacing.lg),
+            AppButton.primary(
+              key: Key('worker_job_action_${booking.id}'),
+              label: label,
+              onPressed: () => unawaited(context.push(location)),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 16, color: AppColors.textMuted),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(text, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
           ),
         ],
       ),

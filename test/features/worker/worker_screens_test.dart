@@ -10,6 +10,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:vstech_home_services/core/location/location_service.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/pages/worker_dashboard_page.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/widgets/worker_earnings_card.dart';
@@ -20,9 +22,10 @@ import 'package:vstech_home_services/features/worker_kyc/presentation/pages/work
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_wizard_page.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
+import '../../fixtures/booking/booking_fixtures.dart';
 import '../../helpers/mocks.dart';
 
-Widget _createTestWorkerWidget(Widget child, {MockWorkerPresenceCubit? presence}) {
+Widget _createTestWorkerWidget(Widget child, {MockWorkerPresenceCubit? presence, MockBookingListCubit? jobs}) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
@@ -58,7 +61,28 @@ Widget _createTestWorkerWidget(Widget child, {MockWorkerPresenceCubit? presence}
     supportedLocales: AppLocalizations.supportedLocales,
     locale: const Locale('vi'),
   );
-  return BlocProvider<WorkerPresenceCubit>.value(value: presence ?? _onlinePresence(), child: app);
+  return MultiBlocProvider(
+    providers: [
+      BlocProvider<WorkerPresenceCubit>.value(value: presence ?? _onlinePresence()),
+      BlocProvider<BookingListCubit>.value(value: jobs ?? _jobs([])),
+    ],
+    child: app,
+  );
+}
+
+MockBookingListCubit _jobs(List<Booking> bookings) {
+  final cubit = MockBookingListCubit();
+  whenListen(
+    cubit,
+    const Stream<BookingListState>.empty(),
+    initialState: BookingListLoadedState(
+      bookings: bookings,
+      categoryNames: const {'1': 'Sửa máy lạnh'},
+      page: 0,
+      hasMore: false,
+    ),
+  );
+  return cubit;
 }
 
 MockWorkerPresenceCubit _onlinePresence() {
@@ -70,7 +94,9 @@ MockWorkerPresenceCubit _onlinePresence() {
 void main() {
   group('Batch 4 Worker Dashboard & KYC Widget Tests', () {
     testWidgets('WorkerDashboardPage renders header, earnings card, job request, and dock', (tester) async {
-      await tester.pumpWidget(_createTestWorkerWidget(const WorkerDashboardPage()));
+      await tester.pumpWidget(
+        _createTestWorkerWidget(const WorkerDashboardPage(), jobs: _jobs([pendingBooking, acceptedBooking])),
+      );
       await tester.pumpAndSettle();
 
       // Verify Greeting and Online Status
@@ -84,10 +110,12 @@ void main() {
       expect(find.text('4.9 ★'), findsOneWidget);
       expect(find.text('96%'), findsOneWidget);
 
-      // Verify Incoming Job Request Card
+      // New job card = the first PENDING booking from GET /bookings
       expect(find.byType(WorkerJobRequestCard), findsOneWidget);
+      expect(find.byKey(const Key('worker_job_offer_501')), findsOneWidget);
       expect(find.text('Yêu cầu việc mới'), findsOneWidget);
-      expect(find.text('Đến sau 20 phút'), findsOneWidget);
+      expect(find.text('Sửa máy lạnh'), findsOneWidget);
+      expect(find.text('123 Đường ABC, Quận 1'), findsOneWidget);
       expect(find.text('Xem & Nhận việc'), findsOneWidget);
 
       // Verify Floating Bottom Dock
@@ -121,6 +149,15 @@ void main() {
       await tester.tap(find.text('Nhận việc ngay'));
       await tester.pump();
       expect(find.text('Đã nhận việc thành công! Vui lòng chuẩn bị di chuyển'), findsOneWidget);
+    });
+
+    testWidgets('WorkerDashboardPage offer opens the job by id and decline hides it locally', (tester) async {
+      await tester.pumpWidget(_createTestWorkerWidget(const WorkerDashboardPage(), jobs: _jobs([pendingBooking])));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('worker_job_request_decline')));
+      await tester.pumpAndSettle();
+      expect(find.byType(WorkerJobRequestCard), findsNothing);
     });
 
     testWidgets('WorkerDashboardPage online toggle drives WorkerPresenceCubit and reports GPS errors', (tester) async {

@@ -66,7 +66,7 @@ import 'package:vstech_home_services/features/home/presentation/pages/service_de
 import 'package:vstech_home_services/features/home/presentation/pages/worker_profile_preview_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/chat_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/voip_call_page.dart';
-import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
+import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_notification_settings_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_notifications_page.dart';
@@ -172,8 +172,13 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
     GoRoute(
       path: AppRoutes.workerDashboard,
-      builder: (context, state) =>
-          BlocProvider.value(value: getIt<WorkerPresenceCubit>(), child: const WorkerDashboardPage()),
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: getIt<WorkerPresenceCubit>()),
+          BlocProvider(create: (_) => _loadedBookingList()),
+        ],
+        child: const WorkerDashboardPage(),
+      ),
     ),
     GoRoute(path: AppRoutes.workerJobDetail, builder: (context, state) => const WorkerJobDetailPage()),
     GoRoute(
@@ -297,11 +302,7 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       builder: (context, state) {
         final tab = int.tryParse(state.uri.queryParameters['tab'] ?? '0') ?? 0;
         return BlocProvider(
-          create: (_) {
-            final cubit = getIt<CustomerOrdersCubit>();
-            unawaited(cubit.load());
-            return cubit;
-          },
+          create: (_) => _loadedBookingList(),
           child: CustomerOrdersPage(initialTab: tab),
         );
       },
@@ -319,7 +320,10 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       path: AppRoutes.workerJobsHub,
       builder: (context, state) {
         final tab = int.tryParse(state.uri.queryParameters['tab'] ?? '0') ?? 0;
-        return WorkerJobsHubPage(initialTab: tab);
+        return BlocProvider(
+          create: (_) => _loadedBookingList(),
+          child: WorkerJobsHubPage(initialTab: tab),
+        );
       },
     ),
     GoRoute(path: AppRoutes.customerNotifications, builder: (context, state) => const CustomerNotificationsPage()),
@@ -493,6 +497,13 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
   ],
 );
+
+/// A [BookingListCubit] already loading `GET /bookings` (customer orders or worker jobs).
+BookingListCubit _loadedBookingList() {
+  final cubit = getIt<BookingListCubit>();
+  unawaited(cubit.load());
+  return cubit;
+}
 
 /// Provides a [CategoriesCubit] that starts loading `GET /service-categories` immediately.
 Widget _withCategories(Widget page) => BlocProvider(

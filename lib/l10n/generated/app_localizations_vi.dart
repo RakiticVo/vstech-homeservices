@@ -3463,4 +3463,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get cancelDoneMessage => 'Đã huỷ đơn đặt lịch';
+
+  @override
+  String get workerStartTravelCta => 'Bắt đầu di chuyển';
+
+  @override
+  String get workerContinueJobCta => 'Tiếp tục công việc';
 }

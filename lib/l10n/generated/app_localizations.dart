@@ -6438,6 +6438,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã huỷ đơn đặt lịch'**
   String get cancelDoneMessage;
+
+  /// No description provided for @workerStartTravelCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu di chuyển'**
+  String get workerStartTravelCta;
+
+  /// No description provided for @workerContinueJobCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục công việc'**
+  String get workerContinueJobCta;
 }
 
 class _AppLocalizationsDelegate
