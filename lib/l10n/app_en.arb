@@ -1379,5 +1379,8 @@
   "disputeConfirmBtn": "Submit dispute",
   "cancelDoneMessage": "Booking cancelled",
   "workerStartTravelCta": "Start travelling",
-  "workerContinueJobCta": "Continue job"
+  "workerContinueJobCta": "Continue job",
+  "workerFinalPriceTitle": "Confirm final price",
+  "workerFinalPriceLabel": "Final price (đ)",
+  "workerFinalPriceHint": "Estimate {estimate}. The final price can be at most 1.5× the estimate."
 }

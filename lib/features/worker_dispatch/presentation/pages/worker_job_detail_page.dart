@@ -1,375 +1,215 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/utils/money_formatter.dart';
+import 'package:vstech_home_services/core/widgets/app_button.dart';
+import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
+import 'package:vstech_home_services/features/booking/presentation/widgets/booking_schedule_label.dart';
+import 'package:vstech_home_services/features/booking/presentation/widgets/booking_status_chip.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 
-/// Worker Job Detail & Acceptance screen.
-/// Displays transparent financial breakdown:
-/// Labour (350k) + Surcharge (50k) - Platform Fee 15% (60k) = Net 340.000đ.
-class WorkerJobDetailPage extends StatelessWidget {
-  const WorkerJobDetailPage({super.key});
+/// Worker job detail (offer review). Shows the booking's service, schedule, address, the customer's
+/// issue and the estimated price; a PENDING job is accepted with `POST /bookings/{id}/accept`,
+/// after which the worker starts travelling.
+class WorkerJobDetailPage extends StatefulWidget {
+  const WorkerJobDetailPage({required this.bookingId, super.key});
+
+  final String bookingId;
+
+  @override
+  State<WorkerJobDetailPage> createState() => _WorkerJobDetailPageState();
+}
+
+class _WorkerJobDetailPageState extends State<WorkerJobDetailPage> {
+  @override
+  void initState() {
+    super.initState();
+    unawaited(context.read<WorkerTaskCubit>().load(widget.bookingId));
+  }
+
+  void _onStateChanged(BuildContext context, WorkerTaskState state) {
+    switch (state) {
+      case WorkerTaskActionDoneState(action: WorkerTaskAction.accept):
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.jobAcceptedSuccess)));
+        context.pushReplacement(AppRoutes.workerEnRouteLocation(widget.bookingId));
+      case WorkerTaskActionFailedState(:final failure):
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(context.l10n.failureMessage(failure))));
+      default:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.surface,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.textPrimary),
-          onPressed: () => context.canPop() ? context.pop() : context.go(AppRoutes.workerDashboard),
-        ),
-        title: Text(
-          context.l10n.jobDetailTitle,
-          style: AppTextStyles.headlineSmall.copyWith(
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
+    final state = context.watch<WorkerTaskCubit>().state;
+    return BlocListener<WorkerTaskCubit, WorkerTaskState>(
+      listener: _onStateChanged,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.surface,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            onPressed: () => context.canPop() ? context.pop() : context.go(AppRoutes.workerDashboard),
+          ),
+          title: Text(
+            context.l10n.orderDetailTitle,
+            style: AppTextStyles.headlineSmall.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
           ),
         ),
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(color: AppColors.border, height: 1),
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                children: [
-                  // Service Title & Time Card
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(AppRadius.card),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              context.l10n.jobSampleCleaningTitle,
-                              style: AppTextStyles.headlineMedium.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: AppColors.secondarySurface,
-                                borderRadius: BorderRadius.circular(AppRadius.chip),
-                                border: Border.all(color: AppColors.primary),
-                              ),
-                              child: Text(
-                                context.l10n.workerArriveIn20Min,
-                                style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        Wrap(
-                          spacing: AppSpacing.sm,
-                          runSpacing: AppSpacing.xs,
-                          children: [
-                            _InfoChip(
-                              icon: Icons.navigation_outlined,
-                              label: context.l10n.jobDistance('2.1 km'),
-                            ),
-                            _InfoChip(
-                              icon: Icons.access_time_rounded,
-                              label: context.l10n.jobEstimatedTime('60 - 90 phút'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-
-                  // Customer & Location Card
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(AppRadius.card),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          context.l10n.jobCustomerName,
-                          style: AppTextStyles.caption.copyWith(
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          context.l10n.jobSampleCustomerName,
-                          style: AppTextStyles.bodyLarge.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        Text(
-                          context.l10n.jobCustomerAddress,
-                          style: AppTextStyles.caption.copyWith(
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              size: 18,
-                              color: AppColors.primary,
-                            ),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                context.l10n.jobSampleCustomerAddress,
-                                style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-
-                  // Transparent Financial Breakdown Card
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(AppRadius.card),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.receipt_outlined,
-                              size: 20,
-                              color: AppColors.primary,
-                            ),
-                            const SizedBox(width: AppSpacing.xs),
-                            Text(
-                              context.l10n.jobPriceBreakdown,
-                              style: AppTextStyles.bodyLarge.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        _FeeRow(
-                          label: context.l10n.jobLabourFee,
-                          amount: '+ 350.000đ',
-                          isPositive: true,
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        _FeeRow(
-                          label: context.l10n.jobSiteSurcharge,
-                          amount: '+ 50.000đ',
-                          isPositive: true,
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        _FeeRow(
-                          label: context.l10n.jobPlatformFee,
-                          amount: '- 60.000đ',
-                          isNegative: true,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        const Divider(height: 1, color: AppColors.border),
-                        const SizedBox(height: AppSpacing.md),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  context.l10n.workerNetEarnings,
-                                  style: AppTextStyles.bodyMedium.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                                Text(
-                                  context.l10n.jobNetEarningsDesc,
-                                  style: AppTextStyles.caption.copyWith(
-                                    color: AppColors.textSecondary,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              '340.000đ',
-                              style: AppTextStyles.headlineMedium.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.primary,
-                                fontSize: 24,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+        body: SafeArea(
+          child: switch (state) {
+            WorkerTaskLoadingState() => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+            WorkerTaskLoadErrorState(:final failure) => Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: ErrorRetryView(
+                message: context.l10n.failureMessage(failure),
+                onRetry: () => unawaited(context.read<WorkerTaskCubit>().load(widget.bookingId)),
               ),
             ),
+            final WorkerTaskWithDataState loaded => _buildBody(loaded),
+          },
+        ),
+      ),
+    );
+  }
 
-            // Pinned Bottom Accept CTA
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              decoration: const BoxDecoration(
-                color: AppColors.surface,
-                border: Border(top: BorderSide(color: AppColors.border)),
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(context.l10n.jobAcceptedSuccess),
-                        backgroundColor: AppColors.primary,
-                        behavior: SnackBarBehavior.floating,
+  Widget _buildBody(WorkerTaskWithDataState state) {
+    final l10n = context.l10n;
+    final booking = state.task.booking;
+    final scheduledTime = booking.scheduledTime;
+    final isBusy = state is WorkerTaskBusyState;
+    final (String? label, VoidCallback? onPressed) = switch (booking.status) {
+      BookingStatus.pending => (l10n.jobAcceptCta, () => unawaited(context.read<WorkerTaskCubit>().accept())),
+      BookingStatus.accepted => (
+        l10n.workerStartTravelCta,
+        () => unawaited(context.push(AppRoutes.workerEnRouteLocation(booking.id))),
+      ),
+      BookingStatus.inProgress => (
+        l10n.workerContinueJobCta,
+        () => unawaited(context.push(AppRoutes.workerExecutingLocation(booking.id))),
+      ),
+      _ => (null, null),
+    };
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.card),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.complaintDetailOrderCode('#${booking.id}'),
+                            style: AppTextStyles.labelLarge.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        ),
+                        BookingStatusChip(status: booking.status),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    Text(
+                      state.task.serviceName ?? '',
+                      style: AppTextStyles.titleLg.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+                    ),
+                    if (scheduledTime != null)
+                      _InfoRow(icon: Icons.access_time_rounded, text: bookingScheduleLabel(context, scheduledTime)),
+                    if (booking.addressDetail?.isNotEmpty ?? false)
+                      _InfoRow(icon: Icons.location_on_outlined, text: booking.addressDetail!),
+                    if (booking.description?.isNotEmpty ?? false)
+                      _InfoRow(icon: Icons.description_outlined, text: booking.description!),
+                    if (booking.estimatedPrice != null) ...[
+                      const SizedBox(height: AppSpacing.md),
+                      const Divider(height: 1, color: AppColors.border),
+                      const SizedBox(height: AppSpacing.md),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              l10n.bookingEstimatedPreview,
+                              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                            ),
+                          ),
+                          Text(
+                            MoneyFormatter.format(booking.estimatedPrice!),
+                            style: AppTextStyles.headlineSmall.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                    if (context.canPop()) {
-                      context.pop();
-                    } else {
-                      context.go(AppRoutes.workerDashboard);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.onPrimary,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.control),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: Text(
-                    context.l10n.jobAcceptCta,
-                    style: AppTextStyles.buttonText.copyWith(
-                      color: AppColors.onPrimary,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 17,
-                    ),
-                  ),
+                    ],
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+        if (label != null)
+          Container(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            decoration: const BoxDecoration(
+              color: AppColors.surface,
+              border: Border(top: BorderSide(color: AppColors.border)),
+            ),
+            child: AppButton.primary(
+              key: const Key('worker_job_detail_cta'),
+              label: label,
+              isLoading: isBusy,
+              onPressed: isBusy ? null : onPressed,
+            ),
+          ),
+      ],
     );
   }
 }
 
-class _InfoChip extends StatelessWidget {
-  const _InfoChip({
-    required this.icon,
-    required this.label,
-  });
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.icon, required this.text});
 
   final IconData icon;
-  final String label;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppRadius.chip),
-        border: Border.all(color: AppColors.border),
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpacing.xs),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 14, color: AppColors.textSecondary),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Icon(icon, size: 16, color: AppColors.textMuted),
+          const SizedBox(width: AppSpacing.xs),
+          Expanded(child: Text(text, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary))),
         ],
       ),
-    );
-  }
-}
-
-class _FeeRow extends StatelessWidget {
-  const _FeeRow({
-    required this.label,
-    required this.amount,
-    this.isPositive = false,
-    this.isNegative = false,
-  });
-
-  final String label;
-  final String amount;
-  final bool isPositive;
-  final bool isNegative;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textSecondary,
-          ),
-        ),
-        Text(
-          amount,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: isNegative
-                ? AppColors.error
-                : (isPositive ? AppColors.textPrimary : AppColors.textPrimary),
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
     );
   }
 }

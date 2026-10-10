@@ -110,6 +110,8 @@ import 'package:vstech_home_services/features/tracking/domain/usecases/update_te
     as _i434;
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart'
     as _i686;
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart'
+    as _i101;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -257,6 +259,16 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i23.OrderDetailCubit(
         gh<_i736.GetBookingUseCase>(),
         gh<_i653.GetCategoryUseCase>(),
+      ),
+    );
+    gh.factory<_i101.WorkerTaskCubit>(
+      () => _i101.WorkerTaskCubit(
+        gh<_i736.GetBookingUseCase>(),
+        gh<_i653.GetCategoryUseCase>(),
+        gh<_i1056.AcceptBookingUseCase>(),
+        gh<_i1056.StartBookingUseCase>(),
+        gh<_i1056.SubmitQuoteUseCase>(),
+        gh<_i1056.CompleteBookingUseCase>(),
       ),
     );
     gh.factory<_i428.BookingListCubit>(

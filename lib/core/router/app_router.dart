@@ -100,6 +100,7 @@ import 'package:vstech_home_services/features/worker_dashboard/presentation/page
 import 'package:vstech_home_services/features/worker_dispatch/presentation/pages/worker_job_detail_page.dart';
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_status_page.dart';
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_wizard_page.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 
 /// Root GoRouter config. Auth guards belong here as `redirect` callbacks — never as
 /// widget-level conditions (see CLAUDE.md Authentication rules). Route-level BLoCs are wrapped
@@ -180,7 +181,10 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         child: const WorkerDashboardPage(),
       ),
     ),
-    GoRoute(path: AppRoutes.workerJobDetail, builder: (context, state) => const WorkerJobDetailPage()),
+    GoRoute(
+      path: AppRoutes.workerJobDetail,
+      builder: (context, state) => _withWorkerTask(WorkerJobDetailPage(bookingId: _bookingId(state))),
+    ),
     GoRoute(
       path: AppRoutes.workerKyc,
       builder: (context, state) {
@@ -225,9 +229,18 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         return CustomerTrackingPage(initialStage: stage, orderCode: code);
       },
     ),
-    GoRoute(path: AppRoutes.workerEnRoute, builder: (context, state) => const WorkerEnRoutePage()),
-    GoRoute(path: AppRoutes.workerArrived, builder: (context, state) => const WorkerArrivedPage()),
-    GoRoute(path: AppRoutes.workerExecuting, builder: (context, state) => const WorkerExecutingPage()),
+    GoRoute(
+      path: AppRoutes.workerEnRoute,
+      builder: (context, state) => WorkerEnRoutePage(bookingId: _bookingId(state)),
+    ),
+    GoRoute(
+      path: AppRoutes.workerArrived,
+      builder: (context, state) => _withWorkerTask(WorkerArrivedPage(bookingId: _bookingId(state))),
+    ),
+    GoRoute(
+      path: AppRoutes.workerExecuting,
+      builder: (context, state) => _withWorkerTask(WorkerExecutingPage(bookingId: _bookingId(state))),
+    ),
     GoRoute(
       path: AppRoutes.inspectionSignoff,
       builder: (context, state) {
@@ -497,6 +510,12 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
   ],
 );
+
+/// `?id=` of a booking-scoped route.
+String _bookingId(GoRouterState state) => state.uri.queryParameters['id'] ?? '';
+
+/// Provides a fresh [WorkerTaskCubit]; the page loads its booking.
+Widget _withWorkerTask(Widget page) => BlocProvider(create: (_) => getIt<WorkerTaskCubit>(), child: page);
 
 /// A [BookingListCubit] already loading `GET /bookings` (customer orders or worker jobs).
 BookingListCubit _loadedBookingList() {

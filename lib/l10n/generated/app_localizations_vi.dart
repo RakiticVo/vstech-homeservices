@@ -3469,4 +3469,15 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get workerContinueJobCta => 'Tiếp tục công việc';
+
+  @override
+  String get workerFinalPriceTitle => 'Xác nhận giá chốt';
+
+  @override
+  String get workerFinalPriceLabel => 'Giá chốt (đ)';
+
+  @override
+  String workerFinalPriceHint(String estimate) {
+    return 'Giá ước tính $estimate. Giá chốt tối đa 1,5 lần giá ước tính.';
+  }
 }

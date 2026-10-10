@@ -27,6 +27,7 @@ import 'package:vstech_home_services/features/booking/domain/usecases/create_boo
 import 'package:vstech_home_services/features/booking/domain/usecases/estimate_price_use_case.dart';
 import 'package:vstech_home_services/features/booking/domain/usecases/get_booking_use_case.dart';
 import 'package:vstech_home_services/features/booking/domain/usecases/get_my_bookings_use_case.dart';
+import 'package:vstech_home_services/features/booking/domain/usecases/worker_booking_use_cases.dart';
 import 'package:vstech_home_services/features/booking/presentation/bloc/booking_flow_bloc.dart';
 import 'package:vstech_home_services/features/exceptions/presentation/bloc/booking_action_cubit.dart';
 import 'package:vstech_home_services/features/home/data/datasources/category_remote_data_source.dart';
@@ -40,6 +41,7 @@ import 'package:vstech_home_services/features/orders/presentation/bloc/order_det
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart';
 import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 
 // --- core ---
 class MockAuthTokenStore extends Mock implements AuthTokenStore;
@@ -128,3 +130,14 @@ class MockTechnicianLocationRemoteDataSource extends Mock implements TechnicianL
 class MockUpdateTechnicianLocationUseCase extends Mock implements UpdateTechnicianLocationUseCase;
 
 class MockWorkerPresenceCubit extends MockCubit<WorkerPresenceState> implements WorkerPresenceCubit;
+
+// --- worker task ---
+class MockAcceptBookingUseCase extends Mock implements AcceptBookingUseCase;
+
+class MockStartBookingUseCase extends Mock implements StartBookingUseCase;
+
+class MockSubmitQuoteUseCase extends Mock implements SubmitQuoteUseCase;
+
+class MockCompleteBookingUseCase extends Mock implements CompleteBookingUseCase;
+
+class MockWorkerTaskCubit extends MockCubit<WorkerTaskState> implements WorkerTaskCubit;

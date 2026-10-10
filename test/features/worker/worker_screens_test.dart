@@ -11,6 +11,7 @@ import 'package:vstech_home_services/core/location/location_service.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
 import 'package:vstech_home_services/features/booking/domain/entities/booking.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/pages/worker_dashboard_page.dart';
@@ -20,6 +21,7 @@ import 'package:vstech_home_services/features/worker_dashboard/presentation/widg
 import 'package:vstech_home_services/features/worker_dispatch/presentation/pages/worker_job_detail_page.dart';
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_status_page.dart';
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_wizard_page.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
 import '../../fixtures/booking/booking_fixtures.dart';
@@ -31,7 +33,10 @@ Widget _createTestWorkerWidget(Widget child, {MockWorkerPresenceCubit? presence,
     routes: [
       GoRoute(path: '/', builder: (context, state) => child),
       GoRoute(path: AppRoutes.workerDashboard, builder: (context, state) => const WorkerDashboardPage()),
-      GoRoute(path: AppRoutes.workerJobDetail, builder: (context, state) => const WorkerJobDetailPage()),
+      GoRoute(
+        path: AppRoutes.workerEnRoute,
+        builder: (context, state) => Scaffold(body: Text('EnRoute:${state.uri.queryParameters['id']}')),
+      ),
       GoRoute(
         path: AppRoutes.workerKyc,
         builder: (context, state) {
@@ -125,30 +130,46 @@ void main() {
       // Toggling Online/Offline is covered by the WorkerPresenceCubit test below.
     });
 
-    testWidgets('WorkerJobDetailPage displays transparent price breakdown and accept CTA', (tester) async {
-      await tester.pumpWidget(_createTestWorkerWidget(const WorkerJobDetailPage()));
+    testWidgets('WorkerJobDetailPage shows the booking and accepts it via the API', (tester) async {
+      final task = MockWorkerTaskCubit();
+      final states = StreamController<WorkerTaskState>.broadcast();
+      addTearDown(states.close);
+      final data = WorkerTaskData(booking: pendingBooking, serviceName: 'Sửa máy lạnh');
+      whenListen(task, states.stream, initialState: WorkerTaskReadyState(data));
+      when(() => task.load(any())).thenAnswer((_) async {});
+      when(task.accept).thenAnswer((_) async {});
+
+      await tester.pumpWidget(
+        _createTestWorkerWidget(
+          BlocProvider<WorkerTaskCubit>.value(
+            value: task,
+            child: const WorkerJobDetailPage(bookingId: '501'),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
-      // Verify Title & Customer
-      expect(find.text('Chi tiết yêu cầu việc'), findsOneWidget);
-      expect(find.text('Dọn dẹp căn hộ 70m²'), findsOneWidget);
-      expect(find.text('Nguyễn Thị Thu Thảo'), findsOneWidget);
+      verify(() => task.load('501')).called(1);
+      expect(find.text('Mã đơn hàng: #501'), findsOneWidget);
+      expect(find.text('Sửa máy lạnh'), findsOneWidget);
+      expect(find.text('Máy lạnh không mát'), findsOneWidget);
+      expect(find.text('500.000đ'), findsOneWidget);
 
-      // Verify Transparent Financial Breakdown
-      expect(find.text('Bảng kê thu nhập minh bạch'), findsOneWidget);
-      expect(find.text('Công thợ trọn gói'), findsOneWidget);
-      expect(find.text('+ 350.000đ'), findsOneWidget);
-      expect(find.text('Phụ phí mặt bằng'), findsOneWidget);
-      expect(find.text('+ 50.000đ'), findsOneWidget);
-      expect(find.text('Phí nền tảng (15%)'), findsOneWidget);
-      expect(find.text('- 60.000đ'), findsOneWidget);
-      expect(find.text('340.000đ'), findsOneWidget);
-
-      // Verify Accept CTA
-      expect(find.text('Nhận việc ngay'), findsOneWidget);
       await tester.tap(find.text('Nhận việc ngay'));
-      await tester.pump();
+      verify(task.accept).called(1);
+
+      states.add(
+        WorkerTaskActionDoneState(
+          WorkerTaskData(
+            booking: pendingBooking.copyWith(status: BookingStatus.accepted),
+            serviceName: 'Sửa máy lạnh',
+          ),
+          WorkerTaskAction.accept,
+        ),
+      );
+      await tester.pumpAndSettle();
       expect(find.text('Đã nhận việc thành công! Vui lòng chuẩn bị di chuyển'), findsOneWidget);
+      expect(find.text('EnRoute:501'), findsOneWidget);
     });
 
     testWidgets('WorkerDashboardPage offer opens the job by id and decline hides it locally', (tester) async {

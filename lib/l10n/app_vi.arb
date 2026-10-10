@@ -1492,5 +1492,15 @@
   "disputeConfirmBtn": "Gửi khiếu nại",
   "cancelDoneMessage": "Đã huỷ đơn đặt lịch",
   "workerStartTravelCta": "Bắt đầu di chuyển",
-  "workerContinueJobCta": "Tiếp tục công việc"
+  "workerContinueJobCta": "Tiếp tục công việc",
+  "workerFinalPriceTitle": "Xác nhận giá chốt",
+  "workerFinalPriceLabel": "Giá chốt (đ)",
+  "workerFinalPriceHint": "Giá ước tính {estimate}. Giá chốt tối đa 1,5 lần giá ước tính.",
+  "@workerFinalPriceHint": {
+    "placeholders": {
+      "estimate": {
+        "type": "String"
+      }
+    }
+  }
 }

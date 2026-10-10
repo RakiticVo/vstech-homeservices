@@ -6450,6 +6450,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Tiếp tục công việc'**
   String get workerContinueJobCta;
+
+  /// No description provided for @workerFinalPriceTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận giá chốt'**
+  String get workerFinalPriceTitle;
+
+  /// No description provided for @workerFinalPriceLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá chốt (đ)'**
+  String get workerFinalPriceLabel;
+
+  /// No description provided for @workerFinalPriceHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá ước tính {estimate}. Giá chốt tối đa 1,5 lần giá ước tính.'**
+  String workerFinalPriceHint(String estimate);
 }
 
 class _AppLocalizationsDelegate

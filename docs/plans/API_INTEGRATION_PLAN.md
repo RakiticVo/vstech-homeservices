@@ -14,7 +14,7 @@
 | 0 | Nền tảng: env, ApiClient, lỗi/l10n, token, session, DI | ✅ Xong 2026-10-06 (commit `ae54ec0`) |
 | 1 | Auth & Profile: login, register, logout, splash/role routing, profile/edit/address, guard router | ✅ Code xong 2026-10-07 — ⏳ chờ tài khoản test UAT để smoke test đăng nhập thật |
 | 2 | Khách: danh mục, ước tính, tạo booking, danh sách đơn, huỷ, khiếu nại, duyệt/từ chối báo giá | ✅ Code xong 2026-10-10 (hướng "Gọn theo API") — ⏳ chờ tài khoản test UAT; UI duyệt báo giá chờ Batch 14 |
-| 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ⏳ Chưa làm |
+| 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ✅ Code xong 2026-10-10 (commit 3.1–3.4) — ⏳ chờ tài khoản test UAT |
 | 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ⏳ Chưa làm |
 | 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ⏳ Chưa làm |
 
@@ -146,6 +146,13 @@ duyệt/từ chối báo giá.
 
 Nhận việc (accept), bắt đầu (start), gửi báo giá (quote), hoàn thành (complete). Stream GPS
 `geolocator` → `PUT /technician/location` mỗi 2s, chỉ khi online, gói trong `LocationTrackingBloc`.
+
+> **Kết quả Pha 3 (2026-10-10):**
+> - GPS: Online → lấy vị trí liên tục, gửi bản mới nhất `PUT /technician/location` mỗi 2 giây; Offline/đăng xuất → dừng. Bật/tắt Online chỉ ở app (chưa có API).
+> - Việc mới: Dashboard hiện đơn PENDING đầu tiên từ `GET /bookings` (chưa có định dạng `/ws/dispatch`); "Từ chối" chỉ ẩn trên máy.
+> - Jobs Hub: Mới phân công (PENDING/ACCEPTED) · Đang làm (IN_PROGRESS) · Đã hoàn tất; nút bước tiếp theo theo trạng thái.
+> - Thực hiện: Nhận việc (`accept`) → Đang đến (bản đồ còn mock) → Bắt đầu (`start`) → Báo giá phát sinh (`quote`, 1 dòng, chưa có ảnh vì thiếu API upload) → Hoàn tất với giá chốt (`complete`, ≤ 1,5 × ước tính).
+> - Còn mock: bản đồ/dẫn đường, checklist các bước, màn quyết toán sau hoàn tất (thu nhập/phí), thu nhập trên Dashboard, lịch tuần.
 
 **Pha 4 — Ví & rút tiền**
 Wallet balance + transactions (phân trang, filter `type`/`status`), tạo/list yêu cầu rút.

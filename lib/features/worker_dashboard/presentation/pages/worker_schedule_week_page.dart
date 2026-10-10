@@ -330,7 +330,7 @@ class _WorkerScheduleWeekPageState extends State<WorkerScheduleWeekPage> {
         address: 'Căn hộ Flora Novia, Phạm Văn Đồng, Thủ Đức',
         price: '360.000đ',
         statusText: 'Đã xác nhận',
-        onTap: () => context.push(AppRoutes.workerJobDetail),
+        onTap: () => context.push(AppRoutes.workerJobsHub),
       ),
       const SizedBox(height: AppSpacing.md),
       _buildJobCard(
@@ -340,7 +340,7 @@ class _WorkerScheduleWeekPageState extends State<WorkerScheduleWeekPage> {
         address: '142 Võ Văn Ngân, P. Linh Chiểu, Thủ Đức',
         price: '200.000đ',
         statusText: 'Sắp tới',
-        onTap: () => context.push(AppRoutes.workerJobDetail),
+        onTap: () => context.push(AppRoutes.workerJobsHub),
       ),
     ];
   }

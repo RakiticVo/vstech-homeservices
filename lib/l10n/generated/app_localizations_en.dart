@@ -3468,4 +3468,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workerContinueJobCta => 'Continue job';
+
+  @override
+  String get workerFinalPriceTitle => 'Confirm final price';
+
+  @override
+  String get workerFinalPriceLabel => 'Final price (đ)';
+
+  @override
+  String workerFinalPriceHint(String estimate) {
+    return 'Estimate $estimate. The final price can be at most 1.5× the estimate.';
+  }
 }

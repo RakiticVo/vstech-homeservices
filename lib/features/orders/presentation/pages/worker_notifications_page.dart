@@ -77,7 +77,7 @@ class WorkerNotificationsPage extends StatelessWidget {
             time: '13:45',
             isUnread: true,
             onTap: () {
-              unawaited(context.push(AppRoutes.workerJobDetail));
+              unawaited(context.push(AppRoutes.workerJobsHub));
             },
           ),
           const SizedBox(height: AppSpacing.sm),

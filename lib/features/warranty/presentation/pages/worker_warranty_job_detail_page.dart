@@ -309,7 +309,7 @@ class WorkerWarrantyJobDetailPage extends StatelessWidget {
                     label: context.l10n.workerWarrantyAcceptCta,
                     icon: Icons.check_circle_outline_rounded,
                     onPressed: () {
-                      unawaited(context.push(AppRoutes.workerEnRoute));
+                      unawaited(context.push(AppRoutes.workerJobsHub));
                     },
                   ),
                 ),

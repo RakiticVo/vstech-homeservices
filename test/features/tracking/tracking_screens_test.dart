@@ -1,9 +1,16 @@
+import 'dart:async';
+
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
+import 'package:vstech_home_services/features/booking/domain/entities/quote_line.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/customer_tracking_page.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_arrived_page.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_en_route_page.dart';
@@ -11,31 +18,33 @@ import 'package:vstech_home_services/features/tracking/presentation/pages/worker
 import 'package:vstech_home_services/features/tracking/presentation/widgets/service_checklist_widget.dart';
 import 'package:vstech_home_services/features/tracking/presentation/widgets/tracking_map_widget.dart';
 import 'package:vstech_home_services/features/tracking/presentation/widgets/working_timer_widget.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
+
+import '../../fixtures/booking/booking_fixtures.dart';
+import '../../helpers/mocks.dart';
 
 Widget _createTestTrackingWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.customerTracking,
-        builder: (context, state) => const CustomerTrackingPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.customerTracking, builder: (context, state) => const CustomerTrackingPage()),
       GoRoute(
         path: AppRoutes.workerEnRoute,
-        builder: (context, state) => const WorkerEnRoutePage(),
+        builder: (context, state) => Scaffold(body: Text('EnRoute:${state.uri.queryParameters['id']}')),
       ),
       GoRoute(
         path: AppRoutes.workerArrived,
-        builder: (context, state) => const WorkerArrivedPage(),
+        builder: (context, state) => Scaffold(body: Text('Arrived:${state.uri.queryParameters['id']}')),
       ),
       GoRoute(
         path: AppRoutes.workerExecuting,
-        builder: (context, state) => const WorkerExecutingPage(),
+        builder: (context, state) => Scaffold(body: Text('Executing:${state.uri.queryParameters['id']}')),
+      ),
+      GoRoute(
+        path: AppRoutes.workerJobCompletion,
+        builder: (context, state) => const Scaffold(body: Text('JobCompletionTarget')),
       ),
     ],
   );
@@ -59,9 +68,7 @@ void main() {
     testWidgets('CustomerTrackingPage renders Stage 1 (En Route) with map, ETA, and worker card', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 1600));
 
-      await tester.pumpWidget(
-        _createTestTrackingWidget(const CustomerTrackingPage()),
-      );
+      await tester.pumpWidget(_createTestTrackingWidget(const CustomerTrackingPage()));
       await tester.pump();
 
       // Header and order code
@@ -82,9 +89,7 @@ void main() {
     testWidgets('CustomerTrackingPage stage selector switches across all 4 stages', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 1600));
 
-      await tester.pumpWidget(
-        _createTestTrackingWidget(const CustomerTrackingPage()),
-      );
+      await tester.pumpWidget(_createTestTrackingWidget(const CustomerTrackingPage()));
       await tester.pump();
 
       // Switch to Stage 2: Thợ đã đến
@@ -110,9 +115,7 @@ void main() {
     testWidgets('WorkerEnRoutePage renders map, address, customer note, and arrival CTA', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 1600));
 
-      await tester.pumpWidget(
-        _createTestTrackingWidget(const WorkerEnRoutePage()),
-      );
+      await tester.pumpWidget(_createTestTrackingWidget(const WorkerEnRoutePage(bookingId: '502')));
       await tester.pump();
 
       expect(find.text('Đang di chuyển đến khách'), findsOneWidget);
@@ -122,47 +125,106 @@ void main() {
       expect(find.text('Ghi chú: Gọi trước khi đến, gửi xe hầm B2'), findsOneWidget);
       expect(find.text('Tôi đã đến nơi'), findsOneWidget);
       expect(find.text('Huỷ việc'), findsOneWidget);
+
+      await tester.tap(find.text('Tôi đã đến nơi'));
+      await tester.pumpAndSettle();
+      expect(find.text('Arrived:502'), findsOneWidget);
     });
 
-    testWidgets('WorkerArrivedPage renders arrival confirmation, customer summary, and start job CTA', (tester) async {
+    testWidgets('WorkerArrivedPage starts the job via the API and opens the executing screen', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final task = MockWorkerTaskCubit();
+      final states = StreamController<WorkerTaskState>.broadcast();
+      addTearDown(states.close);
+      final data = WorkerTaskData(booking: acceptedBooking);
+      whenListen(task, states.stream, initialState: WorkerTaskReadyState(data));
+      when(() => task.load(any())).thenAnswer((_) async {});
+      when(task.start).thenAnswer((_) async {});
 
       await tester.pumpWidget(
-        _createTestTrackingWidget(const WorkerArrivedPage()),
+        _createTestTrackingWidget(
+          BlocProvider<WorkerTaskCubit>.value(
+            value: task,
+            child: const WorkerArrivedPage(bookingId: '502'),
+          ),
+        ),
       );
       await tester.pump();
 
       expect(find.text('Xác nhận có mặt'), findsOneWidget);
-      expect(find.text('Thợ đã có mặt lúc 13:58'), findsOneWidget);
-      expect(find.text('Chị Mai · Căn hộ 802, Tháp B'), findsOneWidget);
-      expect(find.text('Bắt đầu làm việc'), findsOneWidget);
-      expect(find.text('Khách không có mặt?'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('worker_start_job_button')));
+      verify(task.start).called(1);
+
+      states.add(
+        WorkerTaskActionDoneState(
+          WorkerTaskData(booking: acceptedBooking.copyWith(status: BookingStatus.inProgress)),
+          WorkerTaskAction.start,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Executing:502'), findsOneWidget);
     });
 
-    testWidgets('WorkerExecutingPage renders timer, checklist, extra cost dialog, and completion CTA', (tester) async {
+    testWidgets('WorkerExecutingPage sends an extra-cost quote and completes with the final price', (tester) async {
       await tester.binding.setSurfaceSize(const Size(390, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final task = MockWorkerTaskCubit();
+      final states = StreamController<WorkerTaskState>.broadcast();
+      addTearDown(states.close);
+      final inProgress = acceptedBooking.copyWith(status: BookingStatus.inProgress);
+      whenListen(task, states.stream, initialState: WorkerTaskReadyState(WorkerTaskData(booking: inProgress)));
+      when(() => task.load(any())).thenAnswer((_) async {});
+      when(() => task.submitQuote(any())).thenAnswer((_) async {});
+      when(() => task.complete(any())).thenAnswer((_) async {});
 
       await tester.pumpWidget(
-        _createTestTrackingWidget(const WorkerExecutingPage()),
+        _createTestTrackingWidget(
+          BlocProvider<WorkerTaskCubit>.value(
+            value: task,
+            child: const WorkerExecutingPage(bookingId: '502'),
+          ),
+        ),
       );
       await tester.pump();
 
       expect(find.text('Đang thực hiện công việc'), findsOneWidget);
       expect(find.byType(WorkingTimerWidget), findsOneWidget);
       expect(find.byType(ServiceChecklistWidget), findsOneWidget);
-      expect(find.text('+ Đề xuất chi phí phát sinh'), findsOneWidget);
-      expect(find.text('Hoàn tất công việc -> Chờ nghiệm thu'), findsOneWidget);
 
-      // Open extra cost dialog
+      // Extra-cost quote → POST /bookings/{id}/quote
       await tester.tap(find.text('+ Đề xuất chi phí phát sinh'));
-      await tester.pump();
-      expect(find.text('Đề xuất chi phí phát sinh'), findsOneWidget);
-      expect(find.text('Gửi đề xuất đến khách'), findsOneWidget);
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(const Key('worker_extra_cost_name')), 'Gas R32');
+      await tester.enterText(find.byKey(const Key('worker_extra_cost_price')), '45.000');
+      await tester.tap(find.byKey(const Key('worker_extra_cost_send')));
+      await tester.pumpAndSettle();
+      final lines = verify(() => task.submitQuote(captureAny())).captured.single as List<QuoteLine>;
+      expect(lines.single.itemName, 'Gas R32');
+      expect(lines.single.amount, 45000);
 
-      // Submit extra cost proposal
-      await tester.tap(find.text('Gửi đề xuất đến khách'));
-      await tester.pump();
+      final quoted = WorkerTaskData(booking: inProgress, quotedExtra: 45000);
+      states.add(WorkerTaskActionDoneState(quoted, WorkerTaskAction.quote));
+      await tester.pumpAndSettle();
       expect(find.text('Đã gửi đề xuất thành công!'), findsOneWidget);
+
+      // Complete → final price pre-filled with estimate + extras
+      when(() => task.state).thenReturn(WorkerTaskReadyState(quoted));
+      await tester.tap(find.byKey(const Key('worker_complete_job_button')));
+      await tester.pumpAndSettle();
+      expect(find.text('545000'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('worker_final_price_confirm')));
+      await tester.pumpAndSettle();
+      verify(() => task.complete(545000)).called(1);
+
+      states.add(
+        WorkerTaskActionDoneState(
+          WorkerTaskData(booking: inProgress.copyWith(status: BookingStatus.completed)),
+          WorkerTaskAction.complete,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('JobCompletionTarget'), findsOneWidget);
     });
   });
 }

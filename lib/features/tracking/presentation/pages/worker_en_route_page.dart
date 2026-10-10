@@ -13,7 +13,9 @@ import 'package:vstech_home_services/features/tracking/presentation/widgets/trac
 /// Worker En Route Screen (`wgo` — Concept 02: Cell 44).
 /// Displays live navigation route, destination, customer contact, and arrival confirmation.
 class WorkerEnRoutePage extends StatelessWidget {
-  const WorkerEnRoutePage({super.key});
+  const WorkerEnRoutePage({required this.bookingId, super.key});
+
+  final String bookingId;
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +194,7 @@ class WorkerEnRoutePage extends StatelessWidget {
           AppButton(
             label: context.l10n.workerArrivedConfirm,
             onPressed: () {
-              unawaited(context.push(AppRoutes.workerArrived));
+              unawaited(context.push(AppRoutes.workerArrivedLocation(bookingId)));
             },
           ),
 
