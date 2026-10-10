@@ -17,18 +17,9 @@ Widget _createTestWorkerWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.workerDashboard,
-        builder: (context, state) => const WorkerDashboardPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerJobDetail,
-        builder: (context, state) => const WorkerJobDetailPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.workerDashboard, builder: (context, state) => const WorkerDashboardPage()),
+      GoRoute(path: AppRoutes.workerJobDetail, builder: (context, state) => const WorkerJobDetailPage()),
       GoRoute(
         path: AppRoutes.workerKyc,
         builder: (context, state) {

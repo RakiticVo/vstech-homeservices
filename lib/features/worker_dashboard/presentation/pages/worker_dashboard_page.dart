@@ -43,12 +43,7 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                 // Top worker header
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSpacing.md,
-                      AppSpacing.md,
-                      AppSpacing.md,
-                      AppSpacing.sm,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),
                     child: Row(
                       children: [
                         // Worker avatar
@@ -60,13 +55,7 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                             borderRadius: BorderRadius.circular(AppRadius.control),
                             border: Border.all(color: AppColors.border),
                           ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.person_rounded,
-                              color: AppColors.primary,
-                              size: 24,
-                            ),
-                          ),
+                          child: const Center(child: Icon(Icons.person_rounded, color: AppColors.primary, size: 24)),
                         ),
                         const SizedBox(width: AppSpacing.sm),
                         Expanded(
@@ -82,9 +71,7 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                               ),
                               Text(
                                 context.l10n.workerGreetingSubtitle,
-                                style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.textSecondary,
-                                ),
+                                style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
                               ),
                             ],
                           ),
@@ -98,20 +85,11 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: _isOnline
-                                  ? AppColors.secondarySurface
-                                  : AppColors.surface,
+                              color: _isOnline ? AppColors.secondarySurface : AppColors.surface,
                               borderRadius: BorderRadius.circular(AppRadius.full),
-                              border: Border.all(
-                                color: _isOnline
-                                    ? AppColors.primary
-                                    : AppColors.border,
-                              ),
+                              border: Border.all(color: _isOnline ? AppColors.primary : AppColors.border),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -120,21 +98,15 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                                   width: 8,
                                   height: 8,
                                   decoration: BoxDecoration(
-                                    color: _isOnline
-                                        ? AppColors.success
-                                        : AppColors.textMuted,
+                                    color: _isOnline ? AppColors.success : AppColors.textMuted,
                                     shape: BoxShape.circle,
                                   ),
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  _isOnline
-                                      ? context.l10n.workerOnline
-                                      : context.l10n.workerOffline,
+                                  _isOnline ? context.l10n.workerOnline : context.l10n.workerOffline,
                                   style: AppTextStyles.caption.copyWith(
-                                    color: _isOnline
-                                        ? AppColors.primary
-                                        : AppColors.textSecondary,
+                                    color: _isOnline ? AppColors.primary : AppColors.textSecondary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -188,10 +160,7 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: AppColors.secondarySurface,
                               borderRadius: BorderRadius.circular(AppRadius.chip),
@@ -290,10 +259,7 @@ class _ScheduleJobTile extends StatelessWidget {
             ),
             child: Text(
               time,
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
+              style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -303,32 +269,20 @@ class _ScheduleJobTile extends StatelessWidget {
               children: [
                 Text(
                   serviceName,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                  style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  customerName,
-                  style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
+                Text(customerName, style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
               ],
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: isDone
-                  ? AppColors.success.withValues(alpha: 0.12)
-                  : AppColors.secondarySurface,
+              color: isDone ? AppColors.success.withValues(alpha: 0.12) : AppColors.secondarySurface,
               borderRadius: BorderRadius.circular(AppRadius.chip),
               border: Border.all(
-                color: isDone
-                    ? AppColors.success.withValues(alpha: 0.3)
-                    : AppColors.primary.withValues(alpha: 0.3),
+                color: isDone ? AppColors.success.withValues(alpha: 0.3) : AppColors.primary.withValues(alpha: 0.3),
               ),
             ),
             child: Text(
