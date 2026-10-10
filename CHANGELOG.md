@@ -7,6 +7,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Pha 4 tích hợp API (ví & rút tiền)
+- **4.1** Lớp data ví: DTO `WalletResponse`, `WalletTransactionResponse`, `WithdrawalRequestBody`, `WithdrawalResponse` (khai báo cả tên field theo doc lẫn OpenAPI: `id`/`transactionId`, `type`/`txType`, `id`/`requestId`, `reason`/`rejectionReason`); `WalletRemoteDataSource` (`GET /wallets/me`, `GET /wallets/me/transactions` có lọc `type`/`status`, `POST /wallets/withdrawals` idempotent, `GET /wallets/withdrawals`); `WalletRepositoryImpl` (cache theo id, tự suy `delta` có dấu từ loại giao dịch nếu thiếu); entity `Wallet`, `WalletTransaction`, `Withdrawal`, enum `TransactionType`/`TransactionStatus`/`WithdrawalStatus`; use case (chặn rút > số dư → `HS-400-0020`, thiếu thông tin ngân hàng → `HS-400-0001`); unit test.
+
 ### Docs
 - `docs/plans/NOTES_LOCAL_WORKAROUNDS_AND_API_GAPS.md`: ghi chú việc cần làm, các chỗ app đang làm tạm ở local thay vì API (OTP giả lập, Online/Offline, từ chối việc, chi tiết đơn, sổ địa chỉ, upload ảnh…), màn còn mock, mâu thuẫn tài liệu API và lỗi backend trên UAT.
 

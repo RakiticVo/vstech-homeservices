@@ -108,6 +108,14 @@ import 'package:vstech_home_services/features/tracking/domain/repositories/techn
     as _i435;
 import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart'
     as _i434;
+import 'package:vstech_home_services/features/wallet/data/datasources/wallet_remote_data_source.dart'
+    as _i964;
+import 'package:vstech_home_services/features/wallet/data/repositories/wallet_repository_impl.dart'
+    as _i794;
+import 'package:vstech_home_services/features/wallet/domain/repositories/wallet_repository.dart'
+    as _i637;
+import 'package:vstech_home_services/features/wallet/domain/usecases/wallet_use_cases.dart'
+    as _i1023;
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart'
     as _i686;
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart'
@@ -157,6 +165,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i308.TechnicianLocationRemoteDataSource>(
       () => _i308.TechnicianLocationRemoteDataSource(gh<_i223.ApiClient>()),
+    );
+    gh.factory<_i964.WalletRemoteDataSource>(
+      () => _i964.WalletRemoteDataSource(gh<_i223.ApiClient>()),
     );
     gh.lazySingleton<_i731.AuthRepository>(
       () => _i408.AuthRepositoryImpl(
@@ -246,6 +257,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i371.SessionCubit>(),
       ),
     );
+    gh.lazySingleton<_i637.WalletRepository>(
+      () => _i794.WalletRepositoryImpl(gh<_i964.WalletRemoteDataSource>()),
+    );
     gh.lazySingleton<_i1025.ProfileRepository>(
       () => _i117.ProfileRepositoryImpl(gh<_i599.ProfileRemoteDataSource>()),
     );
@@ -284,6 +298,18 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i434.UpdateTechnicianLocationUseCase(
         gh<_i435.TechnicianLocationRepository>(),
       ),
+    );
+    gh.factory<_i1023.GetWalletUseCase>(
+      () => _i1023.GetWalletUseCase(gh<_i637.WalletRepository>()),
+    );
+    gh.factory<_i1023.GetTransactionsUseCase>(
+      () => _i1023.GetTransactionsUseCase(gh<_i637.WalletRepository>()),
+    );
+    gh.factory<_i1023.CreateWithdrawalUseCase>(
+      () => _i1023.CreateWithdrawalUseCase(gh<_i637.WalletRepository>()),
+    );
+    gh.factory<_i1023.GetWithdrawalUseCase>(
+      () => _i1023.GetWithdrawalUseCase(gh<_i637.WalletRepository>()),
     );
     gh.factory<_i294.GetProfileUseCase>(
       () => _i294.GetProfileUseCase(gh<_i1025.ProfileRepository>()),

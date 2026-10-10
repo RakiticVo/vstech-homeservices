@@ -40,6 +40,9 @@ import 'package:vstech_home_services/features/orders/presentation/bloc/booking_l
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart';
 import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart';
+import 'package:vstech_home_services/features/wallet/data/datasources/wallet_remote_data_source.dart';
+import 'package:vstech_home_services/features/wallet/domain/repositories/wallet_repository.dart';
+import 'package:vstech_home_services/features/wallet/domain/usecases/wallet_use_cases.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 
@@ -141,3 +144,16 @@ class MockSubmitQuoteUseCase extends Mock implements SubmitQuoteUseCase;
 class MockCompleteBookingUseCase extends Mock implements CompleteBookingUseCase;
 
 class MockWorkerTaskCubit extends MockCubit<WorkerTaskState> implements WorkerTaskCubit;
+
+// --- wallet ---
+class MockWalletRemoteDataSource extends Mock implements WalletRemoteDataSource;
+
+class MockWalletRepository extends Mock implements WalletRepository;
+
+class MockGetWalletUseCase extends Mock implements GetWalletUseCase;
+
+class MockGetTransactionsUseCase extends Mock implements GetTransactionsUseCase;
+
+class MockCreateWithdrawalUseCase extends Mock implements CreateWithdrawalUseCase;
+
+class MockGetWithdrawalUseCase extends Mock implements GetWithdrawalUseCase;

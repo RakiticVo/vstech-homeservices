@@ -1,0 +1,14 @@
+{
+  "status": 200,
+  "message": "OK",
+  "data": {
+    "content": [
+      { "id": "t-1", "type": "EARNING", "amount": "297500", "delta": "297500", "status": "COMPLETED", "description": "Thu nhập đơn #501", "createdAt": "2026-10-09T08:00:00Z" },
+      { "transactionId": 42, "txType": "WITHDRAWAL", "amount": 2000000, "status": "PENDING", "referenceRequestId": 7, "createdAt": "2026-10-08T08:00:00Z" },
+      { "id": "t-3", "type": "COMMISSION", "amount": "52500", "delta": "-52500", "status": "COMPLETED" }
+    ],
+    "page": 0, "size": 20, "totalItems": 3, "totalPages": 1
+  },
+  "errorCode": null,
+  "timestamp": "2026-10-10T08:00:00Z"
+}
