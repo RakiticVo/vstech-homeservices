@@ -43,66 +43,53 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
       showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-        ),
-        title: Text(
-          context.l10n.workerExtraCostDialogTitle,
-          style: AppTextStyles.headlineSmall.copyWith(fontSize: 18),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              context.l10n.workerExtraCostDesc,
-              style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                labelText: context.l10n.workerItemName,
-                border: const OutlineInputBorder(),
+          backgroundColor: AppColors.surface,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
+          title: Text(
+            context.l10n.workerExtraCostDialogTitle,
+            style: AppTextStyles.headlineSmall.copyWith(fontSize: 18),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.l10n.workerExtraCostDesc,
+                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
               ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            TextField(
-              controller: priceController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: context.l10n.workerItemPrice,
-                border: const OutlineInputBorder(),
+              const SizedBox(height: AppSpacing.md),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: context.l10n.workerItemName, border: const OutlineInputBorder()),
               ),
+              const SizedBox(height: AppSpacing.md),
+              TextField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: context.l10n.workerItemPrice,
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text('Huỷ', style: AppTextStyles.labelLarge.copyWith(color: AppColors.textSecondary)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.workerProposalSent)));
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: AppColors.onPrimary),
+              child: Text(context.l10n.workerSendProposal),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(
-              'Huỷ',
-              style: AppTextStyles.labelLarge.copyWith(color: AppColors.textSecondary),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.l10n.workerProposalSent)),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.onPrimary,
-            ),
-            child: Text(context.l10n.workerSendProposal),
-          ),
-        ],
       ),
-    ),
-  );
+    );
   }
 
   @override
@@ -160,9 +147,7 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: AppColors.primary),
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.control),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.control)),
             ),
           ),
 
@@ -172,9 +157,7 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
           AppButton(
             label: context.l10n.workerCompleteJobCta,
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.l10n.workerCompleteJobCta)),
-              );
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.workerCompleteJobCta)));
             },
           ),
         ],

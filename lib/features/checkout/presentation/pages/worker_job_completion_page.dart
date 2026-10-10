@@ -96,10 +96,7 @@ class WorkerJobCompletionPage extends StatelessWidget {
         leading: const SizedBox(
           width: 48,
           height: 48,
-          child: CircularProgressIndicator(
-            strokeWidth: 3,
-            color: AppColors.primary,
-          ),
+          child: CircularProgressIndicator(strokeWidth: 3, color: AppColors.primary),
         ),
         title: context.l10n.workerWaitInspectionTitle,
         body: context.l10n.workerWaitInspectionDesc,
@@ -112,10 +109,7 @@ class WorkerJobCompletionPage extends StatelessWidget {
     return [
       _StatusCard(
         borderColor: AppColors.warning,
-        leading: const _IconBadge(
-          icon: Icons.hourglass_top_rounded,
-          color: AppColors.warning,
-        ),
+        leading: const _IconBadge(icon: Icons.hourglass_top_rounded, color: AppColors.warning),
         title: context.l10n.workerWaitPaymentTitle,
         body: context.l10n.workerWaitPaymentDesc(_formatPrice(totalPrice + extraCost)),
       ),
@@ -128,10 +122,7 @@ class WorkerJobCompletionPage extends StatelessWidget {
     return [
       _StatusCard(
         borderColor: AppColors.success,
-        leading: const _IconBadge(
-          icon: Icons.account_balance_wallet_rounded,
-          color: AppColors.success,
-        ),
+        leading: const _IconBadge(icon: Icons.account_balance_wallet_rounded, color: AppColors.success),
         title: l10n.workerPaidCelebrationTitle,
         body: l10n.workerPaidWalletCredit(_formatPrice(_workerNet)),
         bodyColor: AppColors.successDark,
@@ -142,47 +133,28 @@ class WorkerJobCompletionPage extends StatelessWidget {
       Container(
         key: const Key('worker_earnings_card'),
         padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: AppColors.workerTeal,
-          borderRadius: BorderRadius.circular(AppRadius.card),
-        ),
+        decoration: BoxDecoration(color: AppColors.workerTeal, borderRadius: BorderRadius.circular(AppRadius.card)),
         child: Column(
           children: [
             Text(
               l10n.receiptWorkerPayout,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.onPrimary.withValues(alpha: 0.8),
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: AppColors.onPrimary.withValues(alpha: 0.8)),
             ),
             const SizedBox(height: 2),
             Text(
               _formatPrice(_workerNet),
-              style: AppTextStyles.headlineLarge.copyWith(
-                color: AppColors.onPrimary,
-                fontWeight: FontWeight.w800,
-              ),
+              style: AppTextStyles.headlineLarge.copyWith(color: AppColors.onPrimary, fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: AppSpacing.md),
             Divider(height: 1, color: AppColors.onPrimary.withValues(alpha: 0.24)),
             const SizedBox(height: AppSpacing.sm),
-            _EarningsRow(
-              label: l10n.paymentTotalToPay,
-              value: _formatPrice(totalPrice),
-              isEmphasised: true,
-            ),
+            _EarningsRow(label: l10n.paymentTotalToPay, value: _formatPrice(totalPrice), isEmphasised: true),
             if (extraCost > 0) ...[
               const SizedBox(height: 2),
-              _EarningsRow(
-                label: l10n.workerExtraCostLabel,
-                value: '+${_formatPrice(extraCost)}',
-                isEmphasised: true,
-              ),
+              _EarningsRow(label: l10n.workerExtraCostLabel, value: '+${_formatPrice(extraCost)}', isEmphasised: true),
             ],
             const SizedBox(height: 2),
-            _EarningsRow(
-              label: l10n.jobPlatformFee,
-              value: '-${_formatPrice(_platformFee)}',
-            ),
+            _EarningsRow(label: l10n.jobPlatformFee, value: '-${_formatPrice(_platformFee)}'),
           ],
         ),
       ),
@@ -203,10 +175,7 @@ class WorkerJobCompletionPage extends StatelessWidget {
     return [
       _StatusCard(
         borderColor: AppColors.warning,
-        leading: const _IconBadge(
-          icon: Icons.gavel_rounded,
-          color: AppColors.warning,
-        ),
+        leading: const _IconBadge(icon: Icons.gavel_rounded, color: AppColors.warning),
         title: l10n.workerDisputedTitle,
         body: l10n.workerDisputedDesc,
       ),
@@ -229,19 +198,13 @@ class WorkerJobCompletionPage extends StatelessWidget {
                 Expanded(
                   child: Text(
                     l10n.workerDisputedComplaintTitle,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
+                    style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: AppSpacing.xs),
-            Text(
-              '#KN-0425-031 · #$orderCode',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
-            ),
+            Text('#KN-0425-031 · #$orderCode', style: AppTextStyles.caption.copyWith(color: AppColors.textMuted)),
             const SizedBox(height: AppSpacing.sm),
             Text(
               l10n.workerDisputedComplaintSample,
@@ -274,10 +237,7 @@ class WorkerJobCompletionPage extends StatelessWidget {
     return [
       _StatusCard(
         borderColor: AppColors.success,
-        leading: const _IconBadge(
-          icon: Icons.verified_user_outlined,
-          color: AppColors.success,
-        ),
+        leading: const _IconBadge(icon: Icons.verified_user_outlined, color: AppColors.success),
         title: l10n.workerWarrantyDoneTitle,
         body: l10n.workerWarrantyDoneDesc,
       ),
@@ -294,18 +254,12 @@ class WorkerJobCompletionPage extends StatelessWidget {
             Expanded(
               child: Text(
                 l10n.workerWarrantyAmountLabel,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                ),
+                style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
               ),
             ),
             Text(
               _formatPrice(0),
-              style: AppTextStyles.headlineSmall.copyWith(
-                fontWeight: FontWeight.w800,
-                color: AppColors.primary,
-              ),
+              style: AppTextStyles.headlineSmall.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary),
             ),
           ],
         ),
@@ -351,10 +305,7 @@ class _StatusCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.headlineSmall.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
-            ),
+            style: AppTextStyles.headlineSmall.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
@@ -382,21 +333,14 @@ class _IconBadge extends StatelessWidget {
     return Container(
       width: 56,
       height: 56,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.15), shape: BoxShape.circle),
       child: Icon(icon, color: color, size: 32),
     );
   }
 }
 
 class _EarningsRow extends StatelessWidget {
-  const _EarningsRow({
-    required this.label,
-    required this.value,
-    this.isEmphasised = false,
-  });
+  const _EarningsRow({required this.label, required this.value, this.isEmphasised = false});
 
   final String label;
   final String value;
@@ -404,24 +348,16 @@ class _EarningsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isEmphasised
-        ? AppColors.onPrimary
-        : AppColors.onPrimary.withValues(alpha: 0.8);
+    final color = isEmphasised ? AppColors.onPrimary : AppColors.onPrimary.withValues(alpha: 0.8);
     return Row(
       children: [
         Expanded(
-          child: Text(
-            label,
-            style: AppTextStyles.bodySmall.copyWith(color: color),
-          ),
+          child: Text(label, style: AppTextStyles.bodySmall.copyWith(color: color)),
         ),
         const SizedBox(width: AppSpacing.sm),
         Text(
           value,
-          style: AppTextStyles.bodySmall.copyWith(
-            color: color,
-            fontWeight: isEmphasised ? FontWeight.w600 : null,
-          ),
+          style: AppTextStyles.bodySmall.copyWith(color: color, fontWeight: isEmphasised ? FontWeight.w600 : null),
         ),
       ],
     );
