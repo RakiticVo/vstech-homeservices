@@ -132,6 +132,18 @@ duyệt/từ chối báo giá.
 > - Màn còn mock (chưa có API): theo dõi thợ, tìm thợ (radar), thanh toán/nghiệm thu/đánh giá, bảo hành, gợi ý AI, thợ yêu thích.
 
 **Pha 3 — Luồng thợ**
+
+> **Kế hoạch commit Pha 3** (mỗi bước: `flutter analyze` sạch + test xanh → commit ngay; push khi xong bước cuối):
+>
+> | # | Commit | Nội dung |
+> | :- | :--- | :--- |
+> | 3.1 | `feat(worker): add worker booking actions data layer` | DTO `CompleteBookingRequest`, `SubmitQuoteRequest`; datasource/repository `accept`, `start`, `complete`, `submitQuote`; use case (chặn `actualPrice` > 1,5 × giá ước tính → `HS-400-0012`); unit test |
+> | 3.2 | `feat(worker): broadcast GPS every 2s while online` | `LocationUpdateRequest` + `PUT /technician/location` mỗi 2 giây khi Online; `WorkerPresenceCubit` (bật/tắt Online — chỉ ở app vì API chưa có, tự tắt khi đăng xuất); nút Online trên Dashboard; test |
+> | 3.3 | `feat(worker): load jobs hub and dashboard job offer from bookings` | `WorkerJobsCubit` từ `GET /bookings`; Jobs Hub 3 tab theo trạng thái; thẻ việc mới trên Dashboard lấy đơn PENDING; test |
+> | 3.4 | `feat(worker): run job execution through accept/start/quote/complete` | `WorkerTaskCubit` theo `bookingId`; Chi tiết việc → Nhận việc; Đã đến → Bắt đầu; Đang làm → Báo giá phát sinh + Hoàn thành (`actualPrice`); route truyền `?id=`; test |
+>
+> Lỗ hổng đã biết: `/ws/dispatch` (ping việc mới) chưa có định dạng message; không có API từ chối việc / bật-tắt Online; WebSocket tracking trong doc là JSON thuần, không phải STOMP như CLAUDE.md ghi.
+
 Nhận việc (accept), bắt đầu (start), gửi báo giá (quote), hoàn thành (complete). Stream GPS
 `geolocator` → `PUT /technician/location` mỗi 2s, chỉ khi online, gói trong `LocationTrackingBloc`.
 
