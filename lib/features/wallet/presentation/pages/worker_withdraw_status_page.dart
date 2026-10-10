@@ -1,22 +1,77 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
+import 'package:vstech_home_services/core/utils/money_formatter.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
+import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
+import 'package:vstech_home_services/features/wallet/domain/entities/wallet.dart';
+import 'package:vstech_home_services/features/wallet/domain/entities/wallet_enums.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawal_status_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/widgets/wallet_labels.dart';
 
-/// Worker withdrawal request status timeline screen (Cell 122 `wwdst`).
-class WorkerWithdrawStatusPage extends StatelessWidget {
-  const WorkerWithdrawStatusPage({super.key, this.withdrawalAmount});
+/// Worker withdrawal request status timeline screen (Cell 122 `wwdst`): the request from
+/// `POST/GET /wallets/withdrawals` — amount, bank, and a 3-step timeline driven by its
+/// `WithdrawalStatus` (sent → awaiting approval → transferred, or rejected/cancelled with reason).
+class WorkerWithdrawStatusPage extends StatefulWidget {
+  const WorkerWithdrawStatusPage({required this.withdrawalId, super.key});
 
-  final String? withdrawalAmount;
+  final String withdrawalId;
+
+  @override
+  State<WorkerWithdrawStatusPage> createState() => _WorkerWithdrawStatusPageState();
+}
+
+class _WorkerWithdrawStatusPageState extends State<WorkerWithdrawStatusPage> {
+  @override
+  void initState() {
+    super.initState();
+    unawaited(context.read<WithdrawalStatusCubit>().load(widget.withdrawalId));
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final amount = withdrawalAmount ?? '2.000.000đ';
+    final state = context.watch<WithdrawalStatusCubit>().state;
+    return switch (state) {
+      WithdrawalStatusLoadingState() => const Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+      ),
+      WithdrawalStatusErrorState(:final failure) => Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(backgroundColor: AppColors.background, elevation: 0),
+        body: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: ErrorRetryView(
+            message: l10n.failureMessage(failure),
+            onRetry: () => unawaited(context.read<WithdrawalStatusCubit>().load(widget.withdrawalId)),
+          ),
+        ),
+      ),
+      WithdrawalStatusLoadedState(:final withdrawal) => _buildLoaded(context, withdrawal),
+    };
+  }
+
+  Widget _buildLoaded(BuildContext context, Withdrawal withdrawal) {
+    final l10n = context.l10n;
+    final amount = MoneyFormatter.format(withdrawal.amount);
+    final status = withdrawal.status;
+    final isApproved = status == WithdrawalStatus.approved;
+    final isClosed = status == WithdrawalStatus.rejected || status == WithdrawalStatus.cancelled;
+    final account = withdrawal.bankAccountNumber ?? '';
+    final last4 = account.length > 4 ? account.substring(account.length - 4) : account;
+    final createdAt = withdrawal.createdAt;
+    final updatedAt = withdrawal.updatedAt;
+    final time = DateFormat('HH:mm · dd/MM/yyyy');
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -57,7 +112,7 @@ class WorkerWithdrawStatusPage extends StatelessWidget {
 
                     // Success title
                     Text(
-                      l10n.wwdstSuccessTitle,
+                      isClosed ? l10n.wwdstClosedTitle : l10n.wwdstSuccessTitle,
                       style: AppTextStyles.headlineSm.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -69,11 +124,12 @@ class WorkerWithdrawStatusPage extends StatelessWidget {
                     // Amount display
                     Text(
                       amount,
+                      key: const Key('withdrawal_amount'),
                       style: AppTextStyles.displaySm.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Vietcombank ••• 4821',
+                      '${withdrawal.bankCode ?? ''} ••• $last4',
                       style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: AppSpacing.xl),
@@ -89,24 +145,32 @@ class WorkerWithdrawStatusPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          WithdrawalStatusChip(status: status),
+                          const SizedBox(height: AppSpacing.md),
                           _buildTimelineStep(
                             isFirst: true,
                             isCompleted: true,
                             stepNumber: '1',
                             title: l10n.wwdstStep1,
-                            subtitle: '16:50 · 25/04/2026',
+                            subtitle: createdAt == null ? '' : time.format(createdAt.toLocal()),
                           ),
                           _buildTimelineStep(
-                            isInProgress: true,
+                            isCompleted: isApproved,
+                            isInProgress: status == WithdrawalStatus.pendingApproval,
                             stepNumber: '2',
                             title: l10n.wwdstStep2,
-                            subtitle: l10n.wwdPhase1Notice,
+                            subtitle: isClosed
+                                ? (withdrawal.reason ?? withdrawalStatusLabel(context, status))
+                                : l10n.wwdPhase1Notice,
                           ),
                           _buildTimelineStep(
                             isLast: true,
+                            isCompleted: isApproved,
                             stepNumber: '3',
                             title: l10n.wwdstStep3,
-                            subtitle: 'Dự kiến hoàn tất trước 16:50 ngày mai',
+                            subtitle: isApproved && updatedAt != null
+                                ? time.format(updatedAt.toLocal())
+                                : l10n.wwdstStep3Pending,
                           ),
                         ],
                       ),

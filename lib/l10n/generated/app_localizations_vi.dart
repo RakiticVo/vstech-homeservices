@@ -2676,9 +2676,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get wwdBankCardTitle => 'Về tài khoản ngân hàng';
 
   @override
-  String get wwdFromKyc => 'từ hồ sơ đối tác';
-
-  @override
   String get wwdPhase1Notice =>
       'Giai đoạn 1: kế toán duyệt và chuyển khoản thủ công trong 24 giờ làm việc.';
 
@@ -3513,4 +3510,34 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get wtxDescription => 'Nội dung';
+
+  @override
+  String get wwdBankCodeLabel => 'Mã ngân hàng';
+
+  @override
+  String get wwdBankCodeHint => 'VD: VCB, TCB, MB';
+
+  @override
+  String get wwdAccountNumberLabel => 'Số tài khoản';
+
+  @override
+  String get wwdAccountNumberHint => 'Nhập số tài khoản nhận tiền';
+
+  @override
+  String get wwdStatusPending => 'Chờ duyệt';
+
+  @override
+  String get wwdStatusApproved => 'Đã duyệt & chuyển khoản';
+
+  @override
+  String get wwdStatusRejected => 'Bị từ chối';
+
+  @override
+  String get wwdStatusCancelled => 'Đã huỷ';
+
+  @override
+  String get wwdstClosedTitle => 'Yêu cầu rút tiền không thành công';
+
+  @override
+  String get wwdstStep3Pending => 'Sau khi kế toán duyệt yêu cầu';
 }

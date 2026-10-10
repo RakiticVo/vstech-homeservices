@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,8 @@ import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/transaction_detail_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdraw_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawal_status_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_transaction_detail_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_wallet_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_withdraw_page.dart';
@@ -36,9 +40,14 @@ Widget _createTestWalletWidget(Widget child) {
         path: AppRoutes.workerJobDetail,
         builder: (context, state) => Scaffold(body: Text('JobDetail:${state.uri.queryParameters['id']}')),
       ),
-      GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
-      GoRoute(path: AppRoutes.workerWithdrawPin, builder: (context, state) => const WorkerWithdrawPinPage()),
-      GoRoute(path: AppRoutes.workerWithdrawStatus, builder: (context, state) => const WorkerWithdrawStatusPage()),
+      GoRoute(
+        path: AppRoutes.workerWithdrawPin,
+        builder: (context, state) => const Scaffold(body: Text('PinTarget')),
+      ),
+      GoRoute(
+        path: AppRoutes.workerWithdrawStatus,
+        builder: (context, state) => Scaffold(body: Text('StatusTarget:${state.uri.queryParameters['id']}')),
+      ),
       GoRoute(
         path: AppRoutes.workerJobsHub,
         builder: (context, state) => const Scaffold(body: Text('JobsHub')),
@@ -136,74 +145,112 @@ void main() {
       expect(find.text('JobDetail:501'), findsOneWidget);
     });
 
-    testWidgets('WorkerWithdrawPage validates quick chips and enables continue button', (tester) async {
-      await tester.pumpWidget(_createTestWalletWidget(const WorkerWithdrawPage()));
+    testWidgets('WorkerWithdrawPage checks the real balance and bank details before the PIN step', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final withdraw = MockWithdrawCubit();
+      final states = StreamController<WithdrawState>.broadcast();
+      addTearDown(states.close);
+      const draft = WithdrawDraft(balance: 4860000);
+      whenListen(withdraw, states.stream, initialState: const WithdrawEditingState(draft));
+      when(withdraw.load).thenAnswer((_) async {});
+      when(
+        () => withdraw.review(
+          amount: any(named: 'amount'),
+          bankCode: any(named: 'bankCode'),
+          bankAccountNumber: any(named: 'bankAccountNumber'),
+        ),
+      ).thenReturn(null);
+
+      await tester.pumpWidget(
+        _createTestWalletWidget(BlocProvider<WithdrawCubit>.value(value: withdraw, child: const WorkerWithdrawPage())),
+      );
       await tester.pumpAndSettle();
 
-      expect(find.text('Rút về tài khoản'), findsWidgets);
       expect(find.text('Số tiền rút'), findsOneWidget);
-      expect(find.text('Số dư hiện tại'), findsOneWidget);
-      expect(find.textContaining('Vietcombank'), findsWidgets);
+      expect(find.text('4.860.000đ'), findsWidgets);
+      // The hardcoded bank card is replaced by inputs (no saved-account API).
+      expect(find.textContaining('Vietcombank'), findsNothing);
 
-      // Tap quick amount chip '1 triệu'
-      final chip1M = find.byKey(const Key('quick_amt_chip_1000000'));
-      expect(chip1M, findsOneWidget);
-      await tester.tap(chip1M);
+      await tester.tap(find.byKey(const Key('quick_amt_chip_1000000')));
       await tester.pumpAndSettle();
+      final continueButton = find.byKey(const Key('withdraw_continue_button'));
+      expect(tester.widget<ElevatedButton>(continueButton).onPressed, isNull, reason: 'bank details missing');
 
-      // Tap continue button to trigger navigation
-      final continueBtn = find.byKey(const Key('withdraw_continue_button'));
-      expect(continueBtn, findsOneWidget);
-      await tester.tap(continueBtn);
+      await tester.enterText(find.byKey(const Key('withdraw_bank_code_input')), 'VCB');
+      await tester.enterText(find.byKey(const Key('withdraw_account_input')), '1234567890');
       await tester.pumpAndSettle();
+      await tester.tap(continueButton);
+      verify(() => withdraw.review(amount: 1000000, bankCode: 'VCB', bankAccountNumber: '1234567890')).called(1);
 
-      // Should navigate to PIN screen
-      expect(find.text('Nhập mã PIN ví'), findsOneWidget);
+      states.add(draft.copyWith(amount: 1000000, bankCode: 'VCB', bankAccountNumber: '1234567890').ready);
+      await tester.pumpAndSettle();
+      expect(find.text('PinTarget'), findsOneWidget);
     });
 
-    testWidgets('WorkerWithdrawPinPage keypad input and backspace work as expected', (tester) async {
-      await tester.pumpWidget(_createTestWalletWidget(const WorkerWithdrawPinPage(withdrawalAmount: '1.000.000đ')));
+    testWidgets('WorkerWithdrawPinPage submits after 6 digits and opens the request status', (tester) async {
+      final withdraw = MockWithdrawCubit();
+      final states = StreamController<WithdrawState>.broadcast();
+      addTearDown(states.close);
+      const draft = WithdrawDraft(balance: 4860000, amount: 1000000, bankCode: 'VCB', bankAccountNumber: '123');
+      whenListen(withdraw, states.stream, initialState: const WithdrawReadyState(draft));
+      when(withdraw.submit).thenAnswer((_) async {});
+
+      await tester.pumpWidget(
+        _createTestWalletWidget(
+          BlocProvider<WithdrawCubit>.value(value: withdraw, child: const WorkerWithdrawPinPage()),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Nhập mã PIN ví'), findsOneWidget);
       expect(find.textContaining('1.000.000đ'), findsOneWidget);
 
-      // Press key '1'
-      final key1 = find.byKey(const Key('pin_key_1'));
-      expect(key1, findsOneWidget);
-      await tester.tap(key1);
-      await tester.pumpAndSettle();
+      for (var i = 0; i < 6; i++) {
+        await tester.tap(find.byKey(const Key('pin_key_1')));
+        await tester.pump();
+      }
+      verify(withdraw.submit).called(1);
 
-      // Press backspace
-      final backspace = find.byKey(const Key('pin_key_backspace'));
-      expect(backspace, findsOneWidget);
-      await tester.tap(backspace);
+      states.add(WithdrawSubmittedState(draft, pendingWithdrawal));
       await tester.pumpAndSettle();
-
-      expect(find.text('Nhập mã PIN ví'), findsOneWidget);
+      expect(find.text('StatusTarget:w-1'), findsOneWidget);
     });
 
-    testWidgets('WorkerWithdrawStatusPage displays 3-stage timeline and back CTA', (tester) async {
-      await tester.pumpWidget(_createTestWalletWidget(const WorkerWithdrawStatusPage(withdrawalAmount: '2.000.000đ')));
+    testWidgets('WorkerWithdrawStatusPage shows the request and its status timeline', (tester) async {
+      final status = MockWithdrawalStatusCubit();
+      when(() => status.load(any())).thenAnswer((_) async {});
+      whenListen(
+        status,
+        const Stream<WithdrawalStatusState>.empty(),
+        initialState: WithdrawalStatusLoadedState(pendingWithdrawal),
+      );
+
+      await tester.pumpWidget(
+        _createTestWalletWidget(
+          BlocProvider<WithdrawalStatusCubit>.value(
+            value: status,
+            child: const WorkerWithdrawStatusPage(withdrawalId: 'w-1'),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
-      expect(find.text('Yêu cầu rút tiền'), findsOneWidget);
+      verify(() => status.load('w-1')).called(1);
       expect(find.text('Đã gửi yêu cầu rút tiền thành công!'), findsOneWidget);
-      expect(find.text('2.000.000đ'), findsOneWidget);
-      expect(find.text('Vietcombank ••• 4821'), findsOneWidget);
-
-      // Timeline steps
+      expect(find.byKey(const Key('withdrawal_amount')), findsOneWidget);
+      expect(find.text('500.000đ'), findsOneWidget);
+      expect(find.text('VCB ••• 7890'), findsOneWidget);
+      expect(find.byKey(const Key('withdrawal_status_pendingApproval')), findsOneWidget);
       expect(find.text('Đã gửi yêu cầu'), findsOneWidget);
-      expect(find.text('Chờ kế toán duyệt (trong 24 giờ)'), findsOneWidget);
-      expect(find.text('Đã chuyển khoản'), findsOneWidget);
 
-      // Back to wallet CTA
-      final backWalletBtn = find.text('Về ví thu nhập');
-      expect(backWalletBtn, findsOneWidget);
-      await tester.tap(backWalletBtn);
+      await tester.tap(find.text('Về ví thu nhập'));
       await tester.pumpAndSettle();
-
       expect(find.text('WalletTarget'), findsOneWidget);
     });
   });
+}
+
+extension on WithdrawDraft {
+  WithdrawState get ready => WithdrawReadyState(this);
 }

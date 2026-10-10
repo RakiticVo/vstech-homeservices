@@ -1124,7 +1124,6 @@
   "wwdFeeFree": "0đ (Miễn phí)",
   "wwdBalanceAfter": "Số dư sau khi rút",
   "wwdBankCardTitle": "Về tài khoản ngân hàng",
-  "wwdFromKyc": "từ hồ sơ đối tác",
   "wwdPhase1Notice": "Giai đoạn 1: kế toán duyệt và chuyển khoản thủ công trong 24 giờ làm việc.",
   "wwdContinueCta": "Tiếp tục",
   "wwdMinValidation": "Số tiền rút tối thiểu là 100.000đ",
@@ -1513,5 +1512,15 @@
   "wwalletStatusFailed": "Thất bại",
   "wwalletEmpty": "Chưa có giao dịch nào",
   "wtxType": "Loại giao dịch",
-  "wtxDescription": "Nội dung"
+  "wtxDescription": "Nội dung",
+  "wwdBankCodeLabel": "Mã ngân hàng",
+  "wwdBankCodeHint": "VD: VCB, TCB, MB",
+  "wwdAccountNumberLabel": "Số tài khoản",
+  "wwdAccountNumberHint": "Nhập số tài khoản nhận tiền",
+  "wwdStatusPending": "Chờ duyệt",
+  "wwdStatusApproved": "Đã duyệt & chuyển khoản",
+  "wwdStatusRejected": "Bị từ chối",
+  "wwdStatusCancelled": "Đã huỷ",
+  "wwdstClosedTitle": "Yêu cầu rút tiền không thành công",
+  "wwdstStep3Pending": "Sau khi kế toán duyệt yêu cầu"
 }

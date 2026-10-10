@@ -7,6 +7,8 @@ import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/features/wallet/domain/entities/wallet.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/transaction_detail_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdraw_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawal_status_cubit.dart';
 
 import '../../../fixtures/wallet/wallet_fixtures.dart';
 import '../../../helpers/mocks.dart';
@@ -74,6 +76,85 @@ void main() {
     act: (cubit) => cubit.load('t-1'),
     expect: () => [const TransactionDetailLoadingState(), TransactionDetailLoadedState(earning)],
   );
+
+  group('withdraw', _withdrawTests);
 }
 
 late MockGetTransactionUseCase _getTransaction;
+
+void _withdrawTests() {
+  late MockGetWalletUseCase getWallet;
+  late MockCreateWithdrawalUseCase createWithdrawal;
+
+  setUp(() {
+    getWallet = MockGetWalletUseCase();
+    createWithdrawal = MockCreateWithdrawalUseCase();
+  });
+
+  const draft = WithdrawDraft(balance: 4860000);
+  final ready = draft.copyWith(amount: 1000000, bankCode: 'VCB', bankAccountNumber: '123');
+
+  blocTest<WithdrawCubit, WithdrawState>(
+    'load reads the available balance',
+    setUp: () => when(() => getWallet()).thenAnswer((_) async => const Ok<Wallet>(wallet)),
+    build: () => WithdrawCubit(getWallet, createWithdrawal),
+    act: (cubit) => cubit.load(),
+    expect: () => [const WithdrawLoadingState(), const WithdrawEditingState(draft)],
+  );
+
+  blocTest<WithdrawCubit, WithdrawState>(
+    'review accepts a valid form and keeps editing otherwise',
+    build: () => WithdrawCubit(getWallet, createWithdrawal),
+    seed: () => const WithdrawEditingState(draft),
+    act: (cubit) {
+      cubit
+        ..review(amount: 50000, bankCode: 'VCB', bankAccountNumber: '123')
+        ..review(amount: 1000000, bankCode: ' VCB ', bankAccountNumber: '123');
+    },
+    expect: () => [
+      WithdrawEditingState(draft.copyWith(amount: 50000, bankCode: 'VCB', bankAccountNumber: '123')),
+      WithdrawReadyState(ready),
+    ],
+  );
+
+  blocTest<WithdrawCubit, WithdrawState>(
+    'submit creates the withdrawal against the balance',
+    setUp: () => when(
+      () => createWithdrawal(amount: 1000000, bankCode: 'VCB', bankAccountNumber: '123', availableBalance: 4860000),
+    ).thenAnswer((_) async => Ok(pendingWithdrawal)),
+    build: () => WithdrawCubit(getWallet, createWithdrawal),
+    seed: () => WithdrawReadyState(ready),
+    act: (cubit) => cubit.submit(),
+    expect: () => [WithdrawSubmittingState(ready), WithdrawSubmittedState(ready, pendingWithdrawal)],
+  );
+
+  blocTest<WithdrawCubit, WithdrawState>(
+    'submit failure keeps the form',
+    setUp: () => when(
+      () => createWithdrawal(
+        amount: any(named: 'amount'),
+        bankCode: any(named: 'bankCode'),
+        bankAccountNumber: any(named: 'bankAccountNumber'),
+        availableBalance: any(named: 'availableBalance'),
+      ),
+    ).thenAnswer((_) async => const Err<Withdrawal>(_offline)),
+    build: () => WithdrawCubit(getWallet, createWithdrawal),
+    seed: () => WithdrawReadyState(ready),
+    act: (cubit) => cubit.submit(),
+    expect: () => [WithdrawSubmittingState(ready), WithdrawSubmitErrorState(ready, _offline)],
+  );
+
+  blocTest<WithdrawalStatusCubit, WithdrawalStatusState>(
+    'status loads the withdrawal',
+    setUp: () {
+      final getWithdrawal = MockGetWithdrawalUseCase();
+      when(() => getWithdrawal('w-1')).thenAnswer((_) async => Ok(pendingWithdrawal));
+      _getWithdrawal = getWithdrawal;
+    },
+    build: () => WithdrawalStatusCubit(_getWithdrawal),
+    act: (cubit) => cubit.load('w-1'),
+    expect: () => [const WithdrawalStatusLoadingState(), WithdrawalStatusLoadedState(pendingWithdrawal)],
+  );
+}
+
+late MockGetWithdrawalUseCase _getWithdrawal;

@@ -1124,7 +1124,6 @@
   "wwdFeeFree": "0đ (Free)",
   "wwdBalanceAfter": "Balance after",
   "wwdBankCardTitle": "To bank account",
-  "wwdFromKyc": "from partner profile",
   "wwdPhase1Notice": "Phase 1: accounting approves and transfers manually within 24 working hours.",
   "wwdContinueCta": "Continue",
   "wwdMinValidation": "Minimum withdrawal is 100.000đ",
@@ -1393,5 +1392,15 @@
   "wwalletStatusFailed": "Failed",
   "wwalletEmpty": "No transactions yet",
   "wtxType": "Type",
-  "wtxDescription": "Details"
+  "wtxDescription": "Details",
+  "wwdBankCodeLabel": "Bank code",
+  "wwdBankCodeHint": "e.g. VCB, TCB, MB",
+  "wwdAccountNumberLabel": "Account number",
+  "wwdAccountNumberHint": "Account that receives the money",
+  "wwdStatusPending": "Awaiting approval",
+  "wwdStatusApproved": "Approved & transferred",
+  "wwdStatusRejected": "Rejected",
+  "wwdStatusCancelled": "Cancelled",
+  "wwdstClosedTitle": "Withdrawal request not completed",
+  "wwdstStep3Pending": "Once accounting approves the request"
 }

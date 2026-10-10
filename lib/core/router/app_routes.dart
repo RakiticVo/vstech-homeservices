@@ -118,6 +118,8 @@ abstract final class AppRoutes {
   static const String workerWithdraw = '/worker/wallet/withdraw';
   static const String workerWithdrawPin = '/worker/wallet/withdraw/pin';
   static const String workerWithdrawStatus = '/worker/wallet/withdraw/status';
+  static String workerWithdrawStatusLocation(String withdrawalId) =>
+      '$workerWithdrawStatus?id=${Uri.encodeComponent(withdrawalId)}';
   static const String workerSchedule = '/worker/schedule';
   static const String workerAvailability = '/worker/schedule/availability';
   static const String workerWorkZone = '/worker/profile/zone';

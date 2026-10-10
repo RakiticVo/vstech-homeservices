@@ -80,6 +80,8 @@ import 'package:vstech_home_services/features/tracking/presentation/pages/worker
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_executing_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/transaction_detail_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdraw_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawal_status_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_transaction_detail_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_wallet_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_withdraw_page.dart';
@@ -494,20 +496,20 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         child: WorkerTransactionDetailPage(transactionId: _bookingId(state)),
       ),
     ),
-    GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
-    GoRoute(
-      path: AppRoutes.workerWithdrawPin,
-      builder: (context, state) {
-        final amount = state.extra as String? ?? state.uri.queryParameters['amount'];
-        return WorkerWithdrawPinPage(withdrawalAmount: amount);
-      },
+    // One WithdrawCubit shared by the amount/bank form and the PIN step.
+    ShellRoute(
+      builder: (context, state, child) => BlocProvider(create: (_) => getIt<WithdrawCubit>(), child: child),
+      routes: [
+        GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
+        GoRoute(path: AppRoutes.workerWithdrawPin, builder: (context, state) => const WorkerWithdrawPinPage()),
+      ],
     ),
     GoRoute(
       path: AppRoutes.workerWithdrawStatus,
-      builder: (context, state) {
-        final amount = state.extra as String? ?? state.uri.queryParameters['amount'];
-        return WorkerWithdrawStatusPage(withdrawalAmount: amount);
-      },
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<WithdrawalStatusCubit>(),
+        child: WorkerWithdrawStatusPage(withdrawalId: _bookingId(state)),
+      ),
     ),
     GoRoute(path: AppRoutes.workerSchedule, builder: (context, state) => const WorkerScheduleWeekPage()),
     GoRoute(path: AppRoutes.workerAvailability, builder: (context, state) => const WorkerAvailabilityPage()),

@@ -45,6 +45,8 @@ import 'package:vstech_home_services/features/wallet/domain/repositories/wallet_
 import 'package:vstech_home_services/features/wallet/domain/usecases/wallet_use_cases.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/transaction_detail_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdraw_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawal_status_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 
@@ -165,3 +167,7 @@ class MockGetTransactionUseCase extends Mock implements GetTransactionUseCase;
 class MockWalletCubit extends MockCubit<WalletState> implements WalletCubit;
 
 class MockTransactionDetailCubit extends MockCubit<TransactionDetailState> implements TransactionDetailCubit;
+
+class MockWithdrawCubit extends MockCubit<WithdrawState> implements WithdrawCubit;
+
+class MockWithdrawalStatusCubit extends MockCubit<WithdrawalStatusState> implements WithdrawalStatusCubit;

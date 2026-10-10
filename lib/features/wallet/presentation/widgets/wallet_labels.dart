@@ -66,3 +66,53 @@ class TransactionStatusChip extends StatelessWidget {
     );
   }
 }
+
+/// Localized label for a withdrawal status.
+String withdrawalStatusLabel(BuildContext context, WithdrawalStatus status) {
+  final l10n = context.l10n;
+  return switch (status) {
+    WithdrawalStatus.pendingApproval => l10n.wwdStatusPending,
+    WithdrawalStatus.approved => l10n.wwdStatusApproved,
+    WithdrawalStatus.rejected => l10n.wwdStatusRejected,
+    WithdrawalStatus.cancelled => l10n.wwdStatusCancelled,
+    WithdrawalStatus.unknown => l10n.bookingStatusUnknown,
+  };
+}
+
+/// Withdrawal status as Icon + Label + Color.
+class WithdrawalStatusChip extends StatelessWidget {
+  const WithdrawalStatusChip({required this.status, super.key});
+
+  final WithdrawalStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final (icon, color) = switch (status) {
+      WithdrawalStatus.pendingApproval => (Icons.schedule, AppColors.warning),
+      WithdrawalStatus.approved => (Icons.check_circle_outline, AppColors.successDark),
+      WithdrawalStatus.rejected => (Icons.cancel_outlined, AppColors.error),
+      WithdrawalStatus.cancelled => (Icons.block, AppColors.textSecondary),
+      WithdrawalStatus.unknown => (Icons.help_outline, AppColors.textSecondary),
+    };
+    return Container(
+      key: Key('withdrawal_status_${status.name}'),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.chip),
+        border: Border.all(color: color),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: 4),
+          Text(
+            withdrawalStatusLabel(context, status),
+            style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
+          ),
+        ],
+      ),
+    );
+  }
+}

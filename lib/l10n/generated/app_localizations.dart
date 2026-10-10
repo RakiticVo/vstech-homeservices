@@ -5036,12 +5036,6 @@ abstract class AppLocalizations {
   /// **'Về tài khoản ngân hàng'**
   String get wwdBankCardTitle;
 
-  /// No description provided for @wwdFromKyc.
-  ///
-  /// In vi, this message translates to:
-  /// **'từ hồ sơ đối tác'**
-  String get wwdFromKyc;
-
   /// No description provided for @wwdPhase1Notice.
   ///
   /// In vi, this message translates to:
@@ -6534,6 +6528,66 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Nội dung'**
   String get wtxDescription;
+
+  /// No description provided for @wwdBankCodeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã ngân hàng'**
+  String get wwdBankCodeLabel;
+
+  /// No description provided for @wwdBankCodeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: VCB, TCB, MB'**
+  String get wwdBankCodeHint;
+
+  /// No description provided for @wwdAccountNumberLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tài khoản'**
+  String get wwdAccountNumberLabel;
+
+  /// No description provided for @wwdAccountNumberHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập số tài khoản nhận tiền'**
+  String get wwdAccountNumberHint;
+
+  /// No description provided for @wwdStatusPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ duyệt'**
+  String get wwdStatusPending;
+
+  /// No description provided for @wwdStatusApproved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã duyệt & chuyển khoản'**
+  String get wwdStatusApproved;
+
+  /// No description provided for @wwdStatusRejected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bị từ chối'**
+  String get wwdStatusRejected;
+
+  /// No description provided for @wwdStatusCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã huỷ'**
+  String get wwdStatusCancelled;
+
+  /// No description provided for @wwdstClosedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu rút tiền không thành công'**
+  String get wwdstClosedTitle;
+
+  /// No description provided for @wwdstStep3Pending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sau khi kế toán duyệt yêu cầu'**
+  String get wwdstStep3Pending;
 }
 
 class _AppLocalizationsDelegate

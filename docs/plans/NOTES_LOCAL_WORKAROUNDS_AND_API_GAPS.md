@@ -1,6 +1,6 @@
 # Ghi chú cần biết — chỗ đang làm tạm ở app & API còn thiếu
 
-> Cập nhật: 2026-10-10 (sau Pha 3). Tổng hợp từ `API_INTEGRATION_PLAN.md` §6 và các commit Pha 0–3.
+> Cập nhật: 2026-10-10 (sau Pha 4). Tổng hợp từ `API_INTEGRATION_PLAN.md` §6 và các commit Pha 0–3.
 > Mục đích: (1) biết app đang **giả lập / lưu tạm trên máy** ở đâu, (2) có danh sách gửi team backend.
 
 ---
@@ -38,6 +38,11 @@
 | L13 | **Huỷ đơn / khiếu nại** | Màn xác nhận, **không gửi lý do / loại vấn đề / ảnh** (đã ẩn các ô này) | Cho `cancel` / `dispute` nhận body (lý do, mô tả, ảnh) | `customer_cancellation_page.dart`, `dispute_report_page.dart` |
 | L14 | **Đặt lịch**: gói, add-on, phụ phí loại nhà, voucher, chọn phương thức thanh toán | **Đã ẩn** — giá chỉ lấy từ `POST /bookings/estimate` | API nếu sản phẩm cần các lựa chọn này | `booking_step1..3` |
 | L15 | **Khuyến mãi trên Home** | **Đã ẩn** | API khuyến mãi | `customer_home_page.dart` |
+| L17 | **PIN ví** khi rút tiền | Màn PIN **giả lập** — 6 số bất kỳ đều qua, rồi mới gửi yêu cầu rút | API đặt / xác thực PIN ví (hoặc OTP rút tiền) | `worker_withdraw_pin_page.dart` |
+| L18 | **Tài khoản ngân hàng nhận tiền** | Thợ **nhập tay** mã ngân hàng + số tài khoản mỗi lần rút (bỏ thẻ ngân hàng viết cứng) | API lưu / lấy tài khoản ngân hàng (hoặc lấy từ hồ sơ KYC) + danh sách mã ngân hàng | `worker_withdraw_page.dart` |
+| L19 | **Mức rút tối thiểu 100.000đ** | Quy tắc **của app** (theo thiết kế) — API không ghi giới hạn này | Backend xác nhận có giới hạn tối thiểu không | `withdraw_cubit.dart` |
+| L20 | **Tổng thu nhập / đã rút**, phí & thực nhận của từng giao dịch | **Đã bỏ** khỏi màn Ví / Chi tiết giao dịch | API tổng hợp ví + chi tiết phí của giao dịch | `worker_wallet_page.dart`, `worker_transaction_detail_page.dart` |
+| L21 | **Chi tiết 1 giao dịch / 1 yêu cầu rút** | Đọc cache; không có thì dò tối đa 3 trang | `GET /wallets/me/transactions/{id}`, `GET /wallets/withdrawals/{id}` | `wallet_use_cases.dart` |
 | L16 | **Ngôn ngữ** (vi/en) | Chỉ đổi trên máy, không lưu vào hồ sơ | Đã có field `locale` trong `PUT /profiles` — **chưa nối** (tính năng, không cần API mới) | `language_toggle_button.dart` |
 
 ---
@@ -65,6 +70,7 @@
 | C7 | Khiếu nại: sơ đồ trạng thái cho từ IN_PROGRESS, ghi chú nói chỉ khi COMPLETED | Chỉ cho khi COMPLETED |
 | C8 | `RegisterRequest`: OpenAPI không đánh dấu `required`, doc ghi tất cả bắt buộc | Gửi đủ 5 field |
 | C9 | WebSocket: CLAUDE.md ghi STOMP, doc (`09-location-tracking`, `11-appendices`) là JSON thuần, "không dùng subprotocol" | Chưa làm realtime — chốt trước Pha 5 |
+| C11 | Ví: doc dùng `id`/`type` (giao dịch) và `id`/`reason` (rút tiền), OpenAPI dùng `transactionId`/`txType` và `requestId`/`rejectionReason` | Đọc được cả hai |
 | C10 | `technicianId` trong `PUT /technician/location`: UUID nhưng server bỏ qua | Không gửi field này |
 
 ---

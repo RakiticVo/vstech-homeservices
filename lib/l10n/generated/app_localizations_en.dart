@@ -2676,9 +2676,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wwdBankCardTitle => 'To bank account';
 
   @override
-  String get wwdFromKyc => 'from partner profile';
-
-  @override
   String get wwdPhase1Notice =>
       'Phase 1: accounting approves and transfers manually within 24 working hours.';
 
@@ -3512,4 +3509,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wtxDescription => 'Details';
+
+  @override
+  String get wwdBankCodeLabel => 'Bank code';
+
+  @override
+  String get wwdBankCodeHint => 'e.g. VCB, TCB, MB';
+
+  @override
+  String get wwdAccountNumberLabel => 'Account number';
+
+  @override
+  String get wwdAccountNumberHint => 'Account that receives the money';
+
+  @override
+  String get wwdStatusPending => 'Awaiting approval';
+
+  @override
+  String get wwdStatusApproved => 'Approved & transferred';
+
+  @override
+  String get wwdStatusRejected => 'Rejected';
+
+  @override
+  String get wwdStatusCancelled => 'Cancelled';
+
+  @override
+  String get wwdstClosedTitle => 'Withdrawal request not completed';
+
+  @override
+  String get wwdstStep3Pending => 'Once accounting approves the request';
 }

@@ -120,6 +120,10 @@ import 'package:vstech_home_services/features/wallet/presentation/bloc/transacti
     as _i664;
 import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart'
     as _i64;
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdraw_cubit.dart'
+    as _i582;
+import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawal_status_cubit.dart'
+    as _i110;
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart'
     as _i686;
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart'
@@ -335,6 +339,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i664.TransactionDetailCubit>(
       () => _i664.TransactionDetailCubit(gh<_i1023.GetTransactionUseCase>()),
+    );
+    gh.factory<_i582.WithdrawCubit>(
+      () => _i582.WithdrawCubit(
+        gh<_i1023.GetWalletUseCase>(),
+        gh<_i1023.CreateWithdrawalUseCase>(),
+      ),
+    );
+    gh.factory<_i110.WithdrawalStatusCubit>(
+      () => _i110.WithdrawalStatusCubit(gh<_i1023.GetWithdrawalUseCase>()),
     );
     gh.factory<_i541.BookingFlowBloc>(
       () => _i541.BookingFlowBloc(

@@ -17,7 +17,7 @@
 | 1 | Auth & Profile: login, register, logout, splash/role routing, profile/edit/address, guard router | ✅ Code xong 2026-10-07 — ⏳ chờ tài khoản test UAT để smoke test đăng nhập thật |
 | 2 | Khách: danh mục, ước tính, tạo booking, danh sách đơn, huỷ, khiếu nại, duyệt/từ chối báo giá | ✅ Code xong 2026-10-10 (hướng "Gọn theo API") — ⏳ chờ tài khoản test UAT; UI duyệt báo giá chờ Batch 14 |
 | 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ✅ Code xong 2026-10-10 (commit 3.1–3.4) — ⏳ chờ tài khoản test UAT |
-| 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ⏳ Chưa làm |
+| 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ✅ Code xong 2026-10-10 (commit 4.1–4.3) — ⏳ chờ tài khoản test UAT |
 | 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ⏳ Chưa làm |
 
 ### B. UI còn thiếu cho API có sẵn (bạn làm trên Claude Design → mình chuyển sang Flutter + nối API)
@@ -170,6 +170,12 @@ Nhận việc (accept), bắt đầu (start), gửi báo giá (quote), hoàn th�
 
 Wallet balance + transactions (phân trang, filter `type`/`status`), tạo/list yêu cầu rút.
 Money hiển thị qua formatter.
+
+> **Kết quả Pha 4 (2026-10-10):**
+> - Ví: số dư có thể rút + đang tạm giữ từ `GET /wallets/me`; sổ giao dịch phân trang, 4 chip lọc trên dữ liệu đã tải; chi tiết giao dịch theo id (cache / dò 3 trang) có liên kết sang việc.
+> - Rút tiền: số tiền (≥ 100.000đ — quy tắc app, ≤ số dư), mã ngân hàng + số tài khoản nhập tay → PIN **giả lập** → `POST /wallets/withdrawals` → màn trạng thái theo `WithdrawalStatus`.
+> - Bỏ: tổng thu nhập/đã rút, bảng phí–thực nhận trong chi tiết giao dịch, thẻ ngân hàng viết cứng (API không có).
+> - Chưa làm: nạp tiền (`/payments/deposit` — chờ Batch 15), `/payments/withdraw` (trùng `/withdrawals`).
 
 **Pha 5 — Thông báo, Chat, VoIP**
 Notifications (manual load-more, không có metadata phân trang) + settings. Chat: tạo/lấy room
