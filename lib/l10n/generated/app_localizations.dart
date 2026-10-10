@@ -6468,6 +6468,72 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Giá ước tính {estimate}. Giá chốt tối đa 1,5 lần giá ước tính.'**
   String workerFinalPriceHint(String estimate);
+
+  /// No description provided for @wtxTypeDeposit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp tiền vào ví'**
+  String get wtxTypeDeposit;
+
+  /// No description provided for @wtxTypeCommission.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí nền tảng'**
+  String get wtxTypeCommission;
+
+  /// No description provided for @wtxTypeEarning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập công việc'**
+  String get wtxTypeEarning;
+
+  /// No description provided for @wtxTypeTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền tip'**
+  String get wtxTypeTip;
+
+  /// No description provided for @wtxTypeWithdrawal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rút tiền về ngân hàng'**
+  String get wtxTypeWithdrawal;
+
+  /// No description provided for @wtxTypeRefund.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tiền'**
+  String get wtxTypeRefund;
+
+  /// No description provided for @wtxTypeOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch'**
+  String get wtxTypeOther;
+
+  /// No description provided for @wwalletStatusFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thất bại'**
+  String get wwalletStatusFailed;
+
+  /// No description provided for @wwalletEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có giao dịch nào'**
+  String get wwalletEmpty;
+
+  /// No description provided for @wtxType.
+  ///
+  /// In vi, this message translates to:
+  /// **'Loại giao dịch'**
+  String get wtxType;
+
+  /// No description provided for @wtxDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nội dung'**
+  String get wtxDescription;
 }
 
 class _AppLocalizationsDelegate

@@ -1382,5 +1382,16 @@
   "workerContinueJobCta": "Continue job",
   "workerFinalPriceTitle": "Confirm final price",
   "workerFinalPriceLabel": "Final price (đ)",
-  "workerFinalPriceHint": "Estimate {estimate}. The final price can be at most 1.5× the estimate."
+  "workerFinalPriceHint": "Estimate {estimate}. The final price can be at most 1.5× the estimate.",
+  "wtxTypeDeposit": "Wallet top-up",
+  "wtxTypeCommission": "Platform fee",
+  "wtxTypeEarning": "Job earnings",
+  "wtxTypeTip": "Tip",
+  "wtxTypeWithdrawal": "Bank withdrawal",
+  "wtxTypeRefund": "Refund",
+  "wtxTypeOther": "Transaction",
+  "wwalletStatusFailed": "Failed",
+  "wwalletEmpty": "No transactions yet",
+  "wtxType": "Type",
+  "wtxDescription": "Details"
 }

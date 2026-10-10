@@ -3479,4 +3479,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String workerFinalPriceHint(String estimate) {
     return 'Estimate $estimate. The final price can be at most 1.5× the estimate.';
   }
+
+  @override
+  String get wtxTypeDeposit => 'Wallet top-up';
+
+  @override
+  String get wtxTypeCommission => 'Platform fee';
+
+  @override
+  String get wtxTypeEarning => 'Job earnings';
+
+  @override
+  String get wtxTypeTip => 'Tip';
+
+  @override
+  String get wtxTypeWithdrawal => 'Bank withdrawal';
+
+  @override
+  String get wtxTypeRefund => 'Refund';
+
+  @override
+  String get wtxTypeOther => 'Transaction';
+
+  @override
+  String get wwalletStatusFailed => 'Failed';
+
+  @override
+  String get wwalletEmpty => 'No transactions yet';
+
+  @override
+  String get wtxType => 'Type';
+
+  @override
+  String get wtxDescription => 'Details';
 }

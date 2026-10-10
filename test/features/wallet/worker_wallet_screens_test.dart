@@ -1,9 +1,14 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/transaction_detail_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_transaction_detail_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_wallet_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_withdraw_page.dart';
@@ -11,12 +16,26 @@ import 'package:vstech_home_services/features/wallet/presentation/pages/worker_w
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_withdraw_status_page.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
+import '../../fixtures/wallet/wallet_fixtures.dart';
+import '../../helpers/mocks.dart';
+
 Widget _createTestWalletWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(path: '/', builder: (context, state) => child),
-      GoRoute(path: AppRoutes.workerWallet, builder: (context, state) => const WorkerWalletPage()),
+      GoRoute(
+        path: AppRoutes.workerWallet,
+        builder: (context, state) => const Scaffold(body: Text('WalletTarget')),
+      ),
+      GoRoute(
+        path: AppRoutes.workerTransactionDetail,
+        builder: (context, state) => Scaffold(body: Text('TxDetail:${state.uri.queryParameters['id']}')),
+      ),
+      GoRoute(
+        path: AppRoutes.workerJobDetail,
+        builder: (context, state) => Scaffold(body: Text('JobDetail:${state.uri.queryParameters['id']}')),
+      ),
       GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
       GoRoute(path: AppRoutes.workerWithdrawPin, builder: (context, state) => const WorkerWithdrawPinPage()),
       GoRoute(path: AppRoutes.workerWithdrawStatus, builder: (context, state) => const WorkerWithdrawStatusPage()),
@@ -45,47 +64,76 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Batch 13: Worker Wallet & Withdrawal Tests', () {
-    testWidgets('WorkerWalletPage renders balance cards, tabs, and ledger transactions', (tester) async {
-      await tester.pumpWidget(_createTestWalletWidget(const WorkerWalletPage()));
+    testWidgets('WorkerWalletPage shows API balance, on-hold amount and filters the ledger', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final walletCubit = MockWalletCubit();
+      when(walletCubit.load).thenAnswer((_) async {});
+      when(walletCubit.loadMore).thenAnswer((_) async {});
+      whenListen(
+        walletCubit,
+        const Stream<WalletState>.empty(),
+        initialState: WalletLoadedState(wallet: wallet, transactions: [earning, withdrawalTx], page: 0, hasMore: true),
+      );
+
+      await tester.pumpWidget(
+        _createTestWalletWidget(BlocProvider<WalletCubit>.value(value: walletCubit, child: const WorkerWalletPage())),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Ví thu nhập'), findsWidgets);
-      expect(find.text('Số dư có thể rút'), findsWidgets);
+      expect(find.byKey(const Key('wallet_available_balance_text')), findsOneWidget);
       expect(find.text('4.860.000đ'), findsWidgets);
-      expect(find.text('Rút về tài khoản'), findsOneWidget);
+      expect(find.text('340.000đ'), findsOneWidget);
+      // Totals earned/withdrawn are not in the API any more.
+      expect(find.text('Tổng thu nhập đã về'), findsNothing);
 
-      // Verify tabs exist
-      expect(find.text('Tất cả'), findsOneWidget);
-      expect(find.text('Thu nhập'), findsOneWidget);
-      expect(find.text('Rút tiền'), findsOneWidget);
-      expect(find.text('Tạm giữ'), findsOneWidget);
+      expect(find.text('Thu nhập đơn #501'), findsOneWidget);
+      expect(find.text('+297.500đ'), findsOneWidget);
+      expect(find.text('−2.000.000đ'), findsOneWidget);
 
-      // Tap on a tab
-      await tester.tap(find.text('Thu nhập'));
+      await tester.tap(find.byKey(const Key('wallet_filter_chip_2')));
       await tester.pumpAndSettle();
+      expect(find.text('+297.500đ'), findsNothing);
+      expect(find.text('−2.000.000đ'), findsOneWidget);
 
-      expect(find.text('Tất cả'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('wallet_load_more_button')));
+      verify(walletCubit.loadMore).called(1);
+
+      await tester.tap(find.byKey(const Key('tx_item_42')));
+      await tester.pumpAndSettle();
+      expect(find.text('TxDetail:42'), findsOneWidget);
     });
 
-    testWidgets('WorkerTransactionDetailPage renders breakdown and handles orders link', (tester) async {
-      await tester.pumpWidget(_createTestWalletWidget(const WorkerTransactionDetailPage(txId: 'j12')));
+    testWidgets('WorkerTransactionDetailPage shows the ledger entry and links the related job', (tester) async {
+      final detail = MockTransactionDetailCubit();
+      when(() => detail.load(any())).thenAnswer((_) async {});
+      whenListen(
+        detail,
+        const Stream<TransactionDetailState>.empty(),
+        initialState: TransactionDetailLoadedState(earning),
+      );
+
+      await tester.pumpWidget(
+        _createTestWalletWidget(
+          BlocProvider<TransactionDetailCubit>.value(
+            value: detail,
+            child: const WorkerTransactionDetailPage(transactionId: 't-1'),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
+      verify(() => detail.load('t-1')).called(1);
       expect(find.text('Chi tiết giao dịch'), findsOneWidget);
-      expect(find.text('Chi tiết số tiền'), findsOneWidget);
-      expect(find.text('Khách trả'), findsOneWidget);
-      expect(find.text('Phí nền tảng 15% trên giá dịch vụ'), findsOneWidget);
-      expect(find.text('Thực nhận'), findsOneWidget);
-      expect(find.text('Thông tin giao dịch'), findsOneWidget);
-      expect(find.text('Mã giao dịch'), findsOneWidget);
+      expect(find.byKey(const Key('transaction_amount')), findsOneWidget);
+      expect(find.text('+297.500đ'), findsOneWidget);
+      expect(find.text('Thành công'), findsOneWidget);
+      expect(find.text('#t-1'), findsOneWidget);
 
-      // Tap on related order link
-      final orderLink = find.byKey(const Key('wtx_related_order_link'));
-      expect(orderLink, findsOneWidget);
-      await tester.tap(orderLink);
+      await tester.tap(find.byKey(const Key('transaction_related_order')));
       await tester.pumpAndSettle();
-
-      expect(find.text('JobsHub'), findsOneWidget);
+      expect(find.text('JobDetail:501'), findsOneWidget);
     });
 
     testWidgets('WorkerWithdrawPage validates quick chips and enables continue button', (tester) async {
@@ -155,7 +203,7 @@ void main() {
       await tester.tap(backWalletBtn);
       await tester.pumpAndSettle();
 
-      expect(find.text('Ví thu nhập'), findsWidgets);
+      expect(find.text('WalletTarget'), findsOneWidget);
     });
   });
 }

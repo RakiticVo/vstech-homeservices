@@ -113,6 +113,8 @@ abstract final class AppRoutes {
   // --- worker wallet, schedule & operations (Batch 13) ---
   static const String workerWallet = '/worker/wallet';
   static const String workerTransactionDetail = '/worker/wallet/transaction-detail';
+  static String workerTransactionDetailLocation(String transactionId) =>
+      '$workerTransactionDetail?id=${Uri.encodeComponent(transactionId)}';
   static const String workerWithdraw = '/worker/wallet/withdraw';
   static const String workerWithdrawPin = '/worker/wallet/withdraw/pin';
   static const String workerWithdrawStatus = '/worker/wallet/withdraw/status';

@@ -1502,5 +1502,16 @@
         "type": "String"
       }
     }
-  }
+  },
+  "wtxTypeDeposit": "Nạp tiền vào ví",
+  "wtxTypeCommission": "Phí nền tảng",
+  "wtxTypeEarning": "Thu nhập công việc",
+  "wtxTypeTip": "Tiền tip",
+  "wtxTypeWithdrawal": "Rút tiền về ngân hàng",
+  "wtxTypeRefund": "Hoàn tiền",
+  "wtxTypeOther": "Giao dịch",
+  "wwalletStatusFailed": "Thất bại",
+  "wwalletEmpty": "Chưa có giao dịch nào",
+  "wtxType": "Loại giao dịch",
+  "wtxDescription": "Nội dung"
 }

@@ -116,6 +116,10 @@ import 'package:vstech_home_services/features/wallet/domain/repositories/wallet_
     as _i637;
 import 'package:vstech_home_services/features/wallet/domain/usecases/wallet_use_cases.dart'
     as _i1023;
+import 'package:vstech_home_services/features/wallet/presentation/bloc/transaction_detail_cubit.dart'
+    as _i664;
+import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart'
+    as _i64;
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart'
     as _i686;
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart'
@@ -311,6 +315,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1023.GetWithdrawalUseCase>(
       () => _i1023.GetWithdrawalUseCase(gh<_i637.WalletRepository>()),
     );
+    gh.factory<_i1023.GetTransactionUseCase>(
+      () => _i1023.GetTransactionUseCase(gh<_i637.WalletRepository>()),
+    );
     gh.factory<_i294.GetProfileUseCase>(
       () => _i294.GetProfileUseCase(gh<_i1025.ProfileRepository>()),
     );
@@ -325,6 +332,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i728.CategoriesCubit>(
       () => _i728.CategoriesCubit(gh<_i894.GetCategoriesUseCase>()),
+    );
+    gh.factory<_i664.TransactionDetailCubit>(
+      () => _i664.TransactionDetailCubit(gh<_i1023.GetTransactionUseCase>()),
     );
     gh.factory<_i541.BookingFlowBloc>(
       () => _i541.BookingFlowBloc(
@@ -346,6 +356,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i857.SplashCubit(
         gh<_i371.SessionCubit>(),
         gh<_i294.GetProfileUseCase>(),
+      ),
+    );
+    gh.factory<_i64.WalletCubit>(
+      () => _i64.WalletCubit(
+        gh<_i1023.GetWalletUseCase>(),
+        gh<_i1023.GetTransactionsUseCase>(),
       ),
     );
     return this;

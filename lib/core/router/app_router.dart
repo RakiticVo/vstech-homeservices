@@ -78,6 +78,8 @@ import 'package:vstech_home_services/features/tracking/presentation/pages/custom
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_arrived_page.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_en_route_page.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_executing_page.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/transaction_detail_cubit.dart';
+import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_transaction_detail_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_wallet_page.dart';
 import 'package:vstech_home_services/features/wallet/presentation/pages/worker_withdraw_page.dart';
@@ -474,13 +476,23 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(path: AppRoutes.changePassword, builder: (context, state) => const ChangePasswordPage()),
     GoRoute(path: AppRoutes.deleteAccount, builder: (context, state) => const DeleteAccountPage()),
     // --- Batch 13: Worker Wallet, Withdrawals, Schedule & Operations ---
-    GoRoute(path: AppRoutes.workerWallet, builder: (context, state) => const WorkerWalletPage()),
+    GoRoute(
+      path: AppRoutes.workerWallet,
+      builder: (context, state) => BlocProvider(
+        create: (_) {
+          final cubit = getIt<WalletCubit>();
+          unawaited(cubit.load());
+          return cubit;
+        },
+        child: const WorkerWalletPage(),
+      ),
+    ),
     GoRoute(
       path: AppRoutes.workerTransactionDetail,
-      builder: (context, state) {
-        final txId = state.uri.queryParameters['id'] ?? 'j12';
-        return WorkerTransactionDetailPage(txId: txId);
-      },
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<TransactionDetailCubit>(),
+        child: WorkerTransactionDetailPage(transactionId: _bookingId(state)),
+      ),
     ),
     GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
     GoRoute(
@@ -511,7 +523,7 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
   ],
 );
 
-/// `?id=` of a booking-scoped route.
+/// `?id=` of an id-scoped route (booking, transaction, withdrawal).
 String _bookingId(GoRouterState state) => state.uri.queryParameters['id'] ?? '';
 
 /// Provides a fresh [WorkerTaskCubit]; the page loads its booking.

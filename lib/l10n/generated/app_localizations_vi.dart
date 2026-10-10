@@ -3480,4 +3480,37 @@ class AppLocalizationsVi extends AppLocalizations {
   String workerFinalPriceHint(String estimate) {
     return 'Giá ước tính $estimate. Giá chốt tối đa 1,5 lần giá ước tính.';
   }
+
+  @override
+  String get wtxTypeDeposit => 'Nạp tiền vào ví';
+
+  @override
+  String get wtxTypeCommission => 'Phí nền tảng';
+
+  @override
+  String get wtxTypeEarning => 'Thu nhập công việc';
+
+  @override
+  String get wtxTypeTip => 'Tiền tip';
+
+  @override
+  String get wtxTypeWithdrawal => 'Rút tiền về ngân hàng';
+
+  @override
+  String get wtxTypeRefund => 'Hoàn tiền';
+
+  @override
+  String get wtxTypeOther => 'Giao dịch';
+
+  @override
+  String get wwalletStatusFailed => 'Thất bại';
+
+  @override
+  String get wwalletEmpty => 'Chưa có giao dịch nào';
+
+  @override
+  String get wtxType => 'Loại giao dịch';
+
+  @override
+  String get wtxDescription => 'Nội dung';
 }

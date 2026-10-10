@@ -80,3 +80,28 @@ class GetWithdrawalUseCase {
     return const Err(Failure(kind: NetworkErrorKind.server, errorCode: 'HS-404-0021', statusCode: 404));
   }
 }
+
+/// One transaction by id: cache first, otherwise the first pages of the ledger.
+@injectable
+class GetTransactionUseCase {
+  const GetTransactionUseCase(this._repository);
+
+  final WalletRepository _repository;
+
+  static const int maxPages = 3;
+
+  Future<Result<WalletTransaction>> call(String id) async {
+    final cached = _repository.cachedTransaction(id);
+    if (cached != null) return Ok(cached);
+    for (var page = 0; page < maxPages; page++) {
+      final result = await _repository.getTransactions(page: page);
+      if (result is Err<WalletPage<WalletTransaction>>) return Err(result.failure);
+      final value = (result as Ok<WalletPage<WalletTransaction>>).value;
+      for (final transaction in value.items) {
+        if (transaction.id == id) return Ok(transaction);
+      }
+      if (!value.hasMore) break;
+    }
+    return const Err(Failure(kind: NetworkErrorKind.server, errorCode: 'HS-404-0001', statusCode: 404));
+  }
+}
