@@ -7,6 +7,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Docs
+- `docs/plans/NOTES_LOCAL_WORKAROUNDS_AND_API_GAPS.md`: ghi chú việc cần làm, các chỗ app đang làm tạm ở local thay vì API (OTP giả lập, Online/Offline, từ chối việc, chi tiết đơn, sổ địa chỉ, upload ảnh…), màn còn mock, mâu thuẫn tài liệu API và lỗi backend trên UAT.
+
 ### Added — Pha 3 tích hợp API (luồng thợ)
 - **3.1** Thao tác của thợ trên đơn: DTO `CompleteBookingRequest`, `SubmitQuoteRequest`/`QuoteItemRequest`; `accept`, `start`, `complete`, `submitQuote` trong datasource/repository (đều gửi `X-Idempotency-Key`); use case Accept/Start/Complete (chặn `actualPrice` > 1,5 × giá ước tính → `HS-400-0012`)/SubmitQuote (bắt buộc ≥ 1 dòng có tên và số tiền dương); unit test.
 - **3.2** Gửi GPS khi thợ Online: `LocationUpdateRequest` (không gửi `technicianId` — server bỏ qua) + `PUT /technician/location`; `LocationService.watchPosition()`; `WorkerPresenceCubit` (singleton) lấy vị trí liên tục và gửi bản mới nhất mỗi 2 giây khi Online, tự Offline khi đăng xuất; nút Online/Nghỉ ngơi trên Dashboard dùng cubit này (trước là trạng thái cục bộ), báo lỗi quyền vị trí bằng SnackBar. Bật/tắt Online chỉ ở phía app vì API chưa có endpoint. Unit/bloc/widget test.

@@ -7,6 +7,8 @@
 
 ## 0. Lộ trình & tiến độ (cập nhật mỗi khi xong một phần)
 
+> 📌 Tóm tắt những chỗ app đang làm tạm ở local, API còn thiếu, mâu thuẫn tài liệu và việc cần làm: [`NOTES_LOCAL_WORKAROUNDS_AND_API_GAPS.md`](NOTES_LOCAL_WORKAROUNDS_AND_API_GAPS.md).
+
 ### A. Tích hợp API vào app (mình làm)
 
 | Pha | Nội dung | Trạng thái |
