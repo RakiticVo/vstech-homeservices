@@ -9,6 +9,7 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ### Added — Pha 3 tích hợp API (luồng thợ)
 - **3.1** Thao tác của thợ trên đơn: DTO `CompleteBookingRequest`, `SubmitQuoteRequest`/`QuoteItemRequest`; `accept`, `start`, `complete`, `submitQuote` trong datasource/repository (đều gửi `X-Idempotency-Key`); use case Accept/Start/Complete (chặn `actualPrice` > 1,5 × giá ước tính → `HS-400-0012`)/SubmitQuote (bắt buộc ≥ 1 dòng có tên và số tiền dương); unit test.
+- **3.2** Gửi GPS khi thợ Online: `LocationUpdateRequest` (không gửi `technicianId` — server bỏ qua) + `PUT /technician/location`; `LocationService.watchPosition()`; `WorkerPresenceCubit` (singleton) lấy vị trí liên tục và gửi bản mới nhất mỗi 2 giây khi Online, tự Offline khi đăng xuất; nút Online/Nghỉ ngơi trên Dashboard dùng cubit này (trước là trạng thái cục bộ), báo lỗi quyền vị trí bằng SnackBar. Bật/tắt Online chỉ ở phía app vì API chưa có endpoint. Unit/bloc/widget test.
 
 ### Added — Pha 2 tích hợp API (khách đặt lịch, hướng "Gọn theo API")
 - Danh mục dịch vụ: `CategoryRemoteDataSource`, `CategoryRepositoryImpl` (gộp mọi trang, lọc `isActive`), use case + `CategoriesCubit`, `CategoryDetailCubit`; widget `CategoryThumbnail` (ảnh `imageUrl`, có ảnh dự phòng).

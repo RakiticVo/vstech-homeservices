@@ -25,6 +25,9 @@ enum LocationFailure { serviceDisabled, permissionDenied, unavailable }
 abstract interface class LocationService {
   /// Asks for permission when needed. Returns the position or the reason it is unavailable.
   Future<(GeoPoint?, LocationFailure?)> currentPosition();
+
+  /// Continuous position updates. Call [currentPosition] first so permission is granted.
+  Stream<GeoPoint> watchPosition();
 }
 
 @LazySingleton(as: LocationService)
@@ -49,4 +52,9 @@ class GeolocatorLocationService implements LocationService {
       return (null, LocationFailure.unavailable);
     }
   }
+
+  @override
+  Stream<GeoPoint> watchPosition() =>
+      Geolocator.getPositionStream(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high))
+          .map((position) => GeoPoint(position.latitude, position.longitude));
 }

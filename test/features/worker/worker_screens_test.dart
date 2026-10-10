@@ -1,9 +1,16 @@
+import 'dart:async';
+
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:vstech_home_services/core/location/location_service.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/pages/worker_dashboard_page.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/widgets/worker_earnings_card.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/widgets/worker_floating_dock.dart';
@@ -13,7 +20,9 @@ import 'package:vstech_home_services/features/worker_kyc/presentation/pages/work
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_wizard_page.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
-Widget _createTestWorkerWidget(Widget child) {
+import '../../helpers/mocks.dart';
+
+Widget _createTestWorkerWidget(Widget child, {MockWorkerPresenceCubit? presence}) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
@@ -37,7 +46,7 @@ Widget _createTestWorkerWidget(Widget child) {
     ],
   );
 
-  return MaterialApp.router(
+  final app = MaterialApp.router(
     theme: AppTheme.light,
     routerConfig: router,
     localizationsDelegates: const [
@@ -49,6 +58,13 @@ Widget _createTestWorkerWidget(Widget child) {
     supportedLocales: AppLocalizations.supportedLocales,
     locale: const Locale('vi'),
   );
+  return BlocProvider<WorkerPresenceCubit>.value(value: presence ?? _onlinePresence(), child: app);
+}
+
+MockWorkerPresenceCubit _onlinePresence() {
+  final cubit = MockWorkerPresenceCubit();
+  whenListen(cubit, const Stream<WorkerPresenceState>.empty(), initialState: const WorkerOnlineState());
+  return cubit;
 }
 
 void main() {
@@ -78,10 +94,7 @@ void main() {
       expect(find.byType(WorkerFloatingDock), findsOneWidget);
       expect(find.text('Việc'), findsOneWidget);
 
-      // Toggle Online status to Offline
-      await tester.tap(find.text('Đang online'));
-      await tester.pumpAndSettle();
-      expect(find.text('Nghỉ ngơi'), findsOneWidget);
+      // Toggling Online/Offline is covered by the WorkerPresenceCubit test below.
     });
 
     testWidgets('WorkerJobDetailPage displays transparent price breakdown and accept CTA', (tester) async {
@@ -108,6 +121,28 @@ void main() {
       await tester.tap(find.text('Nhận việc ngay'));
       await tester.pump();
       expect(find.text('Đã nhận việc thành công! Vui lòng chuẩn bị di chuyển'), findsOneWidget);
+    });
+
+    testWidgets('WorkerDashboardPage online toggle drives WorkerPresenceCubit and reports GPS errors', (tester) async {
+      final presence = MockWorkerPresenceCubit();
+      final states = StreamController<WorkerPresenceState>.broadcast();
+      addTearDown(states.close);
+      whenListen(presence, states.stream, initialState: const WorkerOfflineState());
+      when(presence.toggle).thenAnswer((_) async {});
+
+      await tester.pumpWidget(_createTestWorkerWidget(const WorkerDashboardPage(), presence: presence));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Nghỉ ngơi'), findsOneWidget);
+      // Offline workers get no job offers.
+      expect(find.byType(WorkerJobRequestCard), findsNothing);
+
+      await tester.tap(find.byKey(const Key('worker_online_toggle')));
+      verify(presence.toggle).called(1);
+
+      states.add(const WorkerPresenceErrorState(LocationFailure.permissionDenied));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('chưa được cấp quyền vị trí'), findsOneWidget);
     });
 
     testWidgets('WorkerKycWizardPage progresses through steps and validates input', (tester) async {

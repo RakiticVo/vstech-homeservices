@@ -100,6 +100,16 @@ import 'package:vstech_home_services/features/orders/presentation/bloc/customer_
     as _i1063;
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart'
     as _i23;
+import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart'
+    as _i308;
+import 'package:vstech_home_services/features/tracking/data/repositories/technician_location_repository_impl.dart'
+    as _i61;
+import 'package:vstech_home_services/features/tracking/domain/repositories/technician_location_repository.dart'
+    as _i435;
+import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart'
+    as _i434;
+import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart'
+    as _i686;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -143,6 +153,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i754.CategoryRemoteDataSource>(
       () => _i754.CategoryRemoteDataSource(gh<_i223.ApiClient>()),
     );
+    gh.factory<_i308.TechnicianLocationRemoteDataSource>(
+      () => _i308.TechnicianLocationRemoteDataSource(gh<_i223.ApiClient>()),
+    );
     gh.lazySingleton<_i731.AuthRepository>(
       () => _i408.AuthRepositoryImpl(
         gh<_i116.AuthRemoteDataSource>(),
@@ -160,6 +173,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1073.RegisterUseCase>(
       () => _i1073.RegisterUseCase(gh<_i731.AuthRepository>()),
+    );
+    gh.lazySingleton<_i435.TechnicianLocationRepository>(
+      () => _i61.TechnicianLocationRepositoryImpl(
+        gh<_i308.TechnicianLocationRemoteDataSource>(),
+      ),
     );
     gh.factory<_i516.RegisterCubit>(
       () => _i516.RegisterCubit(
@@ -250,6 +268,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i983.CategoryDetailCubit>(
       () => _i983.CategoryDetailCubit(gh<_i653.GetCategoryUseCase>()),
     );
+    gh.factory<_i434.UpdateTechnicianLocationUseCase>(
+      () => _i434.UpdateTechnicianLocationUseCase(
+        gh<_i435.TechnicianLocationRepository>(),
+      ),
+    );
     gh.factory<_i294.GetProfileUseCase>(
       () => _i294.GetProfileUseCase(gh<_i1025.ProfileRepository>()),
     );
@@ -272,6 +295,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i54.EstimatePriceUseCase>(),
         gh<_i112.CreateBookingUseCase>(),
         gh<_i69.LocationService>(),
+      ),
+    );
+    gh.lazySingleton<_i686.WorkerPresenceCubit>(
+      () => _i686.WorkerPresenceCubit(
+        gh<_i69.LocationService>(),
+        gh<_i434.UpdateTechnicianLocationUseCase>(),
+        gh<_i371.SessionCubit>(),
       ),
     );
     gh.factory<_i857.SplashCubit>(

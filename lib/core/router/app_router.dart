@@ -88,6 +88,7 @@ import 'package:vstech_home_services/features/warranty/presentation/pages/warran
 import 'package:vstech_home_services/features/warranty/presentation/pages/warranty_status_page.dart';
 import 'package:vstech_home_services/features/warranty/presentation/pages/worker_warranty_decline_page.dart';
 import 'package:vstech_home_services/features/warranty/presentation/pages/worker_warranty_job_detail_page.dart';
+import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/pages/worker_availability_page.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/pages/worker_dashboard_page.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/pages/worker_performance_page.dart';
@@ -169,7 +170,11 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         child: ServiceDetailPage(serviceId: state.uri.queryParameters['id'] ?? ''),
       ),
     ),
-    GoRoute(path: AppRoutes.workerDashboard, builder: (context, state) => const WorkerDashboardPage()),
+    GoRoute(
+      path: AppRoutes.workerDashboard,
+      builder: (context, state) =>
+          BlocProvider.value(value: getIt<WorkerPresenceCubit>(), child: const WorkerDashboardPage()),
+    ),
     GoRoute(path: AppRoutes.workerJobDetail, builder: (context, state) => const WorkerJobDetailPage()),
     GoRoute(
       path: AppRoutes.workerKyc,

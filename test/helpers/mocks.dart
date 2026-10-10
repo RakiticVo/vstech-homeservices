@@ -37,6 +37,9 @@ import 'package:vstech_home_services/features/home/presentation/bloc/categories_
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/customer_orders_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
+import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart';
+import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart';
+import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
 
 // --- core ---
 class MockAuthTokenStore extends Mock implements AuthTokenStore;
@@ -118,3 +121,10 @@ class MockCustomerOrdersCubit extends MockCubit<CustomerOrdersState> implements 
 class MockOrderDetailCubit extends MockCubit<OrderDetailState> implements OrderDetailCubit;
 
 class MockBookingActionCubit extends MockCubit<BookingActionState> implements BookingActionCubit;
+
+// --- worker presence / GPS ---
+class MockTechnicianLocationRemoteDataSource extends Mock implements TechnicianLocationRemoteDataSource;
+
+class MockUpdateTechnicianLocationUseCase extends Mock implements UpdateTechnicianLocationUseCase;
+
+class MockWorkerPresenceCubit extends MockCubit<WorkerPresenceState> implements WorkerPresenceCubit;
