@@ -126,19 +126,13 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
         ),
         title: Text(
           l10n.wwalletTitle,
-          style: AppTextStyles.headlineMd.copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
         ),
         centerTitle: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.sm,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -184,18 +178,12 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
                           backgroundColor: Colors.white,
                           foregroundColor: AppColors.primary,
                           elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppRadius.control),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.control)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.account_balance_wallet_outlined,
-                              size: 18,
-                              color: AppColors.primary,
-                            ),
+                            const Icon(Icons.account_balance_wallet_outlined, size: 18, color: AppColors.primary),
                             const SizedBox(width: AppSpacing.sm),
                             Text(
                               l10n.wwalletWithdrawCta,
@@ -326,10 +314,7 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
         decoration: BoxDecoration(
           color: isSelected ? AppColors.secondarySurface : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.chip),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
-            width: isSelected ? 1.5 : 1.0,
-          ),
+          border: Border.all(color: isSelected ? AppColors.primary : AppColors.border, width: isSelected ? 1.5 : 1.0),
         ),
         child: Text(
           label,
@@ -363,10 +348,7 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
       child: InkWell(
         key: Key('tx_item_${tx.id}'),
         borderRadius: BorderRadius.circular(AppRadius.card),
-        onTap: () => context.push(
-          AppRoutes.workerTransactionDetail,
-          extra: tx,
-        ),
+        onTap: () => context.push(AppRoutes.workerTransactionDetail, extra: tx),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
@@ -378,8 +360,8 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
                   color: tx.status == 'hold'
                       ? const Color(0xFFFDF0D8)
                       : tx.isPositive == true
-                          ? AppColors.secondarySurface
-                          : const Color(0xFFFDE8E4),
+                      ? AppColors.secondarySurface
+                      : const Color(0xFFFDE8E4),
                   borderRadius: BorderRadius.circular(AppRadius.control),
                   border: Border.all(color: AppColors.border),
                 ),
@@ -387,8 +369,8 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
                   tx.status == 'hold'
                       ? Icons.lock_clock
                       : tx.isPositive == true
-                          ? Icons.arrow_downward
-                          : Icons.arrow_upward,
+                      ? Icons.arrow_downward
+                      : Icons.arrow_upward,
                   color: amountColor,
                   size: 20,
                 ),
@@ -409,13 +391,7 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      tx.time,
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textMuted,
-                        fontSize: 11,
-                      ),
-                    ),
+                    Text(tx.time, style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontSize: 11)),
                   ],
                 ),
               ),
@@ -425,11 +401,7 @@ class _WorkerWalletPageState extends State<WorkerWalletPage> {
                 children: [
                   Text(
                     tx.amount,
-                    style: AppTextStyles.bodyMd.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: amountColor,
-                      fontSize: 14,
-                    ),
+                    style: AppTextStyles.bodyMd.copyWith(fontWeight: FontWeight.w800, color: amountColor, fontSize: 14),
                   ),
                   if (tx.status == 'hold')
                     Container(

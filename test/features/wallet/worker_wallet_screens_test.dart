@@ -15,26 +15,11 @@ Widget _createTestWalletWidget(Widget child) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => child,
-      ),
-      GoRoute(
-        path: AppRoutes.workerWallet,
-        builder: (context, state) => const WorkerWalletPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerWithdraw,
-        builder: (context, state) => const WorkerWithdrawPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerWithdrawPin,
-        builder: (context, state) => const WorkerWithdrawPinPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerWithdrawStatus,
-        builder: (context, state) => const WorkerWithdrawStatusPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => child),
+      GoRoute(path: AppRoutes.workerWallet, builder: (context, state) => const WorkerWalletPage()),
+      GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
+      GoRoute(path: AppRoutes.workerWithdrawPin, builder: (context, state) => const WorkerWithdrawPinPage()),
+      GoRoute(path: AppRoutes.workerWithdrawStatus, builder: (context, state) => const WorkerWithdrawStatusPage()),
       GoRoute(
         path: AppRoutes.workerJobsHub,
         builder: (context, state) => const Scaffold(body: Text('JobsHub')),
@@ -51,10 +36,7 @@ Widget _createTestWalletWidget(Widget child) {
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
     ],
-    supportedLocales: const [
-      Locale('vi'),
-      Locale('en'),
-    ],
+    supportedLocales: const [Locale('vi'), Locale('en')],
     locale: const Locale('vi'),
   );
 }
@@ -86,11 +68,7 @@ void main() {
     });
 
     testWidgets('WorkerTransactionDetailPage renders breakdown and handles orders link', (tester) async {
-      await tester.pumpWidget(
-        _createTestWalletWidget(
-          const WorkerTransactionDetailPage(txId: 'j12'),
-        ),
-      );
+      await tester.pumpWidget(_createTestWalletWidget(const WorkerTransactionDetailPage(txId: 'j12')));
       await tester.pumpAndSettle();
 
       expect(find.text('Chi tiết giao dịch'), findsOneWidget);
@@ -136,11 +114,7 @@ void main() {
     });
 
     testWidgets('WorkerWithdrawPinPage keypad input and backspace work as expected', (tester) async {
-      await tester.pumpWidget(
-        _createTestWalletWidget(
-          const WorkerWithdrawPinPage(withdrawalAmount: '1.000.000đ'),
-        ),
-      );
+      await tester.pumpWidget(_createTestWalletWidget(const WorkerWithdrawPinPage(withdrawalAmount: '1.000.000đ')));
       await tester.pumpAndSettle();
 
       expect(find.text('Nhập mã PIN ví'), findsOneWidget);
@@ -162,11 +136,7 @@ void main() {
     });
 
     testWidgets('WorkerWithdrawStatusPage displays 3-stage timeline and back CTA', (tester) async {
-      await tester.pumpWidget(
-        _createTestWalletWidget(
-          const WorkerWithdrawStatusPage(withdrawalAmount: '2.000.000đ'),
-        ),
-      );
+      await tester.pumpWidget(_createTestWalletWidget(const WorkerWithdrawStatusPage(withdrawalAmount: '2.000.000đ')));
       await tester.pumpAndSettle();
 
       expect(find.text('Yêu cầu rút tiền'), findsOneWidget);

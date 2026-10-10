@@ -51,8 +51,8 @@ class WorkerTransactionDetailPage extends StatelessWidget {
     final amountColor = isHold
         ? const Color(0xFFA35A06)
         : isPositive
-            ? AppColors.primary
-            : AppColors.error;
+        ? AppColors.primary
+        : AppColors.error;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -72,19 +72,13 @@ class WorkerTransactionDetailPage extends StatelessWidget {
         ),
         title: Text(
           l10n.wtxTitle,
-          style: AppTextStyles.headlineMd.copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
         ),
         centerTitle: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.md,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
           child: Column(
             children: [
               // Top summary block
@@ -119,37 +113,32 @@ class WorkerTransactionDetailPage extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: isHold
                             ? const Color(0xFFFDF0D8)
                             : isPositive
-                                ? AppColors.secondarySurface
-                                : const Color(0xFFFDE8E4),
+                            ? AppColors.secondarySurface
+                            : const Color(0xFFFDE8E4),
                         borderRadius: BorderRadius.circular(AppRadius.chip),
                         border: Border.all(
                           color: isHold
                               ? const Color(0xFFA35A06).withValues(alpha: 0.3)
                               : isPositive
-                                  ? AppColors.primary.withValues(alpha: 0.3)
-                                  : AppColors.error.withValues(alpha: 0.3),
+                              ? AppColors.primary.withValues(alpha: 0.3)
+                              : AppColors.error.withValues(alpha: 0.3),
                         ),
                       ),
                       child: Text(
-                        isHold
-                            ? l10n.wwalletStatusOnHold
-                            : l10n.wwalletStatusCompleted,
+                        isHold ? l10n.wwalletStatusOnHold : l10n.wwalletStatusCompleted,
                         style: AppTextStyles.caption.copyWith(
                           fontWeight: FontWeight.w800,
                           fontSize: 11,
                           color: isHold
                               ? const Color(0xFFA35A06)
                               : isPositive
-                                  ? AppColors.primary
-                                  : AppColors.error,
+                              ? AppColors.primary
+                              : AppColors.error,
                         ),
                       ),
                     ),
@@ -179,15 +168,9 @@ class WorkerTransactionDetailPage extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     if (isWithdraw) ...[
-                      _buildInfoRow(
-                        label: l10n.wwdAmountLabel,
-                        value: displayGross,
-                      ),
+                      _buildInfoRow(label: l10n.wwdAmountLabel, value: displayGross),
                       const SizedBox(height: AppSpacing.sm),
-                      _buildInfoRow(
-                        label: l10n.wwdFee,
-                        value: '0đ',
-                      ),
+                      _buildInfoRow(label: l10n.wwdFee, value: '0đ'),
                       const SizedBox(height: AppSpacing.sm),
                       const Divider(height: 1, color: AppColors.border),
                       const SizedBox(height: AppSpacing.sm),
@@ -198,16 +181,9 @@ class WorkerTransactionDetailPage extends StatelessWidget {
                         isBold: true,
                       ),
                     ] else ...[
-                      _buildInfoRow(
-                        label: l10n.wtxCustomerPaid,
-                        value: displayGross,
-                      ),
+                      _buildInfoRow(label: l10n.wtxCustomerPaid, value: displayGross),
                       const SizedBox(height: AppSpacing.sm),
-                      _buildInfoRow(
-                        label: l10n.wtxPlatformFee,
-                        value: '−$displayFee',
-                        valueColor: AppColors.error,
-                      ),
+                      _buildInfoRow(label: l10n.wtxPlatformFee, value: '−$displayFee', valueColor: AppColors.error),
                       const SizedBox(height: AppSpacing.sm),
                       const Divider(height: 1, color: AppColors.border),
                       const SizedBox(height: AppSpacing.sm),
@@ -243,10 +219,7 @@ class WorkerTransactionDetailPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    _buildInfoRow(
-                      label: l10n.wtxTime,
-                      value: displayTime,
-                    ),
+                    _buildInfoRow(label: l10n.wtxTime, value: displayTime),
                     const SizedBox(height: AppSpacing.sm),
                     _buildInfoRow(
                       label: l10n.wtxTxId,
@@ -262,10 +235,7 @@ class WorkerTransactionDetailPage extends StatelessWidget {
                           children: [
                             Text(
                               l10n.wtxRelatedOrder,
-                              style: AppTextStyles.caption.copyWith(
-                                color: AppColors.textSecondary,
-                                fontSize: 13,
-                              ),
+                              style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary, fontSize: 13),
                             ),
                             Text(
                               '$displayOrder ›',
@@ -281,10 +251,7 @@ class WorkerTransactionDetailPage extends StatelessWidget {
                     ],
                     if (displayBank != null) ...[
                       const SizedBox(height: AppSpacing.sm),
-                      _buildInfoRow(
-                        label: l10n.wtxTargetBank,
-                        value: displayBank,
-                      ),
+                      _buildInfoRow(label: l10n.wtxTargetBank, value: displayBank),
                     ],
                   ],
                 ),
@@ -297,12 +264,7 @@ class WorkerTransactionDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow({
-    required String label,
-    required String value,
-    Color? valueColor,
-    bool isBold = false,
-  }) {
+  Widget _buildInfoRow({required String label, required String value, Color? valueColor, bool isBold = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

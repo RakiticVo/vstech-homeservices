@@ -78,10 +78,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
         ),
         title: Text(
           l10n.wwdTitle,
-          style: AppTextStyles.headlineMd.copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
         ),
         centerTitle: false,
       ),
@@ -90,10 +87,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.sm,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -131,9 +125,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: '0',
-                                    hintStyle: AppTextStyles.headlineLg.copyWith(
-                                      color: AppColors.textMuted,
-                                    ),
+                                    hintStyle: AppTextStyles.headlineLg.copyWith(color: AppColors.textMuted),
                                     suffixText: 'VNĐ',
                                     suffixStyle: AppTextStyles.titleLg.copyWith(
                                       fontWeight: FontWeight.w700,
@@ -150,20 +142,11 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
                           // Quick chips
                           Row(
                             children: [
-                              _buildQuickChip(
-                                label: '500k',
-                                amount: 500000,
-                              ),
+                              _buildQuickChip(label: '500k', amount: 500000),
                               const SizedBox(width: AppSpacing.sm),
-                              _buildQuickChip(
-                                label: '1 triệu',
-                                amount: 1000000,
-                              ),
+                              _buildQuickChip(label: '1 triệu', amount: 1000000),
                               const SizedBox(width: AppSpacing.sm),
-                              _buildQuickChip(
-                                label: l10n.wwdQuickAll,
-                                amount: _availableBalance,
-                              ),
+                              _buildQuickChip(label: l10n.wwdQuickAll, amount: _availableBalance),
                             ],
                           ),
                         ],
@@ -195,10 +178,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
                               ),
                               Text(
                                 l10n.wwdFromKyc,
-                                style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.textMuted,
-                                  fontSize: 11,
-                                ),
+                                style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontSize: 11),
                               ),
                             ],
                           ),
@@ -214,11 +194,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
                                   border: Border.all(color: AppColors.border),
                                 ),
                                 alignment: Alignment.center,
-                                child: const Icon(
-                                  Icons.account_balance,
-                                  color: AppColors.primary,
-                                  size: 24,
-                                ),
+                                child: const Icon(Icons.account_balance, color: AppColors.primary, size: 24),
                               ),
                               const SizedBox(width: AppSpacing.md),
                               Expanded(
@@ -260,15 +236,9 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
                       ),
                       child: Column(
                         children: [
-                          _buildCalculationRow(
-                            label: l10n.wwdCurrentBalance,
-                            value: _formatVnd(_availableBalance),
-                          ),
+                          _buildCalculationRow(label: l10n.wwdCurrentBalance, value: _formatVnd(_availableBalance)),
                           const SizedBox(height: AppSpacing.sm),
-                          _buildCalculationRow(
-                            label: l10n.wwdMinAmount,
-                            value: '100.000đ',
-                          ),
+                          _buildCalculationRow(label: l10n.wwdMinAmount, value: '100.000đ'),
                           const SizedBox(height: AppSpacing.sm),
                           _buildCalculationRow(
                             label: l10n.wwdFee,
@@ -300,19 +270,12 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
-                            Icons.info_outline,
-                            color: Color(0xFFA35A06),
-                            size: 18,
-                          ),
+                          const Icon(Icons.info_outline, color: Color(0xFFA35A06), size: 18),
                           const SizedBox(width: AppSpacing.sm),
                           Expanded(
                             child: Text(
                               l10n.wwdPhase1Notice,
-                              style: AppTextStyles.caption.copyWith(
-                                color: const Color(0xFFA35A06),
-                                height: 1.4,
-                              ),
+                              style: AppTextStyles.caption.copyWith(color: const Color(0xFFA35A06), height: 1.4),
                             ),
                           ),
                         ],
@@ -326,10 +289,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
 
             // Bottom CTA
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.md,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
               decoration: const BoxDecoration(
                 color: AppColors.surface,
                 border: Border(top: BorderSide(color: AppColors.border)),
@@ -340,25 +300,20 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
                 child: ElevatedButton(
                   key: const Key('withdraw_continue_button'),
                   onPressed: _isValid
-                      ? () => context.push(
-                            AppRoutes.workerWithdrawPin,
-                            extra: _formatVnd(_currentAmount),
-                          )
+                      ? () => context.push(AppRoutes.workerWithdrawPin, extra: _formatVnd(_currentAmount))
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     disabledBackgroundColor: AppColors.border,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.full),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.full)),
                   ),
                   child: Text(
                     _currentAmount < 100000
                         ? l10n.wwdMinValidation
                         : _currentAmount > _availableBalance
-                            ? l10n.wwdMaxValidation
-                            : l10n.wwdContinueCta,
+                        ? l10n.wwdMaxValidation
+                        : l10n.wwdContinueCta,
                     style: AppTextStyles.bodyMd.copyWith(
                       fontWeight: FontWeight.w800,
                       color: Colors.white,
@@ -386,10 +341,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
           decoration: BoxDecoration(
             color: isSelected ? AppColors.secondarySurface : AppColors.background,
             borderRadius: BorderRadius.circular(AppRadius.chip),
-            border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
-              width: isSelected ? 1.5 : 1.0,
-            ),
+            border: Border.all(color: isSelected ? AppColors.primary : AppColors.border, width: isSelected ? 1.5 : 1.0),
           ),
           alignment: Alignment.center,
           child: Text(
@@ -405,12 +357,7 @@ class _WorkerWithdrawPageState extends State<WorkerWithdrawPage> {
     );
   }
 
-  Widget _buildCalculationRow({
-    required String label,
-    required String value,
-    Color? valueColor,
-    bool isBold = false,
-  }) {
+  Widget _buildCalculationRow({required String label, required String value, Color? valueColor, bool isBold = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

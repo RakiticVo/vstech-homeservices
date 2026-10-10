@@ -8,10 +8,7 @@ import 'package:vstech_home_services/core/router/app_routes.dart';
 
 /// Worker withdrawal 6-digit PIN screen (Cell 121 `wwdpin`).
 class WorkerWithdrawPinPage extends StatefulWidget {
-  const WorkerWithdrawPinPage({
-    super.key,
-    this.withdrawalAmount,
-  });
+  const WorkerWithdrawPinPage({super.key, this.withdrawalAmount});
 
   final String? withdrawalAmount;
 
@@ -32,10 +29,7 @@ class _WorkerWithdrawPinPageState extends State<WorkerWithdrawPinPage> {
         // Automatically submit withdrawal
         Future.delayed(const Duration(milliseconds: 250), () {
           if (mounted) {
-            context.pushReplacement(
-              AppRoutes.workerWithdrawStatus,
-              extra: widget.withdrawalAmount ?? '2.000.000đ',
-            );
+            context.pushReplacement(AppRoutes.workerWithdrawStatus, extra: widget.withdrawalAmount ?? '2.000.000đ');
           }
         });
       }
@@ -85,31 +79,21 @@ class _WorkerWithdrawPinPageState extends State<WorkerWithdrawPinPage> {
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.border),
               ),
-              child: const Icon(
-                Icons.lock_outline,
-                color: AppColors.primary,
-                size: 28,
-              ),
+              child: const Icon(Icons.lock_outline, color: AppColors.primary, size: 28),
             ),
             const SizedBox(height: AppSpacing.md),
 
             // Title & amount
             Text(
               l10n.wwdpinTitle,
-              style: AppTextStyles.headlineMd.copyWith(
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
-              ),
+              style: AppTextStyles.headlineMd.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
             ),
             const SizedBox(height: 6),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
               child: Text(
                 l10n.wwdpinSubtitle(amount),
-                style: AppTextStyles.bodyMd.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -128,10 +112,7 @@ class _WorkerWithdrawPinPageState extends State<WorkerWithdrawPinPage> {
                   decoration: BoxDecoration(
                     color: isFilled ? AppColors.primary : AppColors.surface,
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isFilled ? AppColors.primary : AppColors.border,
-                      width: 2,
-                    ),
+                    border: Border.all(color: isFilled ? AppColors.primary : AppColors.border, width: 2),
                   ),
                 );
               }),
@@ -140,10 +121,7 @@ class _WorkerWithdrawPinPageState extends State<WorkerWithdrawPinPage> {
 
             // Custom Number Keypad
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.xl,
-                vertical: AppSpacing.md,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.md),
               child: Column(
                 children: [
                   _buildKeypadRow(['1', '2', '3']),
@@ -203,22 +181,14 @@ class _WorkerWithdrawPinPageState extends State<WorkerWithdrawPinPage> {
         ),
         _buildKeypadButton(
           key: const Key('pin_key_backspace'),
-          child: const Icon(
-            Icons.backspace_outlined,
-            color: AppColors.textPrimary,
-            size: 22,
-          ),
+          child: const Icon(Icons.backspace_outlined, color: AppColors.textPrimary, size: 22),
           onTap: _onBackspace,
         ),
       ],
     );
   }
 
-  Widget _buildKeypadButton({
-    required Key key,
-    required Widget child,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildKeypadButton({required Key key, required Widget child, required VoidCallback onTap}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
