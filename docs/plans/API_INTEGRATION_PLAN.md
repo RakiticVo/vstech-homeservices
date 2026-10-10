@@ -157,6 +157,17 @@ Nhận việc (accept), bắt đầu (start), gửi báo giá (quote), hoàn th�
 > - Còn mock: bản đồ/dẫn đường, checklist các bước, màn quyết toán sau hoàn tất (thu nhập/phí), thu nhập trên Dashboard, lịch tuần.
 
 **Pha 4 — Ví & rút tiền**
+
+> **Kế hoạch commit Pha 4** (mỗi bước: analyze sạch + test xanh → commit; push khi xong 4.3):
+>
+> | # | Commit | Nội dung |
+> | :- | :--- | :--- |
+> | 4.1 | `feat(wallet): add wallet and withdrawal data layer` | DTO ví, giao dịch, yêu cầu rút (đọc được cả tên field theo doc lẫn OpenAPI: `id`/`transactionId`, `type`/`txType`, `reason`/`rejectionReason`); datasource/repository `GET /wallets/me`, `GET /wallets/me/transactions`, `POST/GET /wallets/withdrawals`; use case (chặn rút > số dư → `HS-400-0020`); unit test |
+> | 4.2 | `feat(wallet): show wallet balance and transactions from the API` | `WalletCubit`; màn Ví: số dư khả dụng + đang tạm giữ (`frozenBalance`), 4 tab lọc giao dịch, "Xem thêm"; chi tiết giao dịch theo id; bỏ tổng thu nhập/đã rút viết cứng (API không có); test |
+> | 4.3 | `feat(wallet): create withdrawal requests and track their status` | `WithdrawCubit`; màn Rút tiền: số tiền (kiểm tra số dư), mã ngân hàng + số tài khoản (chưa có API lưu tài khoản); bước PIN **giả lập** như OTP (chưa có API PIN); gửi `POST /wallets/withdrawals`; màn trạng thái theo `WithdrawalStatus` thật; test |
+>
+> Không làm ở Pha 4: `POST /wallets/payments/deposit` (chờ Batch 15 + xác nhận ví nào), `POST /wallets/payments/withdraw` (trùng `/withdrawals`, chờ backend giải thích).
+
 Wallet balance + transactions (phân trang, filter `type`/`status`), tạo/list yêu cầu rút.
 Money hiển thị qua formatter.
 
