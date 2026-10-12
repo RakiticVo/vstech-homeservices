@@ -8,7 +8,7 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 ## [Unreleased]
 
 ### Added — File env cho biến cục bộ
-- File `.env` ở thư mục gốc (giá trị thật, **gitignore**) + `.env.example` (mẫu, commit), nạp bằng `flutter run --dart-define-from-file=.env`; `AppEnv` đọc thêm `GOOGLE_MAPS_API_KEY` và tài khoản test UAT (`TEST_CUSTOMER_*`, `TEST_WORKER_*`); cấu hình chạy VS Code `.vscode/launch.json`; hướng dẫn trong README.
+- Tách 2 file env ở thư mục gốc: `.env.development` và `.env.production` (giá trị thật, **gitignore**) kèm `.env.development.example` / `.env.production.example` (mẫu, commit), nạp bằng `--dart-define-from-file=.env.development` hoặc `=.env.production`; biến `APP_ENV` (`AppEnv.name` / `isProduction`), `API_BASE_URL` trống thì dùng UAT và log cảnh báo nếu đang production; `AppEnv` đọc thêm `GOOGLE_MAPS_API_KEY` và tài khoản test UAT (`TEST_CUSTOMER_*`, `TEST_WORKER_*`); 2 cấu hình chạy VS Code (development / production) trong `.vscode/launch.json`; hướng dẫn trong README.
 
 ### Added — Pha 4 tích hợp API (ví & rút tiền)
 - **4.1** Lớp data ví: DTO `WalletResponse`, `WalletTransactionResponse`, `WithdrawalRequestBody`, `WithdrawalResponse` (khai báo cả tên field theo doc lẫn OpenAPI: `id`/`transactionId`, `type`/`txType`, `id`/`requestId`, `reason`/`rejectionReason`); `WalletRemoteDataSource` (`GET /wallets/me`, `GET /wallets/me/transactions` có lọc `type`/`status`, `POST /wallets/withdrawals` idempotent, `GET /wallets/withdrawals`); `WalletRepositoryImpl` (cache theo id, tự suy `delta` có dấu từ loại giao dịch nếu thiếu); entity `Wallet`, `WalletTransaction`, `Withdrawal`, enum `TransactionType`/`TransactionStatus`/`WithdrawalStatus`; use case (chặn rút > số dư → `HS-400-0020`, thiếu thông tin ngân hàng → `HS-400-0001`); unit test.

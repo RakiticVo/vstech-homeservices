@@ -1,13 +1,26 @@
 /// Build-time environment config, injected via `--dart-define` / `--dart-define-from-file`.
 ///
-/// Local values live in `.env` at the project root (gitignored — copy from `.env.example`):
-/// `flutter run --dart-define-from-file=.env`. Without a file the app falls back to
-/// the UAT backend and empty secrets.
+/// Values live in `.env.development` / `.env.production` at the project root (gitignored —
+/// copy from the matching `*.example`), e.g. `flutter run --dart-define-from-file=.env.development`.
+/// Without a file the app runs as development against the UAT backend with empty secrets.
 abstract final class AppEnv {
-  static const String apiBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'https://homeservice-uat.vitinhkimhung.com',
+  static const String _uatBaseUrl = 'https://homeservice-uat.vitinhkimhung.com';
+  static const String _rawApiBaseUrl = String.fromEnvironment('API_BASE_URL');
+
+  /// `development` (default) or `production` — from `APP_ENV`.
+  static const String name = String.fromEnvironment(
+    'APP_ENV',
+    defaultValue: 'development',
   );
+
+  static bool get isProduction => name == 'production';
+
+  /// True when `API_BASE_URL` is empty, so [apiBaseUrl] fell back to UAT.
+  static bool get isApiBaseUrlMissing => _rawApiBaseUrl.isEmpty;
+
+  /// REST origin from `API_BASE_URL`; falls back to UAT when the variable is empty.
+  static String get apiBaseUrl =>
+      _rawApiBaseUrl.isEmpty ? _uatBaseUrl : _rawApiBaseUrl;
 
   /// WebSocket origin (`/ws/chat/{roomId}`, `/ws/tracking`, ...). Derived from [apiBaseUrl]
   /// unless `WS_BASE_URL` is passed explicitly.

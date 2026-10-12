@@ -2,11 +2,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "vstech (dev env)",
+      "name": "vstech (development)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart",
-      "args": ["--dart-define-from-file=.env"]
+      "args": ["--dart-define-from-file=.env.development"]
+    },
+    {
+      "name": "vstech (production)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "args": ["--dart-define-from-file=.env.production"]
     }
   ]
 }

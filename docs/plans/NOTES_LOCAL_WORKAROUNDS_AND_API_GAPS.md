@@ -9,13 +9,14 @@
 
 | # | Việc | Vì sao |
 | :- | :--- | :--- |
-| 1 | Xin **2 tài khoản test UAT** (1 khách, 1 thợ) — ghi vào `.env` ở thư mục gốc (gitignore, mẫu ở `.env.example`) | Pha 1–3 mới chạy bằng test giả lập, chưa đăng nhập/đặt lịch/nhận việc thật trên UAT |
+| 1 | Xin **2 tài khoản test UAT** (1 khách, 1 thợ) — ghi vào `.env.development` ở thư mục gốc (gitignore, mẫu ở `.env.development.example`) | Pha 1–3 mới chạy bằng test giả lập, chưa đăng nhập/đặt lịch/nhận việc thật trên UAT |
 | 2 | Cấu hình **Firebase** (`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`) | Cần cho đăng ký FCM (`/devices/*`) và Crashlytics — đang hoãn |
 | 3 | Đặt **git identity** trên máy: `git config --global user.name/user.email` | Máy đã mất identity; mình đang commit bằng identity cũ `Admin <admin@Admins-MacBook-Pro.local>` |
 | 4 | Thiết kế **Claude Design Batch 14–17** (`docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`) | UI báo giá chi tiết, nạp tiền ví, đọc tất cả thông báo/cài đặt thông báo thợ, lịch sử cuộc gọi |
 | 5 | Xác nhận với BA: **nạp tiền là ví nào** (Batch 15 đang giả định ví thợ) | `POST /wallets/payments/deposit` chưa rõ đối tượng |
 | 6 | Bản dịch tiếng Anh cho câu xin quyền vị trí iOS (`NSLocationWhenInUseUsageDescription`) | Hiện chỉ có tiếng Việt trong `Info.plist` |
 | 7 | Gửi mục 2–4 dưới đây cho team backend | Các chỗ app đang làm tạm sẽ gỡ khi có API |
+| 8 | Xin **URL backend production** (và Google Maps key production) — điền vào `.env.production` | Chưa có thì app production rơi về UAT (có log cảnh báo) |
 
 ---
 

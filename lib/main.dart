@@ -16,6 +16,13 @@ Future<void> main() async {
   await configureDependencies();
   final session = getIt<SessionCubit>();
   await session.restore();
-  appLogger.i('App started · API ${AppEnv.apiBaseUrl} · session ${session.state.runtimeType}');
+  if (AppEnv.isProduction && AppEnv.isApiBaseUrlMissing) {
+    appLogger.w(
+      'APP_ENV=production but API_BASE_URL is empty — falling back to UAT',
+    );
+  }
+  appLogger.i(
+    'App started · env ${AppEnv.name} · API ${AppEnv.apiBaseUrl} · session ${session.state.runtimeType}',
+  );
   runApp(VstechHomeServicesApp(router: createAppRouter(session: session)));
 }

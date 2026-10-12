@@ -45,30 +45,46 @@ flutter test
 ```
 
 ### 2. Biến môi trường (file env — không đưa lên git)
-Các biến nhạy cảm (URL backend, Google Maps key, tài khoản test UAT…) nằm trong file `.env` ở thư mục gốc dự án.
-File này **bị gitignore**; chỉ `.env.example` (mẫu, không chứa giá trị thật) được commit.
+Các biến nhạy cảm nằm trong 2 file ở thư mục gốc dự án, tách theo môi trường. Các biến gồm URL backend, Google Maps key và tài khoản test UAT.
+
+| File | Môi trường | Lên git? |
+| :--- | :--- | :--- |
+| `.env.development` | Development (backend UAT, log `debug`, tài khoản test) | ❌ gitignore |
+| `.env.production` | Production (URL thật, log `warning`, không có tài khoản test) | ❌ gitignore |
+| `.env.development.example`, `.env.production.example` | File mẫu, không chứa giá trị thật | ✅ |
 
 ```bash
-cp .env.example .env
+cp .env.development.example .env.development
 ```
-
-Điền giá trị vào `.env`, rồi chạy app với:
 
 ```bash
-flutter run --dart-define-from-file=.env
+cp .env.production.example .env.production
 ```
 
-VS Code đã có sẵn cấu hình chạy "vstech (dev env)" trong `.vscode/launch.json`. Với Android Studio,
-thêm `--dart-define-from-file=.env` vào ô *Additional run args*. Trong code, đọc biến qua
-`AppEnv` (`lib/core/config/app_env.dart`). Khi thêm biến mới: thêm vào cả `.env.example` và `AppEnv`.
+Điền giá trị thật vào file tương ứng, rồi chạy development:
+
+```bash
+flutter run --dart-define-from-file=.env.development
+```
+
+Build production:
+
+```bash
+flutter build apk --release --dart-define-from-file=.env.production
+```
+
+VS Code có sẵn 2 cấu hình chạy là "vstech (development)" và "vstech (production)" trong `.vscode/launch.json`. Với Android Studio,
+thêm `--dart-define-from-file=.env.development` vào ô *Additional run args*. Trong code, đọc biến qua
+`AppEnv` (`lib/core/config/app_env.dart`). Khi thêm biến mới, thêm vào cả 2 file `*.example` và vào `AppEnv`.
 
 | Biến | Ý nghĩa |
 | :--- | :--- |
-| `API_BASE_URL` | Gốc REST API (mặc định UAT) |
+| `APP_ENV` | `development` / `production` (`AppEnv.isProduction`) |
+| `API_BASE_URL` | Gốc REST API (để trống = UAT, production sẽ log cảnh báo) |
 | `WS_BASE_URL` | Gốc WebSocket (để trống = suy từ `API_BASE_URL`) |
-| `LOG_LEVEL` | `trace`/`debug`/`info`/`warning`/`error` |
+| `LOG_LEVEL` | `trace`/`debug`/`info`/`warning`/`error`/`off` |
 | `GOOGLE_MAPS_API_KEY` | Key bản đồ theo dõi (chưa gắn vào native) |
-| `TEST_CUSTOMER_*`, `TEST_WORKER_*` | Tài khoản test UAT do backend cấp — chỉ dùng thử ở máy |
+| `TEST_CUSTOMER_*`, `TEST_WORKER_*` | Tài khoản test UAT do backend cấp — chỉ có trong `.env.development` |
 
 ### 3. Sinh mã tự động (Code Generation)
 Dự án sử dụng `freezed`, `json_serializable`, và `injectable`. Khi tạo DTOs hoặc Repositories:
