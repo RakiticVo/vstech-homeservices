@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
+import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
 import 'package:vstech_home_services/features/tracking/presentation/widgets/service_checklist_widget.dart';
 import 'package:vstech_home_services/features/tracking/presentation/widgets/tracking_map_widget.dart';
@@ -367,13 +371,15 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                           const SizedBox(width: AppSpacing.md),
                           Expanded(
                             child: OutlinedButton.icon(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(context.l10n.trackingChat),
+                              key: const Key('tracking_chat_button'),
+                              onPressed: () => unawaited(
+                                context.push(
+                                  AppRoutes.chatLocation(
+                                    bookingId: widget.orderCode,
+                                    isWorker: false,
                                   ),
-                                );
-                              },
+                                ),
+                              ),
                               icon: const Icon(
                                 Icons.chat_bubble_outline_rounded,
                                 size: 18,

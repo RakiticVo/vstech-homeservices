@@ -1989,38 +1989,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chatPrivacyBanner => 'Số điện thoại của hai bên được ẩn';
 
   @override
-  String get chatCallBack => 'Gọi lại';
-
-  @override
-  String get chatCurrentLocation => 'Vị trí hiện tại';
-
-  @override
-  String get chatExtraCostBadge => 'ĐỀ XUẤT CHI PHÍ PHÁT SINH';
-
-  @override
-  String get chatExtraCostTitle => 'Thay ron vòi sen';
-
-  @override
-  String get chatExtraCostDesc => 'Vật tư + công, ảnh đính kèm phía trên';
-
-  @override
-  String get chatExtraCostAmount => '+45.000đ';
-
-  @override
-  String get chatApprove => 'Đồng ý';
-
-  @override
   String get chatDecline => 'Từ chối';
-
-  @override
-  String get chatExtraCostApproved =>
-      'Đã đồng ý · cộng vào hoá đơn khi nghiệm thu';
-
-  @override
-  String get chatExtraCostDeclined => 'Đã từ chối';
-
-  @override
-  String get chatExtraCostPendingWorker => 'Đang chờ khách xác nhận';
 
   @override
   String get chatMaskedPhoneNote =>
@@ -2038,6 +2007,41 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get chatSent => 'Đã gửi';
+
+  @override
+  String get chatPeerWorker => 'Thợ phụ trách';
+
+  @override
+  String get chatPeerCustomer => 'Khách hàng';
+
+  @override
+  String chatOrderLabel(String id) {
+    return 'Đơn #$id';
+  }
+
+  @override
+  String get chatLoadOlder => 'Xem tin nhắn cũ hơn';
+
+  @override
+  String get chatEmpty => 'Chưa có tin nhắn. Hãy gửi lời chào!';
+
+  @override
+  String get chatConnLive => 'Đang kết nối trực tiếp';
+
+  @override
+  String get chatConnConnecting => 'Đang kết nối…';
+
+  @override
+  String get chatConnOffline => 'Mất kết nối, tin mới sẽ không tự hiện';
+
+  @override
+  String get chatReconnect => 'Kết nối lại';
+
+  @override
+  String get chatSendAction => 'Gửi tin nhắn';
+
+  @override
+  String get chatRoomClosedTitle => 'Cuộc trò chuyện đã đóng';
 
   @override
   String get chatQuickWorker1 => 'Tôi đang đến';

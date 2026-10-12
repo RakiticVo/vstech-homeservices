@@ -3740,71 +3740,11 @@ abstract class AppLocalizations {
   /// **'Số điện thoại của hai bên được ẩn'**
   String get chatPrivacyBanner;
 
-  /// No description provided for @chatCallBack.
-  ///
-  /// In vi, this message translates to:
-  /// **'Gọi lại'**
-  String get chatCallBack;
-
-  /// No description provided for @chatCurrentLocation.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vị trí hiện tại'**
-  String get chatCurrentLocation;
-
-  /// No description provided for @chatExtraCostBadge.
-  ///
-  /// In vi, this message translates to:
-  /// **'ĐỀ XUẤT CHI PHÍ PHÁT SINH'**
-  String get chatExtraCostBadge;
-
-  /// No description provided for @chatExtraCostTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Thay ron vòi sen'**
-  String get chatExtraCostTitle;
-
-  /// No description provided for @chatExtraCostDesc.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vật tư + công, ảnh đính kèm phía trên'**
-  String get chatExtraCostDesc;
-
-  /// No description provided for @chatExtraCostAmount.
-  ///
-  /// In vi, this message translates to:
-  /// **'+45.000đ'**
-  String get chatExtraCostAmount;
-
-  /// No description provided for @chatApprove.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đồng ý'**
-  String get chatApprove;
-
   /// No description provided for @chatDecline.
   ///
   /// In vi, this message translates to:
   /// **'Từ chối'**
   String get chatDecline;
-
-  /// No description provided for @chatExtraCostApproved.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã đồng ý · cộng vào hoá đơn khi nghiệm thu'**
-  String get chatExtraCostApproved;
-
-  /// No description provided for @chatExtraCostDeclined.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã từ chối'**
-  String get chatExtraCostDeclined;
-
-  /// No description provided for @chatExtraCostPendingWorker.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đang chờ khách xác nhận'**
-  String get chatExtraCostPendingWorker;
 
   /// No description provided for @chatMaskedPhoneNote.
   ///
@@ -3835,6 +3775,72 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã gửi'**
   String get chatSent;
+
+  /// No description provided for @chatPeerWorker.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thợ phụ trách'**
+  String get chatPeerWorker;
+
+  /// No description provided for @chatPeerCustomer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách hàng'**
+  String get chatPeerCustomer;
+
+  /// No description provided for @chatOrderLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn #{id}'**
+  String chatOrderLabel(String id);
+
+  /// No description provided for @chatLoadOlder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tin nhắn cũ hơn'**
+  String get chatLoadOlder;
+
+  /// No description provided for @chatEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có tin nhắn. Hãy gửi lời chào!'**
+  String get chatEmpty;
+
+  /// No description provided for @chatConnLive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang kết nối trực tiếp'**
+  String get chatConnLive;
+
+  /// No description provided for @chatConnConnecting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang kết nối…'**
+  String get chatConnConnecting;
+
+  /// No description provided for @chatConnOffline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mất kết nối, tin mới sẽ không tự hiện'**
+  String get chatConnOffline;
+
+  /// No description provided for @chatReconnect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết nối lại'**
+  String get chatReconnect;
+
+  /// No description provided for @chatSendAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi tin nhắn'**
+  String get chatSendAction;
+
+  /// No description provided for @chatRoomClosedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuộc trò chuyện đã đóng'**
+  String get chatRoomClosedTitle;
 
   /// No description provided for @chatQuickWorker1.
   ///

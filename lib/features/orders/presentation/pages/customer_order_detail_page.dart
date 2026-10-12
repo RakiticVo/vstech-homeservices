@@ -226,6 +226,23 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                       ),
                     ),
                   ),
+                if (canTrack) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  AppSecondaryButton(
+                    key: const Key('order_detail_chat_button'),
+                    label: l10n.trackingChat,
+                    icon: Icons.chat_bubble_outline_rounded,
+                    isFullWidth: true,
+                    onPressed: () => unawaited(
+                      context.push(
+                        AppRoutes.chatLocation(
+                          bookingId: booking.id,
+                          isWorker: false,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
                 if (canTrack &&
                     (booking.status.canCancel || booking.status.canDispute))
                   const SizedBox(height: AppSpacing.sm),

@@ -39,6 +39,8 @@ import 'package:vstech_home_services/features/home/presentation/bloc/category_de
 import 'package:vstech_home_services/features/messaging/data/datasources/chat_remote_data_source.dart';
 import 'package:vstech_home_services/features/messaging/data/datasources/chat_socket_data_source.dart';
 import 'package:vstech_home_services/features/messaging/domain/repositories/chat_repository.dart';
+import 'package:vstech_home_services/features/messaging/domain/usecases/chat_use_cases.dart';
+import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart';
 import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart';
 import 'package:vstech_home_services/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:vstech_home_services/features/notifications/domain/usecases/notification_use_cases.dart';
@@ -233,3 +235,11 @@ class MockChatSocketDataSource extends Mock implements ChatSocketDataSource;
 class MockChatRepository extends Mock implements ChatRepository;
 
 class MockChatConnection extends Mock implements ChatConnection;
+
+class MockOpenChatRoomUseCase extends Mock implements OpenChatRoomUseCase;
+
+class MockGetChatMessagesUseCase extends Mock implements GetChatMessagesUseCase;
+
+class MockSendChatMessageUseCase extends Mock implements SendChatMessageUseCase;
+
+class MockChatCubit extends MockCubit<ChatState> implements ChatCubit;

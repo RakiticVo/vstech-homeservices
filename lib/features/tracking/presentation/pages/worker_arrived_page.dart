@@ -204,13 +204,15 @@ class _WorkerArrivedPageState extends State<WorkerArrivedPage> {
                       const SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: OutlinedButton.icon(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(context.l10n.trackingChat),
+                          key: const Key('arrived_chat_button'),
+                          onPressed: () => unawaited(
+                            context.push(
+                              AppRoutes.chatLocation(
+                                bookingId: widget.bookingId,
+                                isWorker: true,
                               ),
-                            );
-                          },
+                            ),
+                          ),
                           icon: const Icon(
                             Icons.chat_bubble_outline_rounded,
                             size: 18,

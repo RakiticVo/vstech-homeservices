@@ -217,11 +217,16 @@ class WorkerEnRoutePage extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(context.l10n.trackingChat)),
-                    );
-                  },
+                  key: const Key('en_route_chat_button'),
+                  tooltip: context.l10n.trackingChat,
+                  onPressed: () => unawaited(
+                    context.push(
+                      AppRoutes.chatLocation(
+                        bookingId: bookingId,
+                        isWorker: true,
+                      ),
+                    ),
+                  ),
                   icon: const Icon(
                     Icons.chat_bubble_outline_rounded,
                     color: AppColors.primary,

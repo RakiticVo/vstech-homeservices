@@ -108,6 +108,8 @@ import 'package:vstech_home_services/features/messaging/domain/repositories/chat
     as _i452;
 import 'package:vstech_home_services/features/messaging/domain/usecases/chat_use_cases.dart'
     as _i820;
+import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart'
+    as _i589;
 import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart'
     as _i76;
 import 'package:vstech_home_services/features/notifications/data/repositories/notification_repository_impl.dart'
@@ -417,6 +419,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i664.TransactionDetailCubit>(
       () => _i664.TransactionDetailCubit(gh<_i1023.GetTransactionUseCase>()),
+    );
+    gh.factory<_i589.ChatCubit>(
+      () => _i589.ChatCubit(
+        gh<_i294.GetProfileUseCase>(),
+        gh<_i820.OpenChatRoomUseCase>(),
+        gh<_i820.GetChatMessagesUseCase>(),
+        gh<_i820.SendChatMessageUseCase>(),
+        gh<_i452.ChatConnection>(),
+      ),
     );
     gh.factory<_i582.WithdrawCubit>(
       () => _i582.WithdrawCubit(

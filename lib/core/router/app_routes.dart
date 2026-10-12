@@ -105,7 +105,17 @@ abstract final class AppRoutes {
 
   // --- messaging & masked voip calls (Batch 11) ---
   static const String chat = '/messaging/chat';
+  static String chatLocation({
+    required String bookingId,
+    required bool isWorker,
+  }) =>
+      '$chat?id=${Uri.encodeComponent(bookingId)}&role=${isWorker ? 'worker' : 'customer'}';
   static const String voipCall = '/messaging/call';
+  static String voipCallLocation({
+    required String bookingId,
+    required bool isWorker,
+  }) =>
+      '$voipCall?id=${Uri.encodeComponent(bookingId)}&role=${isWorker ? 'worker' : 'customer'}';
 
   // --- devices, ai assistant & customer profile (Batch 12) ---
   static const String myHomeDevices = '/customer/devices';

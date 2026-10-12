@@ -51,10 +51,7 @@ class ChatQuickRepliesBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(AppRadius.full),
-                border: Border.all(
-                  color: AppColors.primary,
-                  width: 1.5,
-                ),
+                border: Border.all(color: AppColors.primary, width: 1.5),
               ),
               child: Text(
                 text,

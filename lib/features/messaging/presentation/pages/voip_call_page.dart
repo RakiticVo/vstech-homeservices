@@ -135,7 +135,9 @@ class _VoipCallPageState extends State<VoipCallPage> {
                 width: 110,
                 height: 110,
                 decoration: BoxDecoration(
-                  color: _isWorker ? AppColors.primary : const Color(0xFFEAF3F8),
+                  color: _isWorker
+                      ? AppColors.primary
+                      : const Color(0xFFEAF3F8),
                   borderRadius: BorderRadius.circular(AppRadius.full),
                   border: Border.all(color: AppColors.border, width: 2),
                 ),
@@ -145,7 +147,9 @@ class _VoipCallPageState extends State<VoipCallPage> {
                   style: GoogleFonts.sourceSans3(
                     fontSize: 44,
                     fontWeight: FontWeight.w800,
-                    color: _isWorker ? AppColors.onPrimary : AppColors.textPrimary,
+                    color: _isWorker
+                        ? AppColors.onPrimary
+                        : AppColors.textPrimary,
                   ),
                 ),
               ),
@@ -175,7 +179,10 @@ class _VoipCallPageState extends State<VoipCallPage> {
               // Call Status / Duration
               if (isCallIn)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.secondarySurface,
                     borderRadius: BorderRadius.circular(AppRadius.full),
@@ -255,7 +262,10 @@ class _VoipCallPageState extends State<VoipCallPage> {
                         onPressed: _endCall,
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.error,
-                          side: const BorderSide(color: AppColors.error, width: 1.5),
+                          side: const BorderSide(
+                            color: AppColors.error,
+                            width: 1.5,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(AppRadius.full),
                           ),
@@ -301,13 +311,17 @@ class _VoipCallPageState extends State<VoipCallPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildCallButton(
-                      icon: _isMuted ? Icons.mic_off_rounded : Icons.mic_rounded,
+                      icon: _isMuted
+                          ? Icons.mic_off_rounded
+                          : Icons.mic_rounded,
                       label: context.l10n.callMute,
                       isActive: _isMuted,
                       onTap: () => setState(() => _isMuted = !_isMuted),
                     ),
                     _buildCallButton(
-                      icon: _isSpeaker ? Icons.volume_up_rounded : Icons.volume_down_rounded,
+                      icon: _isSpeaker
+                          ? Icons.volume_up_rounded
+                          : Icons.volume_down_rounded,
                       label: context.l10n.callSpeaker,
                       isActive: _isSpeaker,
                       onTap: () => setState(() => _isSpeaker = !_isSpeaker),

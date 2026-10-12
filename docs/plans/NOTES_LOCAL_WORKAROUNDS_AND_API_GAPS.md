@@ -44,6 +44,11 @@
 | L19 | **Mức rút tối thiểu 100.000đ** | Quy tắc **của app** (theo thiết kế) — API không ghi giới hạn này | Backend xác nhận có giới hạn tối thiểu không | `withdraw_cubit.dart` |
 | L20 | **Tổng thu nhập / đã rút**, phí & thực nhận của từng giao dịch | **Đã bỏ** khỏi màn Ví / Chi tiết giao dịch | API tổng hợp ví + chi tiết phí của giao dịch | `worker_wallet_page.dart`, `worker_transaction_detail_page.dart` |
 | L21 | **Chi tiết 1 giao dịch / 1 yêu cầu rút** | Đọc cache; không có thì dò tối đa 3 trang | `GET /wallets/me/transactions/{id}`, `GET /wallets/withdrawals/{id}` | `wallet_use_cases.dart` |
+| L22 | **Thông báo đặt lịch → mở đơn** | Thông báo không có mã đơn, nên chạm vào chỉ mở danh sách đơn (khách) / danh sách việc (thợ) | Thêm `bookingId` (hoặc `deepLink`) vào `NotificationResponse` | `notifications_page.dart` |
+| L23 | **Thông báo "còn nữa"** | API trả mảng trơn, app coi là còn khi trang đủ 20 mục (chat: đủ 50 tin) | Trả `hasMore`/`totalPages` như `PagedResponse` | `notification_repository_impl.dart`, `chat_repository_impl.dart` |
+| L24 | **Tên / ảnh người bên kia trong chat** | Tiêu đề chat chỉ ghi vai trò ("Thợ phụ trách" / "Khách hàng") + mã đơn | Thêm tên, ảnh của khách / thợ vào `ChatRoomResponse` (hoặc `BookingResponse`) | `chat_page.dart` |
+| L25 | **Ảnh / vị trí trong chat** | Đã bỏ nút gửi ảnh, vị trí; chỉ gửi chữ | Endpoint upload file để có `mediaUrls` | `chat_input_bar.dart` |
+| L26 | **Tin của mình trong chat** | So `senderId` với `id` hồ sơ (`GET /profiles`) | Xác nhận `senderId` cùng loại id với hồ sơ (int64 vs UUID — xem C2) | `chat_cubit.dart` |
 | L16 | **Ngôn ngữ** (vi/en) | Chỉ đổi trên máy, không lưu vào hồ sơ | Đã có field `locale` trong `PUT /profiles` — **chưa nối** (tính năng, không cần API mới) | `language_toggle_button.dart` |
 
 ---
@@ -54,7 +59,7 @@
 | :--- | :--- |
 | Khách | Theo dõi thợ (bản đồ), Tìm thợ (radar), Nghiệm thu, Thanh toán đơn (VNPay/ZaloPay), Hoá đơn, Đánh giá & tip, Bảo hành (5 màn), Gợi ý AI / Trợ lý AI, Thợ yêu thích, Hồ sơ thợ (xem trước), Phương thức thanh toán / Liên kết ví, Danh sách & chi tiết khiếu nại, Thiết bị trong nhà |
 | Thợ | Bản đồ & dẫn đường, checklist các bước làm, màn quyết toán sau hoàn tất (thu nhập/phí), thẻ thu nhập trên Dashboard, lịch tuần, khung giờ sẵn sàng, vùng làm việc, kỹ năng & chứng chỉ, hiệu suất, KYC (thiếu upload), Huỷ việc / Khách vắng mặt |
-| Chung | Chat, Gọi VoIP, Thông báo (sẽ làm ở Pha 5) |
+| Chung | Gọi VoIP (âm thanh — xem Pha 5.6) |
 
 ---
 
@@ -71,6 +76,8 @@
 | C7 | Khiếu nại: sơ đồ trạng thái cho từ IN_PROGRESS, ghi chú nói chỉ khi COMPLETED | Chỉ cho khi COMPLETED |
 | C8 | `RegisterRequest`: OpenAPI không đánh dấu `required`, doc ghi tất cả bắt buộc | Gửi đủ 5 field |
 | C9 | WebSocket: CLAUDE.md ghi STOMP, doc (`07-chat`, `09-location-tracking`, `11-appendices`) là JSON thuần, "không dùng subprotocol" | **Đã chốt theo doc (Pha 5):** `RealtimeSocket` gửi/nhận JSON thuần qua `web_socket_channel`, token ở header `Authorization`. `stomp_dart_client` hiện không còn dùng — nên sửa CLAUDE.md và gỡ package nếu backend xác nhận |
+| C12 | `POST /chat/rooms`: OpenAPI trả 201 không có schema; doc trả 200 + `ApiResponse<ChatRoomResponse>` | Đọc theo doc |
+| C13 | Lịch sử chat: doc mặc định `size=50`, OpenAPI `size=20`; không ghi thứ tự tin | App gửi `size=50`, tự sắp cũ → mới theo `sentAt` |
 | C11 | Ví: doc dùng `id`/`type` (giao dịch) và `id`/`reason` (rút tiền), OpenAPI dùng `transactionId`/`txType` và `requestId`/`rejectionReason` | Đọc được cả hai |
 | C10 | `technicianId` trong `PUT /technician/location`: UUID nhưng server bỏ qua | Không gửi field này |
 

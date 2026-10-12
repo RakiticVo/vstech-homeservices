@@ -1986,38 +1986,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatPrivacyBanner => 'Both phone numbers are hidden';
 
   @override
-  String get chatCallBack => 'Call back';
-
-  @override
-  String get chatCurrentLocation => 'Current location';
-
-  @override
-  String get chatExtraCostBadge => 'EXTRA COST REQUEST';
-
-  @override
-  String get chatExtraCostTitle => 'Replace shower-head seal';
-
-  @override
-  String get chatExtraCostDesc => 'Parts + labour, photo above';
-
-  @override
-  String get chatExtraCostAmount => '+45.000đ';
-
-  @override
-  String get chatApprove => 'Approve';
-
-  @override
   String get chatDecline => 'Decline';
-
-  @override
-  String get chatExtraCostApproved =>
-      'Approved · added to the bill at sign-off';
-
-  @override
-  String get chatExtraCostDeclined => 'Declined';
-
-  @override
-  String get chatExtraCostPendingWorker => 'Waiting for the customer';
 
   @override
   String get chatMaskedPhoneNote =>
@@ -2035,6 +2004,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatSent => 'Sent';
+
+  @override
+  String get chatPeerWorker => 'Your pro';
+
+  @override
+  String get chatPeerCustomer => 'Customer';
+
+  @override
+  String chatOrderLabel(String id) {
+    return 'Order #$id';
+  }
+
+  @override
+  String get chatLoadOlder => 'Load older messages';
+
+  @override
+  String get chatEmpty => 'No messages yet. Say hello!';
+
+  @override
+  String get chatConnLive => 'Live';
+
+  @override
+  String get chatConnConnecting => 'Connecting…';
+
+  @override
+  String get chatConnOffline =>
+      'Disconnected, new messages won’t appear automatically';
+
+  @override
+  String get chatReconnect => 'Reconnect';
+
+  @override
+  String get chatSendAction => 'Send message';
+
+  @override
+  String get chatRoomClosedTitle => 'This chat is closed';
 
   @override
   String get chatQuickWorker1 => 'I\'m on my way';

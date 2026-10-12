@@ -64,6 +64,7 @@ import 'package:vstech_home_services/features/home/presentation/pages/favourite_
 import 'package:vstech_home_services/features/home/presentation/pages/my_home_devices_page.dart';
 import 'package:vstech_home_services/features/home/presentation/pages/service_detail_page.dart';
 import 'package:vstech_home_services/features/home/presentation/pages/worker_profile_preview_page.dart';
+import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/chat_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/voip_call_page.dart';
 import 'package:vstech_home_services/features/notifications/presentation/bloc/notification_settings_cubit.dart';
@@ -566,17 +567,17 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.chat,
       builder: (context, state) {
-        final role = state.uri.queryParameters['role'] ?? 'customer';
-        final isClosed = state.uri.queryParameters['closed'] == 'true';
-        final order = state.uri.queryParameters['order'] ?? '#HS20250425-0012';
-        final peer = state.uri.queryParameters['peer'];
-        final status = state.uri.queryParameters['status'] ?? 'Đang thực hiện';
-        return ChatPage(
-          role: role,
-          isClosed: isClosed,
-          orderCode: order,
-          peerName: peer,
-          orderStatus: status,
+        final bookingId = state.uri.queryParameters['id'] ?? '';
+        return BlocProvider(
+          create: (_) {
+            final cubit = getIt<ChatCubit>();
+            unawaited(cubit.open(bookingId));
+            return cubit;
+          },
+          child: ChatPage(
+            bookingId: bookingId,
+            isWorker: state.uri.queryParameters['role'] == 'worker',
+          ),
         );
       },
     ),
@@ -586,7 +587,10 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         final role = state.uri.queryParameters['role'] ?? 'customer';
         final mode = state.uri.queryParameters['mode'] ?? 'callout';
         final peer = state.uri.queryParameters['peer'];
-        final order = state.uri.queryParameters['order'] ?? '#HS20250425-0012';
+        final id = state.uri.queryParameters['id'];
+        final order =
+            state.uri.queryParameters['order'] ??
+            (id != null ? '#$id' : '#HS20250425-0012');
         return VoipCallPage(
           role: role,
           mode: mode,

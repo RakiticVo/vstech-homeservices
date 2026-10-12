@@ -1,34 +1,32 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/core/error/failure_message.dart';
+import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
-import 'package:vstech_home_services/features/messaging/domain/models/chat_message.dart';
+import 'package:vstech_home_services/core/widgets/app_button.dart';
+import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
+import 'package:vstech_home_services/features/messaging/domain/entities/chat.dart';
+import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart';
+import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_bubble.dart';
 import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_input_bar.dart';
-import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_message_bubble.dart';
 import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_privacy_banner.dart';
 import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_quick_replies_bar.dart';
 
-/// In-app chat screen for Customer & Worker (`chat` — Cells 80, 81, 84).
+/// Booking chat for customer & worker (`chat` — Cells 80, 81, 84): history from
+/// `GET /chat/rooms/{id}/messages` (oldest first, "load older" on top), live messages over
+/// `/ws/chat/{roomId}` with a connection status row, text sending + quick replies. A closed room is
+/// read-only. The API exposes no participant names, so the header shows the peer's role.
 class ChatPage extends StatefulWidget {
-  const ChatPage({
-    super.key,
-    this.role = 'customer',
-    this.isClosed = false,
-    this.orderCode = '#HS20250425-0012',
-    this.peerName,
-    this.orderStatus = 'Đang thực hiện',
-  });
+  const ChatPage({required this.bookingId, required this.isWorker, super.key});
 
-  final String role;
-  final bool isClosed;
-  final String orderCode;
-  final String? peerName;
-  final String orderStatus;
+  final String bookingId;
+  final bool isWorker;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -37,107 +35,12 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  bool _isTyping = false;
-  Timer? _typingTimer;
-
-  late final List<ChatMessage> _messages;
-
-  bool get _isWorker => widget.role == 'worker';
-
-  @override
-  void initState() {
-    super.initState();
-    _messages = [
-      const ChatMessage(
-        id: '1',
-        sender: ChatSender.system,
-        type: ChatMessageType.systemEvent,
-        textVi: 'Anh Hùng đã nhận việc · 13:12',
-        textEn: 'Hùng accepted the job · 13:12',
-        time: '13:12',
-      ),
-      const ChatMessage(
-        id: '2',
-        sender: ChatSender.worker,
-        type: ChatMessageType.text,
-        textVi: 'Chào chị Mai, em là Hùng. Em sẽ có mặt lúc 14:00 ạ.',
-        textEn: "Hi Mai, I'm Hùng. I'll be there at 14:00.",
-        time: '13:14',
-      ),
-      const ChatMessage(
-        id: '3',
-        sender: ChatSender.customer,
-        type: ChatMessageType.text,
-        textVi: 'Ok em. Nhà chị tầng 12, gửi xe ở hầm B1 nhé.',
-        textEn: "OK. I'm on floor 12; park in basement B1.",
-        time: '13:15',
-      ),
-      const ChatMessage(
-        id: '4',
-        sender: ChatSender.worker,
-        type: ChatMessageType.location,
-        textVi: 'Cách 2,4 km · còn 8 phút',
-        textEn: '2.4 km away · 8 min',
-        time: '13:40',
-      ),
-      const ChatMessage(
-        id: '5',
-        sender: ChatSender.system,
-        type: ChatMessageType.callLog,
-        textVi: 'Cuộc gọi thoại · 0:48',
-        textEn: 'Voice call · 0:48',
-        time: '13:52',
-      ),
-      const ChatMessage(
-        id: '6',
-        sender: ChatSender.customer,
-        type: ChatMessageType.text,
-        textVi: 'Nếu cần thì gọi chị số 0901 234 567 nha.',
-        textEn: 'If needed, call me on 0901 234 567.',
-        time: '13:53',
-        isMasked: true,
-      ),
-      const ChatMessage(
-        id: '7',
-        sender: ChatSender.system,
-        type: ChatMessageType.systemEvent,
-        textVi: 'Thợ đã đến · check-in 13:58',
-        textEn: 'Arrived · checked in at 13:58',
-        time: '13:58',
-      ),
-      const ChatMessage(
-        id: '8',
-        sender: ChatSender.worker,
-        type: ChatMessageType.photo,
-        textVi: 'Ron vòi sen bị mục',
-        textEn: 'Worn shower-head seal',
-        time: '14:40',
-      ),
-      const ChatMessage(
-        id: '9',
-        sender: ChatSender.worker,
-        type: ChatMessageType.extraCost,
-        textVi: 'Thay ron vòi sen',
-        textEn: 'Replace shower-head seal',
-        time: '14:41',
-      ),
-      const ChatMessage(
-        id: '10',
-        sender: ChatSender.system,
-        type: ChatMessageType.missedCall,
-        textVi: 'Cuộc gọi nhỡ · 15:05',
-        textEn: 'Missed call · 15:05',
-        time: '15:05',
-      ),
-    ];
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
-  }
+  int _lastCount = 0;
 
   @override
   void dispose() {
     _textController.dispose();
     _scrollController.dispose();
-    _typingTimer?.cancel();
     super.dispose();
   }
 
@@ -146,212 +49,89 @@ class _ChatPageState extends State<ChatPage> {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 250),
           curve: Curves.easeOut,
         );
       }
     });
   }
 
-  void _sendMessage(String text) {
+  Future<void> _send(String text) async {
     if (text.trim().isEmpty) return;
-
-    final myRole = _isWorker ? ChatSender.worker : ChatSender.customer;
-    setState(() {
-      _messages.add(
-        ChatMessage(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          sender: myRole,
-          type: ChatMessageType.text,
-          textVi: text,
-          textEn: text,
-          time: '16:02',
-        ),
-      );
+    final sent = await context.read<ChatCubit>().send(text);
+    if (sent && mounted && _textController.text.trim() == text.trim()) {
       _textController.clear();
-    });
-    _scrollToBottom();
-
-    // Simulate reply after 1.4s
-    _typingTimer?.cancel();
-    setState(() => _isTyping = true);
-    _typingTimer = Timer(const Duration(milliseconds: 1400), () {
-      if (!mounted) return;
-      setState(() {
-        _isTyping = false;
-        final peerRole = _isWorker ? ChatSender.customer : ChatSender.worker;
-        final replyText = _isWorker
-            ? 'Dạ em cảm ơn chị, em nhận được tin nhắn rồi ạ!'
-            : 'Anh ơi, anh đã đến nơi chưa ạ?';
-        _messages.add(
-          ChatMessage(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            sender: peerRole,
-            type: ChatMessageType.text,
-            textVi: replyText,
-            textEn: replyText,
-            time: '16:03',
-            seen: true,
-          ),
-        );
-      });
-      _scrollToBottom();
-    });
+    }
   }
 
-  void _addPhotoMessage() {
-    final myRole = _isWorker ? ChatSender.worker : ChatSender.customer;
-    setState(() {
-      _messages.add(
-        ChatMessage(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          sender: myRole,
-          type: ChatMessageType.photo,
-          textVi: 'Ảnh chụp hiện trường',
-          textEn: 'Scene photo',
-          time: '16:03',
-        ),
-      );
-    });
-    _scrollToBottom();
-  }
-
-  void _addLocationMessage() {
-    final myRole = _isWorker ? ChatSender.worker : ChatSender.customer;
-    final locText = _isWorker ? 'Cách 0,3 km · còn 2 phút' : 'Căn hộ Flora Novia, Thủ Đức';
-    setState(() {
-      _messages.add(
-        ChatMessage(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          sender: myRole,
-          type: ChatMessageType.location,
-          textVi: locText,
-          textEn: locText,
-          time: '16:03',
-        ),
-      );
-    });
-    _scrollToBottom();
-  }
-
-  void _handleApproveExtraCost(int index) {
-    setState(() {
-      _messages[index] = _messages[index].copyWith(
-        extraCostStatus: ExtraCostStatus.approved,
-      );
-    });
-  }
-
-  void _handleDeclineExtraCost(int index) {
-    setState(() {
-      _messages[index] = _messages[index].copyWith(
-        extraCostStatus: ExtraCostStatus.declined,
-      );
-    });
-  }
-
-  void _navigateToCall() {
-    final peer = widget.peerName ?? (_isWorker ? 'Nguyễn Thị Mai' : 'Trần Văn Hùng');
-    unawaited(
-      context.push(
-        '${AppRoutes.voipCall}?role=${widget.role}&mode=callout&peer=$peer&order=${widget.orderCode}',
+  void _openCall() => unawaited(
+    context.push(
+      AppRoutes.voipCallLocation(
+        bookingId: widget.bookingId,
+        isWorker: widget.isWorker,
       ),
-    );
-  }
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
-    final defaultPeer = _isWorker ? 'Nguyễn Thị Mai' : 'Trần Văn Hùng';
-    final peer = widget.peerName ?? defaultPeer;
+    final l10n = context.l10n;
+    final peer = widget.isWorker ? l10n.chatPeerCustomer : l10n.chatPeerWorker;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
+        scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.textPrimary),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+            color: AppColors.textPrimary,
+          ),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
             } else {
-              context.go(_isWorker ? AppRoutes.workerDashboard : AppRoutes.customerHome);
+              context.go(
+                widget.isWorker
+                    ? AppRoutes.workerDashboard
+                    : AppRoutes.customerHome,
+              );
             }
           },
         ),
         titleSpacing: 0,
-        title: Row(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: _isWorker ? AppColors.primary : const Color(0xFFEAF3F8),
-                borderRadius: BorderRadius.circular(AppRadius.full),
-                border: Border.all(color: AppColors.border),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                peer.isNotEmpty ? peer[0] : 'U',
-                style: GoogleFonts.sourceSans3(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: _isWorker ? AppColors.onPrimary : AppColors.textPrimary,
-                ),
+            Text(
+              peer,
+              style: AppTextStyles.labelLarge.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AppColors.textPrimary,
               ),
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    peer,
-                    style: GoogleFonts.sourceSans3(
-                      fontSize: 15.5,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    '${widget.orderCode} · ${widget.orderStatus}',
-                    style: AppTextStyles.caption.copyWith(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textSecondary,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+            Text(
+              l10n.chatOrderLabel(widget.bookingId),
+              style: AppTextStyles.caption.copyWith(
+                color: AppColors.textSecondary,
               ),
             ),
           ],
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: InkWell(
-              onTap: widget.isClosed ? null : _navigateToCall,
-              borderRadius: BorderRadius.circular(AppRadius.full),
-              child: Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: widget.isClosed ? AppColors.border.withValues(alpha: 0.5) : AppColors.secondarySurface,
-                  borderRadius: BorderRadius.circular(AppRadius.full),
-                  border: Border.all(
-                    color: widget.isClosed ? AppColors.border : AppColors.primary.withValues(alpha: 0.4),
-                  ),
-                ),
-                child: Icon(
-                  Icons.phone_outlined,
-                  size: 19,
-                  color: widget.isClosed ? AppColors.textMuted : AppColors.primary,
-                ),
+          BlocBuilder<ChatCubit, ChatState>(
+            buildWhen: (previous, current) =>
+                _isClosed(previous) != _isClosed(current),
+            builder: (context, state) => Padding(
+              padding: const EdgeInsets.only(right: AppSpacing.sm),
+              child: AppSecondaryButton(
+                key: const Key('chat_call_button'),
+                label: l10n.trackingMaskedCall,
+                icon: Icons.call_outlined,
+                onPressed: _isClosed(state) ? null : _openCall,
               ),
             ),
           ),
@@ -361,88 +141,251 @@ class _ChatPageState extends State<ChatPage> {
           child: Container(color: AppColors.border, height: 1),
         ),
       ),
-      body: Column(
-        children: [
-          const ChatPrivacyBanner(),
-          Expanded(
-            child: ListView.builder(
-              key: const Key('chat_message_list'),
-              controller: _scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-              itemCount: _messages.length + (_isTyping ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == _messages.length && _isTyping) {
-                  return Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: AppColors.surface,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(18),
-                          topRight: Radius.circular(18),
-                          bottomRight: Radius.circular(18),
-                          bottomLeft: Radius.circular(6),
-                        ),
-                        border: Border.all(color: AppColors.border),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildDot(),
-                          const SizedBox(width: 4),
-                          _buildDot(),
-                          const SizedBox(width: 4),
-                          _buildDot(),
-                        ],
+      body: BlocConsumer<ChatCubit, ChatState>(
+        listener: (context, state) {
+          if (state is! ChatLoadedState) return;
+          if (state.actionFailure case final failure?) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(content: Text(l10n.failureMessage(failure))),
+              );
+          }
+          final newest = state.messages.length;
+          if (newest > _lastCount && !state.isLoadingOlder) _scrollToBottom();
+          _lastCount = newest;
+        },
+        builder: (context, state) => switch (state) {
+          ChatLoadingState() => const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          ),
+          ChatErrorState(:final failure, :final isRoomClosed) => Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: isRoomClosed
+                  ? _ClosedRoomNotice(
+                      title: l10n.chatRoomClosedTitle,
+                      body: l10n.chatClosedNotice,
+                    )
+                  : ErrorRetryView(
+                      message: l10n.failureMessage(failure),
+                      onRetry: () =>
+                          unawaited(context.read<ChatCubit>().retry()),
+                    ),
+            ),
+          ),
+          ChatLoadedState() => _ChatBody(
+            state: state,
+            isWorker: widget.isWorker,
+            controller: _textController,
+            scrollController: _scrollController,
+            onSend: _send,
+          ),
+        },
+      ),
+    );
+  }
+
+  static bool _isClosed(ChatState state) =>
+      (state is ChatLoadedState && state.room.isClosed) ||
+      (state is ChatErrorState && state.isRoomClosed);
+}
+
+class _ChatBody extends StatelessWidget {
+  const _ChatBody({
+    required this.state,
+    required this.isWorker,
+    required this.controller,
+    required this.scrollController,
+    required this.onSend,
+  });
+
+  final ChatLoadedState state;
+  final bool isWorker;
+  final TextEditingController controller;
+  final ScrollController scrollController;
+  final Future<void> Function(String text) onSend;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final cubit = context.read<ChatCubit>();
+    final closed = state.room.isClosed;
+    final leading = state.hasMore ? 1 : 0;
+
+    return Column(
+      children: [
+        const ChatPrivacyBanner(),
+        if (!closed)
+          _ConnectionRow(
+            status: state.connection,
+            onReconnect: () => unawaited(cubit.reconnect()),
+          ),
+        Expanded(
+          child: state.messages.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.xl),
+                    child: Text(
+                      l10n.chatEmpty,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
                       ),
                     ),
-                  );
-                }
+                  ),
+                )
+              : ListView.builder(
+                  key: const Key('chat_message_list'),
+                  controller: scrollController,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
+                  itemCount: state.messages.length + leading,
+                  itemBuilder: (context, index) {
+                    if (index < leading) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                        child: AppSecondaryButton(
+                          key: const Key('chat_load_older'),
+                          label: l10n.chatLoadOlder,
+                          icon: state.isLoadingOlder
+                              ? null
+                              : Icons.expand_less_rounded,
+                          isFullWidth: true,
+                          onPressed: state.isLoadingOlder
+                              ? null
+                              : () => unawaited(cubit.loadOlder()),
+                        ),
+                      );
+                    }
+                    final message = state.messages[index - leading];
+                    return ChatBubble(
+                      key: Key('chat_message_${message.id}'),
+                      message: message,
+                      isMine: state.isMine(message),
+                    );
+                  },
+                ),
+        ),
+        if (!closed)
+          ChatQuickRepliesBar(
+            isWorker: isWorker,
+            onSelect: (text) => unawaited(onSend(text)),
+          ),
+        ChatInputBar(
+          controller: controller,
+          isClosed: closed,
+          isSending: state.isSending,
+          onSend: () => unawaited(onSend(controller.text)),
+        ),
+      ],
+    );
+  }
+}
 
-                final msg = _messages[index];
-                final isMine = _isWorker
-                    ? msg.sender == ChatSender.worker
-                    : msg.sender == ChatSender.customer;
+/// Live / connecting / offline — always Icon + Label + Color.
+class _ConnectionRow extends StatelessWidget {
+  const _ConnectionRow({required this.status, required this.onReconnect});
 
-                return ChatMessageBubble(
-                  message: msg,
-                  isMine: isMine,
-                  isWorker: _isWorker,
-                  isReadonly: widget.isClosed,
-                  onCallBack: _navigateToCall,
-                  onApproveExtraCost: () => _handleApproveExtraCost(index),
-                  onDeclineExtraCost: () => _handleDeclineExtraCost(index),
-                );
-              },
+  final ChatConnectionStatus status;
+  final VoidCallback onReconnect;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final (IconData icon, Color color, String label) = switch (status) {
+      ChatConnectionStatus.connected => (
+        Icons.wifi_rounded,
+        AppColors.successDark,
+        l10n.chatConnLive,
+      ),
+      ChatConnectionStatus.connecting || ChatConnectionStatus.reconnecting => (
+        Icons.sync_rounded,
+        AppColors.textSecondary,
+        l10n.chatConnConnecting,
+      ),
+      ChatConnectionStatus.offline => (
+        Icons.wifi_off_rounded,
+        AppColors.error,
+        l10n.chatConnOffline,
+      ),
+    };
+    return Container(
+      key: Key('chat_connection_${status.name}'),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.xs,
+      ),
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        border: Border(bottom: BorderSide(color: AppColors.border)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: AppSpacing.xs),
+          Expanded(
+            child: Text(
+              label,
+              style: AppTextStyles.caption.copyWith(
+                color: color,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-          if (!widget.isClosed)
-            ChatQuickRepliesBar(
-              isWorker: _isWorker,
-              onSelect: _sendMessage,
+          if (status == ChatConnectionStatus.offline)
+            AppSecondaryButton(
+              key: const Key('chat_reconnect'),
+              label: l10n.chatReconnect,
+              icon: Icons.refresh_rounded,
+              onPressed: onReconnect,
             ),
-          ChatInputBar(
-            controller: _textController,
-            isClosed: widget.isClosed,
-            onSend: () => _sendMessage(_textController.text),
-            onAddPhoto: _addPhotoMessage,
-            onAddLocation: _addLocationMessage,
-          ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildDot() {
-    return Container(
-      width: 6,
-      height: 6,
-      decoration: BoxDecoration(
-        color: AppColors.textMuted,
-        borderRadius: BorderRadius.circular(3),
-      ),
-    );
-  }
+class _ClosedRoomNotice extends StatelessWidget {
+  const _ClosedRoomNotice({required this.title, required this.body});
+
+  final String title;
+  final String body;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(AppSpacing.md),
+    decoration: BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(AppRadius.card),
+      border: Border.all(color: AppColors.border),
+    ),
+    child: Column(
+      children: [
+        const Icon(
+          Icons.lock_outline_rounded,
+          color: AppColors.textMuted,
+          size: 24,
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Text(
+          title,
+          style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          body,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.bodySmall.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
+      ],
+    ),
+  );
 }
