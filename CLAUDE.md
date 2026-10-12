@@ -39,7 +39,7 @@ copies in `docs/reference/`.
 | **Responsive scaling** | flutter_screenutil |
 | **Location & Maps** | google_maps_flutter + geolocator (GPS tracking 2s/broadcast) |
 | **Permissions** | permission_handler (Camera, Location, Mic, Notifications) |
-| **Realtime** | STOMP over WebSocket (`stomp_dart_client` or equivalent) for chat/tracking — see `docs/reference/api/00-foundation.md` |
+| **Realtime** | Plain-JSON WebSocket via `web_socket_channel` (**no STOMP**, no sub-protocol) — shared `RealtimeSocket` in `core/network/realtime_socket.dart`; see `docs/reference/api/07-chat.md` §2 |
 | **Network State** | connectivity_plus (Auto reconnect trigger & offline banner) |
 | **Push** | firebase_messaging |
 | **Crash reporting** | firebase_crashlytics |
@@ -126,7 +126,7 @@ lib/
 ├── core/
 │   ├── constants/                # AppColors, AppTextStyles, AppSpacing — ONLY source of truth
 │   ├── di/                       # get_it + injectable setup
-│   ├── network/                  # ApiClient (dio), api_endpoints.dart, NetworkException, WS/STOMP client
+│   ├── network/                  # ApiClient (dio), api_endpoints.dart, NetworkException, RealtimeSocket (JSON WS)
 │   ├── router/                   # GoRouter config + route name constants
 │   ├── theme/                    # ThemeData light/dark built from AppColors/AppTextStyles
 │   ├── utils/                    # idempotency_key.dart, logger.dart
@@ -205,10 +205,18 @@ Full details: `docs/reference/api/00-foundation.md` + per-module files. Key rule
 
 ## Realtime (Chat / Tracking / Dispatch)
 
-- Transport is **STOMP over WebSocket**, not a generic socket — booking-scoped topics such as
-  `/topic/booking/{id}` emit named events (`WORKER_ASSIGNED`, `WORKER_ARRIVED`, ...). See
-  `docs/reference/api/07-chat.md` and `09-location-tracking.md` for the full event catalog.
+- Transport is a **plain-JSON WebSocket** — **not STOMP** (confirmed against `docs/reference/api/07-chat.md`
+  §2, `09-location-tracking.md`, `11-appendices.md`; the old STOMP wording here was wrong and
+  `stomp_dart_client` has been removed). The access token goes in the `Authorization: Bearer` handshake
+  header, no sub-protocol; frames are JSON objects both ways, server errors arrive as
+  `{"status":"error","errorCode":"HS-..."}`.
+- Always go through `RealtimeSocket` (`core/network/realtime_socket.dart`, created per caller via
+  `RealtimeSocketFactory`): it adds the token, retries drops up to 5 times (2s, 4s, …) with a fresh token
+  and logs on `networkLogger`. Paths live in `ApiEndpoints` (`wsChat(roomId)`, `wsTracking`, ...).
+  Example: `features/messaging/data/datasources/chat_socket_data_source.dart`.
 - Connections are scoped to the feature BLoC that needs them — open on bloc creation, close on bloc close.
+- Socket messages are merged with REST data by id (never shown twice); sending still goes over REST
+  when an endpoint exists (it carries `X-Idempotency-Key`).
 - Worker GPS updates broadcast every ~2 seconds while online.
 
 ---

@@ -40,7 +40,7 @@ copies in `docs/reference/`.
 | **Responsive scaling** | flutter_screenutil |
 | **Location & Maps** | google_maps_flutter + geolocator (GPS tracking 2s/broadcast) |
 | **Permissions** | permission_handler (Camera, Location, Mic, Notifications) |
-| **Realtime** | STOMP over WebSocket (`stomp_dart_client` or equivalent) for chat/tracking — see `docs/reference/api/00-foundation.md` |
+| **Realtime** | Plain-JSON WebSocket via `web_socket_channel` (**no STOMP**, no sub-protocol) — shared `RealtimeSocket` in `core/network/realtime_socket.dart`; see `docs/reference/api/07-chat.md` §2 |
 | **Network State** | connectivity_plus (Auto reconnect trigger & offline banner) |
 | **Push** | firebase_messaging |
 | **Crash reporting** | firebase_crashlytics |
@@ -123,7 +123,7 @@ lib/
 ├── core/
 │   ├── constants/                # AppColors, AppTextStyles, AppSpacing — ONLY source of truth
 │   ├── di/                       # get_it + injectable setup
-│   ├── network/                  # ApiClient (dio), api_endpoints.dart, NetworkException, WS/STOMP client
+│   ├── network/                  # ApiClient (dio), api_endpoints.dart, NetworkException, RealtimeSocket (JSON WS)
 │   ├── router/                   # GoRouter config + route name constants
 │   ├── theme/                    # ThemeData light/dark built from AppColors/AppTextStyles
 │   ├── utils/                    # idempotency_key.dart, logger.dart

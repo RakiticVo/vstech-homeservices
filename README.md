@@ -12,7 +12,7 @@
   - **Cấm màu đen thuần**: Tuyệt đối không dùng `#000000`
   - Typography: Google Fonts `Plus Jakarta Sans` (Tiêu đề/Button) & `Inter` (Nội dung/Giá)
 - **Điều hướng & DI**: `go_router` (role-aware routing) + `get_it` / `injectable`
-- **Network & Realtime**: `dio` (kèm `ApiResponse<T>`, `X-Idempotency-Key`) + WebSocket STOMP (`stomp_dart_client`)
+- **Network & Realtime**: `dio` (kèm `ApiResponse<T>`, `X-Idempotency-Key`) + WebSocket JSON thuần (`web_socket_channel`, `RealtimeSocket` — không dùng STOMP)
 
 ---
 

@@ -38,9 +38,11 @@ Never invent an endpoint, field, or status code that isn't in `docs/reference/ap
    `domain/repositories/<name>_repository.dart` interface, and register both in the `injectable`
    module so `get_it` resolves the interface to the implementation.
 
-7. **Realtime endpoints** (chat, tracking, dispatch, voip signaling) use STOMP over WebSocket, not
-   plain REST polling — see the per-module doc for topic names and event payloads. Scope the
-   connection lifecycle to the owning BLoC (open on create, close on close).
+7. **Realtime endpoints** (chat, tracking, dispatch) use a **plain-JSON WebSocket** (no STOMP, token in
+   the `Authorization` handshake header), not REST polling — see the per-module doc for paths and
+   payloads. Build on `RealtimeSocket` / `RealtimeSocketFactory` (`core/network/realtime_socket.dart`)
+   like `chat_socket_data_source.dart`, and scope the connection to the owning BLoC (open on create,
+   close on close).
 
 8. If a needed backend capability genuinely isn't documented yet, stop and flag it to the user rather
    than guessing a shape — do not fabricate an endpoint or a field.
