@@ -20,15 +20,30 @@ class AuthTestProviders {
   AuthTestProviders({UserProfile? profile}) {
     registerFallbackValue(const ProfileUpdate());
     registerFallbackValue(UserRole.customer);
-    whenListen(login, loginStates.stream, initialState: const AuthFormInitialState());
+    whenListen(
+      login,
+      loginStates.stream,
+      initialState: const AuthFormInitialState(),
+    );
     when(() => login.prefill(any())).thenAnswer((_) async {});
-    whenListen(register, registerStates.stream, initialState: const AuthFormInitialState());
-    whenListen(logout, _logoutStates.stream, initialState: const LogoutInitialState());
-    when(logout.logout).thenAnswer((_) async => _logoutStates.add(const LogoutDoneState()));
+    whenListen(
+      register,
+      registerStates.stream,
+      initialState: const AuthFormInitialState(),
+    );
+    whenListen(
+      logout,
+      _logoutStates.stream,
+      initialState: const LogoutInitialState(),
+    );
+    when(logout.logout)
+        .thenAnswer((_) async => _logoutStates.add(const LogoutDoneState()));
     whenListen<ProfileState>(
       this.profile,
       _profileStates.stream,
-      initialState: profile == null ? const ProfileLoadingState() : ProfileLoadedState(profile),
+      initialState: profile == null
+          ? const ProfileLoadingState()
+          : ProfileLoadedState(profile),
     );
     when(() => this.profile.load()).thenAnswer((_) async {});
     when(() => this.profile.save(any())).thenAnswer((_) async {
