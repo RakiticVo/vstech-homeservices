@@ -171,20 +171,47 @@ void main() {
       expect(sent.actualPrice, 600000);
     });
 
-    test('submitQuote maps lines to items', () async {
-      when(() => remote.submitQuote('7', any()))
-          .thenAnswer((_) async => const QuoteResponse(status: 'PENDING'));
+    test(
+      'submitQuote maps lines to items and caches the submitted quote',
+      () async {
+        when(() => remote.submitQuote('7', any())).thenAnswer(
+          (_) async => QuoteResponse(
+            status: 'PENDING',
+            totalAmount: 45000,
+            createdAt: DateTime.utc(2026, 10, 12, 7),
+          ),
+        );
 
-      await repository.submitQuote('7', const [
-        QuoteLine(itemName: 'Gas R32', amount: 45000),
-      ]);
+        final result = await repository.submitQuote('7', const [
+          QuoteLine(itemName: 'Gas R32', amount: 45000),
+        ]);
 
-      final sent =
-          verify(() => remote.submitQuote('7', captureAny())).captured.single
-              as SubmitQuoteRequest;
-      expect(sent.items.single.itemName, 'Gas R32');
-      expect(sent.items.single.amount, 45000);
-    });
+        final sent =
+            verify(() => remote.submitQuote('7', captureAny())).captured.single
+                as SubmitQuoteRequest;
+        expect(sent.items.single.itemName, 'Gas R32');
+        expect(sent.items.single.amount, 45000);
+        final quote = (result as Ok<SubmittedQuote>).value;
+        expect(quote.status, QuoteStatus.pending);
+        expect(quote.submittedAt, DateTime.utc(2026, 10, 12, 7));
+        expect(repository.cachedQuote('7'), quote);
+      },
+    );
+
+    test(
+      'submitQuote falls back to the typed total when the response has none',
+      () async {
+        when(() => remote.submitQuote('7', any()))
+            .thenAnswer((_) async => const QuoteResponse());
+
+        final result = await repository.submitQuote('7', const [
+          QuoteLine(itemName: 'Ron', amount: 30000),
+          QuoteLine(itemName: 'Công', amount: 15000),
+        ]);
+
+        expect((result as Ok<SubmittedQuote>).value.totalAmount, 45000);
+      },
+    );
   });
 
   group('worker use cases', () {
@@ -229,20 +256,54 @@ void main() {
     });
 
     test('SubmitQuoteUseCase validates and trims lines', () async {
-      when(() => repository.submitQuote(any(), any()))
-          .thenAnswer((_) async => const Ok<void>(null));
+      when(() => repository.submitQuote(any(), any())).thenAnswer(
+        (_) async => const Ok(
+          SubmittedQuote(
+            bookingId: '7',
+            status: QuoteStatus.pending,
+            lines: [],
+            totalAmount: 0,
+          ),
+        ),
+      );
 
       final invalid = await SubmitQuoteUseCase(repository)('7', const [
         QuoteLine(itemName: ' ', amount: 1),
       ]);
       expect(
         invalid,
-        isA<Err<void>>().having(
+        isA<Err<SubmittedQuote>>().having(
           (r) => r.failure.errorCode,
           'code',
           'HS-400-0001',
         ),
       );
+
+      final tooMany = await SubmitQuoteUseCase(repository)('7', [
+        for (var i = 0; i < 11; i++)
+          QuoteLine(itemName: 'Item $i', amount: 1000),
+      ]);
+      expect(
+        tooMany,
+        isA<Err<SubmittedQuote>>().having(
+          (r) => r.failure.errorCode,
+          'code',
+          'HS-400-0001',
+        ),
+      );
+
+      final overCap = await SubmitQuoteUseCase(repository)('7', const [
+        QuoteLine(itemName: 'Gas', amount: 220000),
+      ], estimatedPrice: 400000);
+      expect(
+        overCap,
+        isA<Err<SubmittedQuote>>().having(
+          (r) => r.failure.errorCode,
+          'code',
+          'HS-400-0012',
+        ),
+      );
+      verifyNever(() => repository.submitQuote(any(), any()));
 
       await SubmitQuoteUseCase(repository)('7', const [
         QuoteLine(itemName: ' Gas R32 ', amount: 45000),

@@ -1074,29 +1074,108 @@ class AppLocalizationsEn extends AppLocalizations {
   String get workerExecutingTitle => 'Executing Service';
 
   @override
-  String get workerExtraCostButton => '+ Request Extra Cost';
+  String get workerExtraCostButton => '+ Extra-cost quote';
 
   @override
   String get workerCompleteJobCta => 'Complete Job -> Sign-off';
 
   @override
-  String get workerExtraCostDialogTitle => 'Request Extra Material Cost';
+  String get workerProposalSent => 'Quote sent to the customer';
 
   @override
-  String get workerExtraCostDesc =>
-      'Enter replacement parts/materials requiring customer approval before servicing.';
+  String get quoteTitle => 'Extra-cost quote';
 
   @override
-  String get workerItemName => 'Part/Material Name';
+  String quoteSubtitle(String id, String service) {
+    return 'Order #$id · $service';
+  }
 
   @override
-  String get workerItemPrice => 'Cost (VND)';
+  String get quoteEstimateLabel => 'Original estimate';
 
   @override
-  String get workerSendProposal => 'Send Proposal to Customer';
+  String get quoteCapNote => 'The order total may not exceed 1.5× the estimate';
 
   @override
-  String get workerProposalSent => 'Proposal sent successfully!';
+  String quoteItemTitle(int index) {
+    return 'Item $index';
+  }
+
+  @override
+  String get quoteItemName => 'Material / item';
+
+  @override
+  String get quoteItemNameHint => 'E.g. extra R32 gas';
+
+  @override
+  String get quoteItemAmount => 'Amount';
+
+  @override
+  String get quoteRemoveItem => 'Remove item';
+
+  @override
+  String get quoteAddItem => 'Add item';
+
+  @override
+  String get quoteMaxItems => 'Up to 10 items';
+
+  @override
+  String get quoteTotalLabel => 'Extra total';
+
+  @override
+  String get quoteTotalNote => 'The customer pays this on top after approving';
+
+  @override
+  String get quoteSubmit => 'Send quote to customer';
+
+  @override
+  String get quoteErrorName => 'Enter the item name';
+
+  @override
+  String get quoteErrorAmount => 'Enter an amount above 0đ';
+
+  @override
+  String quoteErrorCap(String total, String cap) {
+    return 'Order total $total exceeds 1.5× the estimate ($cap)';
+  }
+
+  @override
+  String get quoteStatusPending => 'Waiting for the customer';
+
+  @override
+  String get quoteStatusApproved => 'Customer approved';
+
+  @override
+  String get quoteStatusRejected => 'Customer declined';
+
+  @override
+  String get quoteStatusCancelled => 'Quote cancelled';
+
+  @override
+  String quoteItemsCount(int count) {
+    return '$count items';
+  }
+
+  @override
+  String quoteSentAt(String time) {
+    return 'Sent at $time';
+  }
+
+  @override
+  String get quoteReview => 'Review quote';
+
+  @override
+  String get quoteNewTotal => 'New order total';
+
+  @override
+  String get quoteRejectedHint =>
+      'Continue at the original price or message the customer';
+
+  @override
+  String get quoteContinueWork => 'Continue working';
+
+  @override
+  String get quoteClose => 'Close';
 
   @override
   String get inspectTitle => 'Service Inspection';

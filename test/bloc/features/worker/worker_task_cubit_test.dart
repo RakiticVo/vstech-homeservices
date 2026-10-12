@@ -14,13 +14,25 @@ import '../../../fixtures/booking/booking_fixtures.dart';
 import '../../../helpers/mocks.dart';
 
 const _offline = Failure(kind: NetworkErrorKind.noConnection);
+const _quote = SubmittedQuote(
+  bookingId: '501',
+  status: QuoteStatus.pending,
+  lines: [QuoteLine(itemName: 'Gas', amount: 45000)],
+  totalAmount: 45000,
+);
+const _declined = SubmittedQuote(
+  bookingId: '501',
+  status: QuoteStatus.rejected,
+  lines: [QuoteLine(itemName: 'Gas', amount: 45000)],
+  totalAmount: 45000,
+);
 
 void main() {
   late MockGetBookingUseCase getBooking;
   late MockGetCategoryUseCase getCategory;
   late MockAcceptBookingUseCase accept;
   late MockStartBookingUseCase start;
-  late MockSubmitQuoteUseCase submitQuote;
+  late MockGetSubmittedQuoteUseCase getQuote;
   late MockCompleteBookingUseCase complete;
 
   WorkerTaskCubit build() => WorkerTaskCubit(
@@ -28,18 +40,17 @@ void main() {
     getCategory,
     accept,
     start,
-    submitQuote,
+    getQuote,
     complete,
   );
-
-  setUpAll(() => registerFallbackValue(<QuoteLine>[]));
 
   setUp(() {
     getBooking = MockGetBookingUseCase();
     getCategory = MockGetCategoryUseCase();
     accept = MockAcceptBookingUseCase();
     start = MockStartBookingUseCase();
-    submitQuote = MockSubmitQuoteUseCase();
+    getQuote = MockGetSubmittedQuoteUseCase();
+    when(() => getQuote(any())).thenReturn(null);
     complete = MockCompleteBookingUseCase();
   });
 
@@ -114,22 +125,41 @@ void main() {
   );
 
   blocTest<WorkerTaskCubit, WorkerTaskState>(
-    'submitQuote remembers the quoted total for the final price',
-    setUp: () =>
-        when(() => submitQuote('501', any()))
-            .thenAnswer((_) async => const Ok<void>(null)),
+    'load picks up the last quote sent for the job',
+    setUp: () {
+      when(() => getBooking('501'))
+          .thenAnswer((_) async => Ok<Booking>(pendingBooking));
+      when(() => getCategory('1'))
+          .thenAnswer((_) async => const Ok<ServiceCategory>(acCategory));
+      when(() => getQuote('501')).thenReturn(_quote);
+    },
     build: build,
-    seed: () => WorkerTaskReadyState(pendingData),
-    act: (cubit) =>
-        cubit.submitQuote(const [QuoteLine(itemName: 'Gas', amount: 45000)]),
+    act: (cubit) => cubit.load('501'),
+    skip: 1,
     expect: () => [
-      WorkerTaskBusyState(pendingData, WorkerTaskAction.quote),
-      WorkerTaskActionDoneState(
-        WorkerTaskData(booking: pendingBooking, quotedExtra: 45000),
-        WorkerTaskAction.quote,
+      WorkerTaskReadyState(
+        WorkerTaskData(
+          booking: pendingBooking,
+          serviceName: 'Sửa máy lạnh',
+          quote: _quote,
+        ),
       ),
     ],
     verify: (cubit) => expect(cubit.state.data?.suggestedFinalPrice, 545000),
+  );
+
+  blocTest<WorkerTaskCubit, WorkerTaskState>(
+    'refreshQuote re-reads the cached quote; a declined quote no longer counts toward the price',
+    setUp: () => when(() => getQuote('501')).thenReturn(_declined),
+    build: build,
+    seed: () => WorkerTaskReadyState(pendingData),
+    act: (cubit) => cubit.refreshQuote(),
+    expect: () => [
+      WorkerTaskReadyState(
+        WorkerTaskData(booking: pendingBooking, quote: _declined),
+      ),
+    ],
+    verify: (cubit) => expect(cubit.state.data?.suggestedFinalPrice, 500000),
   );
 
   blocTest<WorkerTaskCubit, WorkerTaskState>(

@@ -1,30 +1,32 @@
 part of 'worker_task_cubit.dart';
 
-enum WorkerTaskAction { accept, start, quote, complete }
+enum WorkerTaskAction { accept, start, complete }
 
 /// The job plus what the worker added on this device.
 @immutable
 class WorkerTaskData {
-  const WorkerTaskData({
-    required this.booking,
-    this.serviceName,
-    this.quotedExtra = 0,
-  });
+  const WorkerTaskData({required this.booking, this.serviceName, this.quote});
 
   final Booking booking;
   final String? serviceName;
 
-  /// Sum of extra-cost quotes sent from this screen.
-  final num quotedExtra;
+  /// Last extra-cost quote sent for this job from this device, if any.
+  final SubmittedQuote? quote;
 
-  /// Suggested `actualPrice` for completion: the estimate plus quoted extras.
+  /// Extra cost still counting toward the final price (a rejected / cancelled quote does not).
+  num get quotedExtra => switch (quote?.status) {
+    QuoteStatus.pending || QuoteStatus.approved => quote!.totalAmount,
+    _ => 0,
+  };
+
+  /// Suggested `actualPrice` for completion: the estimate plus the quoted extra.
   num get suggestedFinalPrice => (booking.estimatedPrice ?? 0) + quotedExtra;
 
-  WorkerTaskData copyWith({Booking? booking, num? quotedExtra}) =>
+  WorkerTaskData copyWith({Booking? booking, SubmittedQuote? quote}) =>
       WorkerTaskData(
         booking: booking ?? this.booking,
         serviceName: serviceName,
-        quotedExtra: quotedExtra ?? this.quotedExtra,
+        quote: quote ?? this.quote,
       );
 
   @override
@@ -32,10 +34,10 @@ class WorkerTaskData {
       other is WorkerTaskData &&
       other.booking == booking &&
       other.serviceName == serviceName &&
-      other.quotedExtra == quotedExtra;
+      other.quote == quote;
 
   @override
-  int get hashCode => Object.hash(booking, serviceName, quotedExtra);
+  int get hashCode => Object.hash(booking, serviceName, quote);
 }
 
 @immutable

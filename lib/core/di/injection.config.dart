@@ -162,6 +162,8 @@ import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawa
     as _i110;
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart'
     as _i686;
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/quote_form_cubit.dart'
+    as _i706;
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart'
     as _i101;
 
@@ -316,6 +318,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1056.SubmitQuoteUseCase>(
       () => _i1056.SubmitQuoteUseCase(gh<_i362.BookingRepository>()),
     );
+    gh.factory<_i1056.GetSubmittedQuoteUseCase>(
+      () => _i1056.GetSubmittedQuoteUseCase(gh<_i362.BookingRepository>()),
+    );
     gh.factory<_i859.BookingActionCubit>(
       () => _i859.BookingActionCubit(
         gh<_i118.CancelBookingUseCase>(),
@@ -363,14 +368,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i653.GetCategoryUseCase>(),
       ),
     );
-    gh.factory<_i101.WorkerTaskCubit>(
-      () => _i101.WorkerTaskCubit(
+    gh.factory<_i706.QuoteFormCubit>(
+      () => _i706.QuoteFormCubit(
         gh<_i736.GetBookingUseCase>(),
         gh<_i653.GetCategoryUseCase>(),
-        gh<_i1056.AcceptBookingUseCase>(),
-        gh<_i1056.StartBookingUseCase>(),
         gh<_i1056.SubmitQuoteUseCase>(),
-        gh<_i1056.CompleteBookingUseCase>(),
       ),
     );
     gh.factory<_i428.BookingListCubit>(
@@ -437,6 +439,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i78.UpdateNotificationSettingsUseCase>(
       () => _i78.UpdateNotificationSettingsUseCase(
         gh<_i634.NotificationRepository>(),
+      ),
+    );
+    gh.factory<_i101.WorkerTaskCubit>(
+      () => _i101.WorkerTaskCubit(
+        gh<_i736.GetBookingUseCase>(),
+        gh<_i653.GetCategoryUseCase>(),
+        gh<_i1056.AcceptBookingUseCase>(),
+        gh<_i1056.StartBookingUseCase>(),
+        gh<_i1056.GetSubmittedQuoteUseCase>(),
+        gh<_i1056.CompleteBookingUseCase>(),
       ),
     );
     gh.factory<_i664.TransactionDetailCubit>(

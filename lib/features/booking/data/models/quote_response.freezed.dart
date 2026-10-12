@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$QuoteResponse {
 
- String? get status;@NullableMoneyConverter() num? get totalAmount;
+ String? get status;@NullableMoneyConverter() num? get totalAmount;@NullableUtcDateTimeConverter() DateTime? get submittedAt;@NullableUtcDateTimeConverter() DateTime? get createdAt;
 /// Create a copy of QuoteResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $QuoteResponseCopyWith<QuoteResponse> get copyWith => _$QuoteResponseCopyWithImp
 @override
 bool operator ==(Object other) {
   final _this = this as QuoteResponse;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuoteResponse&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.totalAmount, _this.totalAmount) || other.totalAmount == _this.totalAmount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuoteResponse&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.totalAmount, _this.totalAmount) || other.totalAmount == _this.totalAmount)&&(identical(other.submittedAt, _this.submittedAt) || other.submittedAt == _this.submittedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as QuoteResponse;
-  return Object.hash(runtimeType,_this.status,_this.totalAmount);
+  return Object.hash(runtimeType,_this.status,_this.totalAmount,_this.submittedAt,_this.createdAt);
 }
 
 @override
 String toString() {
   final _this = this as QuoteResponse;
-  return 'QuoteResponse(status: ${_this.status}, totalAmount: ${_this.totalAmount})';
+  return 'QuoteResponse(status: ${_this.status}, totalAmount: ${_this.totalAmount}, submittedAt: ${_this.submittedAt}, createdAt: ${_this.createdAt})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $QuoteResponseCopyWith<$Res>  {
   factory $QuoteResponseCopyWith(QuoteResponse value, $Res Function(QuoteResponse) _then) = _$QuoteResponseCopyWithImpl;
 @useResult
 $Res call({
- String? status,@NullableMoneyConverter() num? totalAmount
+ String? status,@NullableMoneyConverter() num? totalAmount,@NullableUtcDateTimeConverter() DateTime? submittedAt,@NullableUtcDateTimeConverter() DateTime? createdAt
 });
 
 
@@ -71,11 +71,13 @@ class _$QuoteResponseCopyWithImpl<$Res>
 
 /// Create a copy of QuoteResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = freezed,Object? totalAmount = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = freezed,Object? totalAmount = freezed,Object? submittedAt = freezed,Object? createdAt = freezed,}) {
   return _then(QuoteResponse(
 status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String?,totalAmount: freezed == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as num?,
+as num?,submittedAt: freezed == submittedAt ? _self.submittedAt : submittedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -160,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? status, @NullableMoneyConverter()  num? totalAmount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? status, @NullableMoneyConverter()  num? totalAmount, @NullableUtcDateTimeConverter()  DateTime? submittedAt, @NullableUtcDateTimeConverter()  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _QuoteResponse() when $default != null:
-return $default(_that.status,_that.totalAmount);case _:
+return $default(_that.status,_that.totalAmount,_that.submittedAt,_that.createdAt);case _:
   return orElse();
 
 }
@@ -181,10 +183,10 @@ return $default(_that.status,_that.totalAmount);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? status, @NullableMoneyConverter()  num? totalAmount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? status, @NullableMoneyConverter()  num? totalAmount, @NullableUtcDateTimeConverter()  DateTime? submittedAt, @NullableUtcDateTimeConverter()  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _QuoteResponse():
-return $default(_that.status,_that.totalAmount);case _:
+return $default(_that.status,_that.totalAmount,_that.submittedAt,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +203,10 @@ return $default(_that.status,_that.totalAmount);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? status, @NullableMoneyConverter()  num? totalAmount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? status, @NullableMoneyConverter()  num? totalAmount, @NullableUtcDateTimeConverter()  DateTime? submittedAt, @NullableUtcDateTimeConverter()  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _QuoteResponse() when $default != null:
-return $default(_that.status,_that.totalAmount);case _:
+return $default(_that.status,_that.totalAmount,_that.submittedAt,_that.createdAt);case _:
   return null;
 
 }
@@ -216,11 +218,13 @@ return $default(_that.status,_that.totalAmount);case _:
 @JsonSerializable()
 
 class _QuoteResponse implements QuoteResponse {
-  const _QuoteResponse({this.status, @NullableMoneyConverter() this.totalAmount});
+  const _QuoteResponse({this.status, @NullableMoneyConverter() this.totalAmount, @NullableUtcDateTimeConverter() this.submittedAt, @NullableUtcDateTimeConverter() this.createdAt});
   factory _QuoteResponse.fromJson(Map<String, dynamic> json) => _$QuoteResponseFromJson(json);
 
 @override final  String? status;
 @override@NullableMoneyConverter() final  num? totalAmount;
+@override@NullableUtcDateTimeConverter() final  DateTime? submittedAt;
+@override@NullableUtcDateTimeConverter() final  DateTime? createdAt;
 
 /// Create a copy of QuoteResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -235,18 +239,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuoteResponse&&(identical(other.status, status) || other.status == status)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuoteResponse&&(identical(other.status, status) || other.status == status)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.submittedAt, submittedAt) || other.submittedAt == submittedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,status,totalAmount);
+    return Object.hash(runtimeType,status,totalAmount,submittedAt,createdAt);
 }
 
 @override
 String toString() {
-    return 'QuoteResponse(status: $status, totalAmount: $totalAmount)';
+    return 'QuoteResponse(status: $status, totalAmount: $totalAmount, submittedAt: $submittedAt, createdAt: $createdAt)';
 }
 
 
@@ -257,7 +261,7 @@ abstract mixin class _$QuoteResponseCopyWith<$Res> implements $QuoteResponseCopy
   factory _$QuoteResponseCopyWith(_QuoteResponse value, $Res Function(_QuoteResponse) _then) = __$QuoteResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String? status,@NullableMoneyConverter() num? totalAmount
+ String? status,@NullableMoneyConverter() num? totalAmount,@NullableUtcDateTimeConverter() DateTime? submittedAt,@NullableUtcDateTimeConverter() DateTime? createdAt
 });
 
 
@@ -274,11 +278,13 @@ class __$QuoteResponseCopyWithImpl<$Res>
 
 /// Create a copy of QuoteResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = freezed,Object? totalAmount = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = freezed,Object? totalAmount = freezed,Object? submittedAt = freezed,Object? createdAt = freezed,}) {
   return _then(_QuoteResponse(
 status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String?,totalAmount: freezed == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as num?,
+as num?,submittedAt: freezed == submittedAt ? _self.submittedAt : submittedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

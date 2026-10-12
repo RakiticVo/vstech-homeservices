@@ -62,6 +62,7 @@ import 'package:vstech_home_services/features/wallet/presentation/bloc/wallet_cu
 import 'package:vstech_home_services/features/wallet/presentation/bloc/withdraw_cubit.dart';
 import 'package:vstech_home_services/features/wallet/presentation/bloc/withdrawal_status_cubit.dart';
 import 'package:vstech_home_services/features/worker_dashboard/presentation/bloc/worker_presence_cubit.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/quote_form_cubit.dart';
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
 
 // --- core ---
@@ -171,6 +172,12 @@ class MockAcceptBookingUseCase extends Mock implements AcceptBookingUseCase;
 class MockStartBookingUseCase extends Mock implements StartBookingUseCase;
 
 class MockSubmitQuoteUseCase extends Mock implements SubmitQuoteUseCase;
+
+class MockGetSubmittedQuoteUseCase extends Mock
+    implements GetSubmittedQuoteUseCase;
+
+class MockQuoteFormCubit extends MockCubit<QuoteFormState>
+    implements QuoteFormCubit;
 
 class MockCompleteBookingUseCase extends Mock implements CompleteBookingUseCase;
 

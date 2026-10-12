@@ -50,6 +50,15 @@ Widget _createTestTrackingWidget(Widget child) {
         ),
       ),
       GoRoute(
+        path: AppRoutes.workerQuote,
+        builder: (context, state) => Scaffold(
+          body: TextButton(
+            onPressed: () => context.pop(true),
+            child: Text('Quote:${state.uri.queryParameters['id']}'),
+          ),
+        ),
+      ),
+      GoRoute(
         path: AppRoutes.workerJobCompletion,
         builder: (context, state) =>
             const Scaffold(body: Text('JobCompletionTarget')),
@@ -207,7 +216,7 @@ void main() {
     );
 
     testWidgets(
-      'WorkerExecutingPage sends an extra-cost quote and completes with the final price',
+      'WorkerExecutingPage opens the quote screen, shows its status and completes with the final price',
       (tester) async {
         await tester.binding.setSurfaceSize(const Size(390, 1600));
         addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -225,7 +234,7 @@ void main() {
           ),
         );
         when(() => task.load(any())).thenAnswer((_) async {});
-        when(() => task.submitQuote(any())).thenAnswer((_) async {});
+        when(task.refreshQuote).thenReturn(null);
         when(() => task.complete(any())).thenAnswer((_) async {});
 
         await tester.pumpWidget(
@@ -242,31 +251,32 @@ void main() {
         expect(find.byType(WorkingTimerWidget), findsOneWidget);
         expect(find.byType(ServiceChecklistWidget), findsOneWidget);
 
-        // Extra-cost quote → POST /bookings/{id}/quote
-        await tester.tap(find.text('+ Đề xuất chi phí phát sinh'));
+        // Extra-cost quote → its own screen; back with `true` → refresh + SnackBar.
+        await tester.tap(find.text('+ Báo giá phát sinh'));
         await tester.pumpAndSettle();
-        await tester.enterText(
-          find.byKey(const Key('worker_extra_cost_name')),
-          'Gas R32',
-        );
-        await tester.enterText(
-          find.byKey(const Key('worker_extra_cost_price')),
-          '45.000',
-        );
-        await tester.tap(find.byKey(const Key('worker_extra_cost_send')));
+        await tester.tap(find.text('Quote:502'));
         await tester.pumpAndSettle();
-        final lines =
-            verify(() => task.submitQuote(captureAny())).captured.single
-                as List<QuoteLine>;
-        expect(lines.single.itemName, 'Gas R32');
-        expect(lines.single.amount, 45000);
+        verify(task.refreshQuote).called(1);
+        expect(find.text('Đã gửi báo giá cho khách'), findsOneWidget);
 
-        final quoted = WorkerTaskData(booking: inProgress, quotedExtra: 45000);
-        states.add(WorkerTaskActionDoneState(quoted, WorkerTaskAction.quote));
+        // Pending quote → status card, no second quote button.
+        final quoted = WorkerTaskData(
+          booking: inProgress,
+          quote: SubmittedQuote(
+            bookingId: '502',
+            status: QuoteStatus.pending,
+            lines: const [QuoteLine(itemName: 'Gas R32', amount: 45000)],
+            totalAmount: 45000,
+            submittedAt: DateTime.utc(2026, 10, 12, 7, 30),
+          ),
+        );
+        states.add(WorkerTaskReadyState(quoted));
         await tester.pumpAndSettle();
-        expect(find.text('Đã gửi đề xuất thành công!'), findsOneWidget);
+        expect(find.byKey(const Key('quote_status_pending')), findsOneWidget);
+        expect(find.text('Đang chờ khách duyệt'), findsOneWidget);
+        expect(find.byKey(const Key('worker_extra_cost_button')), findsNothing);
 
-        // Complete → final price pre-filled with estimate + extras
+        // Complete → final price pre-filled with estimate + the pending quote.
         when(() => task.state).thenReturn(WorkerTaskReadyState(quoted));
         await tester.tap(find.byKey(const Key('worker_complete_job_button')));
         await tester.pumpAndSettle();
@@ -285,6 +295,63 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(find.text('JobCompletionTarget'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'WorkerExecutingPage: a declined quote offers Message / Continue and hides Complete until chosen',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 1600));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final task = MockWorkerTaskCubit();
+        final inProgress = acceptedBooking.copyWith(
+          status: BookingStatus.inProgress,
+        );
+        whenListen(
+          task,
+          const Stream<WorkerTaskState>.empty(),
+          initialState: WorkerTaskReadyState(
+            WorkerTaskData(
+              booking: inProgress,
+              quote: const SubmittedQuote(
+                bookingId: '502',
+                status: QuoteStatus.rejected,
+                lines: [QuoteLine(itemName: 'Gas R32', amount: 45000)],
+                totalAmount: 45000,
+              ),
+            ),
+          ),
+        );
+        when(() => task.load(any())).thenAnswer((_) async {});
+
+        await tester.pumpWidget(
+          _createTestTrackingWidget(
+            BlocProvider<WorkerTaskCubit>.value(
+              value: task,
+              child: const WorkerExecutingPage(bookingId: '502'),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        expect(find.text('Khách đã từ chối'), findsOneWidget);
+        expect(find.byKey(const Key('quote_message_button')), findsOneWidget);
+        expect(
+          find.byKey(const Key('worker_complete_job_button')),
+          findsNothing,
+        );
+
+        await tester.tap(find.byKey(const Key('quote_continue_button')));
+        await tester.pump();
+        expect(find.byKey(const Key('quote_status_rejected')), findsNothing);
+        expect(
+          find.byKey(const Key('worker_complete_job_button')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('worker_extra_cost_button')),
+          findsOneWidget,
+        );
       },
     );
   });

@@ -15,10 +15,11 @@ import 'package:vstech_home_services/features/booking/domain/entities/quote_line
 import 'package:vstech_home_services/features/tracking/presentation/widgets/service_checklist_widget.dart';
 import 'package:vstech_home_services/features/tracking/presentation/widgets/working_timer_widget.dart';
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/widgets/quote_status_card.dart';
 
 /// Worker Service Execution Screen (`wwork` — Concept 02: Cell 48).
-/// Real-time working timer, interactive 5-step checklist (local), extra-cost quote
-/// (`POST /bookings/{id}/quote`) and job completion with the final price
+/// Real-time working timer, interactive 5-step checklist (local), the extra-cost quote (opens the
+/// quote screen, then shows its status card — Cell 133) and job completion with the final price
 /// (`POST /bookings/{id}/complete`, at most 1.5 × the estimate).
 class WorkerExecutingPage extends StatefulWidget {
   const WorkerExecutingPage({required this.bookingId, super.key});
@@ -33,6 +34,9 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
   final Set<int> _completedSteps = {0, 1};
   int _currentStep = 2;
 
+  /// The worker tapped "Continue working" on a declined quote — hide that card.
+  bool _rejectionAcknowledged = false;
+
   @override
   void initState() {
     super.initState();
@@ -42,12 +46,6 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
   void _onStateChanged(BuildContext context, WorkerTaskState state) {
     final messenger = ScaffoldMessenger.of(context);
     switch (state) {
-      case WorkerTaskActionDoneState(action: WorkerTaskAction.quote):
-        messenger
-          ..hideCurrentSnackBar()
-          ..showSnackBar(
-            SnackBar(content: Text(context.l10n.workerProposalSent)),
-          );
       case WorkerTaskActionDoneState(action: WorkerTaskAction.complete):
         context.go(AppRoutes.workerJobCompletion);
       case WorkerTaskActionFailedState(:final failure):
@@ -154,86 +152,20 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
     });
   }
 
-  void _showExtraCostDialog() {
-    final nameController = TextEditingController();
-    final priceController = TextEditingController();
-
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          backgroundColor: AppColors.surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.card),
-          ),
-          title: Text(
-            context.l10n.workerExtraCostDialogTitle,
-            style: AppTextStyles.headlineSmall.copyWith(fontSize: 18),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                context.l10n.workerExtraCostDesc,
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              TextField(
-                key: const Key('worker_extra_cost_name'),
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: context.l10n.workerItemName,
-                  border: const OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              TextField(
-                key: const Key('worker_extra_cost_price'),
-                controller: priceController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: context.l10n.workerItemPrice,
-                  border: const OutlineInputBorder(),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(
-                context.l10n.cancel,
-                style: AppTextStyles.labelLarge.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              key: const Key('worker_extra_cost_send'),
-              onPressed: () {
-                final amount = _parseMoney(priceController.text);
-                if (nameController.text.trim().isEmpty || amount == null)
-                  return;
-                Navigator.of(ctx).pop();
-                unawaited(
-                  context.read<WorkerTaskCubit>().submitQuote([
-                    QuoteLine(itemName: nameController.text, amount: amount),
-                  ]),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.onPrimary,
-              ),
-              child: Text(context.l10n.workerSendProposal),
-            ),
-          ],
-        ),
-      ),
+  Future<void> _openQuote() async {
+    final cubit = context.read<WorkerTaskCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+    final sent = context.l10n.workerProposalSent;
+    final result = await context.push<bool>(
+      AppRoutes.workerQuoteLocation(widget.bookingId),
     );
+    cubit.refreshQuote();
+    if (result ?? false) {
+      setState(() => _rejectionAcknowledged = false);
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(sent)));
+    }
   }
 
   @override
@@ -282,43 +214,63 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
 
             const SizedBox(height: AppSpacing.lg),
 
-            // Request Extra Material Cost Button
-            OutlinedButton.icon(
-              onPressed: _showExtraCostDialog,
-              icon: const Icon(
-                Icons.build_circle_outlined,
-                size: 20,
-                color: AppColors.primary,
-              ),
-              label: Text(
-                context.l10n.workerExtraCostButton,
-                style: AppTextStyles.labelLarge.copyWith(
-                  color: AppColors.primary,
-                ),
-              ),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.primary),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.control),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: AppSpacing.xl),
-
-            // Primary CTA: "Hoàn tất công việc -> Chờ nghiệm thu"
+            // Extra-cost quote: status of the last one (Cell 133) or the button to create one.
             Builder(
               builder: (context) {
                 final state = context.watch<WorkerTaskCubit>().state;
+                final quote = state.data?.quote;
+                final showCard =
+                    quote != null &&
+                    !(quote.status == QuoteStatus.rejected &&
+                        _rejectionAcknowledged);
+                final canQuote =
+                    state.data != null && quote?.status != QuoteStatus.pending;
+                final rejectedOpen =
+                    quote?.status == QuoteStatus.rejected &&
+                    !_rejectionAcknowledged;
                 final isBusy = state is WorkerTaskBusyState;
-                return AppButton(
-                  key: const Key('worker_complete_job_button'),
-                  label: context.l10n.workerCompleteJobCta,
-                  isLoading: isBusy,
-                  onPressed: isBusy || state.data == null
-                      ? null
-                      : _showCompleteDialog,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (showCard) ...[
+                      QuoteStatusCard(
+                        quote: quote,
+                        estimatedPrice: state.data?.booking.estimatedPrice,
+                        onMessage: () => unawaited(
+                          context.push(
+                            AppRoutes.chatLocation(
+                              bookingId: widget.bookingId,
+                              isWorker: true,
+                            ),
+                          ),
+                        ),
+                        onContinue: () =>
+                            setState(() => _rejectionAcknowledged = true),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                    ],
+                    if (canQuote && !rejectedOpen)
+                      AppSecondaryButton(
+                        key: const Key('worker_extra_cost_button'),
+                        label: context.l10n.workerExtraCostButton,
+                        icon: Icons.request_quote_outlined,
+                        isFullWidth: true,
+                        onPressed: isBusy
+                            ? null
+                            : () => unawaited(_openQuote()),
+                      ),
+                    const SizedBox(height: AppSpacing.xl),
+                    // One solid button per screen: hidden while a declined quote awaits a choice.
+                    if (!rejectedOpen)
+                      AppButton(
+                        key: const Key('worker_complete_job_button'),
+                        label: context.l10n.workerCompleteJobCta,
+                        isLoading: isBusy,
+                        onPressed: isBusy || state.data == null
+                            ? null
+                            : _showCompleteDialog,
+                      ),
+                  ],
                 );
               },
             ),

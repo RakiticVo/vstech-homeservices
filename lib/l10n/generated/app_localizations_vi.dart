@@ -1072,29 +1072,109 @@ class AppLocalizationsVi extends AppLocalizations {
   String get workerExecutingTitle => 'Đang thực hiện công việc';
 
   @override
-  String get workerExtraCostButton => '+ Đề xuất chi phí phát sinh';
+  String get workerExtraCostButton => '+ Báo giá phát sinh';
 
   @override
   String get workerCompleteJobCta => 'Hoàn tất công việc -> Chờ nghiệm thu';
 
   @override
-  String get workerExtraCostDialogTitle => 'Đề xuất chi phí phát sinh';
+  String get workerProposalSent => 'Đã gửi báo giá cho khách';
 
   @override
-  String get workerExtraCostDesc =>
-      'Nhập linh kiện/vật tư thay thế cần khách hàng duyệt trước khi thi công.';
+  String get quoteTitle => 'Báo giá phát sinh';
 
   @override
-  String get workerItemName => 'Tên linh kiện/vật tư';
+  String quoteSubtitle(String id, String service) {
+    return 'Đơn #$id · $service';
+  }
 
   @override
-  String get workerItemPrice => 'Chi phí (VNĐ)';
+  String get quoteEstimateLabel => 'Giá ước tính ban đầu';
 
   @override
-  String get workerSendProposal => 'Gửi đề xuất đến khách';
+  String get quoteCapNote =>
+      'Tổng tiền đơn không được vượt 1,5 lần giá ước tính';
 
   @override
-  String get workerProposalSent => 'Đã gửi đề xuất thành công!';
+  String quoteItemTitle(int index) {
+    return 'Hạng mục $index';
+  }
+
+  @override
+  String get quoteItemName => 'Tên vật tư / hạng mục';
+
+  @override
+  String get quoteItemNameHint => 'VD: Gas R32 bổ sung';
+
+  @override
+  String get quoteItemAmount => 'Số tiền';
+
+  @override
+  String get quoteRemoveItem => 'Xoá hạng mục';
+
+  @override
+  String get quoteAddItem => 'Thêm hạng mục';
+
+  @override
+  String get quoteMaxItems => 'Tối đa 10 hạng mục';
+
+  @override
+  String get quoteTotalLabel => 'Tổng phát sinh';
+
+  @override
+  String get quoteTotalNote => 'Khách trả thêm khoản này sau khi duyệt';
+
+  @override
+  String get quoteSubmit => 'Gửi báo giá cho khách';
+
+  @override
+  String get quoteErrorName => 'Nhập tên hạng mục';
+
+  @override
+  String get quoteErrorAmount => 'Nhập số tiền lớn hơn 0đ';
+
+  @override
+  String quoteErrorCap(String total, String cap) {
+    return 'Tổng đơn $total vượt mức 1,5 lần giá ước tính ($cap)';
+  }
+
+  @override
+  String get quoteStatusPending => 'Đang chờ khách duyệt';
+
+  @override
+  String get quoteStatusApproved => 'Khách đã duyệt';
+
+  @override
+  String get quoteStatusRejected => 'Khách đã từ chối';
+
+  @override
+  String get quoteStatusCancelled => 'Báo giá đã huỷ';
+
+  @override
+  String quoteItemsCount(int count) {
+    return '$count hạng mục';
+  }
+
+  @override
+  String quoteSentAt(String time) {
+    return 'Gửi lúc $time';
+  }
+
+  @override
+  String get quoteReview => 'Xem lại báo giá';
+
+  @override
+  String get quoteNewTotal => 'Tổng mới của đơn';
+
+  @override
+  String get quoteRejectedHint =>
+      'Tiếp tục theo giá ban đầu hoặc nhắn tin với khách';
+
+  @override
+  String get quoteContinueWork => 'Tiếp tục công việc';
+
+  @override
+  String get quoteClose => 'Đóng';
 
   @override
   String get inspectTitle => 'Nghiệm thu dịch vụ';

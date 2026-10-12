@@ -55,6 +55,9 @@ abstract final class AppRoutes {
   static const String workerArrived = '/worker/job-arrived';
   static String workerArrivedLocation(String bookingId) =>
       '$workerArrived?id=${Uri.encodeComponent(bookingId)}';
+  static const String workerQuote = '/worker/job-quote';
+  static String workerQuoteLocation(String bookingId) =>
+      '$workerQuote?id=${Uri.encodeComponent(bookingId)}';
   static const String workerExecuting = '/worker/job-executing';
   static String workerExecutingLocation(String bookingId) =>
       '$workerExecuting?id=${Uri.encodeComponent(bookingId)}';

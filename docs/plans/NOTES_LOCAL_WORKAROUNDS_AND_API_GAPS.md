@@ -56,7 +56,7 @@
 | L9 | **Tìm kiếm dịch vụ** | Lọc trên máy sau khi tải toàn bộ danh mục | Tham số `q`/`search` cho `GET /service-categories` (nếu danh mục nhiều) | `categories_page.dart` |
 | L10 | **Sổ địa chỉ** | Chỉ lưu được **1 địa chỉ mặc định** (`defaultAddress`); nhãn, loại nhà, tầng, thang máy, ghi chú chỉ nằm trên màn hình | CRUD danh sách địa chỉ | `edit_address_page.dart`, `my_addresses_page.dart` (mock) |
 | L11 | **Ảnh** (avatar, CCCD/KYC, ảnh báo giá & hoá đơn, ảnh khiếu nại, ảnh chat) | Nút "Đổi ảnh" chưa làm gì; báo giá **không có ảnh**; khiếu nại **bỏ phần ảnh** | **API upload file** trả URL | nhiều màn |
-| L12 | **Báo giá phát sinh** | Mỗi lần gửi **1 dòng**, không ảnh; khách chưa có màn duyệt (đã có use case approve/reject) | Upload ảnh + `GET` báo giá của đơn (để khách xem) | `worker_executing_page.dart`, `quote_decision_use_case.dart` |
+| L12 | **Báo giá phát sinh** | Thợ gửi được **nhiều hạng mục** (tối đa 10, chặn tổng đơn > 1,5 lần giá ước tính) qua màn Cell 132, **chưa có ảnh**; khách **chưa xem được báo giá** nên chưa làm màn duyệt (Cell 134–135, đã có use case approve/reject) | Upload ảnh + `GET` báo giá của đơn (để khách xem và thợ biết kết quả) | `worker_quote_page.dart`, `quote_decision_use_case.dart` |
 | L13 | **Huỷ đơn / khiếu nại** | Màn xác nhận, **không gửi lý do / loại vấn đề / ảnh** (đã ẩn các ô này) | Cho `cancel` / `dispute` nhận body (lý do, mô tả, ảnh) | `customer_cancellation_page.dart`, `dispute_report_page.dart` |
 | L14 | **Đặt lịch**: gói, add-on, phụ phí loại nhà, voucher, chọn phương thức thanh toán | **Đã ẩn** — giá chỉ lấy từ `POST /bookings/estimate` | API nếu sản phẩm cần các lựa chọn này | `booking_step1..3` |
 | L15 | **Khuyến mãi trên Home** | **Đã ẩn** | API khuyến mãi | `customer_home_page.dart` |
@@ -72,6 +72,7 @@
 | L26 | **Tin của mình trong chat** | So `senderId` với `id` hồ sơ (`GET /profiles`) | Xác nhận `senderId` cùng loại id với hồ sơ (int64 vs UUID — xem C2) | `chat_cubit.dart` |
 | L27 | **Âm thanh cuộc gọi VoIP** | Màn gọi chỉ **ghi nhật ký** (`POST /voip/calls` → `/end` kèm số giây), có ghi chú "Bản thử" — không có âm thanh, không đổ chuông máy bên kia | Chọn SDK/nhà cung cấp VoIP (Stringee, Twilio, Agora…) + API cấp token / signaling | `voip_call_cubit.dart`, `voip_call_page.dart` |
 | L28 | **Cuộc gọi đến** | Đã bỏ màn "Cuộc gọi đến" — không có kênh nào báo cho máy nhận | Push (FCM — backend chưa gửi) hoặc WebSocket báo cuộc gọi đến | `voip_call_page.dart` |
+| L29 | **Kết quả duyệt báo giá phía thợ** | Thẻ trạng thái (Cell 133) chỉ biết báo giá vừa gửi từ chính máy này (lưu trong bộ nhớ, **mất khi tắt app**); "Khách đã duyệt / từ chối" chưa bao giờ hiện vì không có API báo kết quả | `GET /bookings/{id}/quote` hoặc thêm báo giá vào `BookingResponse` / sự kiện WebSocket | `booking_repository_impl.dart` (`cachedQuote`), `quote_status_card.dart` |
 | L16 | **Ngôn ngữ** (vi/en) | Chỉ đổi trên máy, không lưu vào hồ sơ | Đã có field `locale` trong `PUT /profiles` — **chưa nối** (tính năng, không cần API mới) | `language_toggle_button.dart` |
 
 ---
@@ -103,6 +104,7 @@
 | C13 | Lịch sử chat: doc mặc định `size=50`, OpenAPI `size=20`; không ghi thứ tự tin | App gửi `size=50`, tự sắp cũ → mới theo `sentAt` |
 | C14 | `EndCallRequest.recordingUrl`: OpenAPI bắt buộc (400 nếu thiếu), doc ghi tuỳ chọn | App không ghi âm nên **không gửi**; nếu server trả 400 thì cuộc gọi vẫn kết thúc trên máy, chỉ ghi log cảnh báo |
 | C15 | `POST /voip/calls`: OpenAPI trả 201 không có schema; doc trả `ApiResponse<VoipCallResponse>` có thêm `status` | Đọc theo doc |
+| C16 | `QuoteResponse`: OpenAPI có `submittedAt`, doc dùng `createdAt` (+ `id`, `bookingId`, `workerId`); trạng thái doc ví dụ `PENDING`, appendix ghi `PENDING_APPROVAL` | Đọc cả hai tên thời gian, coi mọi trạng thái lạ là đang chờ |
 | C11 | Ví: doc dùng `id`/`type` (giao dịch) và `id`/`reason` (rút tiền), OpenAPI dùng `transactionId`/`txType` và `requestId`/`rejectionReason` | Đọc được cả hai |
 | C10 | `technicianId` trong `PUT /technician/location`: UUID nhưng server bỏ qua | Không gửi field này |
 

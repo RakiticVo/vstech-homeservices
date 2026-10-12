@@ -12,7 +12,8 @@ import 'package:vstech_home_services/features/home/domain/usecases/get_category_
 
 part 'worker_task_state.dart';
 
-/// One job on the worker side: load it, then accept → start → (extra-cost quote) → complete.
+/// One job on the worker side: load it, then accept → start → complete. The extra-cost quote is
+/// sent from its own screen (`QuoteFormCubit`); this cubit only shows the last one ([refreshQuote]).
 /// Provided per screen (job detail, arrived, executing); the booking repository cache keeps the
 /// status in sync between them.
 @injectable
@@ -22,7 +23,7 @@ class WorkerTaskCubit extends Cubit<WorkerTaskState> {
     this._getCategory,
     this._accept,
     this._start,
-    this._submitQuote,
+    this._getQuote,
     this._complete,
   ) : super(const WorkerTaskLoadingState());
 
@@ -30,7 +31,7 @@ class WorkerTaskCubit extends Cubit<WorkerTaskState> {
   final GetCategoryUseCase _getCategory;
   final AcceptBookingUseCase _accept;
   final StartBookingUseCase _start;
-  final SubmitQuoteUseCase _submitQuote;
+  final GetSubmittedQuoteUseCase _getQuote;
   final CompleteBookingUseCase _complete;
 
   Future<void> load(String bookingId) async {
@@ -48,7 +49,11 @@ class WorkerTaskCubit extends Cubit<WorkerTaskState> {
               };
         emit(
           WorkerTaskReadyState(
-            WorkerTaskData(booking: booking, serviceName: name),
+            WorkerTaskData(
+              booking: booking,
+              serviceName: name,
+              quote: _getQuote(booking.id),
+            ),
           ),
         );
     }
@@ -58,25 +63,15 @@ class WorkerTaskCubit extends Cubit<WorkerTaskState> {
 
   Future<void> start() => _transition(WorkerTaskAction.start, _start.call);
 
-  /// Sends one extra-cost quote; its total is remembered to pre-fill the final price.
-  Future<void> submitQuote(List<QuoteLine> lines) async {
-    final data = _readyData;
-    if (data == null) return;
-    emit(WorkerTaskBusyState(data, WorkerTaskAction.quote));
-    switch (await _submitQuote(data.booking.id, lines)) {
-      case Ok():
-        final total = lines.fold<num>(0, (sum, line) => sum + line.amount);
-        emit(
-          WorkerTaskActionDoneState(
-            data.copyWith(quotedExtra: data.quotedExtra + total),
-            WorkerTaskAction.quote,
-          ),
-        );
-      case Err(:final failure):
-        emit(
-          WorkerTaskActionFailedState(data, WorkerTaskAction.quote, failure),
-        );
+  /// Re-reads the last quote sent for this job (after returning from the quote screen).
+  void refreshQuote() {
+    final current = state;
+    if (current is! WorkerTaskWithDataState || current is WorkerTaskBusyState) {
+      return;
     }
+    final quote = _getQuote(current.task.booking.id);
+    if (quote == current.task.quote) return;
+    emit(WorkerTaskReadyState(current.task.copyWith(quote: quote)));
   }
 
   Future<void> complete(num actualPrice) => _transition(

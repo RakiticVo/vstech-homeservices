@@ -24,6 +24,7 @@ class BookingRepositoryImpl implements BookingRepository {
 
   final BookingRemoteDataSource _remote;
   final Map<String, Booking> _cache = {};
+  final Map<String, SubmittedQuote> _quotes = {};
 
   static const int pageSize = 20;
 
@@ -114,18 +115,33 @@ class BookingRepositoryImpl implements BookingRepository {
   );
 
   @override
-  Future<Result<void>> submitQuote(String bookingId, List<QuoteLine> lines) =>
-      Result.guard(
-        () => _remote.submitQuote(
-          bookingId,
-          SubmitQuoteRequest(
-            items: [
-              for (final line in lines)
-                QuoteItemRequest(itemName: line.itemName, amount: line.amount),
-            ],
-          ),
-        ),
-      );
+  Future<Result<SubmittedQuote>> submitQuote(
+    String bookingId,
+    List<QuoteLine> lines,
+  ) => Result.guard(() async {
+    final response = await _remote.submitQuote(
+      bookingId,
+      SubmitQuoteRequest(
+        items: [
+          for (final line in lines)
+            QuoteItemRequest(itemName: line.itemName, amount: line.amount),
+        ],
+      ),
+    );
+    return _quotes[bookingId] = SubmittedQuote(
+      bookingId: bookingId,
+      status: QuoteStatus.fromApi(response.status),
+      lines: List.unmodifiable(lines),
+      totalAmount:
+          response.totalAmount ??
+          lines.fold<num>(0, (sum, line) => sum + line.amount),
+      submittedAt:
+          response.submittedAt ?? response.createdAt ?? DateTime.now().toUtc(),
+    );
+  });
+
+  @override
+  SubmittedQuote? cachedQuote(String bookingId) => _quotes[bookingId];
 
   Future<Result<BookingStatus>> _transition(
     String bookingId,

@@ -7,6 +7,10 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Batch 14 phía thợ (báo giá phát sinh)
+- **Cell 132** màn `WorkerQuotePage` + `QuoteFormCubit` thay hộp thoại 1 dòng: 1–10 hạng mục (tên + số tiền, xoá / thêm hạng mục), thẻ giá ước tính + ghi chú trần 1,5 lần, tổng phát sinh ghim trên nút gửi, lỗi trường hiện sau lần gửi đầu, banner lỗi khi tổng đơn vượt 1,5 lần giá ước tính, khoá form khi đang gửi; bản **không có ảnh** (chưa có API upload). `SubmitQuoteUseCase` chặn > 10 dòng (`HS-400-0001`) và vượt trần (`HS-400-0012`).
+- **Cell 133** `QuoteStatusCard` trên màn Đang thực hiện: Đang chờ khách duyệt (tổng, số hạng mục, giờ gửi, Xem lại báo giá) / Khách đã duyệt (tổng mới) / Khách đã từ chối (Nhắn tin + Tiếp tục công việc, tạm ẩn nút Hoàn tất để chỉ còn 1 nút đặc); ẩn nút tạo báo giá khi đang chờ duyệt. Repository lưu báo giá vừa gửi (`SubmittedQuote`, `QuoteStatus`) để thẻ và giá hoàn tất gợi ý dùng; `WorkerTaskCubit` bỏ `submitQuote`, thêm `refreshQuote`. `AppTextField` nhận thêm `inputFormatters` / `suffixText`. Unit + bloc + widget test.
+
 ### Added — Quyền vị trí iOS song ngữ
 - Câu xin quyền vị trí iOS có bản tiếng Anh + tiếng Việt (`ios/Runner/en.lproj`, `vi.lproj/InfoPlist.strings`, khai báo trong Xcode project, `CFBundleLocalizations` = vi, en) — iOS tự chọn theo ngôn ngữ máy.
 

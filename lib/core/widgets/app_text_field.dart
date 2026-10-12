@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 
 /// Shared text input. Feature pages must use this instead of a raw [TextField]/[TextFormField],
@@ -21,6 +22,8 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.maxLines = 1,
+    this.inputFormatters,
+    this.suffixText,
   });
 
   final String label;
@@ -38,6 +41,10 @@ class AppTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final int? maxLines;
+  final List<TextInputFormatter>? inputFormatters;
+
+  /// Unit shown after the value, e.g. `đ`.
+  final String? suffixText;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +60,13 @@ class AppTextField extends StatelessWidget {
       autofocus: autofocus,
       enabled: enabled,
       maxLines: obscureText ? 1 : maxLines,
+      inputFormatters: inputFormatters,
       style: AppTextStyles.bodyLg,
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
         errorText: errorText,
+        suffixText: suffixText,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),

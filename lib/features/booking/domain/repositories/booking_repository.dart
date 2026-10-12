@@ -40,7 +40,14 @@ abstract interface class BookingRepository {
     required num actualPrice,
   });
 
-  Future<Result<void>> submitQuote(String bookingId, List<QuoteLine> lines);
+  Future<Result<SubmittedQuote>> submitQuote(
+    String bookingId,
+    List<QuoteLine> lines,
+  );
+
+  /// Last quote this worker sent for the booking on this device — there is no endpoint to read
+  /// one back (NOTES L12), so it is lost on restart.
+  SubmittedQuote? cachedQuote(String bookingId);
 
   Future<Result<void>> rejectQuote(String bookingId);
 }

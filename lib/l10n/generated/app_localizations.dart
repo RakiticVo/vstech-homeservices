@@ -2087,7 +2087,7 @@ abstract class AppLocalizations {
   /// No description provided for @workerExtraCostButton.
   ///
   /// In vi, this message translates to:
-  /// **'+ Đề xuất chi phí phát sinh'**
+  /// **'+ Báo giá phát sinh'**
   String get workerExtraCostButton;
 
   /// No description provided for @workerCompleteJobCta.
@@ -2096,41 +2096,179 @@ abstract class AppLocalizations {
   /// **'Hoàn tất công việc -> Chờ nghiệm thu'**
   String get workerCompleteJobCta;
 
-  /// No description provided for @workerExtraCostDialogTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đề xuất chi phí phát sinh'**
-  String get workerExtraCostDialogTitle;
-
-  /// No description provided for @workerExtraCostDesc.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nhập linh kiện/vật tư thay thế cần khách hàng duyệt trước khi thi công.'**
-  String get workerExtraCostDesc;
-
-  /// No description provided for @workerItemName.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tên linh kiện/vật tư'**
-  String get workerItemName;
-
-  /// No description provided for @workerItemPrice.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chi phí (VNĐ)'**
-  String get workerItemPrice;
-
-  /// No description provided for @workerSendProposal.
-  ///
-  /// In vi, this message translates to:
-  /// **'Gửi đề xuất đến khách'**
-  String get workerSendProposal;
-
   /// No description provided for @workerProposalSent.
   ///
   /// In vi, this message translates to:
-  /// **'Đã gửi đề xuất thành công!'**
+  /// **'Đã gửi báo giá cho khách'**
   String get workerProposalSent;
+
+  /// No description provided for @quoteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo giá phát sinh'**
+  String get quoteTitle;
+
+  /// No description provided for @quoteSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn #{id} · {service}'**
+  String quoteSubtitle(String id, String service);
+
+  /// No description provided for @quoteEstimateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá ước tính ban đầu'**
+  String get quoteEstimateLabel;
+
+  /// No description provided for @quoteCapNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng tiền đơn không được vượt 1,5 lần giá ước tính'**
+  String get quoteCapNote;
+
+  /// No description provided for @quoteItemTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạng mục {index}'**
+  String quoteItemTitle(int index);
+
+  /// No description provided for @quoteItemName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên vật tư / hạng mục'**
+  String get quoteItemName;
+
+  /// No description provided for @quoteItemNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: Gas R32 bổ sung'**
+  String get quoteItemNameHint;
+
+  /// No description provided for @quoteItemAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền'**
+  String get quoteItemAmount;
+
+  /// No description provided for @quoteRemoveItem.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá hạng mục'**
+  String get quoteRemoveItem;
+
+  /// No description provided for @quoteAddItem.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm hạng mục'**
+  String get quoteAddItem;
+
+  /// No description provided for @quoteMaxItems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa 10 hạng mục'**
+  String get quoteMaxItems;
+
+  /// No description provided for @quoteTotalLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng phát sinh'**
+  String get quoteTotalLabel;
+
+  /// No description provided for @quoteTotalNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách trả thêm khoản này sau khi duyệt'**
+  String get quoteTotalNote;
+
+  /// No description provided for @quoteSubmit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi báo giá cho khách'**
+  String get quoteSubmit;
+
+  /// No description provided for @quoteErrorName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập tên hạng mục'**
+  String get quoteErrorName;
+
+  /// No description provided for @quoteErrorAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập số tiền lớn hơn 0đ'**
+  String get quoteErrorAmount;
+
+  /// No description provided for @quoteErrorCap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng đơn {total} vượt mức 1,5 lần giá ước tính ({cap})'**
+  String quoteErrorCap(String total, String cap);
+
+  /// No description provided for @quoteStatusPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chờ khách duyệt'**
+  String get quoteStatusPending;
+
+  /// No description provided for @quoteStatusApproved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách đã duyệt'**
+  String get quoteStatusApproved;
+
+  /// No description provided for @quoteStatusRejected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách đã từ chối'**
+  String get quoteStatusRejected;
+
+  /// No description provided for @quoteStatusCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo giá đã huỷ'**
+  String get quoteStatusCancelled;
+
+  /// No description provided for @quoteItemsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} hạng mục'**
+  String quoteItemsCount(int count);
+
+  /// No description provided for @quoteSentAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lúc {time}'**
+  String quoteSentAt(String time);
+
+  /// No description provided for @quoteReview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem lại báo giá'**
+  String get quoteReview;
+
+  /// No description provided for @quoteNewTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng mới của đơn'**
+  String get quoteNewTotal;
+
+  /// No description provided for @quoteRejectedHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục theo giá ban đầu hoặc nhắn tin với khách'**
+  String get quoteRejectedHint;
+
+  /// No description provided for @quoteContinueWork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục công việc'**
+  String get quoteContinueWork;
+
+  /// No description provided for @quoteClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get quoteClose;
 
   /// No description provided for @inspectTitle.
   ///

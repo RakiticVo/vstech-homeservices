@@ -107,7 +107,9 @@ import 'package:vstech_home_services/features/worker_dashboard/presentation/page
 import 'package:vstech_home_services/features/worker_dispatch/presentation/pages/worker_job_detail_page.dart';
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_status_page.dart';
 import 'package:vstech_home_services/features/worker_kyc/presentation/pages/worker_kyc_wizard_page.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/bloc/quote_form_cubit.dart';
 import 'package:vstech_home_services/features/worker_task/presentation/bloc/worker_task_cubit.dart';
+import 'package:vstech_home_services/features/worker_task/presentation/pages/worker_quote_page.dart';
 
 /// Root GoRouter config. Auth guards belong here as `redirect` callbacks — never as
 /// widget-level conditions (see CLAUDE.md Authentication rules). Route-level BLoCs are wrapped
@@ -297,6 +299,20 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       path: AppRoutes.workerExecuting,
       builder: (context, state) =>
           _withWorkerTask(WorkerExecutingPage(bookingId: _bookingId(state))),
+    ),
+    GoRoute(
+      path: AppRoutes.workerQuote,
+      builder: (context, state) {
+        final bookingId = _bookingId(state);
+        return BlocProvider(
+          create: (_) {
+            final cubit = getIt<QuoteFormCubit>();
+            unawaited(cubit.load(bookingId));
+            return cubit;
+          },
+          child: WorkerQuotePage(bookingId: bookingId),
+        );
+      },
     ),
     GoRoute(
       path: AppRoutes.inspectionSignoff,
