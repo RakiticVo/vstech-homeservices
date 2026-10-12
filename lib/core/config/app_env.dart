@@ -1,5 +1,8 @@
-/// Build-time environment config. Override per build with
-/// `flutter run --dart-define=API_BASE_URL=https://...` — defaults to the UAT backend.
+/// Build-time environment config, injected via `--dart-define` / `--dart-define-from-file`.
+///
+/// Local values live in `env/dev.json` (gitignored — copy from `env/example.json`):
+/// `flutter run --dart-define-from-file=env/dev.json`. Without a file the app falls back to
+/// the UAT backend and empty secrets.
 abstract final class AppEnv {
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
@@ -13,4 +16,23 @@ abstract final class AppEnv {
     if (override.isNotEmpty) return override;
     return apiBaseUrl.replaceFirst(RegExp('^http'), 'ws');
   }
+
+  /// Google Maps key for the tracking map (not wired natively yet — see README).
+  static const String googleMapsApiKey = String.fromEnvironment(
+    'GOOGLE_MAPS_API_KEY',
+  );
+
+  /// UAT test accounts supplied by the backend team — for local manual testing only.
+  static const String testCustomerPhone = String.fromEnvironment(
+    'TEST_CUSTOMER_PHONE',
+  );
+  static const String testCustomerPassword = String.fromEnvironment(
+    'TEST_CUSTOMER_PASSWORD',
+  );
+  static const String testWorkerPhone = String.fromEnvironment(
+    'TEST_WORKER_PHONE',
+  );
+  static const String testWorkerPassword = String.fromEnvironment(
+    'TEST_WORKER_PASSWORD',
+  );
 }

@@ -7,6 +7,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — File env cho biến cục bộ
+- `env/example.json` (mẫu, commit) + `env/dev.json` (giá trị thật, **gitignore**) nạp bằng `flutter run --dart-define-from-file=env/dev.json`; `AppEnv` đọc thêm `GOOGLE_MAPS_API_KEY` và tài khoản test UAT (`TEST_CUSTOMER_*`, `TEST_WORKER_*`); cấu hình chạy VS Code `.vscode/launch.json`; hướng dẫn trong README.
+
 ### Added — Pha 4 tích hợp API (ví & rút tiền)
 - **4.1** Lớp data ví: DTO `WalletResponse`, `WalletTransactionResponse`, `WithdrawalRequestBody`, `WithdrawalResponse` (khai báo cả tên field theo doc lẫn OpenAPI: `id`/`transactionId`, `type`/`txType`, `id`/`requestId`, `reason`/`rejectionReason`); `WalletRemoteDataSource` (`GET /wallets/me`, `GET /wallets/me/transactions` có lọc `type`/`status`, `POST /wallets/withdrawals` idempotent, `GET /wallets/withdrawals`); `WalletRepositoryImpl` (cache theo id, tự suy `delta` có dấu từ loại giao dịch nếu thiếu); entity `Wallet`, `WalletTransaction`, `Withdrawal`, enum `TransactionType`/`TransactionStatus`/`WithdrawalStatus`; use case (chặn rút > số dư → `HS-400-0020`, thiếu thông tin ngân hàng → `HS-400-0001`); unit test.
 - **4.2** Màn Ví và Chi tiết giao dịch dùng dữ liệu thật: `WalletCubit` (số dư + trang giao dịch đầu, "Xem thêm", kéo làm mới), `TransactionDetailCubit` + `GetTransactionUseCase` (cache hoặc dò tối đa 3 trang — chưa có API lấy 1 giao dịch); màn Ví hiện số dư có thể rút và đang tạm giữ (`frozenBalance`), bỏ "Tổng thu nhập đã về" / "Đã rút" viết cứng (API không có); 4 chip lọc (Tất cả / Thu nhập / Rút tiền / Tạm giữ) lọc trên dữ liệu đã tải; thẻ giao dịch hiện loại, thời gian, số tiền có dấu và trạng thái (Icon + Nhãn + Màu); chi tiết giao dịch bỏ bảng "khách trả / phí / thực nhận" (API không có), thêm liên kết sang việc liên quan. Widget + bloc test.

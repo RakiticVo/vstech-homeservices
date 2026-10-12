@@ -9,7 +9,7 @@
 
 | # | Việc | Vì sao |
 | :- | :--- | :--- |
-| 1 | Xin **2 tài khoản test UAT** (1 khách, 1 thợ) — ghi vào file seed/config của dự án | Pha 1–3 mới chạy bằng test giả lập, chưa đăng nhập/đặt lịch/nhận việc thật trên UAT |
+| 1 | Xin **2 tài khoản test UAT** (1 khách, 1 thợ) — ghi vào `env/dev.json` (gitignore, mẫu ở `env/example.json`) | Pha 1–3 mới chạy bằng test giả lập, chưa đăng nhập/đặt lịch/nhận việc thật trên UAT |
 | 2 | Cấu hình **Firebase** (`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`) | Cần cho đăng ký FCM (`/devices/*`) và Crashlytics — đang hoãn |
 | 3 | Đặt **git identity** trên máy: `git config --global user.name/user.email` | Máy đã mất identity; mình đang commit bằng identity cũ `Admin <admin@Admins-MacBook-Pro.local>` |
 | 4 | Thiết kế **Claude Design Batch 14–17** (`docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`) | UI báo giá chi tiết, nạp tiền ví, đọc tất cả thông báo/cài đặt thông báo thợ, lịch sử cuộc gọi |

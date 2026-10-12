@@ -44,14 +44,40 @@ flutter analyze
 flutter test
 ```
 
-### 2. Sinh mã tự động (Code Generation)
+### 2. Biến môi trường (file env — không đưa lên git)
+Các biến nhạy cảm (URL backend, Google Maps key, tài khoản test UAT…) nằm trong `env/dev.json`.
+File này **bị gitignore**; chỉ `env/example.json` (mẫu, không chứa giá trị thật) được commit.
+
+```bash
+cp env/example.json env/dev.json
+```
+
+Điền giá trị vào `env/dev.json`, rồi chạy app với:
+
+```bash
+flutter run --dart-define-from-file=env/dev.json
+```
+
+VS Code đã có sẵn cấu hình chạy "vstech (dev env)" trong `.vscode/launch.json`. Với Android Studio,
+thêm `--dart-define-from-file=env/dev.json` vào ô *Additional run args*. Trong code, đọc biến qua
+`AppEnv` (`lib/core/config/app_env.dart`). Khi thêm biến mới: thêm vào cả `example.json` và `AppEnv`.
+
+| Biến | Ý nghĩa |
+| :--- | :--- |
+| `API_BASE_URL` | Gốc REST API (mặc định UAT) |
+| `WS_BASE_URL` | Gốc WebSocket (để trống = suy từ `API_BASE_URL`) |
+| `LOG_LEVEL` | `trace`/`debug`/`info`/`warning`/`error` |
+| `GOOGLE_MAPS_API_KEY` | Key bản đồ theo dõi (chưa gắn vào native) |
+| `TEST_CUSTOMER_*`, `TEST_WORKER_*` | Tài khoản test UAT do backend cấp — chỉ dùng thử ở máy |
+
+### 3. Sinh mã tự động (Code Generation)
 Dự án sử dụng `freezed`, `json_serializable`, và `injectable`. Khi tạo DTOs hoặc Repositories:
 
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
-### 3. Khởi động phiên làm việc với AI Agents
+### 4. Khởi động phiên làm việc với AI Agents
 Trong bất kỳ agentic IDE nào (Antigravity, Claude Code, Cursor,...), bạn có thể chạy:
 ```bash
 /start-session
