@@ -79,6 +79,8 @@ abstract final class AppRoutes {
   static const String customerNotificationSettings =
       '/customer/settings/notifications';
   static const String workerNotifications = '/worker/notifications';
+  static const String workerNotificationSettings =
+      '/worker/settings/notifications';
 
   // --- exceptions, cancellation & escrow dispute (Batch 9) ---
   static const String customerCancel = '/customer/booking/cancel';

@@ -66,11 +66,12 @@ import 'package:vstech_home_services/features/home/presentation/pages/service_de
 import 'package:vstech_home_services/features/home/presentation/pages/worker_profile_preview_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/chat_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/voip_call_page.dart';
+import 'package:vstech_home_services/features/notifications/presentation/bloc/notification_settings_cubit.dart';
 import 'package:vstech_home_services/features/notifications/presentation/bloc/notifications_cubit.dart';
+import 'package:vstech_home_services/features/notifications/presentation/pages/notification_settings_page.dart';
 import 'package:vstech_home_services/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
-import 'package:vstech_home_services/features/orders/presentation/pages/customer_notification_settings_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_order_detail_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_orders_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/worker_jobs_hub_page.dart';
@@ -439,12 +440,20 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
     GoRoute(
       path: AppRoutes.customerNotificationSettings,
-      builder: (context, state) => const CustomerNotificationSettingsPage(),
+      builder: (context, state) => _withNotificationSettings(),
     ),
     GoRoute(
       path: AppRoutes.workerNotifications,
-      builder: (context, state) =>
-          _withNotifications(const NotificationsPage(isWorker: true)),
+      builder: (context, state) => _withNotifications(
+        const NotificationsPage(
+          isWorker: true,
+          settingsRoute: AppRoutes.workerNotificationSettings,
+        ),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.workerNotificationSettings,
+      builder: (context, state) => _withNotificationSettings(),
     ),
     GoRoute(
       path: AppRoutes.customerCancel,
@@ -725,6 +734,15 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
 String _bookingId(GoRouterState state) => state.uri.queryParameters['id'] ?? '';
 
 /// Provides a fresh [WorkerTaskCubit]; the page loads its booking.
+Widget _withNotificationSettings() => BlocProvider(
+  create: (_) {
+    final cubit = getIt<NotificationSettingsCubit>();
+    unawaited(cubit.load());
+    return cubit;
+  },
+  child: const NotificationSettingsPage(),
+);
+
 Widget _withNotifications(Widget page) => BlocProvider(
   create: (_) {
     final cubit = getIt<NotificationsCubit>();

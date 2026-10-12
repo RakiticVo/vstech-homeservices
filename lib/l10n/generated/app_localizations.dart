@@ -2750,41 +2750,29 @@ abstract class AppLocalizations {
   /// **'Cài đặt thông báo'**
   String get notifSettingsTitle;
 
-  /// No description provided for @notifSettingsPush.
+  /// No description provided for @notifSettingsSystem.
   ///
   /// In vi, this message translates to:
-  /// **'Thông báo đẩy (Push)'**
-  String get notifSettingsPush;
+  /// **'Thông báo hệ thống'**
+  String get notifSettingsSystem;
 
-  /// No description provided for @notifSettingsPushDesc.
+  /// No description provided for @notifSettingsSystemDesc.
   ///
   /// In vi, this message translates to:
-  /// **'Nhận thông báo tiến độ thợ và trạng thái đơn hàng tức thì'**
-  String get notifSettingsPushDesc;
+  /// **'Bảo trì, cập nhật ứng dụng và thông tin tài khoản'**
+  String get notifSettingsSystemDesc;
 
-  /// No description provided for @notifSettingsSms.
+  /// No description provided for @notifSettingsBooking.
   ///
   /// In vi, this message translates to:
-  /// **'Tin nhắn SMS'**
-  String get notifSettingsSms;
+  /// **'Thông báo đặt lịch'**
+  String get notifSettingsBooking;
 
-  /// No description provided for @notifSettingsSmsDesc.
+  /// No description provided for @notifSettingsBookingDesc.
   ///
   /// In vi, this message translates to:
-  /// **'Gửi mã OTP và biên lai xác nhận qua SMS'**
-  String get notifSettingsSmsDesc;
-
-  /// No description provided for @notifSettingsZalo.
-  ///
-  /// In vi, this message translates to:
-  /// **'Thông báo Zalo (ZNS)'**
-  String get notifSettingsZalo;
-
-  /// No description provided for @notifSettingsZaloDesc.
-  ///
-  /// In vi, this message translates to:
-  /// **'Cập nhật qua Zalo Official Account chính thức của VSTech'**
-  String get notifSettingsZaloDesc;
+  /// **'Thợ nhận việc, tiến độ và hoàn tất đơn hàng'**
+  String get notifSettingsBookingDesc;
 
   /// No description provided for @notifSettingsPromo.
   ///

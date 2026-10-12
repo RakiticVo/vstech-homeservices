@@ -104,6 +104,8 @@ import 'package:vstech_home_services/features/notifications/domain/repositories/
     as _i634;
 import 'package:vstech_home_services/features/notifications/domain/usecases/notification_use_cases.dart'
     as _i78;
+import 'package:vstech_home_services/features/notifications/presentation/bloc/notification_settings_cubit.dart'
+    as _i909;
 import 'package:vstech_home_services/features/notifications/presentation/bloc/notifications_cubit.dart'
     as _i422;
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart'
@@ -409,6 +411,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i857.SplashCubit(
         gh<_i371.SessionCubit>(),
         gh<_i294.GetProfileUseCase>(),
+      ),
+    );
+    gh.factory<_i909.NotificationSettingsCubit>(
+      () => _i909.NotificationSettingsCubit(
+        gh<_i78.GetNotificationSettingsUseCase>(),
+        gh<_i78.UpdateNotificationSettingsUseCase>(),
       ),
     );
     gh.factory<_i64.WalletCubit>(

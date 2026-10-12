@@ -1443,24 +1443,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get notifSettingsTitle => 'Cài đặt thông báo';
 
   @override
-  String get notifSettingsPush => 'Thông báo đẩy (Push)';
+  String get notifSettingsSystem => 'Thông báo hệ thống';
 
   @override
-  String get notifSettingsPushDesc =>
-      'Nhận thông báo tiến độ thợ và trạng thái đơn hàng tức thì';
+  String get notifSettingsSystemDesc =>
+      'Bảo trì, cập nhật ứng dụng và thông tin tài khoản';
 
   @override
-  String get notifSettingsSms => 'Tin nhắn SMS';
+  String get notifSettingsBooking => 'Thông báo đặt lịch';
 
   @override
-  String get notifSettingsSmsDesc => 'Gửi mã OTP và biên lai xác nhận qua SMS';
-
-  @override
-  String get notifSettingsZalo => 'Thông báo Zalo (ZNS)';
-
-  @override
-  String get notifSettingsZaloDesc =>
-      'Cập nhật qua Zalo Official Account chính thức của VSTech';
+  String get notifSettingsBookingDesc =>
+      'Thợ nhận việc, tiến độ và hoàn tất đơn hàng';
 
   @override
   String get notifSettingsPromo => 'Tin khuyến mãi & Ưu đãi';

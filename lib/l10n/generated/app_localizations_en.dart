@@ -1441,25 +1441,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifSettingsTitle => 'Notification Settings';
 
   @override
-  String get notifSettingsPush => 'Push Notifications';
+  String get notifSettingsSystem => 'System notifications';
 
   @override
-  String get notifSettingsPushDesc =>
-      'Receive real-time worker updates and order progress alerts';
+  String get notifSettingsSystemDesc =>
+      'Maintenance, app updates and account information';
 
   @override
-  String get notifSettingsSms => 'SMS Messages';
+  String get notifSettingsBooking => 'Booking notifications';
 
   @override
-  String get notifSettingsSmsDesc =>
-      'Receive OTP verification codes and receipts via SMS';
-
-  @override
-  String get notifSettingsZalo => 'Zalo Notifications (ZNS)';
-
-  @override
-  String get notifSettingsZaloDesc =>
-      'Receive updates via official VSTech Zalo OA';
+  String get notifSettingsBookingDesc =>
+      'Pro accepted, progress and completed orders';
 
   @override
   String get notifSettingsPromo => 'Promotions & Offers';

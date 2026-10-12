@@ -12,7 +12,6 @@ import 'package:vstech_home_services/core/theme/app_theme.dart';
 import 'package:vstech_home_services/features/booking/domain/entities/booking_status.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
-import 'package:vstech_home_services/features/orders/presentation/pages/customer_notification_settings_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_order_detail_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_orders_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/worker_jobs_hub_page.dart';
@@ -55,10 +54,6 @@ Widget _createTestOrdersWidget(
         builder: (context, state) => Scaffold(
           body: Text('JobDetail:${state.uri.queryParameters['id']}'),
         ),
-      ),
-      GoRoute(
-        path: AppRoutes.customerNotificationSettings,
-        builder: (context, state) => const CustomerNotificationSettingsPage(),
       ),
     ],
   );
@@ -299,33 +294,6 @@ void main() {
         expect(find.text('#503'), findsOneWidget);
         expect(find.text('320.000đ'), findsOneWidget);
         expect(find.byKey(const Key('worker_job_action_503')), findsNothing);
-      },
-    );
-
-    testWidgets(
-      'CustomerNotificationSettingsPage renders channel toggles and save button',
-      (tester) async {
-        await tester.binding.setSurfaceSize(const Size(390, 1400));
-        await tester.pumpWidget(
-          _createTestOrdersWidget(const CustomerNotificationSettingsPage()),
-        );
-        await tester.pumpAndSettle();
-
-        expect(find.textContaining('Cài đặt thông báo'), findsOneWidget);
-        expect(find.textContaining('Thông báo đẩy'), findsOneWidget);
-        expect(find.textContaining('SMS'), findsWidgets);
-        expect(find.textContaining('Zalo'), findsWidgets);
-        expect(find.textContaining('Lưu thay đổi'), findsOneWidget);
-
-        // Tap on a switch
-        final switches = find.byType(Switch);
-        expect(switches, findsNWidgets(4));
-        await tester.tap(switches.first);
-        await tester.pumpAndSettle();
-
-        // Tap save
-        await tester.tap(find.textContaining('Lưu thay đổi'));
-        await tester.pumpAndSettle();
       },
     );
   });

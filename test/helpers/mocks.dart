@@ -39,6 +39,7 @@ import 'package:vstech_home_services/features/home/presentation/bloc/category_de
 import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart';
 import 'package:vstech_home_services/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:vstech_home_services/features/notifications/domain/usecases/notification_use_cases.dart';
+import 'package:vstech_home_services/features/notifications/presentation/bloc/notification_settings_cubit.dart';
 import 'package:vstech_home_services/features/notifications/presentation/bloc/notifications_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
@@ -211,3 +212,12 @@ class MockMarkAllNotificationsReadUseCase extends Mock
 
 class MockNotificationsCubit extends MockCubit<NotificationsState>
     implements NotificationsCubit;
+
+class MockGetNotificationSettingsUseCase extends Mock
+    implements GetNotificationSettingsUseCase;
+
+class MockUpdateNotificationSettingsUseCase extends Mock
+    implements UpdateNotificationSettingsUseCase;
+
+class MockNotificationSettingsCubit extends MockCubit<NotificationSettingsState>
+    implements NotificationSettingsCubit;
