@@ -1,7 +1,7 @@
 /// Build-time environment config, injected via `--dart-define` / `--dart-define-from-file`.
 ///
-/// Local values live in `env/dev.json` (gitignored — copy from `env/example.json`):
-/// `flutter run --dart-define-from-file=env/dev.json`. Without a file the app falls back to
+/// Local values live in `.env` at the project root (gitignored — copy from `.env.example`):
+/// `flutter run --dart-define-from-file=.env`. Without a file the app falls back to
 /// the UAT backend and empty secrets.
 abstract final class AppEnv {
   static const String apiBaseUrl = String.fromEnvironment(

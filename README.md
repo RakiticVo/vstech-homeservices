@@ -45,22 +45,22 @@ flutter test
 ```
 
 ### 2. Biến môi trường (file env — không đưa lên git)
-Các biến nhạy cảm (URL backend, Google Maps key, tài khoản test UAT…) nằm trong `env/dev.json`.
-File này **bị gitignore**; chỉ `env/example.json` (mẫu, không chứa giá trị thật) được commit.
+Các biến nhạy cảm (URL backend, Google Maps key, tài khoản test UAT…) nằm trong file `.env` ở thư mục gốc dự án.
+File này **bị gitignore**; chỉ `.env.example` (mẫu, không chứa giá trị thật) được commit.
 
 ```bash
-cp env/example.json env/dev.json
+cp .env.example .env
 ```
 
-Điền giá trị vào `env/dev.json`, rồi chạy app với:
+Điền giá trị vào `.env`, rồi chạy app với:
 
 ```bash
-flutter run --dart-define-from-file=env/dev.json
+flutter run --dart-define-from-file=.env
 ```
 
 VS Code đã có sẵn cấu hình chạy "vstech (dev env)" trong `.vscode/launch.json`. Với Android Studio,
-thêm `--dart-define-from-file=env/dev.json` vào ô *Additional run args*. Trong code, đọc biến qua
-`AppEnv` (`lib/core/config/app_env.dart`). Khi thêm biến mới: thêm vào cả `example.json` và `AppEnv`.
+thêm `--dart-define-from-file=.env` vào ô *Additional run args*. Trong code, đọc biến qua
+`AppEnv` (`lib/core/config/app_env.dart`). Khi thêm biến mới: thêm vào cả `.env.example` và `AppEnv`.
 
 | Biến | Ý nghĩa |
 | :--- | :--- |
