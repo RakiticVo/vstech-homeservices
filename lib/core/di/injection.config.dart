@@ -19,6 +19,8 @@ import 'package:vstech_home_services/core/location/location_service.dart'
 import 'package:vstech_home_services/core/network/api_client.dart' as _i223;
 import 'package:vstech_home_services/core/network/auth_token_store.dart'
     as _i381;
+import 'package:vstech_home_services/core/network/realtime_socket.dart'
+    as _i348;
 import 'package:vstech_home_services/core/session/session_cubit.dart' as _i371;
 import 'package:vstech_home_services/core/storage/secure_auth_token_store.dart'
     as _i602;
@@ -96,6 +98,16 @@ import 'package:vstech_home_services/features/home/presentation/bloc/categories_
     as _i728;
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart'
     as _i983;
+import 'package:vstech_home_services/features/messaging/data/datasources/chat_remote_data_source.dart'
+    as _i1008;
+import 'package:vstech_home_services/features/messaging/data/datasources/chat_socket_data_source.dart'
+    as _i138;
+import 'package:vstech_home_services/features/messaging/data/repositories/chat_repository_impl.dart'
+    as _i307;
+import 'package:vstech_home_services/features/messaging/domain/repositories/chat_repository.dart'
+    as _i452;
+import 'package:vstech_home_services/features/messaging/domain/usecases/chat_use_cases.dart'
+    as _i820;
 import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart'
     as _i76;
 import 'package:vstech_home_services/features/notifications/data/repositories/notification_repository_impl.dart'
@@ -162,14 +174,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i381.AuthTokenStore>(
       () => _i602.SecureAuthTokenStore(gh<_i558.FlutterSecureStorage>()),
     );
+    gh.lazySingleton<_i348.RealtimeSocketFactory>(
+      () => _i348.RealtimeSocketFactory(gh<_i381.AuthTokenStore>()),
+    );
     gh.lazySingleton<_i371.SessionCubit>(
       () => _i371.SessionCubit(gh<_i381.AuthTokenStore>()),
+    );
+    gh.factory<_i138.ChatSocketDataSource>(
+      () => _i138.ChatSocketDataSource(gh<_i348.RealtimeSocketFactory>()),
     );
     gh.lazySingleton<_i223.ApiClient>(
       () => registerModule.apiClient(
         gh<_i381.AuthTokenStore>(),
         gh<_i371.SessionCubit>(),
       ),
+    );
+    gh.factory<_i452.ChatConnection>(
+      () => _i307.ChatConnectionImpl(gh<_i138.ChatSocketDataSource>()),
     );
     gh.factory<_i116.AuthRemoteDataSource>(
       () => _i116.AuthRemoteDataSource(gh<_i223.ApiClient>()),
@@ -182,6 +203,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i754.CategoryRemoteDataSource>(
       () => _i754.CategoryRemoteDataSource(gh<_i223.ApiClient>()),
+    );
+    gh.factory<_i1008.ChatRemoteDataSource>(
+      () => _i1008.ChatRemoteDataSource(gh<_i223.ApiClient>()),
     );
     gh.factory<_i76.NotificationRemoteDataSource>(
       () => _i76.NotificationRemoteDataSource(gh<_i223.ApiClient>()),
@@ -279,6 +303,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1024.LogoutUseCase>(),
         gh<_i371.SessionCubit>(),
       ),
+    );
+    gh.lazySingleton<_i452.ChatRepository>(
+      () => _i307.ChatRepositoryImpl(gh<_i1008.ChatRemoteDataSource>()),
+    );
+    gh.factory<_i820.OpenChatRoomUseCase>(
+      () => _i820.OpenChatRoomUseCase(gh<_i452.ChatRepository>()),
+    );
+    gh.factory<_i820.GetChatMessagesUseCase>(
+      () => _i820.GetChatMessagesUseCase(gh<_i452.ChatRepository>()),
+    );
+    gh.factory<_i820.SendChatMessageUseCase>(
+      () => _i820.SendChatMessageUseCase(gh<_i452.ChatRepository>()),
     );
     gh.lazySingleton<_i634.NotificationRepository>(
       () => _i474.NotificationRepositoryImpl(

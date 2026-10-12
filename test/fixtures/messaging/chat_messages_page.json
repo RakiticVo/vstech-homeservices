@@ -1,0 +1,10 @@
+{
+  "status": 200,
+  "message": "OK",
+  "data": {
+    "messages": [
+      {"id": 9876, "roomId": 12345, "senderId": 20000, "messageText": "Xin chào", "mediaUrls": [], "isRead": true, "sentAt": "2026-10-11T03:30:00Z"},
+      {"id": 9877, "roomId": 12345, "senderId": 20001, "messageText": "Em tới liền", "isRead": false, "sentAt": "2026-10-11T03:31:00Z"}
+    ]
+  }
+}

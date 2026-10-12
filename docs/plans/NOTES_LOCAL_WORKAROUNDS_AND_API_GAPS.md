@@ -70,7 +70,7 @@
 | C6 | Money: OpenAPI = number, doc = chuỗi số `"200000"` | Nhận cả hai |
 | C7 | Khiếu nại: sơ đồ trạng thái cho từ IN_PROGRESS, ghi chú nói chỉ khi COMPLETED | Chỉ cho khi COMPLETED |
 | C8 | `RegisterRequest`: OpenAPI không đánh dấu `required`, doc ghi tất cả bắt buộc | Gửi đủ 5 field |
-| C9 | WebSocket: CLAUDE.md ghi STOMP, doc (`09-location-tracking`, `11-appendices`) là JSON thuần, "không dùng subprotocol" | Chưa làm realtime — chốt trước Pha 5 |
+| C9 | WebSocket: CLAUDE.md ghi STOMP, doc (`07-chat`, `09-location-tracking`, `11-appendices`) là JSON thuần, "không dùng subprotocol" | **Đã chốt theo doc (Pha 5):** `RealtimeSocket` gửi/nhận JSON thuần qua `web_socket_channel`, token ở header `Authorization`. `stomp_dart_client` hiện không còn dùng — nên sửa CLAUDE.md và gỡ package nếu backend xác nhận |
 | C11 | Ví: doc dùng `id`/`type` (giao dịch) và `id`/`reason` (rút tiền), OpenAPI dùng `transactionId`/`txType` và `requestId`/`rejectionReason` | Đọc được cả hai |
 | C10 | `technicianId` trong `PUT /technician/location`: UUID nhưng server bỏ qua | Không gửi field này |
 
