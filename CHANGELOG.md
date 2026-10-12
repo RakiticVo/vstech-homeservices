@@ -11,7 +11,7 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 - Câu xin quyền vị trí iOS có bản tiếng Anh + tiếng Việt (`ios/Runner/en.lproj`, `vi.lproj/InfoPlist.strings`, khai báo trong Xcode project, `CFBundleLocalizations` = vi, en) — iOS tự chọn theo ngôn ngữ máy.
 
 ### Docs
-- Prompt Claude Design Batch 14–15 cập nhật theo API thật (mã đơn số, không có tên/ảnh thợ, chưa có upload ảnh, ví có "có thể rút" / "đang tạm giữ"); Batch 16–17 đánh dấu đã làm. NOTES ghi các quyết định mới (giữ cảnh báo log khi production thiếu URL) và những gì app cần nếu tự dựng server VoIP.
+- Prompt Claude Design viết lại bằng **tiếng Anh** (chữ hiển thị trên UI vẫn giữ tiếng Việt trong ngoặc kép). Batch 14–15 cập nhật theo API thật (mã đơn số, không có tên/ảnh thợ, chưa có upload ảnh, ví có "có thể rút" / "đang tạm giữ"); Batch 16–17 đánh dấu đã làm. NOTES ghi các quyết định mới (giữ cảnh báo log khi production thiếu URL) và những gì app cần nếu tự dựng server VoIP.
 
 ### Changed — Realtime chốt JSON thuần
 - Sửa CLAUDE.md / AGENTS.md / README / skill `api-module-integration`: WebSocket là **JSON thuần qua `RealtimeSocket`**, không phải STOMP (theo doc `07-chat`, `09-location-tracking`, `11-appendices`); gỡ package `stomp_dart_client` không còn dùng.
