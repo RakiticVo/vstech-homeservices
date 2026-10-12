@@ -7,6 +7,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Pha 5 tích hợp API (thông báo, chat, VoIP)
+- **5.1** Lớp data thông báo (feature `notifications`): DTO `NotificationResponse` / `NotificationPageResponse` (chỉ có `notifications[]`, không có metadata phân trang), `NotificationSettingsResponse`, `UpdateNotificationSettingsRequest`; `NotificationRemoteDataSource` (`GET /notifications` lọc `type`, `POST /{id}/read`, `POST /read-all`, `GET/PUT /settings`); `NotificationRepositoryImpl` (suy "còn nữa" khi trang đủ 20 mục, loại lạ → `unknown`, cờ cài đặt thiếu mặc định bật); entity `AppNotification`, `NotificationType`, `NotificationSettings`; use case; unit test.
+
 ### Added — File env cho biến cục bộ
 - Tách 2 file env ở thư mục gốc: `.env.development` và `.env.production` (giá trị thật, **gitignore**) kèm `.env.development.example` / `.env.production.example` (mẫu, commit), nạp bằng `--dart-define-from-file=.env.development` hoặc `=.env.production`; biến `APP_ENV` (`AppEnv.name` / `isProduction`), `API_BASE_URL` trống thì dùng UAT và log cảnh báo nếu đang production; `AppEnv` đọc thêm `GOOGLE_MAPS_API_KEY` và tài khoản test UAT (`TEST_CUSTOMER_*`, `TEST_WORKER_*`); 2 cấu hình chạy VS Code (development / production) trong `.vscode/launch.json`; hướng dẫn trong README.
 

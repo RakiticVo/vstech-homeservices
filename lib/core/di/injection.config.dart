@@ -96,6 +96,14 @@ import 'package:vstech_home_services/features/home/presentation/bloc/categories_
     as _i728;
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart'
     as _i983;
+import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart'
+    as _i76;
+import 'package:vstech_home_services/features/notifications/data/repositories/notification_repository_impl.dart'
+    as _i474;
+import 'package:vstech_home_services/features/notifications/domain/repositories/notification_repository.dart'
+    as _i634;
+import 'package:vstech_home_services/features/notifications/domain/usecases/notification_use_cases.dart'
+    as _i78;
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart'
     as _i428;
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart'
@@ -170,6 +178,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i754.CategoryRemoteDataSource>(
       () => _i754.CategoryRemoteDataSource(gh<_i223.ApiClient>()),
+    );
+    gh.factory<_i76.NotificationRemoteDataSource>(
+      () => _i76.NotificationRemoteDataSource(gh<_i223.ApiClient>()),
     );
     gh.factory<_i308.TechnicianLocationRemoteDataSource>(
       () => _i308.TechnicianLocationRemoteDataSource(gh<_i223.ApiClient>()),
@@ -265,6 +276,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i371.SessionCubit>(),
       ),
     );
+    gh.lazySingleton<_i634.NotificationRepository>(
+      () => _i474.NotificationRepositoryImpl(
+        gh<_i76.NotificationRemoteDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i637.WalletRepository>(
       () => _i794.WalletRepositoryImpl(gh<_i964.WalletRemoteDataSource>()),
     );
@@ -336,6 +352,28 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i728.CategoriesCubit>(
       () => _i728.CategoriesCubit(gh<_i894.GetCategoriesUseCase>()),
+    );
+    gh.factory<_i78.GetNotificationsUseCase>(
+      () => _i78.GetNotificationsUseCase(gh<_i634.NotificationRepository>()),
+    );
+    gh.factory<_i78.MarkNotificationReadUseCase>(
+      () =>
+          _i78.MarkNotificationReadUseCase(gh<_i634.NotificationRepository>()),
+    );
+    gh.factory<_i78.MarkAllNotificationsReadUseCase>(
+      () => _i78.MarkAllNotificationsReadUseCase(
+        gh<_i634.NotificationRepository>(),
+      ),
+    );
+    gh.factory<_i78.GetNotificationSettingsUseCase>(
+      () => _i78.GetNotificationSettingsUseCase(
+        gh<_i634.NotificationRepository>(),
+      ),
+    );
+    gh.factory<_i78.UpdateNotificationSettingsUseCase>(
+      () => _i78.UpdateNotificationSettingsUseCase(
+        gh<_i634.NotificationRepository>(),
+      ),
     );
     gh.factory<_i664.TransactionDetailCubit>(
       () => _i664.TransactionDetailCubit(gh<_i1023.GetTransactionUseCase>()),

@@ -1,0 +1,11 @@
+{
+  "status": 200,
+  "message": "OK",
+  "data": {
+    "notifications": [
+      {"id": 101, "userId": 7, "title": "Đặt lịch mới", "body": "Thợ đã nhận việc", "type": "BOOKING", "isRead": false, "createdAt": "2026-10-11T03:30:00Z"},
+      {"id": "b2c4f2d0-uuid", "userId": "u-1", "title": "Bảo trì hệ thống", "body": "Tối nay 23:00", "type": "SYSTEM", "isRead": true, "createdAt": "2026-10-10T15:00:00Z"},
+      {"id": 103, "title": "Ưu đãi", "type": "SOMETHING_NEW"}
+    ]
+  }
+}

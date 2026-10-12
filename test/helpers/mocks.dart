@@ -36,6 +36,8 @@ import 'package:vstech_home_services/features/home/domain/usecases/get_categorie
 import 'package:vstech_home_services/features/home/domain/usecases/get_category_use_case.dart';
 import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart';
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
+import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart';
+import 'package:vstech_home_services/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart';
@@ -64,7 +66,8 @@ class MockSessionCubit extends MockCubit<SessionState> implements SessionCubit;
 // --- auth: data/domain ---
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource;
 
-class MockProfileRemoteDataSource extends Mock implements ProfileRemoteDataSource;
+class MockProfileRemoteDataSource extends Mock
+    implements ProfileRemoteDataSource;
 
 class MockAuthRepository extends Mock implements AuthRepository;
 
@@ -85,7 +88,8 @@ class MockUpdateProfileUseCase extends Mock implements UpdateProfileUseCase;
 // --- auth: presentation ---
 class MockLoginCubit extends MockCubit<AuthFormState> implements LoginCubit;
 
-class MockRegisterCubit extends MockCubit<AuthFormState> implements RegisterCubit;
+class MockRegisterCubit extends MockCubit<AuthFormState>
+    implements RegisterCubit;
 
 class MockLogoutCubit extends MockCubit<LogoutState> implements LogoutCubit;
 
@@ -94,7 +98,8 @@ class MockProfileCubit extends MockCubit<ProfileState> implements ProfileCubit;
 class MockLocationService extends Mock implements LocationService;
 
 // --- categories ---
-class MockCategoryRemoteDataSource extends Mock implements CategoryRemoteDataSource;
+class MockCategoryRemoteDataSource extends Mock
+    implements CategoryRemoteDataSource;
 
 class MockCategoryRepository extends Mock implements CategoryRepository;
 
@@ -102,12 +107,15 @@ class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase;
 
 class MockGetCategoryUseCase extends Mock implements GetCategoryUseCase;
 
-class MockCategoriesCubit extends MockCubit<CategoriesState> implements CategoriesCubit;
+class MockCategoriesCubit extends MockCubit<CategoriesState>
+    implements CategoriesCubit;
 
-class MockCategoryDetailCubit extends MockCubit<CategoryDetailState> implements CategoryDetailCubit;
+class MockCategoryDetailCubit extends MockCubit<CategoryDetailState>
+    implements CategoryDetailCubit;
 
 // --- bookings ---
-class MockBookingRemoteDataSource extends Mock implements BookingRemoteDataSource;
+class MockBookingRemoteDataSource extends Mock
+    implements BookingRemoteDataSource;
 
 class MockBookingRepository extends Mock implements BookingRepository;
 
@@ -123,20 +131,27 @@ class MockCancelBookingUseCase extends Mock implements CancelBookingUseCase;
 
 class MockDisputeBookingUseCase extends Mock implements DisputeBookingUseCase;
 
-class MockBookingFlowBloc extends MockBloc<BookingFlowEvent, BookingFlowState> implements BookingFlowBloc;
+class MockBookingFlowBloc extends MockBloc<BookingFlowEvent, BookingFlowState>
+    implements BookingFlowBloc;
 
-class MockBookingListCubit extends MockCubit<BookingListState> implements BookingListCubit;
+class MockBookingListCubit extends MockCubit<BookingListState>
+    implements BookingListCubit;
 
-class MockOrderDetailCubit extends MockCubit<OrderDetailState> implements OrderDetailCubit;
+class MockOrderDetailCubit extends MockCubit<OrderDetailState>
+    implements OrderDetailCubit;
 
-class MockBookingActionCubit extends MockCubit<BookingActionState> implements BookingActionCubit;
+class MockBookingActionCubit extends MockCubit<BookingActionState>
+    implements BookingActionCubit;
 
 // --- worker presence / GPS ---
-class MockTechnicianLocationRemoteDataSource extends Mock implements TechnicianLocationRemoteDataSource;
+class MockTechnicianLocationRemoteDataSource extends Mock
+    implements TechnicianLocationRemoteDataSource;
 
-class MockUpdateTechnicianLocationUseCase extends Mock implements UpdateTechnicianLocationUseCase;
+class MockUpdateTechnicianLocationUseCase extends Mock
+    implements UpdateTechnicianLocationUseCase;
 
-class MockWorkerPresenceCubit extends MockCubit<WorkerPresenceState> implements WorkerPresenceCubit;
+class MockWorkerPresenceCubit extends MockCubit<WorkerPresenceState>
+    implements WorkerPresenceCubit;
 
 // --- worker task ---
 class MockAcceptBookingUseCase extends Mock implements AcceptBookingUseCase;
@@ -147,7 +162,8 @@ class MockSubmitQuoteUseCase extends Mock implements SubmitQuoteUseCase;
 
 class MockCompleteBookingUseCase extends Mock implements CompleteBookingUseCase;
 
-class MockWorkerTaskCubit extends MockCubit<WorkerTaskState> implements WorkerTaskCubit;
+class MockWorkerTaskCubit extends MockCubit<WorkerTaskState>
+    implements WorkerTaskCubit;
 
 // --- wallet ---
 class MockWalletRemoteDataSource extends Mock implements WalletRemoteDataSource;
@@ -158,7 +174,8 @@ class MockGetWalletUseCase extends Mock implements GetWalletUseCase;
 
 class MockGetTransactionsUseCase extends Mock implements GetTransactionsUseCase;
 
-class MockCreateWithdrawalUseCase extends Mock implements CreateWithdrawalUseCase;
+class MockCreateWithdrawalUseCase extends Mock
+    implements CreateWithdrawalUseCase;
 
 class MockGetWithdrawalUseCase extends Mock implements GetWithdrawalUseCase;
 
@@ -166,8 +183,17 @@ class MockGetTransactionUseCase extends Mock implements GetTransactionUseCase;
 
 class MockWalletCubit extends MockCubit<WalletState> implements WalletCubit;
 
-class MockTransactionDetailCubit extends MockCubit<TransactionDetailState> implements TransactionDetailCubit;
+class MockTransactionDetailCubit extends MockCubit<TransactionDetailState>
+    implements TransactionDetailCubit;
 
-class MockWithdrawCubit extends MockCubit<WithdrawState> implements WithdrawCubit;
+class MockWithdrawCubit extends MockCubit<WithdrawState>
+    implements WithdrawCubit;
 
-class MockWithdrawalStatusCubit extends MockCubit<WithdrawalStatusState> implements WithdrawalStatusCubit;
+class MockWithdrawalStatusCubit extends MockCubit<WithdrawalStatusState>
+    implements WithdrawalStatusCubit;
+
+// --- notifications ---
+class MockNotificationRemoteDataSource extends Mock
+    implements NotificationRemoteDataSource;
+
+class MockNotificationRepository extends Mock implements NotificationRepository;
