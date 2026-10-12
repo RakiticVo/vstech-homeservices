@@ -25,7 +25,11 @@ final class Failure {
   /// Converts anything a datasource can throw into a [Failure].
   factory Failure.from(Object error, [StackTrace? stackTrace]) {
     if (error is NetworkException) {
-      return Failure(kind: error.kind, errorCode: error.errorCode, statusCode: error.statusCode);
+      return Failure(
+        kind: error.kind,
+        errorCode: error.errorCode,
+        statusCode: error.statusCode,
+      );
     }
     if (error is AppException) {
       return Failure(kind: NetworkErrorKind.unknown, errorCode: error.code);
@@ -42,11 +46,15 @@ final class Failure {
 
   @override
   bool operator ==(Object other) =>
-      other is Failure && other.kind == kind && other.errorCode == errorCode && other.statusCode == statusCode;
+      other is Failure &&
+      other.kind == kind &&
+      other.errorCode == errorCode &&
+      other.statusCode == statusCode;
 
   @override
   int get hashCode => Object.hash(kind, errorCode, statusCode);
 
   @override
-  String toString() => 'Failure(kind: $kind, errorCode: $errorCode, statusCode: $statusCode)';
+  String toString() =>
+      'Failure(kind: $kind, errorCode: $errorCode, statusCode: $statusCode)';
 }
