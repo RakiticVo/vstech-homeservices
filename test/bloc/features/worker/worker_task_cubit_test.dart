@@ -23,7 +23,14 @@ void main() {
   late MockSubmitQuoteUseCase submitQuote;
   late MockCompleteBookingUseCase complete;
 
-  WorkerTaskCubit build() => WorkerTaskCubit(getBooking, getCategory, accept, start, submitQuote, complete);
+  WorkerTaskCubit build() => WorkerTaskCubit(
+    getBooking,
+    getCategory,
+    accept,
+    start,
+    submitQuote,
+    complete,
+  );
 
   setUpAll(() => registerFallbackValue(<QuoteLine>[]));
 
@@ -41,35 +48,48 @@ void main() {
   blocTest<WorkerTaskCubit, WorkerTaskState>(
     'load emits the job with its service name',
     setUp: () {
-      when(() => getBooking('501')).thenAnswer((_) async => Ok<Booking>(pendingBooking));
-      when(() => getCategory('1')).thenAnswer((_) async => const Ok<ServiceCategory>(acCategory));
+      when(() => getBooking('501'))
+          .thenAnswer((_) async => Ok<Booking>(pendingBooking));
+      when(() => getCategory('1'))
+          .thenAnswer((_) async => const Ok<ServiceCategory>(acCategory));
     },
     build: build,
     act: (cubit) => cubit.load('501'),
     expect: () => [
       const WorkerTaskLoadingState(),
-      WorkerTaskReadyState(WorkerTaskData(booking: pendingBooking, serviceName: 'Sửa máy lạnh')),
+      WorkerTaskReadyState(
+        WorkerTaskData(booking: pendingBooking, serviceName: 'Sửa máy lạnh'),
+      ),
     ],
   );
 
   blocTest<WorkerTaskCubit, WorkerTaskState>(
     'load failure is emitted',
-    setUp: () => when(() => getBooking('501')).thenAnswer((_) async => const Err<Booking>(_offline)),
+    setUp: () =>
+        when(() => getBooking('501'))
+            .thenAnswer((_) async => const Err<Booking>(_offline)),
     build: build,
     act: (cubit) => cubit.load('501'),
-    expect: () => [const WorkerTaskLoadingState(), const WorkerTaskLoadErrorState(_offline)],
+    expect: () => [
+      const WorkerTaskLoadingState(),
+      const WorkerTaskLoadErrorState(_offline),
+    ],
   );
 
   blocTest<WorkerTaskCubit, WorkerTaskState>(
     'accept updates the booking status',
-    setUp: () => when(() => accept('501')).thenAnswer((_) async => const Ok(BookingStatus.accepted)),
+    setUp: () =>
+        when(() => accept('501'))
+            .thenAnswer((_) async => const Ok(BookingStatus.accepted)),
     build: build,
     seed: () => WorkerTaskReadyState(pendingData),
     act: (cubit) => cubit.accept(),
     expect: () => [
       WorkerTaskBusyState(pendingData, WorkerTaskAction.accept),
       WorkerTaskActionDoneState(
-        WorkerTaskData(booking: pendingBooking.copyWith(status: BookingStatus.accepted)),
+        WorkerTaskData(
+          booking: pendingBooking.copyWith(status: BookingStatus.accepted),
+        ),
         WorkerTaskAction.accept,
       ),
     ],
@@ -77,25 +97,37 @@ void main() {
 
   blocTest<WorkerTaskCubit, WorkerTaskState>(
     'start failure keeps the job and reports the error',
-    setUp: () => when(() => start('501')).thenAnswer((_) async => const Err<BookingStatus>(_offline)),
+    setUp: () =>
+        when(() => start('501'))
+            .thenAnswer((_) async => const Err<BookingStatus>(_offline)),
     build: build,
     seed: () => WorkerTaskReadyState(pendingData),
     act: (cubit) => cubit.start(),
     expect: () => [
       WorkerTaskBusyState(pendingData, WorkerTaskAction.start),
-      WorkerTaskActionFailedState(pendingData, WorkerTaskAction.start, _offline),
+      WorkerTaskActionFailedState(
+        pendingData,
+        WorkerTaskAction.start,
+        _offline,
+      ),
     ],
   );
 
   blocTest<WorkerTaskCubit, WorkerTaskState>(
     'submitQuote remembers the quoted total for the final price',
-    setUp: () => when(() => submitQuote('501', any())).thenAnswer((_) async => const Ok<void>(null)),
+    setUp: () =>
+        when(() => submitQuote('501', any()))
+            .thenAnswer((_) async => const Ok<void>(null)),
     build: build,
     seed: () => WorkerTaskReadyState(pendingData),
-    act: (cubit) => cubit.submitQuote(const [QuoteLine(itemName: 'Gas', amount: 45000)]),
+    act: (cubit) =>
+        cubit.submitQuote(const [QuoteLine(itemName: 'Gas', amount: 45000)]),
     expect: () => [
       WorkerTaskBusyState(pendingData, WorkerTaskAction.quote),
-      WorkerTaskActionDoneState(WorkerTaskData(booking: pendingBooking, quotedExtra: 45000), WorkerTaskAction.quote),
+      WorkerTaskActionDoneState(
+        WorkerTaskData(booking: pendingBooking, quotedExtra: 45000),
+        WorkerTaskAction.quote,
+      ),
     ],
     verify: (cubit) => expect(cubit.state.data?.suggestedFinalPrice, 545000),
   );
@@ -111,7 +143,12 @@ void main() {
     expect: () => [
       WorkerTaskBusyState(pendingData, WorkerTaskAction.complete),
       WorkerTaskActionDoneState(
-        WorkerTaskData(booking: pendingBooking.copyWith(status: BookingStatus.completed, finalPrice: 545000)),
+        WorkerTaskData(
+          booking: pendingBooking.copyWith(
+            status: BookingStatus.completed,
+            finalPrice: 545000,
+          ),
+        ),
         WorkerTaskAction.complete,
       ),
     ],

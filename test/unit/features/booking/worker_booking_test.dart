@@ -15,7 +15,13 @@ import 'package:vstech_home_services/features/booking/domain/usecases/worker_boo
 
 import '../../../helpers/mocks.dart';
 
-ApiResponse<T> _ok<T>(T data) => ApiResponse(status: 200, message: '', data: data, errorCode: null, timestamp: null);
+ApiResponse<T> _ok<T>(T data) => ApiResponse(
+  status: 200,
+  message: '',
+  data: data,
+  errorCode: null,
+  timestamp: null,
+);
 
 void main() {
   group('BookingRemoteDataSource (worker)', () {
@@ -32,7 +38,9 @@ void main() {
           idempotent: true,
           decode: any(named: 'decode'),
         ),
-      ).thenAnswer((_) async => _ok(const StatusTransitionResponse(newStatus: 'ACCEPTED')));
+      ).thenAnswer(
+        (_) async => _ok(const StatusTransitionResponse(newStatus: 'ACCEPTED')),
+      );
       when(
         () => client.post<QuoteResponse>(
           any(),
@@ -40,7 +48,10 @@ void main() {
           idempotent: true,
           decode: any(named: 'decode'),
         ),
-      ).thenAnswer((_) async => _ok(const QuoteResponse(status: 'PENDING', totalAmount: 45000)));
+      ).thenAnswer(
+        (_) async =>
+            _ok(const QuoteResponse(status: 'PENDING', totalAmount: 45000)),
+      );
     });
 
     test('accept and start are idempotent POSTs without a body', () async {
@@ -64,7 +75,10 @@ void main() {
     });
 
     test('complete sends actualPrice', () async {
-      await dataSource.complete('7', const CompleteBookingRequest(actualPrice: 600000));
+      await dataSource.complete(
+        '7',
+        const CompleteBookingRequest(actualPrice: 600000),
+      );
 
       verify(
         () => client.post<StatusTransitionResponse>(
@@ -117,31 +131,57 @@ void main() {
     });
 
     test('accept/start/complete return the new status', () async {
-      when(() => remote.accept('7')).thenAnswer((_) async => const StatusTransitionResponse(newStatus: 'ACCEPTED'));
-      when(() => remote.start('7')).thenAnswer((_) async => const StatusTransitionResponse(newStatus: 'IN_PROGRESS'));
-      when(
-        () => remote.complete('7', any()),
-      ).thenAnswer((_) async => const StatusTransitionResponse(newStatus: 'COMPLETED'));
+      when(() => remote.accept('7')).thenAnswer(
+        (_) async => const StatusTransitionResponse(newStatus: 'ACCEPTED'),
+      );
+      when(() => remote.start('7')).thenAnswer(
+        (_) async => const StatusTransitionResponse(newStatus: 'IN_PROGRESS'),
+      );
+      when(() => remote.complete('7', any())).thenAnswer(
+        (_) async => const StatusTransitionResponse(newStatus: 'COMPLETED'),
+      );
 
-      expect(await repository.accept('7'), isA<Ok<BookingStatus>>().having((r) => r.value, 'v', BookingStatus.accepted));
+      expect(
+        await repository.accept('7'),
+        isA<Ok<BookingStatus>>().having(
+          (r) => r.value,
+          'v',
+          BookingStatus.accepted,
+        ),
+      );
       expect(
         await repository.start('7'),
-        isA<Ok<BookingStatus>>().having((r) => r.value, 'v', BookingStatus.inProgress),
+        isA<Ok<BookingStatus>>().having(
+          (r) => r.value,
+          'v',
+          BookingStatus.inProgress,
+        ),
       );
       expect(
         await repository.complete('7', actualPrice: 600000),
-        isA<Ok<BookingStatus>>().having((r) => r.value, 'v', BookingStatus.completed),
+        isA<Ok<BookingStatus>>().having(
+          (r) => r.value,
+          'v',
+          BookingStatus.completed,
+        ),
       );
-      final sent = verify(() => remote.complete('7', captureAny())).captured.single as CompleteBookingRequest;
+      final sent =
+          verify(() => remote.complete('7', captureAny())).captured.single
+              as CompleteBookingRequest;
       expect(sent.actualPrice, 600000);
     });
 
     test('submitQuote maps lines to items', () async {
-      when(() => remote.submitQuote('7', any())).thenAnswer((_) async => const QuoteResponse(status: 'PENDING'));
+      when(() => remote.submitQuote('7', any()))
+          .thenAnswer((_) async => const QuoteResponse(status: 'PENDING'));
 
-      await repository.submitQuote('7', const [QuoteLine(itemName: 'Gas R32', amount: 45000)]);
+      await repository.submitQuote('7', const [
+        QuoteLine(itemName: 'Gas R32', amount: 45000),
+      ]);
 
-      final sent = verify(() => remote.submitQuote('7', captureAny())).captured.single as SubmitQuoteRequest;
+      final sent =
+          verify(() => remote.submitQuote('7', captureAny())).captured.single
+              as SubmitQuoteRequest;
       expect(sent.items.single.itemName, 'Gas R32');
       expect(sent.items.single.amount, 45000);
     });
@@ -155,30 +195,63 @@ void main() {
     setUp(() => repository = MockBookingRepository());
 
     test('CompleteBookingUseCase rejects prices above 1.5 × estimate with HS-400-0012', () async {
-      final result = await CompleteBookingUseCase(repository)('7', actualPrice: 760000, estimatedPrice: 500000);
+      final result = await CompleteBookingUseCase(repository)(
+        '7',
+        actualPrice: 760000,
+        estimatedPrice: 500000,
+      );
 
-      expect(result, isA<Err<BookingStatus>>().having((r) => r.failure.errorCode, 'code', 'HS-400-0012'));
-      verifyNever(() => repository.complete(any(), actualPrice: any(named: 'actualPrice')));
+      expect(
+        result,
+        isA<Err<BookingStatus>>().having(
+          (r) => r.failure.errorCode,
+          'code',
+          'HS-400-0012',
+        ),
+      );
+      verifyNever(
+        () =>
+            repository.complete(any(), actualPrice: any(named: 'actualPrice')),
+      );
     });
 
     test('CompleteBookingUseCase completes within the limit', () async {
-      when(
-        () => repository.complete('7', actualPrice: 750000),
-      ).thenAnswer((_) async => const Ok(BookingStatus.completed));
+      when(() => repository.complete('7', actualPrice: 750000))
+          .thenAnswer((_) async => const Ok(BookingStatus.completed));
 
-      final result = await CompleteBookingUseCase(repository)('7', actualPrice: 750000, estimatedPrice: 500000);
+      final result = await CompleteBookingUseCase(repository)(
+        '7',
+        actualPrice: 750000,
+        estimatedPrice: 500000,
+      );
 
       expect(result, isA<Ok<BookingStatus>>());
     });
 
     test('SubmitQuoteUseCase validates and trims lines', () async {
-      when(() => repository.submitQuote(any(), any())).thenAnswer((_) async => const Ok<void>(null));
+      when(() => repository.submitQuote(any(), any()))
+          .thenAnswer((_) async => const Ok<void>(null));
 
-      final invalid = await SubmitQuoteUseCase(repository)('7', const [QuoteLine(itemName: ' ', amount: 1)]);
-      expect(invalid, isA<Err<void>>().having((r) => r.failure.errorCode, 'code', 'HS-400-0001'));
+      final invalid = await SubmitQuoteUseCase(repository)('7', const [
+        QuoteLine(itemName: ' ', amount: 1),
+      ]);
+      expect(
+        invalid,
+        isA<Err<void>>().having(
+          (r) => r.failure.errorCode,
+          'code',
+          'HS-400-0001',
+        ),
+      );
 
-      await SubmitQuoteUseCase(repository)('7', const [QuoteLine(itemName: ' Gas R32 ', amount: 45000)]);
-      final sent = verify(() => repository.submitQuote('7', captureAny())).captured.single as List<QuoteLine>;
+      await SubmitQuoteUseCase(repository)('7', const [
+        QuoteLine(itemName: ' Gas R32 ', amount: 45000),
+      ]);
+      final sent =
+          verify(() => repository.submitQuote('7', captureAny()))
+                  .captured
+                  .single
+              as List<QuoteLine>;
       expect(sent.single.itemName, 'Gas R32');
     });
   });
