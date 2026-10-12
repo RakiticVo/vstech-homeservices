@@ -46,7 +46,11 @@ class WorkerTaskCubit extends Cubit<WorkerTaskState> {
                 Ok(:final value) => value.name,
                 Err() => null,
               };
-        emit(WorkerTaskReadyState(WorkerTaskData(booking: booking, serviceName: name)));
+        emit(
+          WorkerTaskReadyState(
+            WorkerTaskData(booking: booking, serviceName: name),
+          ),
+        );
     }
   }
 
@@ -62,19 +66,31 @@ class WorkerTaskCubit extends Cubit<WorkerTaskState> {
     switch (await _submitQuote(data.booking.id, lines)) {
       case Ok():
         final total = lines.fold<num>(0, (sum, line) => sum + line.amount);
-        emit(WorkerTaskActionDoneState(data.copyWith(quotedExtra: data.quotedExtra + total), WorkerTaskAction.quote));
+        emit(
+          WorkerTaskActionDoneState(
+            data.copyWith(quotedExtra: data.quotedExtra + total),
+            WorkerTaskAction.quote,
+          ),
+        );
       case Err(:final failure):
-        emit(WorkerTaskActionFailedState(data, WorkerTaskAction.quote, failure));
+        emit(
+          WorkerTaskActionFailedState(data, WorkerTaskAction.quote, failure),
+        );
     }
   }
 
   Future<void> complete(num actualPrice) => _transition(
     WorkerTaskAction.complete,
-    (id) => _complete(id, actualPrice: actualPrice, estimatedPrice: state.data?.booking.estimatedPrice),
+    (id) => _complete(
+      id,
+      actualPrice: actualPrice,
+      estimatedPrice: state.data?.booking.estimatedPrice,
+    ),
     finalPrice: actualPrice,
   );
 
-  WorkerTaskData? get _readyData => state is WorkerTaskBusyState ? null : state.data;
+  WorkerTaskData? get _readyData =>
+      state is WorkerTaskBusyState ? null : state.data;
 
   Future<void> _transition(
     WorkerTaskAction action,
@@ -86,8 +102,13 @@ class WorkerTaskCubit extends Cubit<WorkerTaskState> {
     emit(WorkerTaskBusyState(data, action));
     switch (await call(data.booking.id)) {
       case Ok(value: final status):
-        final booking = data.booking.copyWith(status: status, finalPrice: finalPrice ?? data.booking.finalPrice);
-        emit(WorkerTaskActionDoneState(data.copyWith(booking: booking), action));
+        final booking = data.booking.copyWith(
+          status: status,
+          finalPrice: finalPrice ?? data.booking.finalPrice,
+        );
+        emit(
+          WorkerTaskActionDoneState(data.copyWith(booking: booking), action),
+        );
       case Err(:final failure):
         emit(WorkerTaskActionFailedState(data, action, failure));
     }

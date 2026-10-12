@@ -14,7 +14,8 @@ class AcceptBookingUseCase {
 
   final BookingRepository _repository;
 
-  Future<Result<BookingStatus>> call(String bookingId) => _repository.accept(bookingId);
+  Future<Result<BookingStatus>> call(String bookingId) =>
+      _repository.accept(bookingId);
 }
 
 @injectable
@@ -23,7 +24,8 @@ class StartBookingUseCase {
 
   final BookingRepository _repository;
 
-  Future<Result<BookingStatus>> call(String bookingId) => _repository.start(bookingId);
+  Future<Result<BookingStatus>> call(String bookingId) =>
+      _repository.start(bookingId);
 }
 
 @injectable
@@ -36,9 +38,17 @@ class CompleteBookingUseCase {
   static const double maxPriceFactor = 1.5;
 
   /// Rejects an [actualPrice] above 1.5 × [estimatedPrice] locally with the server's code.
-  Future<Result<BookingStatus>> call(String bookingId, {required num actualPrice, num? estimatedPrice}) async {
-    if (actualPrice <= 0 || (estimatedPrice != null && actualPrice > estimatedPrice * maxPriceFactor)) {
-      return const Err(Failure(kind: NetworkErrorKind.unknown, errorCode: 'HS-400-0012'));
+  Future<Result<BookingStatus>> call(
+    String bookingId, {
+    required num actualPrice,
+    num? estimatedPrice,
+  }) async {
+    if (actualPrice <= 0 ||
+        (estimatedPrice != null &&
+            actualPrice > estimatedPrice * maxPriceFactor)) {
+      return const Err(
+        Failure(kind: NetworkErrorKind.unknown, errorCode: 'HS-400-0012'),
+      );
     }
     return await _repository.complete(bookingId, actualPrice: actualPrice);
   }
@@ -52,10 +62,18 @@ class SubmitQuoteUseCase {
 
   /// Requires at least one line, each with a name and a positive amount (`HS-400-0001` otherwise).
   Future<Result<void>> call(String bookingId, List<QuoteLine> lines) async {
-    final valid = lines.isNotEmpty && lines.every((line) => line.itemName.trim().isNotEmpty && line.amount > 0);
-    if (!valid) return const Err(Failure(kind: NetworkErrorKind.unknown, errorCode: 'HS-400-0001'));
+    final valid =
+        lines.isNotEmpty &&
+        lines.every(
+          (line) => line.itemName.trim().isNotEmpty && line.amount > 0,
+        );
+    if (!valid)
+      return const Err(
+        Failure(kind: NetworkErrorKind.unknown, errorCode: 'HS-400-0001'),
+      );
     return await _repository.submitQuote(bookingId, [
-      for (final line in lines) QuoteLine(itemName: line.itemName.trim(), amount: line.amount),
+      for (final line in lines)
+        QuoteLine(itemName: line.itemName.trim(), amount: line.amount),
     ]);
   }
 }

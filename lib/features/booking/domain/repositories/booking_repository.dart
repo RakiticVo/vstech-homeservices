@@ -7,12 +7,18 @@ import 'package:vstech_home_services/features/booking/domain/entities/price_esti
 import 'package:vstech_home_services/features/booking/domain/entities/quote_line.dart';
 
 abstract interface class BookingRepository {
-  Future<Result<PriceEstimate>> estimate({required String categoryId, required String description});
+  Future<Result<PriceEstimate>> estimate({
+    required String categoryId,
+    required String description,
+  });
 
   Future<Result<Booking>> create(NewBooking booking);
 
   /// The signed-in user's bookings, newest first as returned by the API; [status] null = all.
-  Future<Result<BookingPage>> getMyBookings({required int page, BookingStatus? status});
+  Future<Result<BookingPage>> getMyBookings({
+    required int page,
+    BookingStatus? status,
+  });
 
   /// Last fetched copy of a booking — there is no `GET /bookings/{id}` endpoint yet.
   Booking? cached(String id);
@@ -29,7 +35,10 @@ abstract interface class BookingRepository {
 
   Future<Result<BookingStatus>> start(String bookingId);
 
-  Future<Result<BookingStatus>> complete(String bookingId, {required num actualPrice});
+  Future<Result<BookingStatus>> complete(
+    String bookingId, {
+    required num actualPrice,
+  });
 
   Future<Result<void>> submitQuote(String bookingId, List<QuoteLine> lines);
 

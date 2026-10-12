@@ -28,17 +28,21 @@ class BookingRepositoryImpl implements BookingRepository {
   static const int pageSize = 20;
 
   @override
-  Future<Result<PriceEstimate>> estimate({required String categoryId, required String description}) =>
-      Result.guard(() async {
-        final r = await _remote.estimate(EstimateRequest(categoryId: categoryId, description: description));
-        final commission = r.commissionFee ?? 0;
-        return PriceEstimate(
-          estimatedPrice: r.estimatedPrice,
-          commissionFee: commission,
-          totalEstimated: r.totalEstimated ?? r.estimatedPrice + commission,
-          categoryName: r.categoryName,
-        );
-      });
+  Future<Result<PriceEstimate>> estimate({
+    required String categoryId,
+    required String description,
+  }) => Result.guard(() async {
+    final r = await _remote.estimate(
+      EstimateRequest(categoryId: categoryId, description: description),
+    );
+    final commission = r.commissionFee ?? 0;
+    return PriceEstimate(
+      estimatedPrice: r.estimatedPrice,
+      commissionFee: commission,
+      totalEstimated: r.totalEstimated ?? r.estimatedPrice + commission,
+      categoryName: r.categoryName,
+    );
+  });
 
   @override
   Future<Result<Booking>> create(NewBooking booking) => Result.guard(() async {
@@ -56,8 +60,15 @@ class BookingRepositoryImpl implements BookingRepository {
   });
 
   @override
-  Future<Result<BookingPage>> getMyBookings({required int page, BookingStatus? status}) => Result.guard(() async {
-    final response = await _remote.getBookings(page: page, size: pageSize, status: status?.apiValue);
+  Future<Result<BookingPage>> getMyBookings({
+    required int page,
+    BookingStatus? status,
+  }) => Result.guard(() async {
+    final response = await _remote.getBookings(
+      page: page,
+      size: pageSize,
+      status: status?.apiValue,
+    );
     return BookingPage(
       items: [for (final item in response.content) _remember(_toEntity(item))],
       page: response.page,
@@ -69,36 +80,52 @@ class BookingRepositoryImpl implements BookingRepository {
   Booking? cached(String id) => _cache[id];
 
   @override
-  Future<Result<BookingStatus>> cancel(String bookingId) => _transition(bookingId, _remote.cancel);
+  Future<Result<BookingStatus>> cancel(String bookingId) =>
+      _transition(bookingId, _remote.cancel);
 
   @override
-  Future<Result<BookingStatus>> dispute(String bookingId) => _transition(bookingId, _remote.dispute);
+  Future<Result<BookingStatus>> dispute(String bookingId) =>
+      _transition(bookingId, _remote.dispute);
 
   @override
-  Future<Result<void>> approveQuote(String bookingId) => Result.guard(() => _remote.approveQuote(bookingId));
+  Future<Result<void>> approveQuote(String bookingId) =>
+      Result.guard(() => _remote.approveQuote(bookingId));
 
   @override
-  Future<Result<void>> rejectQuote(String bookingId) => Result.guard(() => _remote.rejectQuote(bookingId));
+  Future<Result<void>> rejectQuote(String bookingId) =>
+      Result.guard(() => _remote.rejectQuote(bookingId));
 
   @override
-  Future<Result<BookingStatus>> accept(String bookingId) => _transition(bookingId, _remote.accept);
+  Future<Result<BookingStatus>> accept(String bookingId) =>
+      _transition(bookingId, _remote.accept);
 
   @override
-  Future<Result<BookingStatus>> start(String bookingId) => _transition(bookingId, _remote.start);
+  Future<Result<BookingStatus>> start(String bookingId) =>
+      _transition(bookingId, _remote.start);
 
   @override
-  Future<Result<BookingStatus>> complete(String bookingId, {required num actualPrice}) =>
-      _transition(bookingId, (id) => _remote.complete(id, CompleteBookingRequest(actualPrice: actualPrice)));
-
-  @override
-  Future<Result<void>> submitQuote(String bookingId, List<QuoteLine> lines) => Result.guard(
-    () => _remote.submitQuote(
-      bookingId,
-      SubmitQuoteRequest(
-        items: [for (final line in lines) QuoteItemRequest(itemName: line.itemName, amount: line.amount)],
-      ),
-    ),
+  Future<Result<BookingStatus>> complete(
+    String bookingId, {
+    required num actualPrice,
+  }) => _transition(
+    bookingId,
+    (id) =>
+        _remote.complete(id, CompleteBookingRequest(actualPrice: actualPrice)),
   );
+
+  @override
+  Future<Result<void>> submitQuote(String bookingId, List<QuoteLine> lines) =>
+      Result.guard(
+        () => _remote.submitQuote(
+          bookingId,
+          SubmitQuoteRequest(
+            items: [
+              for (final line in lines)
+                QuoteItemRequest(itemName: line.itemName, amount: line.amount),
+            ],
+          ),
+        ),
+      );
 
   Future<Result<BookingStatus>> _transition(
     String bookingId,

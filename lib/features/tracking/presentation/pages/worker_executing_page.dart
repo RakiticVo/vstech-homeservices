@@ -45,13 +45,17 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
       case WorkerTaskActionDoneState(action: WorkerTaskAction.quote):
         messenger
           ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text(context.l10n.workerProposalSent)));
+          ..showSnackBar(
+            SnackBar(content: Text(context.l10n.workerProposalSent)),
+          );
       case WorkerTaskActionDoneState(action: WorkerTaskAction.complete):
         context.go(AppRoutes.workerJobCompletion);
       case WorkerTaskActionFailedState(:final failure):
         messenger
           ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text(context.l10n.failureMessage(failure))));
+          ..showSnackBar(
+            SnackBar(content: Text(context.l10n.failureMessage(failure))),
+          );
       default:
         break;
     }
@@ -66,23 +70,34 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
   void _showCompleteDialog() {
     final task = context.read<WorkerTaskCubit>().state.data;
     if (task == null) return;
-    final priceController = TextEditingController(text: '${task.suggestedFinalPrice}');
+    final priceController = TextEditingController(
+      text: '${task.suggestedFinalPrice}',
+    );
     final estimate = task.booking.estimatedPrice;
     unawaited(
       showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
           backgroundColor: AppColors.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
-          title: Text(context.l10n.workerFinalPriceTitle, style: AppTextStyles.headlineSmall.copyWith(fontSize: 18)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.card),
+          ),
+          title: Text(
+            context.l10n.workerFinalPriceTitle,
+            style: AppTextStyles.headlineSmall.copyWith(fontSize: 18),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (estimate != null)
                 Text(
-                  context.l10n.workerFinalPriceHint(MoneyFormatter.format(estimate)),
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                  context.l10n.workerFinalPriceHint(
+                    MoneyFormatter.format(estimate),
+                  ),
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               const SizedBox(height: AppSpacing.md),
               TextField(
@@ -101,7 +116,9 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
               onPressed: () => Navigator.of(ctx).pop(),
               child: Text(
                 context.l10n.cancel,
-                style: AppTextStyles.labelLarge.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             ),
             ElevatedButton(
@@ -112,7 +129,10 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
                 Navigator.of(ctx).pop();
                 unawaited(context.read<WorkerTaskCubit>().complete(price));
               },
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: AppColors.onPrimary),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.onPrimary,
+              ),
               child: Text(context.l10n.confirm),
             ),
           ],
@@ -143,7 +163,9 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
         context: context,
         builder: (ctx) => AlertDialog(
           backgroundColor: AppColors.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.card),
+          ),
           title: Text(
             context.l10n.workerExtraCostDialogTitle,
             style: AppTextStyles.headlineSmall.copyWith(fontSize: 18),
@@ -154,13 +176,18 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
             children: [
               Text(
                 context.l10n.workerExtraCostDesc,
-                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
               TextField(
                 key: const Key('worker_extra_cost_name'),
                 controller: nameController,
-                decoration: InputDecoration(labelText: context.l10n.workerItemName, border: const OutlineInputBorder()),
+                decoration: InputDecoration(
+                  labelText: context.l10n.workerItemName,
+                  border: const OutlineInputBorder(),
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
               TextField(
@@ -179,14 +206,17 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
               onPressed: () => Navigator.of(ctx).pop(),
               child: Text(
                 context.l10n.cancel,
-                style: AppTextStyles.labelLarge.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             ),
             ElevatedButton(
               key: const Key('worker_extra_cost_send'),
               onPressed: () {
                 final amount = _parseMoney(priceController.text);
-                if (nameController.text.trim().isEmpty || amount == null) return;
+                if (nameController.text.trim().isEmpty || amount == null)
+                  return;
                 Navigator.of(ctx).pop();
                 unawaited(
                   context.read<WorkerTaskCubit>().submitQuote([
@@ -194,7 +224,10 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
                   ]),
                 );
               },
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: AppColors.onPrimary),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.onPrimary,
+              ),
               child: Text(context.l10n.workerSendProposal),
             ),
           ],
@@ -252,15 +285,23 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
             // Request Extra Material Cost Button
             OutlinedButton.icon(
               onPressed: _showExtraCostDialog,
-              icon: const Icon(Icons.build_circle_outlined, size: 20, color: AppColors.primary),
+              icon: const Icon(
+                Icons.build_circle_outlined,
+                size: 20,
+                color: AppColors.primary,
+              ),
               label: Text(
                 context.l10n.workerExtraCostButton,
-                style: AppTextStyles.labelLarge.copyWith(color: AppColors.primary),
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.primary,
+                ),
               ),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.primary),
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.control)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.control),
+                ),
               ),
             ),
 
@@ -275,7 +316,9 @@ class _WorkerExecutingPageState extends State<WorkerExecutingPage> {
                   key: const Key('worker_complete_job_button'),
                   label: context.l10n.workerCompleteJobCta,
                   isLoading: isBusy,
-                  onPressed: isBusy || state.data == null ? null : _showCompleteDialog,
+                  onPressed: isBusy || state.data == null
+                      ? null
+                      : _showCompleteDialog,
                 );
               },
             ),

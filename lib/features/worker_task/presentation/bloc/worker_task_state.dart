@@ -5,7 +5,11 @@ enum WorkerTaskAction { accept, start, quote, complete }
 /// The job plus what the worker added on this device.
 @immutable
 class WorkerTaskData {
-  const WorkerTaskData({required this.booking, this.serviceName, this.quotedExtra = 0});
+  const WorkerTaskData({
+    required this.booking,
+    this.serviceName,
+    this.quotedExtra = 0,
+  });
 
   final Booking booking;
   final String? serviceName;
@@ -16,11 +20,12 @@ class WorkerTaskData {
   /// Suggested `actualPrice` for completion: the estimate plus quoted extras.
   num get suggestedFinalPrice => (booking.estimatedPrice ?? 0) + quotedExtra;
 
-  WorkerTaskData copyWith({Booking? booking, num? quotedExtra}) => WorkerTaskData(
-    booking: booking ?? this.booking,
-    serviceName: serviceName,
-    quotedExtra: quotedExtra ?? this.quotedExtra,
-  );
+  WorkerTaskData copyWith({Booking? booking, num? quotedExtra}) =>
+      WorkerTaskData(
+        booking: booking ?? this.booking,
+        serviceName: serviceName,
+        quotedExtra: quotedExtra ?? this.quotedExtra,
+      );
 
   @override
   bool operator ==(Object other) =>
@@ -50,7 +55,8 @@ final class WorkerTaskLoadErrorState extends WorkerTaskState {
   final Failure failure;
 
   @override
-  bool operator ==(Object other) => other is WorkerTaskLoadErrorState && other.failure == failure;
+  bool operator ==(Object other) =>
+      other is WorkerTaskLoadErrorState && other.failure == failure;
 
   @override
   int get hashCode => failure.hashCode;
@@ -70,7 +76,8 @@ final class WorkerTaskReadyState extends WorkerTaskWithDataState {
   const WorkerTaskReadyState(super.task);
 
   @override
-  bool operator ==(Object other) => other is WorkerTaskReadyState && other.task == task;
+  bool operator ==(Object other) =>
+      other is WorkerTaskReadyState && other.task == task;
 
   @override
   int get hashCode => Object.hash(runtimeType, task);
@@ -82,7 +89,10 @@ final class WorkerTaskBusyState extends WorkerTaskWithDataState {
   final WorkerTaskAction action;
 
   @override
-  bool operator ==(Object other) => other is WorkerTaskBusyState && other.task == task && other.action == action;
+  bool operator ==(Object other) =>
+      other is WorkerTaskBusyState &&
+      other.task == task &&
+      other.action == action;
 
   @override
   int get hashCode => Object.hash(runtimeType, task, action);
@@ -96,7 +106,9 @@ final class WorkerTaskActionDoneState extends WorkerTaskWithDataState {
 
   @override
   bool operator ==(Object other) =>
-      other is WorkerTaskActionDoneState && other.task == task && other.action == action;
+      other is WorkerTaskActionDoneState &&
+      other.task == task &&
+      other.action == action;
 
   @override
   int get hashCode => Object.hash(runtimeType, task, action);
@@ -110,7 +122,10 @@ final class WorkerTaskActionFailedState extends WorkerTaskWithDataState {
 
   @override
   bool operator ==(Object other) =>
-      other is WorkerTaskActionFailedState && other.task == task && other.action == action && other.failure == failure;
+      other is WorkerTaskActionFailedState &&
+      other.task == task &&
+      other.action == action &&
+      other.failure == failure;
 
   @override
   int get hashCode => Object.hash(runtimeType, task, action, failure);

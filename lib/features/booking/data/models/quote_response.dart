@@ -13,5 +13,6 @@ abstract class QuoteResponse with _$QuoteResponse {
     @NullableMoneyConverter() num? totalAmount,
   }) = _QuoteResponse;
 
-  factory QuoteResponse.fromJson(Map<String, dynamic> json) => _$QuoteResponseFromJson(json);
+  factory QuoteResponse.fromJson(Map<String, dynamic> json) =>
+      _$QuoteResponseFromJson(json);
 }
