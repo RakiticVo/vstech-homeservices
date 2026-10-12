@@ -55,6 +55,7 @@ MockChatCubit _cubit(ChatState state) {
   when(cubit.loadOlder).thenAnswer((_) async {});
   when(cubit.reconnect).thenAnswer((_) async {});
   when(cubit.retry).thenAnswer((_) async {});
+  when(cubit.refreshCalls).thenAnswer((_) async {});
   whenListen(cubit, const Stream<ChatState>.empty(), initialState: state);
   return cubit;
 }
@@ -67,6 +68,7 @@ ChatLoadedState _loaded({
   room: room,
   myUserId: '9',
   messages: [workerHello, customerReply],
+  calls: [missedCall, talkedCall],
   page: 0,
   hasMore: hasMore,
   connection: connection,

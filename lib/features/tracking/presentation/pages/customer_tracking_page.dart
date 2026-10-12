@@ -343,15 +343,15 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                         children: [
                           Expanded(
                             child: OutlinedButton.icon(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      context.l10n.trackingMaskedCall,
-                                    ),
+                              key: const Key('tracking_call_button'),
+                              onPressed: () => unawaited(
+                                context.push(
+                                  AppRoutes.voipCallLocation(
+                                    bookingId: widget.orderCode,
+                                    isWorker: false,
                                   ),
-                                );
-                              },
+                                ),
+                              ),
                               icon: const Icon(Icons.call_rounded, size: 18),
                               label: Text(context.l10n.trackingMaskedCall),
                               style: OutlinedButton.styleFrom(

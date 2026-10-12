@@ -38,9 +38,13 @@ import 'package:vstech_home_services/features/home/presentation/bloc/categories_
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
 import 'package:vstech_home_services/features/messaging/data/datasources/chat_remote_data_source.dart';
 import 'package:vstech_home_services/features/messaging/data/datasources/chat_socket_data_source.dart';
+import 'package:vstech_home_services/features/messaging/data/datasources/voip_remote_data_source.dart';
 import 'package:vstech_home_services/features/messaging/domain/repositories/chat_repository.dart';
+import 'package:vstech_home_services/features/messaging/domain/repositories/voip_repository.dart';
 import 'package:vstech_home_services/features/messaging/domain/usecases/chat_use_cases.dart';
+import 'package:vstech_home_services/features/messaging/domain/usecases/voip_use_cases.dart';
 import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart';
+import 'package:vstech_home_services/features/messaging/presentation/bloc/voip_call_cubit.dart';
 import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart';
 import 'package:vstech_home_services/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:vstech_home_services/features/notifications/domain/usecases/notification_use_cases.dart';
@@ -243,3 +247,18 @@ class MockGetChatMessagesUseCase extends Mock implements GetChatMessagesUseCase;
 class MockSendChatMessageUseCase extends Mock implements SendChatMessageUseCase;
 
 class MockChatCubit extends MockCubit<ChatState> implements ChatCubit;
+
+// --- voip ---
+class MockVoipRemoteDataSource extends Mock implements VoipRemoteDataSource;
+
+class MockVoipRepository extends Mock implements VoipRepository;
+
+class MockStartBookingCallUseCase extends Mock
+    implements StartBookingCallUseCase;
+
+class MockEndCallUseCase extends Mock implements EndCallUseCase;
+
+class MockGetCallHistoryUseCase extends Mock implements GetCallHistoryUseCase;
+
+class MockVoipCallCubit extends MockCubit<VoipCallState>
+    implements VoipCallCubit;

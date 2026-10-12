@@ -206,11 +206,16 @@ class WorkerEnRoutePage extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(context.l10n.trackingMaskedCall)),
-                    );
-                  },
+                  key: const Key('en_route_call_button'),
+                  tooltip: context.l10n.trackingMaskedCall,
+                  onPressed: () => unawaited(
+                    context.push(
+                      AppRoutes.voipCallLocation(
+                        bookingId: bookingId,
+                        isWorker: true,
+                      ),
+                    ),
+                  ),
                   icon: const Icon(
                     Icons.call_rounded,
                     color: AppColors.primary,

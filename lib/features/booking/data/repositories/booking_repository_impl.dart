@@ -116,6 +116,7 @@ class BookingRepositoryImpl implements BookingRepository {
   static Booking _toEntity(BookingResponse r) => Booking(
     id: r.requestId,
     status: BookingStatus.fromApi(r.status),
+    customerId: r.customerId,
     categoryId: r.categoryId,
     assignedWorkerId: r.assignedWorkerId,
     estimatedPrice: r.estimatedPrice,

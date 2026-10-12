@@ -853,7 +853,6 @@
   "ordersViewWarrantyCertCta": "View warranty certificate",
   "ordersActiveWarrantyTitle": "Warranty: Air-con Cleaning",
   "chatPrivacyBanner": "Both phone numbers are hidden",
-  "chatDecline": "Decline",
   "chatMaskedPhoneNote": "Phone number hidden to protect both sides.",
   "chatClosedNotice": "This chat closed 24 hours after the order was completed. For help, contact Support.",
   "chatInputHint": "Type a message…",
@@ -879,13 +878,13 @@
   "chatQuickCustomer2": "Park in basement B1",
   "chatQuickCustomer3": "Please call before you arrive",
   "chatQuickCustomer4": "Thanks",
-  "callRecordingNotice": "Calls are recorded to protect both sides and help resolve complaints",
   "callConnecting": "Connecting…",
-  "callIncoming": "Incoming call",
+  "callSimulatedNotice": "Preview: call audio is not connected yet. The app only logs the call for this order.",
+  "callClose": "Close",
+  "callMissed": "Missed call",
   "callMute": "Mute",
   "callSpeaker": "Speaker",
   "callEnd": "End",
-  "callAccept": "Accept",
   "callVoiceLog": "Voice call · {duration}",
   "@callVoiceLog": {
     "placeholders": {
@@ -894,8 +893,6 @@
       }
     }
   },
-  "callMissedCustomer": "Mai missed your call",
-  "callMissedWorker": "Missed call from Hùng",
   "devicesTitle": "Your Home & Devices",
   "devicesTabDevices": "Devices ({count})",
   "@devicesTabDevices": {
@@ -1340,6 +1337,7 @@
   "apiErrorTransactionInProgress": "A transaction is being processed, please try again.",
   "apiErrorAssetUnderWarranty": "This appliance is under warranty and can't be deleted.",
   "apiErrorChatClosed": "This chat has ended.",
+  "apiErrorCallPeerMissing": "There is nobody to call on this order yet.",
   "apiErrorTooManyRequests": "You're going too fast, please try again shortly.",
   "apiErrorDispatchUnavailable": "Dispatch is temporarily unavailable.",
   "authErrorUnsupportedRole": "This account can't be used in the app. Please contact support.",

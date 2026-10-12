@@ -10,6 +10,9 @@ class AppException implements Exception {
   /// An account whose role this app doesn't serve (admin, supplier) tried to sign in.
   static const String unsupportedRole = 'APP-UNSUPPORTED-ROLE';
 
+  /// The booking has nobody to call yet (no assigned worker / no customer id).
+  static const String callPeerMissing = 'APP-CALL-PEER-MISSING';
+
   final String code;
 
   @override

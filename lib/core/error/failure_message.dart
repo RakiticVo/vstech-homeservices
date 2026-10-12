@@ -63,6 +63,7 @@ extension FailureMessageX on AppLocalizations {
         'HS-429-0001' || 'HS-429-0002' => apiErrorTooManyRequests,
         'HS-503-0001' => apiErrorDispatchUnavailable,
         AppException.unsupportedRole => authErrorUnsupportedRole,
+        AppException.callPeerMissing => apiErrorCallPeerMissing,
         _ => null,
       };
 }

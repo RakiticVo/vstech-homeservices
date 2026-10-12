@@ -8,8 +8,10 @@ import 'package:vstech_home_services/core/error/result.dart';
 import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/features/auth/domain/usecases/get_profile_use_case.dart';
 import 'package:vstech_home_services/features/messaging/domain/entities/chat.dart';
+import 'package:vstech_home_services/features/messaging/domain/entities/voip_call.dart';
 import 'package:vstech_home_services/features/messaging/domain/repositories/chat_repository.dart';
 import 'package:vstech_home_services/features/messaging/domain/usecases/chat_use_cases.dart';
+import 'package:vstech_home_services/features/messaging/domain/usecases/voip_use_cases.dart';
 
 part 'chat_state.dart';
 
@@ -24,6 +26,7 @@ class ChatCubit extends Cubit<ChatState> {
     this._openRoom,
     this._getMessages,
     this._sendMessage,
+    this._getCallHistory,
     this._connection,
   ) : super(const ChatLoadingState());
 
@@ -31,6 +34,7 @@ class ChatCubit extends Cubit<ChatState> {
   final OpenChatRoomUseCase _openRoom;
   final GetChatMessagesUseCase _getMessages;
   final SendChatMessageUseCase _sendMessage;
+  final GetCallHistoryUseCase _getCallHistory;
   final ChatConnection _connection;
 
   static const String roomClosedCode = 'HS-409-0005';
@@ -59,7 +63,11 @@ class ChatCubit extends Cubit<ChatState> {
         );
         return;
     }
-    switch (await _getMessages(openedRoom.id)) {
+    final (history, calls) = await (
+      _getMessages(openedRoom.id),
+      _getCallHistory(bookingId),
+    ).wait;
+    switch (history) {
       case Ok(:final value):
         if (isClosed) return;
         emit(
@@ -67,6 +75,7 @@ class ChatCubit extends Cubit<ChatState> {
             room: openedRoom,
             myUserId: myUserId,
             messages: _sorted(value.items),
+            calls: calls is Ok<List<VoipCall>> ? calls.value : const [],
             page: value.page,
             hasMore: value.hasMore,
             connection: openedRoom.isClosed
@@ -79,6 +88,19 @@ class ChatCubit extends Cubit<ChatState> {
         return;
     }
     if (!openedRoom.isClosed) await _listen(openedRoom.id);
+  }
+
+  /// Reloads the booking's call log (e.g. after returning from the call screen). Failures keep
+  /// the current list — the call log is secondary to the chat.
+  Future<void> refreshCalls() async {
+    final bookingId = _bookingId;
+    if (bookingId == null) return;
+    final result = await _getCallHistory(bookingId);
+    final current = state;
+    if (result case Ok(:final value)
+        when current is ChatLoadedState && !isClosed) {
+      emit(current.copyWith(calls: value));
+    }
   }
 
   Future<void> retry() async {

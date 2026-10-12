@@ -8,6 +8,7 @@ import 'package:vstech_home_services/core/error/result.dart';
 import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/features/auth/domain/entities/user_profile.dart';
 import 'package:vstech_home_services/features/messaging/domain/entities/chat.dart';
+import 'package:vstech_home_services/features/messaging/domain/entities/voip_call.dart';
 import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart';
 
 import '../../../fixtures/auth/auth_fixtures.dart';
@@ -26,6 +27,7 @@ void main() {
   late MockOpenChatRoomUseCase openRoom;
   late MockGetChatMessagesUseCase getMessages;
   late MockSendChatMessageUseCase sendMessage;
+  late MockGetCallHistoryUseCase getCallHistory;
   late MockChatConnection connection;
   late StreamController<ChatLiveEvent> events;
   late StreamController<ChatConnectionStatus> statuses;
@@ -35,7 +37,9 @@ void main() {
     openRoom = MockOpenChatRoomUseCase();
     getMessages = MockGetChatMessagesUseCase();
     sendMessage = MockSendChatMessageUseCase();
+    getCallHistory = MockGetCallHistoryUseCase();
     connection = MockChatConnection();
+    when(() => getCallHistory('502')).thenAnswer((_) async => Ok([missedCall]));
     events = StreamController.broadcast();
     statuses = StreamController.broadcast();
     when(() => connection.events).thenAnswer((_) => events.stream);
@@ -56,18 +60,26 @@ void main() {
     );
   });
 
-  ChatCubit build() =>
-      ChatCubit(getProfile, openRoom, getMessages, sendMessage, connection);
+  ChatCubit build() => ChatCubit(
+    getProfile,
+    openRoom,
+    getMessages,
+    sendMessage,
+    getCallHistory,
+    connection,
+  );
 
   ChatLoadedState loaded(
     List<ChatRoomMessage> messages, {
     ChatConnectionStatus connection = ChatConnectionStatus.connecting,
     ChatRoom room = chatRoom,
     bool hasMore = true,
+    List<VoipCall> calls = const [],
   }) => ChatLoadedState(
     room: room,
     myUserId: '9',
     messages: messages,
+    calls: calls,
     page: 0,
     hasMore: hasMore,
     connection: connection,
@@ -79,7 +91,7 @@ void main() {
     act: (cubit) => cubit.open('502'),
     expect: () => [
       const ChatLoadingState(),
-      loaded([workerHello, customerReply]),
+      loaded([workerHello, customerReply], calls: [missedCall]),
     ],
     verify: (_) => verify(() => connection.connect('12345')).called(1),
   );
@@ -97,6 +109,7 @@ void main() {
         [workerHello, customerReply],
         room: const ChatRoom(id: '12345', isClosed: true),
         connection: ChatConnectionStatus.offline,
+        calls: [missedCall],
       ),
     ],
     verify: (_) => verifyNever(() => connection.connect(any())),
@@ -128,15 +141,16 @@ void main() {
     },
     skip: 2,
     expect: () => [
-      loaded([
-        workerHello,
-        customerReply,
-      ], connection: ChatConnectionStatus.connected),
-      loaded([
-        workerHello,
-        customerReply,
-        workerLive,
-      ], connection: ChatConnectionStatus.connected),
+      loaded(
+        [workerHello, customerReply],
+        connection: ChatConnectionStatus.connected,
+        calls: [missedCall],
+      ),
+      loaded(
+        [workerHello, customerReply, workerLive],
+        connection: ChatConnectionStatus.connected,
+        calls: [missedCall],
+      ),
     ],
   );
 
@@ -182,6 +196,7 @@ void main() {
         [workerHello, customerReply],
         room: chatRoom.copyWith(isClosed: true),
         connection: ChatConnectionStatus.offline,
+        calls: [missedCall],
       ),
     ],
   );
@@ -204,6 +219,40 @@ void main() {
         page: 1,
         hasMore: false,
       ),
+    ],
+  );
+
+  blocTest<ChatCubit, ChatState>(
+    'a failing call log does not block the chat',
+    setUp: () =>
+        when(() => getCallHistory('502'))
+            .thenAnswer((_) async => const Err(_offline)),
+    build: build,
+    act: (cubit) => cubit.open('502'),
+    expect: () => [
+      const ChatLoadingState(),
+      loaded([workerHello, customerReply]),
+    ],
+  );
+
+  blocTest<ChatCubit, ChatState>(
+    'refreshCalls replaces the call log',
+    setUp: () {
+      final answers = [
+        Ok([missedCall]),
+        Ok([missedCall, talkedCall]),
+      ];
+      when(() => getCallHistory('502'))
+          .thenAnswer((_) async => answers.removeAt(0));
+    },
+    build: build,
+    act: (cubit) async {
+      await cubit.open('502');
+      await cubit.refreshCalls();
+    },
+    skip: 2,
+    expect: () => [
+      loaded([workerHello, customerReply], calls: [missedCall, talkedCall]),
     ],
   );
 

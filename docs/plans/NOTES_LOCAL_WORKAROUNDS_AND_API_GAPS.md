@@ -49,6 +49,8 @@
 | L24 | **Tên / ảnh người bên kia trong chat** | Tiêu đề chat chỉ ghi vai trò ("Thợ phụ trách" / "Khách hàng") + mã đơn | Thêm tên, ảnh của khách / thợ vào `ChatRoomResponse` (hoặc `BookingResponse`) | `chat_page.dart` |
 | L25 | **Ảnh / vị trí trong chat** | Đã bỏ nút gửi ảnh, vị trí; chỉ gửi chữ | Endpoint upload file để có `mediaUrls` | `chat_input_bar.dart` |
 | L26 | **Tin của mình trong chat** | So `senderId` với `id` hồ sơ (`GET /profiles`) | Xác nhận `senderId` cùng loại id với hồ sơ (int64 vs UUID — xem C2) | `chat_cubit.dart` |
+| L27 | **Âm thanh cuộc gọi VoIP** | Màn gọi chỉ **ghi nhật ký** (`POST /voip/calls` → `/end` kèm số giây), có ghi chú "Bản thử" — không có âm thanh, không đổ chuông máy bên kia | Chọn SDK/nhà cung cấp VoIP (Stringee, Twilio, Agora…) + API cấp token / signaling | `voip_call_cubit.dart`, `voip_call_page.dart` |
+| L28 | **Cuộc gọi đến** | Đã bỏ màn "Cuộc gọi đến" — không có kênh nào báo cho máy nhận | Push (FCM — backend chưa gửi) hoặc WebSocket báo cuộc gọi đến | `voip_call_page.dart` |
 | L16 | **Ngôn ngữ** (vi/en) | Chỉ đổi trên máy, không lưu vào hồ sơ | Đã có field `locale` trong `PUT /profiles` — **chưa nối** (tính năng, không cần API mới) | `language_toggle_button.dart` |
 
 ---
@@ -59,7 +61,7 @@
 | :--- | :--- |
 | Khách | Theo dõi thợ (bản đồ), Tìm thợ (radar), Nghiệm thu, Thanh toán đơn (VNPay/ZaloPay), Hoá đơn, Đánh giá & tip, Bảo hành (5 màn), Gợi ý AI / Trợ lý AI, Thợ yêu thích, Hồ sơ thợ (xem trước), Phương thức thanh toán / Liên kết ví, Danh sách & chi tiết khiếu nại, Thiết bị trong nhà |
 | Thợ | Bản đồ & dẫn đường, checklist các bước làm, màn quyết toán sau hoàn tất (thu nhập/phí), thẻ thu nhập trên Dashboard, lịch tuần, khung giờ sẵn sàng, vùng làm việc, kỹ năng & chứng chỉ, hiệu suất, KYC (thiếu upload), Huỷ việc / Khách vắng mặt |
-| Chung | Gọi VoIP (âm thanh — xem Pha 5.6) |
+| Chung | Gọi VoIP: chỉ ghi nhật ký, chưa có âm thanh (L27) |
 
 ---
 
@@ -78,6 +80,8 @@
 | C9 | WebSocket: CLAUDE.md ghi STOMP, doc (`07-chat`, `09-location-tracking`, `11-appendices`) là JSON thuần, "không dùng subprotocol" | **Đã chốt theo doc (Pha 5):** `RealtimeSocket` gửi/nhận JSON thuần qua `web_socket_channel`, token ở header `Authorization`. `stomp_dart_client` hiện không còn dùng — nên sửa CLAUDE.md và gỡ package nếu backend xác nhận |
 | C12 | `POST /chat/rooms`: OpenAPI trả 201 không có schema; doc trả 200 + `ApiResponse<ChatRoomResponse>` | Đọc theo doc |
 | C13 | Lịch sử chat: doc mặc định `size=50`, OpenAPI `size=20`; không ghi thứ tự tin | App gửi `size=50`, tự sắp cũ → mới theo `sentAt` |
+| C14 | `EndCallRequest.recordingUrl`: OpenAPI bắt buộc (400 nếu thiếu), doc ghi tuỳ chọn | App không ghi âm nên **không gửi**; nếu server trả 400 thì cuộc gọi vẫn kết thúc trên máy, chỉ ghi log cảnh báo |
+| C15 | `POST /voip/calls`: OpenAPI trả 201 không có schema; doc trả `ApiResponse<VoipCallResponse>` có thêm `status` | Đọc theo doc |
 | C11 | Ví: doc dùng `id`/`type` (giao dịch) và `id`/`reason` (rút tiền), OpenAPI dùng `transactionId`/`txType` và `requestId`/`rejectionReason` | Đọc được cả hai |
 | C10 | `technicianId` trong `PUT /technician/location`: UUID nhưng server bỏ qua | Không gửi field này |
 

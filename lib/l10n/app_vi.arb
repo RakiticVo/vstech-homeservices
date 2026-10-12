@@ -853,7 +853,6 @@
   "ordersViewWarrantyCertCta": "Xem phiếu bảo hành",
   "ordersActiveWarrantyTitle": "Bảo hành: Vệ sinh máy lạnh",
   "chatPrivacyBanner": "Số điện thoại của hai bên được ẩn",
-  "chatDecline": "Từ chối",
   "chatMaskedPhoneNote": "Số điện thoại đã được ẩn để bảo vệ hai bên.",
   "chatClosedNotice": "Cuộc trò chuyện đã đóng 24 giờ sau khi hoàn tất đơn. Cần hỗ trợ, vui lòng liên hệ Trung tâm hỗ trợ.",
   "chatInputHint": "Nhập tin nhắn…",
@@ -879,13 +878,13 @@
   "chatQuickCustomer2": "Gửi xe ở hầm B1",
   "chatQuickCustomer3": "Vui lòng gọi trước khi đến",
   "chatQuickCustomer4": "Cảm ơn anh",
-  "callRecordingNotice": "Cuộc gọi được ghi âm để bảo vệ hai bên và hỗ trợ giải quyết khiếu nại",
   "callConnecting": "Đang kết nối…",
-  "callIncoming": "Cuộc gọi đến",
+  "callSimulatedNotice": "Bản thử: âm thanh cuộc gọi chưa được kết nối. Ứng dụng chỉ ghi lại nhật ký cuộc gọi của đơn.",
+  "callClose": "Đóng",
+  "callMissed": "Cuộc gọi nhỡ",
   "callMute": "Tắt mic",
   "callSpeaker": "Loa ngoài",
   "callEnd": "Kết thúc",
-  "callAccept": "Nghe máy",
   "callVoiceLog": "Cuộc gọi thoại · {duration}",
   "@callVoiceLog": {
     "placeholders": {
@@ -894,8 +893,6 @@
       }
     }
   },
-  "callMissedCustomer": "Chị Mai đã không nghe máy",
-  "callMissedWorker": "Cuộc gọi nhỡ từ anh Hùng",
   "devicesTitle": "Ngôi nhà của bạn",
   "devicesTabDevices": "Thiết bị ({count})",
   "@devicesTabDevices": {
@@ -1433,6 +1430,7 @@
   "apiErrorTransactionInProgress": "Giao dịch đang được xử lý, vui lòng thử lại.",
   "apiErrorAssetUnderWarranty": "Thiết bị đang có bảo hành, không thể xoá.",
   "apiErrorChatClosed": "Đoạn chat đã kết thúc.",
+  "apiErrorCallPeerMissing": "Đơn này chưa có người để gọi.",
   "apiErrorTooManyRequests": "Bạn thao tác quá nhanh, vui lòng thử lại sau.",
   "apiErrorDispatchUnavailable": "Hệ thống phân công tạm thời không khả dụng.",
   "authErrorUnsupportedRole": "Tài khoản này không dùng được trên ứng dụng. Vui lòng liên hệ hỗ trợ.",

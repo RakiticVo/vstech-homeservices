@@ -102,14 +102,24 @@ import 'package:vstech_home_services/features/messaging/data/datasources/chat_re
     as _i1008;
 import 'package:vstech_home_services/features/messaging/data/datasources/chat_socket_data_source.dart'
     as _i138;
+import 'package:vstech_home_services/features/messaging/data/datasources/voip_remote_data_source.dart'
+    as _i340;
 import 'package:vstech_home_services/features/messaging/data/repositories/chat_repository_impl.dart'
     as _i307;
+import 'package:vstech_home_services/features/messaging/data/repositories/voip_repository_impl.dart'
+    as _i1047;
 import 'package:vstech_home_services/features/messaging/domain/repositories/chat_repository.dart'
     as _i452;
+import 'package:vstech_home_services/features/messaging/domain/repositories/voip_repository.dart'
+    as _i179;
 import 'package:vstech_home_services/features/messaging/domain/usecases/chat_use_cases.dart'
     as _i820;
+import 'package:vstech_home_services/features/messaging/domain/usecases/voip_use_cases.dart'
+    as _i616;
 import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart'
     as _i589;
+import 'package:vstech_home_services/features/messaging/presentation/bloc/voip_call_cubit.dart'
+    as _i375;
 import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart'
     as _i76;
 import 'package:vstech_home_services/features/notifications/data/repositories/notification_repository_impl.dart'
@@ -209,6 +219,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1008.ChatRemoteDataSource>(
       () => _i1008.ChatRemoteDataSource(gh<_i223.ApiClient>()),
     );
+    gh.factory<_i340.VoipRemoteDataSource>(
+      () => _i340.VoipRemoteDataSource(gh<_i223.ApiClient>()),
+    );
     gh.factory<_i76.NotificationRemoteDataSource>(
       () => _i76.NotificationRemoteDataSource(gh<_i223.ApiClient>()),
     );
@@ -227,6 +240,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i887.CategoryRepository>(
       () => _i870.CategoryRepositoryImpl(gh<_i754.CategoryRemoteDataSource>()),
     );
+    gh.lazySingleton<_i179.VoipRepository>(
+      () => _i1047.VoipRepositoryImpl(gh<_i340.VoipRemoteDataSource>()),
+    );
     gh.factory<_i873.LoginUseCase>(
       () => _i873.LoginUseCase(gh<_i731.AuthRepository>()),
     );
@@ -235,6 +251,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1073.RegisterUseCase>(
       () => _i1073.RegisterUseCase(gh<_i731.AuthRepository>()),
+    );
+    gh.factory<_i616.EndCallUseCase>(
+      () => _i616.EndCallUseCase(gh<_i179.VoipRepository>()),
+    );
+    gh.factory<_i616.GetCallHistoryUseCase>(
+      () => _i616.GetCallHistoryUseCase(gh<_i179.VoipRepository>()),
     );
     gh.lazySingleton<_i435.TechnicianLocationRepository>(
       () => _i61.TechnicianLocationRepositoryImpl(
@@ -420,15 +442,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i664.TransactionDetailCubit>(
       () => _i664.TransactionDetailCubit(gh<_i1023.GetTransactionUseCase>()),
     );
-    gh.factory<_i589.ChatCubit>(
-      () => _i589.ChatCubit(
-        gh<_i294.GetProfileUseCase>(),
-        gh<_i820.OpenChatRoomUseCase>(),
-        gh<_i820.GetChatMessagesUseCase>(),
-        gh<_i820.SendChatMessageUseCase>(),
-        gh<_i452.ChatConnection>(),
-      ),
-    );
     gh.factory<_i582.WithdrawCubit>(
       () => _i582.WithdrawCubit(
         gh<_i1023.GetWalletUseCase>(),
@@ -460,6 +473,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i294.GetProfileUseCase>(),
       ),
     );
+    gh.factory<_i589.ChatCubit>(
+      () => _i589.ChatCubit(
+        gh<_i294.GetProfileUseCase>(),
+        gh<_i820.OpenChatRoomUseCase>(),
+        gh<_i820.GetChatMessagesUseCase>(),
+        gh<_i820.SendChatMessageUseCase>(),
+        gh<_i616.GetCallHistoryUseCase>(),
+        gh<_i452.ChatConnection>(),
+      ),
+    );
     gh.factory<_i909.NotificationSettingsCubit>(
       () => _i909.NotificationSettingsCubit(
         gh<_i78.GetNotificationSettingsUseCase>(),
@@ -477,6 +500,19 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i78.GetNotificationsUseCase>(),
         gh<_i78.MarkNotificationReadUseCase>(),
         gh<_i78.MarkAllNotificationsReadUseCase>(),
+      ),
+    );
+    gh.factory<_i616.StartBookingCallUseCase>(
+      () => _i616.StartBookingCallUseCase(
+        gh<_i179.VoipRepository>(),
+        gh<_i294.GetProfileUseCase>(),
+        gh<_i736.GetBookingUseCase>(),
+      ),
+    );
+    gh.factory<_i375.VoipCallCubit>(
+      () => _i375.VoipCallCubit(
+        gh<_i616.StartBookingCallUseCase>(),
+        gh<_i616.EndCallUseCase>(),
       ),
     );
     return this;

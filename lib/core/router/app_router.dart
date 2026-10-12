@@ -65,6 +65,7 @@ import 'package:vstech_home_services/features/home/presentation/pages/my_home_de
 import 'package:vstech_home_services/features/home/presentation/pages/service_detail_page.dart';
 import 'package:vstech_home_services/features/home/presentation/pages/worker_profile_preview_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart';
+import 'package:vstech_home_services/features/messaging/presentation/bloc/voip_call_cubit.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/chat_page.dart';
 import 'package:vstech_home_services/features/messaging/presentation/pages/voip_call_page.dart';
 import 'package:vstech_home_services/features/notifications/presentation/bloc/notification_settings_cubit.dart';
@@ -584,18 +585,15 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.voipCall,
       builder: (context, state) {
-        final role = state.uri.queryParameters['role'] ?? 'customer';
-        final mode = state.uri.queryParameters['mode'] ?? 'callout';
-        final peer = state.uri.queryParameters['peer'];
-        final id = state.uri.queryParameters['id'];
-        final order =
-            state.uri.queryParameters['order'] ??
-            (id != null ? '#$id' : '#HS20250425-0012');
-        return VoipCallPage(
-          role: role,
-          mode: mode,
-          peerName: peer,
-          orderCode: order,
+        final bookingId = state.uri.queryParameters['id'] ?? '';
+        final isWorker = state.uri.queryParameters['role'] == 'worker';
+        return BlocProvider(
+          create: (_) {
+            final cubit = getIt<VoipCallCubit>();
+            unawaited(cubit.start(bookingId, isWorker: isWorker));
+            return cubit;
+          },
+          child: VoipCallPage(bookingId: bookingId, isWorker: isWorker),
         );
       },
     ),

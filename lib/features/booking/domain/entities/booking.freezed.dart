@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Booking {
 
- String get id; BookingStatus get status; String? get categoryId; String? get assignedWorkerId; num? get estimatedPrice; num? get finalPrice; String? get description; String? get addressDetail; DateTime? get scheduledTime; DateTime? get createdAt;
+ String get id; BookingStatus get status; String? get customerId; String? get categoryId; String? get assignedWorkerId; num? get estimatedPrice; num? get finalPrice; String? get description; String? get addressDetail; DateTime? get scheduledTime; DateTime? get createdAt;
 /// Create a copy of Booking
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $BookingCopyWith<Booking> get copyWith => _$BookingCopyWithImpl<Booking>(this as
 @override
 bool operator ==(Object other) {
   final _this = this as Booking;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Booking&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.categoryId, _this.categoryId) || other.categoryId == _this.categoryId)&&(identical(other.assignedWorkerId, _this.assignedWorkerId) || other.assignedWorkerId == _this.assignedWorkerId)&&(identical(other.estimatedPrice, _this.estimatedPrice) || other.estimatedPrice == _this.estimatedPrice)&&(identical(other.finalPrice, _this.finalPrice) || other.finalPrice == _this.finalPrice)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.addressDetail, _this.addressDetail) || other.addressDetail == _this.addressDetail)&&(identical(other.scheduledTime, _this.scheduledTime) || other.scheduledTime == _this.scheduledTime)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Booking&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.customerId, _this.customerId) || other.customerId == _this.customerId)&&(identical(other.categoryId, _this.categoryId) || other.categoryId == _this.categoryId)&&(identical(other.assignedWorkerId, _this.assignedWorkerId) || other.assignedWorkerId == _this.assignedWorkerId)&&(identical(other.estimatedPrice, _this.estimatedPrice) || other.estimatedPrice == _this.estimatedPrice)&&(identical(other.finalPrice, _this.finalPrice) || other.finalPrice == _this.finalPrice)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.addressDetail, _this.addressDetail) || other.addressDetail == _this.addressDetail)&&(identical(other.scheduledTime, _this.scheduledTime) || other.scheduledTime == _this.scheduledTime)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt));
 }
 
 
 @override
 int get hashCode {
   final _this = this as Booking;
-  return Object.hash(runtimeType,_this.id,_this.status,_this.categoryId,_this.assignedWorkerId,_this.estimatedPrice,_this.finalPrice,_this.description,_this.addressDetail,_this.scheduledTime,_this.createdAt);
+  return Object.hash(runtimeType,_this.id,_this.status,_this.customerId,_this.categoryId,_this.assignedWorkerId,_this.estimatedPrice,_this.finalPrice,_this.description,_this.addressDetail,_this.scheduledTime,_this.createdAt);
 }
 
 @override
 String toString() {
   final _this = this as Booking;
-  return 'Booking(id: ${_this.id}, status: ${_this.status}, categoryId: ${_this.categoryId}, assignedWorkerId: ${_this.assignedWorkerId}, estimatedPrice: ${_this.estimatedPrice}, finalPrice: ${_this.finalPrice}, description: ${_this.description}, addressDetail: ${_this.addressDetail}, scheduledTime: ${_this.scheduledTime}, createdAt: ${_this.createdAt})';
+  return 'Booking(id: ${_this.id}, status: ${_this.status}, customerId: ${_this.customerId}, categoryId: ${_this.categoryId}, assignedWorkerId: ${_this.assignedWorkerId}, estimatedPrice: ${_this.estimatedPrice}, finalPrice: ${_this.finalPrice}, description: ${_this.description}, addressDetail: ${_this.addressDetail}, scheduledTime: ${_this.scheduledTime}, createdAt: ${_this.createdAt})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $BookingCopyWith<$Res>  {
   factory $BookingCopyWith(Booking value, $Res Function(Booking) _then) = _$BookingCopyWithImpl;
 @useResult
 $Res call({
- String id, BookingStatus status, String? categoryId, String? assignedWorkerId, num? estimatedPrice, num? finalPrice, String? description, String? addressDetail, DateTime? scheduledTime, DateTime? createdAt
+ String id, BookingStatus status, String? customerId, String? categoryId, String? assignedWorkerId, num? estimatedPrice, num? finalPrice, String? description, String? addressDetail, DateTime? scheduledTime, DateTime? createdAt
 });
 
 
@@ -68,11 +68,12 @@ class _$BookingCopyWithImpl<$Res>
 
 /// Create a copy of Booking
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? status = null,Object? categoryId = freezed,Object? assignedWorkerId = freezed,Object? estimatedPrice = freezed,Object? finalPrice = freezed,Object? description = freezed,Object? addressDetail = freezed,Object? scheduledTime = freezed,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? status = null,Object? customerId = freezed,Object? categoryId = freezed,Object? assignedWorkerId = freezed,Object? estimatedPrice = freezed,Object? finalPrice = freezed,Object? description = freezed,Object? addressDetail = freezed,Object? scheduledTime = freezed,Object? createdAt = freezed,}) {
   return _then(Booking(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as BookingStatus,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
+as BookingStatus,customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
+as String?,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
 as String?,assignedWorkerId: freezed == assignedWorkerId ? _self.assignedWorkerId : assignedWorkerId // ignore: cast_nullable_to_non_nullable
 as String?,estimatedPrice: freezed == estimatedPrice ? _self.estimatedPrice : estimatedPrice // ignore: cast_nullable_to_non_nullable
 as num?,finalPrice: freezed == finalPrice ? _self.finalPrice : finalPrice // ignore: cast_nullable_to_non_nullable
@@ -165,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  BookingStatus status,  String? categoryId,  String? assignedWorkerId,  num? estimatedPrice,  num? finalPrice,  String? description,  String? addressDetail,  DateTime? scheduledTime,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  BookingStatus status,  String? customerId,  String? categoryId,  String? assignedWorkerId,  num? estimatedPrice,  num? finalPrice,  String? description,  String? addressDetail,  DateTime? scheduledTime,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Booking() when $default != null:
-return $default(_that.id,_that.status,_that.categoryId,_that.assignedWorkerId,_that.estimatedPrice,_that.finalPrice,_that.description,_that.addressDetail,_that.scheduledTime,_that.createdAt);case _:
+return $default(_that.id,_that.status,_that.customerId,_that.categoryId,_that.assignedWorkerId,_that.estimatedPrice,_that.finalPrice,_that.description,_that.addressDetail,_that.scheduledTime,_that.createdAt);case _:
   return orElse();
 
 }
@@ -186,10 +187,10 @@ return $default(_that.id,_that.status,_that.categoryId,_that.assignedWorkerId,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  BookingStatus status,  String? categoryId,  String? assignedWorkerId,  num? estimatedPrice,  num? finalPrice,  String? description,  String? addressDetail,  DateTime? scheduledTime,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  BookingStatus status,  String? customerId,  String? categoryId,  String? assignedWorkerId,  num? estimatedPrice,  num? finalPrice,  String? description,  String? addressDetail,  DateTime? scheduledTime,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Booking():
-return $default(_that.id,_that.status,_that.categoryId,_that.assignedWorkerId,_that.estimatedPrice,_that.finalPrice,_that.description,_that.addressDetail,_that.scheduledTime,_that.createdAt);case _:
+return $default(_that.id,_that.status,_that.customerId,_that.categoryId,_that.assignedWorkerId,_that.estimatedPrice,_that.finalPrice,_that.description,_that.addressDetail,_that.scheduledTime,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +207,10 @@ return $default(_that.id,_that.status,_that.categoryId,_that.assignedWorkerId,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  BookingStatus status,  String? categoryId,  String? assignedWorkerId,  num? estimatedPrice,  num? finalPrice,  String? description,  String? addressDetail,  DateTime? scheduledTime,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  BookingStatus status,  String? customerId,  String? categoryId,  String? assignedWorkerId,  num? estimatedPrice,  num? finalPrice,  String? description,  String? addressDetail,  DateTime? scheduledTime,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Booking() when $default != null:
-return $default(_that.id,_that.status,_that.categoryId,_that.assignedWorkerId,_that.estimatedPrice,_that.finalPrice,_that.description,_that.addressDetail,_that.scheduledTime,_that.createdAt);case _:
+return $default(_that.id,_that.status,_that.customerId,_that.categoryId,_that.assignedWorkerId,_that.estimatedPrice,_that.finalPrice,_that.description,_that.addressDetail,_that.scheduledTime,_that.createdAt);case _:
   return null;
 
 }
@@ -221,11 +222,12 @@ return $default(_that.id,_that.status,_that.categoryId,_that.assignedWorkerId,_t
 
 
 class _Booking implements Booking {
-  const _Booking({required this.id, required this.status, this.categoryId, this.assignedWorkerId, this.estimatedPrice, this.finalPrice, this.description, this.addressDetail, this.scheduledTime, this.createdAt});
+  const _Booking({required this.id, required this.status, this.customerId, this.categoryId, this.assignedWorkerId, this.estimatedPrice, this.finalPrice, this.description, this.addressDetail, this.scheduledTime, this.createdAt});
   
 
 @override final  String id;
 @override final  BookingStatus status;
+@override final  String? customerId;
 @override final  String? categoryId;
 @override final  String? assignedWorkerId;
 @override final  num? estimatedPrice;
@@ -245,18 +247,18 @@ _$BookingCopyWith<_Booking> get copyWith => __$BookingCopyWithImpl<_Booking>(thi
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Booking&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.assignedWorkerId, assignedWorkerId) || other.assignedWorkerId == assignedWorkerId)&&(identical(other.estimatedPrice, estimatedPrice) || other.estimatedPrice == estimatedPrice)&&(identical(other.finalPrice, finalPrice) || other.finalPrice == finalPrice)&&(identical(other.description, description) || other.description == description)&&(identical(other.addressDetail, addressDetail) || other.addressDetail == addressDetail)&&(identical(other.scheduledTime, scheduledTime) || other.scheduledTime == scheduledTime)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Booking&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.assignedWorkerId, assignedWorkerId) || other.assignedWorkerId == assignedWorkerId)&&(identical(other.estimatedPrice, estimatedPrice) || other.estimatedPrice == estimatedPrice)&&(identical(other.finalPrice, finalPrice) || other.finalPrice == finalPrice)&&(identical(other.description, description) || other.description == description)&&(identical(other.addressDetail, addressDetail) || other.addressDetail == addressDetail)&&(identical(other.scheduledTime, scheduledTime) || other.scheduledTime == scheduledTime)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,status,categoryId,assignedWorkerId,estimatedPrice,finalPrice,description,addressDetail,scheduledTime,createdAt);
+    return Object.hash(runtimeType,id,status,customerId,categoryId,assignedWorkerId,estimatedPrice,finalPrice,description,addressDetail,scheduledTime,createdAt);
 }
 
 @override
 String toString() {
-    return 'Booking(id: $id, status: $status, categoryId: $categoryId, assignedWorkerId: $assignedWorkerId, estimatedPrice: $estimatedPrice, finalPrice: $finalPrice, description: $description, addressDetail: $addressDetail, scheduledTime: $scheduledTime, createdAt: $createdAt)';
+    return 'Booking(id: $id, status: $status, customerId: $customerId, categoryId: $categoryId, assignedWorkerId: $assignedWorkerId, estimatedPrice: $estimatedPrice, finalPrice: $finalPrice, description: $description, addressDetail: $addressDetail, scheduledTime: $scheduledTime, createdAt: $createdAt)';
 }
 
 
@@ -267,7 +269,7 @@ abstract mixin class _$BookingCopyWith<$Res> implements $BookingCopyWith<$Res> {
   factory _$BookingCopyWith(_Booking value, $Res Function(_Booking) _then) = __$BookingCopyWithImpl;
 @override @useResult
 $Res call({
- String id, BookingStatus status, String? categoryId, String? assignedWorkerId, num? estimatedPrice, num? finalPrice, String? description, String? addressDetail, DateTime? scheduledTime, DateTime? createdAt
+ String id, BookingStatus status, String? customerId, String? categoryId, String? assignedWorkerId, num? estimatedPrice, num? finalPrice, String? description, String? addressDetail, DateTime? scheduledTime, DateTime? createdAt
 });
 
 
@@ -284,11 +286,12 @@ class __$BookingCopyWithImpl<$Res>
 
 /// Create a copy of Booking
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? status = null,Object? categoryId = freezed,Object? assignedWorkerId = freezed,Object? estimatedPrice = freezed,Object? finalPrice = freezed,Object? description = freezed,Object? addressDetail = freezed,Object? scheduledTime = freezed,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? status = null,Object? customerId = freezed,Object? categoryId = freezed,Object? assignedWorkerId = freezed,Object? estimatedPrice = freezed,Object? finalPrice = freezed,Object? description = freezed,Object? addressDetail = freezed,Object? scheduledTime = freezed,Object? createdAt = freezed,}) {
   return _then(_Booking(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as BookingStatus,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
+as BookingStatus,customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
+as String?,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
 as String?,assignedWorkerId: freezed == assignedWorkerId ? _self.assignedWorkerId : assignedWorkerId // ignore: cast_nullable_to_non_nullable
 as String?,estimatedPrice: freezed == estimatedPrice ? _self.estimatedPrice : estimatedPrice // ignore: cast_nullable_to_non_nullable
 as num?,finalPrice: freezed == finalPrice ? _self.finalPrice : finalPrice // ignore: cast_nullable_to_non_nullable

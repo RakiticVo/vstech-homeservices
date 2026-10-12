@@ -197,6 +197,12 @@ VoIP chỉ ghi log cuộc gọi.
 >
 > Không làm ở Pha 5: đăng ký FCM (`/devices/*`) và hiện push — vẫn chờ file cấu hình Firebase; theo doc `08-notifications`, backend **chưa gửi** push.
 
+> **Kết quả Pha 5 (2026-10-12):**
+> - Thông báo: 1 màn chung cho khách + thợ, lọc theo loại (gọi API), Hôm nay / Trước đó, "Xem thêm" thủ công, đánh dấu đã đọc 1 / tất cả. Cài đặt: 3 loại API hỗ trợ (Đặt lịch / Hệ thống / Ưu đãi), thợ có route riêng.
+> - Chat: `RealtimeSocket` JSON thuần (chốt C9 theo doc), phòng theo `bookingId`, lịch sử + tin trực tiếp, gửi qua REST, gộp trùng theo id, phòng đóng chỉ đọc, trạng thái kết nối + kết nối lại. Mở từ chi tiết đơn, theo dõi thợ, thợ đang đến / đã đến.
+> - VoIP: ghi nhật ký bắt đầu / kết thúc cuộc gọi, lịch sử cuộc gọi hiện trong khung chat; **chưa có âm thanh** (L27), bỏ màn cuộc gọi đến (L28).
+> - Bỏ: tin nhắn mock, chi phí phát sinh trong chat, gửi ảnh / vị trí (chưa có upload), kênh SMS / Zalo / Push trong cài đặt.
+
 ## 5. Kiểm thử & xác minh mỗi pha
 
 - `flutter analyze` sạch, unit test datasource/repository, `bloc_test` cho mọi transition.

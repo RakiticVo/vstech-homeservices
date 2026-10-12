@@ -1986,9 +1986,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatPrivacyBanner => 'Both phone numbers are hidden';
 
   @override
-  String get chatDecline => 'Decline';
-
-  @override
   String get chatMaskedPhoneNote =>
       'Phone number hidden to protect both sides.';
 
@@ -2066,14 +2063,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatQuickCustomer4 => 'Thanks';
 
   @override
-  String get callRecordingNotice =>
-      'Calls are recorded to protect both sides and help resolve complaints';
-
-  @override
   String get callConnecting => 'Connecting…';
 
   @override
-  String get callIncoming => 'Incoming call';
+  String get callSimulatedNotice =>
+      'Preview: call audio is not connected yet. The app only logs the call for this order.';
+
+  @override
+  String get callClose => 'Close';
+
+  @override
+  String get callMissed => 'Missed call';
 
   @override
   String get callMute => 'Mute';
@@ -2085,18 +2085,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get callEnd => 'End';
 
   @override
-  String get callAccept => 'Accept';
-
-  @override
   String callVoiceLog(String duration) {
     return 'Voice call · $duration';
   }
-
-  @override
-  String get callMissedCustomer => 'Mai missed your call';
-
-  @override
-  String get callMissedWorker => 'Missed call from Hùng';
 
   @override
   String get devicesTitle => 'Your Home & Devices';
@@ -3334,6 +3325,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get apiErrorChatClosed => 'This chat has ended.';
+
+  @override
+  String get apiErrorCallPeerMissing =>
+      'There is nobody to call on this order yet.';
 
   @override
   String get apiErrorTooManyRequests =>

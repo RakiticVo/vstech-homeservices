@@ -3740,12 +3740,6 @@ abstract class AppLocalizations {
   /// **'Số điện thoại của hai bên được ẩn'**
   String get chatPrivacyBanner;
 
-  /// No description provided for @chatDecline.
-  ///
-  /// In vi, this message translates to:
-  /// **'Từ chối'**
-  String get chatDecline;
-
   /// No description provided for @chatMaskedPhoneNote.
   ///
   /// In vi, this message translates to:
@@ -3890,23 +3884,29 @@ abstract class AppLocalizations {
   /// **'Cảm ơn anh'**
   String get chatQuickCustomer4;
 
-  /// No description provided for @callRecordingNotice.
-  ///
-  /// In vi, this message translates to:
-  /// **'Cuộc gọi được ghi âm để bảo vệ hai bên và hỗ trợ giải quyết khiếu nại'**
-  String get callRecordingNotice;
-
   /// No description provided for @callConnecting.
   ///
   /// In vi, this message translates to:
   /// **'Đang kết nối…'**
   String get callConnecting;
 
-  /// No description provided for @callIncoming.
+  /// No description provided for @callSimulatedNotice.
   ///
   /// In vi, this message translates to:
-  /// **'Cuộc gọi đến'**
-  String get callIncoming;
+  /// **'Bản thử: âm thanh cuộc gọi chưa được kết nối. Ứng dụng chỉ ghi lại nhật ký cuộc gọi của đơn.'**
+  String get callSimulatedNotice;
+
+  /// No description provided for @callClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get callClose;
+
+  /// No description provided for @callMissed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuộc gọi nhỡ'**
+  String get callMissed;
 
   /// No description provided for @callMute.
   ///
@@ -3926,29 +3926,11 @@ abstract class AppLocalizations {
   /// **'Kết thúc'**
   String get callEnd;
 
-  /// No description provided for @callAccept.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nghe máy'**
-  String get callAccept;
-
   /// No description provided for @callVoiceLog.
   ///
   /// In vi, this message translates to:
   /// **'Cuộc gọi thoại · {duration}'**
   String callVoiceLog(String duration);
-
-  /// No description provided for @callMissedCustomer.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chị Mai đã không nghe máy'**
-  String get callMissedCustomer;
-
-  /// No description provided for @callMissedWorker.
-  ///
-  /// In vi, this message translates to:
-  /// **'Cuộc gọi nhỡ từ anh Hùng'**
-  String get callMissedWorker;
 
   /// No description provided for @devicesTitle.
   ///
@@ -6204,6 +6186,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đoạn chat đã kết thúc.'**
   String get apiErrorChatClosed;
+
+  /// No description provided for @apiErrorCallPeerMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn này chưa có người để gọi.'**
+  String get apiErrorCallPeerMissing;
 
   /// No description provided for @apiErrorTooManyRequests.
   ///

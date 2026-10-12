@@ -12,8 +12,10 @@ import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
 import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
 import 'package:vstech_home_services/features/messaging/domain/entities/chat.dart';
+import 'package:vstech_home_services/features/messaging/domain/entities/voip_call.dart';
 import 'package:vstech_home_services/features/messaging/presentation/bloc/chat_cubit.dart';
 import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_bubble.dart';
+import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_call_log_pill.dart';
 import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_input_bar.dart';
 import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_privacy_banner.dart';
 import 'package:vstech_home_services/features/messaging/presentation/widgets/chat_quick_replies_bar.dart';
@@ -64,14 +66,16 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _openCall() => unawaited(
-    context.push(
+  Future<void> _openCall() async {
+    final cubit = context.read<ChatCubit>();
+    await context.push(
       AppRoutes.voipCallLocation(
         bookingId: widget.bookingId,
         isWorker: widget.isWorker,
       ),
-    ),
-  );
+    );
+    await cubit.refreshCalls();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +135,9 @@ class _ChatPageState extends State<ChatPage> {
                 key: const Key('chat_call_button'),
                 label: l10n.trackingMaskedCall,
                 icon: Icons.call_outlined,
-                onPressed: _isClosed(state) ? null : _openCall,
+                onPressed: _isClosed(state)
+                    ? null
+                    : () => unawaited(_openCall()),
               ),
             ),
           ),
@@ -213,6 +219,7 @@ class _ChatBody extends StatelessWidget {
     final cubit = context.read<ChatCubit>();
     final closed = state.room.isClosed;
     final leading = state.hasMore ? 1 : 0;
+    final timeline = _timeline(state);
 
     return Column(
       children: [
@@ -223,7 +230,7 @@ class _ChatBody extends StatelessWidget {
             onReconnect: () => unawaited(cubit.reconnect()),
           ),
         Expanded(
-          child: state.messages.isEmpty
+          child: timeline.isEmpty
               ? Center(
                   child: Padding(
                     padding: const EdgeInsets.all(AppSpacing.xl),
@@ -243,7 +250,7 @@ class _ChatBody extends StatelessWidget {
                     horizontal: 14,
                     vertical: 12,
                   ),
-                  itemCount: state.messages.length + leading,
+                  itemCount: timeline.length + leading,
                   itemBuilder: (context, index) {
                     if (index < leading) {
                       return Padding(
@@ -261,12 +268,18 @@ class _ChatBody extends StatelessWidget {
                         ),
                       );
                     }
-                    final message = state.messages[index - leading];
-                    return ChatBubble(
-                      key: Key('chat_message_${message.id}'),
-                      message: message,
-                      isMine: state.isMine(message),
-                    );
+                    return switch (timeline[index - leading]) {
+                      final ChatRoomMessage message => ChatBubble(
+                        key: Key('chat_message_${message.id}'),
+                        message: message,
+                        isMine: state.isMine(message),
+                      ),
+                      final VoipCall call => ChatCallLogPill(
+                        key: Key('chat_call_${call.id}'),
+                        call: call,
+                      ),
+                      _ => const SizedBox.shrink(),
+                    };
                   },
                 ),
         ),
@@ -284,6 +297,26 @@ class _ChatBody extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Messages and call-log entries in time order. While older history is still unloaded, calls
+/// before the oldest loaded message are held back so they don't jump ahead of it.
+List<Object> _timeline(ChatLoadedState state) {
+  final oldest = state.messages.isEmpty ? null : state.messages.first.sentAt;
+  final calls = [
+    for (final call in state.calls)
+      if (!state.hasMore ||
+          oldest == null ||
+          !(call.startedAt ?? DateTime(0)).isBefore(oldest))
+        call,
+  ];
+  DateTime timeOf(Object item) => switch (item) {
+    ChatRoomMessage(:final sentAt) => sentAt ?? DateTime(0),
+    VoipCall(:final startedAt) => startedAt ?? DateTime(0),
+    _ => DateTime(0),
+  };
+  return [...state.messages, ...calls]
+    ..sort((a, b) => timeOf(a).compareTo(timeOf(b)));
 }
 
 /// Live / connecting / offline — always Icon + Label + Color.

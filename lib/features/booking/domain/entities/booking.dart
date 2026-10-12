@@ -9,6 +9,7 @@ abstract class Booking with _$Booking {
   const factory Booking({
     required String id,
     required BookingStatus status,
+    String? customerId,
     String? categoryId,
     String? assignedWorkerId,
     num? estimatedPrice,

@@ -34,6 +34,7 @@ final class ChatLoadedState extends ChatState {
     required this.messages,
     required this.page,
     required this.hasMore,
+    this.calls = const [],
     this.connection = ChatConnectionStatus.connecting,
     this.isLoadingOlder = false,
     this.isSending = false,
@@ -47,6 +48,9 @@ final class ChatLoadedState extends ChatState {
 
   /// Oldest first.
   final List<ChatRoomMessage> messages;
+
+  /// Call log of the booking (`GET /voip/calls?bookingId=`), shown inline in the timeline.
+  final List<VoipCall> calls;
   final int page;
   final bool hasMore;
   final ChatConnectionStatus connection;
@@ -62,6 +66,7 @@ final class ChatLoadedState extends ChatState {
   ChatLoadedState copyWith({
     ChatRoom? room,
     List<ChatRoomMessage>? messages,
+    List<VoipCall>? calls,
     int? page,
     bool? hasMore,
     ChatConnectionStatus? connection,
@@ -72,6 +77,7 @@ final class ChatLoadedState extends ChatState {
     room: room ?? this.room,
     myUserId: myUserId,
     messages: messages ?? this.messages,
+    calls: calls ?? this.calls,
     page: page ?? this.page,
     hasMore: hasMore ?? this.hasMore,
     connection: connection ?? this.connection,
@@ -86,6 +92,7 @@ final class ChatLoadedState extends ChatState {
       other.room == room &&
       other.myUserId == myUserId &&
       listEquals(other.messages, messages) &&
+      listEquals(other.calls, calls) &&
       other.page == page &&
       other.hasMore == hasMore &&
       other.connection == connection &&
@@ -98,6 +105,7 @@ final class ChatLoadedState extends ChatState {
     room,
     myUserId,
     Object.hashAll(messages),
+    Object.hashAll(calls),
     page,
     hasMore,
     connection,

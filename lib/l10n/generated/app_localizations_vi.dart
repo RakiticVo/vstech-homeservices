@@ -1989,9 +1989,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chatPrivacyBanner => 'Số điện thoại của hai bên được ẩn';
 
   @override
-  String get chatDecline => 'Từ chối';
-
-  @override
   String get chatMaskedPhoneNote =>
       'Số điện thoại đã được ẩn để bảo vệ hai bên.';
 
@@ -2068,14 +2065,17 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chatQuickCustomer4 => 'Cảm ơn anh';
 
   @override
-  String get callRecordingNotice =>
-      'Cuộc gọi được ghi âm để bảo vệ hai bên và hỗ trợ giải quyết khiếu nại';
-
-  @override
   String get callConnecting => 'Đang kết nối…';
 
   @override
-  String get callIncoming => 'Cuộc gọi đến';
+  String get callSimulatedNotice =>
+      'Bản thử: âm thanh cuộc gọi chưa được kết nối. Ứng dụng chỉ ghi lại nhật ký cuộc gọi của đơn.';
+
+  @override
+  String get callClose => 'Đóng';
+
+  @override
+  String get callMissed => 'Cuộc gọi nhỡ';
 
   @override
   String get callMute => 'Tắt mic';
@@ -2087,18 +2087,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get callEnd => 'Kết thúc';
 
   @override
-  String get callAccept => 'Nghe máy';
-
-  @override
   String callVoiceLog(String duration) {
     return 'Cuộc gọi thoại · $duration';
   }
-
-  @override
-  String get callMissedCustomer => 'Chị Mai đã không nghe máy';
-
-  @override
-  String get callMissedWorker => 'Cuộc gọi nhỡ từ anh Hùng';
 
   @override
   String get devicesTitle => 'Ngôi nhà của bạn';
@@ -3337,6 +3328,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get apiErrorChatClosed => 'Đoạn chat đã kết thúc.';
+
+  @override
+  String get apiErrorCallPeerMissing => 'Đơn này chưa có người để gọi.';
 
   @override
   String get apiErrorTooManyRequests =>
