@@ -182,6 +182,21 @@ Notifications (manual load-more, không có metadata phân trang) + settings. Ch
 theo booking, lịch sử tin nhắn, gửi tin, realtime qua WS `/ws/chat/{roomId}` (mở/đóng theo BLoC).
 VoIP chỉ ghi log cuộc gọi.
 
+> **Kế hoạch commit Pha 5** (mỗi bước: analyze sạch + test xanh → commit; push khi xong 5.6):
+>
+> Chốt C9: doc `07-chat.md` ghi WebSocket là **JSON thuần**, header `Authorization: Bearer`, **không** dùng STOMP/subprotocol. App làm theo doc và dùng `web_socket_channel`.
+>
+> | # | Commit | Nội dung |
+> | :- | :--- | :--- |
+> | 5.1 | `feat(notifications): add notifications data layer` | DTO thông báo, trang thông báo (chỉ có `notifications[]`, không có metadata phân trang), cài đặt (`systemEnabled`/`bookingEnabled`/`promoEnabled`); datasource/repository `GET /notifications` (lọc `type`), `POST /{id}/read`, `POST /read-all`, `GET/PUT /settings`; tự suy "còn nữa" khi trang đủ `size`; unit test |
+> | 5.2 | `feat(notifications): show notifications from the API` | `NotificationsCubit` (tải, "Xem thêm" thủ công, lọc theo loại qua API, đánh dấu 1 / tất cả đã đọc); màn thông báo khách + thợ dùng dữ liệu thật, nhóm Hôm nay / Trước đó, Icon + Nhãn + Màu theo loại; test |
+> | 5.3 | `feat(notifications): load and save notification settings` | `NotificationSettingsCubit`; màn cài đặt thông báo đổi 4 công tắc mock (Push/SMS/Zalo/Ưu đãi) thành 3 loại API (Hệ thống / Đặt lịch / Ưu đãi); thợ dùng chung màn qua route riêng; test |
+> | 5.4 | `feat(chat): add chat data layer and realtime socket` | DTO phòng chat + tin nhắn; datasource `POST /chat/rooms`, `GET/POST /chat/rooms/{id}/messages` (gửi `X-Idempotency-Key`); `ChatSocket` (WS `/ws/chat/{roomId}`, JSON thuần, tự kết nối lại tối đa 5 lần); repository; unit test |
+> | 5.5 | `feat(chat): run chat on booking rooms with live messages` | `ChatCubit` theo `bookingId`: mở phòng → lịch sử (tải thêm thủ công) → nghe WS, gửi qua REST, gộp trùng theo id; tin của mình xác định bằng `senderId` = id hồ sơ; phòng đóng thì chỉ đọc; bỏ tin mock, ảnh/vị trí (chưa có API upload); nút Chat ở chi tiết đơn (khách), theo dõi thợ, thợ đã đến; test |
+> | 5.6 | `feat(voip): log calls and show call history per booking` | DTO + datasource `POST /voip/calls`, `POST /voip/calls/end`, `GET /voip/calls?bookingId=`; `VoipCallCubit` ghi log bắt đầu/kết thúc (người nhận = thợ được gán / khách của đơn); màn gọi vẫn **giả lập âm thanh** (chưa có SDK VoIP); lịch sử cuộc gọi hiện trong khung chat; test |
+>
+> Không làm ở Pha 5: đăng ký FCM (`/devices/*`) và hiện push — vẫn chờ file cấu hình Firebase; theo doc `08-notifications`, backend **chưa gửi** push.
+
 ## 5. Kiểm thử & xác minh mỗi pha
 
 - `flutter analyze` sạch, unit test datasource/repository, `bloc_test` cho mọi transition.
