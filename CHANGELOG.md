@@ -7,6 +7,12 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Changed — Realtime chốt JSON thuần
+- Sửa CLAUDE.md / AGENTS.md / README / skill `api-module-integration`: WebSocket là **JSON thuần qua `RealtimeSocket`**, không phải STOMP (theo doc `07-chat`, `09-location-tracking`, `11-appendices`); gỡ package `stomp_dart_client` không còn dùng.
+
+### Docs
+- `NOTES_LOCAL_WORKAROUNDS_AND_API_GAPS.md`: thêm mục tóm tắt nhanh, sắp lại việc cần làm theo mức ưu tiên (chặn chạy thử / cần quyết định / cần chuẩn bị), cập nhật sau Pha 5.
+
 ### Added — Pha 5 tích hợp API (thông báo, chat, VoIP)
 - **5.1** Lớp data thông báo (feature `notifications`): DTO `NotificationResponse` / `NotificationPageResponse` (chỉ có `notifications[]`, không có metadata phân trang), `NotificationSettingsResponse`, `UpdateNotificationSettingsRequest`; `NotificationRemoteDataSource` (`GET /notifications` lọc `type`, `POST /{id}/read`, `POST /read-all`, `GET/PUT /settings`); `NotificationRepositoryImpl` (suy "còn nữa" khi trang đủ 20 mục, loại lạ → `unknown`, cờ cài đặt thiếu mặc định bật); entity `AppNotification`, `NotificationType`, `NotificationSettings`; use case; unit test.
 - **5.2** Màn thông báo khách + thợ dùng dữ liệu thật: gộp 2 màn mock thành `NotificationsPage` (feature `notifications`) + `NotificationsCubit`; 4 chip lọc gọi API theo `type` (Tất cả / Đơn hàng / Khuyến mãi / Hệ thống), nhóm Hôm nay / Trước đó theo giờ máy, "Xem thêm" thủ công, kéo làm mới; chạm thông báo → đánh dấu đã đọc (lạc quan, hoàn tác nếu lỗi), thông báo đặt lịch mở danh sách đơn / việc (payload không có mã đơn); nút "Đã đọc tất cả" khi còn thông báo chưa đọc; thẻ hiện icon xám + nhãn loại + giờ + chấm "Chưa đọc" (Icon + Nhãn + Màu). Widget + bloc test.

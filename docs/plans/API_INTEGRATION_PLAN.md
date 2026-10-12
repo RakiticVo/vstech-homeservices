@@ -144,7 +144,7 @@ duyệt/từ chối báo giá.
 > | 3.3 | `feat(worker): load jobs hub and dashboard job offer from bookings` | `WorkerJobsCubit` từ `GET /bookings`; Jobs Hub 3 tab theo trạng thái; thẻ việc mới trên Dashboard lấy đơn PENDING; test |
 > | 3.4 | `feat(worker): run job execution through accept/start/quote/complete` | `WorkerTaskCubit` theo `bookingId`; Chi tiết việc → Nhận việc; Đã đến → Bắt đầu; Đang làm → Báo giá phát sinh + Hoàn thành (`actualPrice`); route truyền `?id=`; test |
 >
-> Lỗ hổng đã biết: `/ws/dispatch` (ping việc mới) chưa có định dạng message; không có API từ chối việc / bật-tắt Online; WebSocket tracking trong doc là JSON thuần, không phải STOMP như CLAUDE.md ghi.
+> Lỗ hổng đã biết: `/ws/dispatch` (ping việc mới) chưa có định dạng message; không có API từ chối việc / bật-tắt Online; WebSocket tracking trong doc là JSON thuần, không phải STOMP như CLAUDE.md ghi. *(Đã chốt ở Pha 5: dùng JSON thuần, CLAUDE.md đã sửa.)*
 
 Nhận việc (accept), bắt đầu (start), gửi báo giá (quote), hoàn thành (complete). Stream GPS
 `geolocator` → `PUT /technician/location` mỗi 2s, chỉ khi online, gói trong `LocationTrackingBloc`.

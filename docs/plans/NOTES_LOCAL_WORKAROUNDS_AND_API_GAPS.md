@@ -1,22 +1,46 @@
 # Ghi chú cần biết — chỗ đang làm tạm ở app & API còn thiếu
 
-> Cập nhật: 2026-10-10 (sau Pha 4). Tổng hợp từ `API_INTEGRATION_PLAN.md` §6 và các commit Pha 0–3.
+> Cập nhật: 2026-10-12 (sau Pha 5 — thông báo, chat, VoIP). Tổng hợp từ `API_INTEGRATION_PLAN.md` §6 và các commit Pha 0–5.
 > Mục đích: (1) biết app đang **giả lập / lưu tạm trên máy** ở đâu, (2) có danh sách gửi team backend.
+
+---
+
+## 0. Tóm tắt nhanh — đọc phần này trước
+
+- **Đã nối API:** đăng nhập/đăng ký/hồ sơ, danh mục, đặt lịch + đơn hàng, luồng thợ (nhận/bắt đầu/báo giá/hoàn thành, GPS 2s), ví + rút tiền, thông báo + cài đặt, chat realtime, nhật ký cuộc gọi.
+- **Chưa thử trên UAT thật** — mới chạy bằng test (351 test xanh). Cần tài khoản test (việc #1) để chạy thử đầu-cuối.
+- **Đang giả lập:** OTP (`123456`), PIN rút tiền, bật/tắt Online, **âm thanh cuộc gọi** (chỉ ghi nhật ký) — chi tiết ở mục 2.
+- **Realtime:** WebSocket là **JSON thuần, không STOMP** (đã chốt theo doc, CLAUDE.md đã sửa, đã gỡ `stomp_dart_client`).
+- **Biến môi trường:** `.env.development` / `.env.production` ở thư mục gốc (không lên git), chạy bằng `flutter run --dart-define-from-file=.env.development`.
 
 ---
 
 ## 1. Việc bạn cần làm / quyết định
 
+**Ưu tiên cao (đang chặn chạy thử thật):**
+
 | # | Việc | Vì sao |
 | :- | :--- | :--- |
-| 1 | Xin **2 tài khoản test UAT** (1 khách, 1 thợ) — ghi vào `.env.development` ở thư mục gốc (gitignore, mẫu ở `.env.development.example`) | Pha 1–3 mới chạy bằng test giả lập, chưa đăng nhập/đặt lịch/nhận việc thật trên UAT |
-| 2 | Cấu hình **Firebase** (`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`) | Cần cho đăng ký FCM (`/devices/*`) và Crashlytics — đang hoãn |
-| 3 | Đặt **git identity** trên máy: `git config --global user.name/user.email` | Máy đã mất identity; mình đang commit bằng identity cũ `Admin <admin@Admins-MacBook-Pro.local>` |
-| 4 | Thiết kế **Claude Design Batch 14–17** (`docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`) | UI báo giá chi tiết, nạp tiền ví, đọc tất cả thông báo/cài đặt thông báo thợ, lịch sử cuộc gọi |
-| 5 | Xác nhận với BA: **nạp tiền là ví nào** (Batch 15 đang giả định ví thợ) | `POST /wallets/payments/deposit` chưa rõ đối tượng |
-| 6 | Bản dịch tiếng Anh cho câu xin quyền vị trí iOS (`NSLocationWhenInUseUsageDescription`) | Hiện chỉ có tiếng Việt trong `Info.plist` |
-| 7 | Gửi mục 2–4 dưới đây cho team backend | Các chỗ app đang làm tạm sẽ gỡ khi có API |
-| 8 | Xin **URL backend production** (và Google Maps key production) — điền vào `.env.production` | Chưa có thì app production rơi về UAT (có log cảnh báo) |
+| 1 | Xin **2 tài khoản test UAT** (1 khách, 1 thợ) — điền vào `.env.development` (`TEST_CUSTOMER_*`, `TEST_WORKER_*`) | Chưa chạy thử đăng nhập / đặt lịch / nhận việc / chat thật trên UAT |
+| 2 | **Gửi backend mục 2, 4, 5** dưới đây — ưu tiên: L26 (`senderId` cùng loại id với hồ sơ?), C14 (`recordingUrl` bắt buộc?), L22 (`bookingId` trong thông báo), L24 (tên người bên kia trong chat), C2 (id int64 hay UUID) | Sai id → tin nhắn của mình hiện như của bên kia; thiếu `recordingUrl` → server có thể từ chối ghi kết thúc cuộc gọi |
+| 3 | Xin **URL backend production** (+ Google Maps key production) — điền `.env.production` | Thiếu thì bản production rơi về UAT (có log cảnh báo) |
+
+**Cần quyết định:**
+
+| # | Việc | Vì sao |
+| :- | :--- | :--- |
+| 4 | Chọn **nhà cung cấp VoIP** (Stringee / Twilio / Agora…) | Hiện gọi điện **không có âm thanh** (L27), không có cuộc gọi đến (L28) |
+| 5 | Xác nhận với BA: **nạp tiền là ví nào** (Batch 15 đang giả định ví thợ) | `POST /wallets/payments/deposit` chưa rõ đối tượng — chưa làm |
+| 6 | Bản production thiếu `API_BASE_URL`: giữ **rơi về UAT + cảnh báo** (hiện tại) hay **dừng app** | Tránh phát hành nhầm bản trỏ về UAT |
+
+**Cần chuẩn bị:**
+
+| # | Việc | Vì sao |
+| :- | :--- | :--- |
+| 7 | Cấu hình **Firebase** (`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`) | Cần cho đăng ký FCM (`/devices/*`), push và Crashlytics — đang hoãn. Lưu ý: theo doc `08-notifications`, backend **chưa gửi** push |
+| 8 | Thiết kế **Claude Design Batch 14–15** (`docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`) — báo giá chi tiết, nạp tiền ví | Batch 16–17 (thông báo, lịch sử cuộc gọi) đã làm ở Pha 5 theo design system hiện có — có thể bỏ hoặc dùng để đánh bóng lại |
+| 9 | Đặt **git identity**: `git config --global user.name/user.email` | Đang commit bằng `Admin <admin@Admins-MacBook-Pro.local>` |
+| 10 | Bản dịch tiếng Anh cho câu xin quyền vị trí iOS (`NSLocationWhenInUseUsageDescription`) | Hiện chỉ có tiếng Việt trong `Info.plist` |
 
 ---
 
@@ -77,7 +101,7 @@
 | C6 | Money: OpenAPI = number, doc = chuỗi số `"200000"` | Nhận cả hai |
 | C7 | Khiếu nại: sơ đồ trạng thái cho từ IN_PROGRESS, ghi chú nói chỉ khi COMPLETED | Chỉ cho khi COMPLETED |
 | C8 | `RegisterRequest`: OpenAPI không đánh dấu `required`, doc ghi tất cả bắt buộc | Gửi đủ 5 field |
-| C9 | WebSocket: CLAUDE.md ghi STOMP, doc (`07-chat`, `09-location-tracking`, `11-appendices`) là JSON thuần, "không dùng subprotocol" | **Đã chốt theo doc (Pha 5):** `RealtimeSocket` gửi/nhận JSON thuần qua `web_socket_channel`, token ở header `Authorization`. `stomp_dart_client` hiện không còn dùng — nên sửa CLAUDE.md và gỡ package nếu backend xác nhận |
+| C9 | WebSocket: CLAUDE.md từng ghi STOMP, doc (`07-chat`, `09-location-tracking`, `11-appendices`) là JSON thuần, "không dùng subprotocol" | ✅ **Đã chốt theo doc:** `RealtimeSocket` JSON thuần qua `web_socket_channel`, token ở header `Authorization`; đã sửa CLAUDE.md / AGENTS.md / skill, đã gỡ `stomp_dart_client`. Chỉ cần backend xác nhận lại khi chạy UAT |
 | C12 | `POST /chat/rooms`: OpenAPI trả 201 không có schema; doc trả 200 + `ApiResponse<ChatRoomResponse>` | Đọc theo doc |
 | C13 | Lịch sử chat: doc mặc định `size=50`, OpenAPI `size=20`; không ghi thứ tự tin | App gửi `size=50`, tự sắp cũ → mới theo `sentAt` |
 | C14 | `EndCallRequest.recordingUrl`: OpenAPI bắt buộc (400 nếu thiếu), doc ghi tuỳ chọn | App không ghi âm nên **không gửi**; nếu server trả 400 thì cuộc gọi vẫn kết thúc trên máy, chỉ ghi log cảnh báo |
