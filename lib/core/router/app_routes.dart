@@ -16,7 +16,11 @@ abstract final class AppRoutes {
 
   /// OTP step location. [otpContext] is `register`, `login` or `forgot`; [role] is `customer` or
   /// `worker` (decides where a verified login/register continues).
-  static String verifyOtpLocation({required String phone, required String role, required String otpContext}) =>
+  static String verifyOtpLocation({
+    required String phone,
+    required String role,
+    required String otpContext,
+  }) =>
       '$verifyOtp?phone=${Uri.encodeComponent(phone)}&role=$role&context=$otpContext';
 
   // --- customer home & categories ---
@@ -27,7 +31,8 @@ abstract final class AppRoutes {
   // --- worker experience ---
   static const String workerDashboard = '/worker/dashboard';
   static const String workerJobDetail = '/worker/job-detail';
-  static String workerJobDetailLocation(String bookingId) => '$workerJobDetail?id=${Uri.encodeComponent(bookingId)}';
+  static String workerJobDetailLocation(String bookingId) =>
+      '$workerJobDetail?id=${Uri.encodeComponent(bookingId)}';
   static const String workerKyc = '/worker/kyc';
   static const String workerKycStatus = '/worker/kyc-status';
 
@@ -45,11 +50,14 @@ abstract final class AppRoutes {
   // --- tracking & real-time progress (Batch 6) ---
   static const String customerTracking = '/customer/tracking';
   static const String workerEnRoute = '/worker/job-en-route';
-  static String workerEnRouteLocation(String bookingId) => '$workerEnRoute?id=${Uri.encodeComponent(bookingId)}';
+  static String workerEnRouteLocation(String bookingId) =>
+      '$workerEnRoute?id=${Uri.encodeComponent(bookingId)}';
   static const String workerArrived = '/worker/job-arrived';
-  static String workerArrivedLocation(String bookingId) => '$workerArrived?id=${Uri.encodeComponent(bookingId)}';
+  static String workerArrivedLocation(String bookingId) =>
+      '$workerArrived?id=${Uri.encodeComponent(bookingId)}';
   static const String workerExecuting = '/worker/job-executing';
-  static String workerExecutingLocation(String bookingId) => '$workerExecuting?id=${Uri.encodeComponent(bookingId)}';
+  static String workerExecutingLocation(String bookingId) =>
+      '$workerExecuting?id=${Uri.encodeComponent(bookingId)}';
 
   // --- checkout, inspection, payment & review (Batch 7) ---
   static const String inspectionSignoff = '/customer/order/inspect';
@@ -68,16 +76,19 @@ abstract final class AppRoutes {
       '$customerOrderDetail?id=${Uri.encodeComponent(bookingId)}';
   static const String workerJobsHub = '/worker/jobs';
   static const String customerNotifications = '/customer/notifications';
-  static const String customerNotificationSettings = '/customer/settings/notifications';
+  static const String customerNotificationSettings =
+      '/customer/settings/notifications';
   static const String workerNotifications = '/worker/notifications';
 
   // --- exceptions, cancellation & escrow dispute (Batch 9) ---
   static const String customerCancel = '/customer/booking/cancel';
-  static String customerCancelLocation(String bookingId) => '$customerCancel?id=${Uri.encodeComponent(bookingId)}';
+  static String customerCancelLocation(String bookingId) =>
+      '$customerCancel?id=${Uri.encodeComponent(bookingId)}';
   static const String workerCancel = '/worker/job/cancel';
   static const String customerNoShow = '/worker/job/no-show';
   static const String disputeReport = '/customer/order/dispute';
-  static String disputeReportLocation(String bookingId) => '$disputeReport?id=${Uri.encodeComponent(bookingId)}';
+  static String disputeReportLocation(String bookingId) =>
+      '$disputeReport?id=${Uri.encodeComponent(bookingId)}';
   static const String orderDisputed = '/customer/order/disputed';
   static const String customerDisputeList = '/customer/disputes';
   static const String disputeDetail = '/customer/disputes/detail';
@@ -112,7 +123,8 @@ abstract final class AppRoutes {
 
   // --- worker wallet, schedule & operations (Batch 13) ---
   static const String workerWallet = '/worker/wallet';
-  static const String workerTransactionDetail = '/worker/wallet/transaction-detail';
+  static const String workerTransactionDetail =
+      '/worker/wallet/transaction-detail';
   static String workerTransactionDetailLocation(String transactionId) =>
       '$workerTransactionDetail?id=${Uri.encodeComponent(transactionId)}';
   static const String workerWithdraw = '/worker/wallet/withdraw';
