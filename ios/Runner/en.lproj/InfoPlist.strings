@@ -1,0 +1,2 @@
+/* Shown by iOS when the app asks for location permission (English). */
+"NSLocationWhenInUseUsageDescription" = "VSTech Home Services uses your location so your technician can find the right service address when you book.";

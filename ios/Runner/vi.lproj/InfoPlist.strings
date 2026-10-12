@@ -1,0 +1,2 @@
+/* iOS hiển thị câu này khi app xin quyền vị trí (tiếng Việt). */
+"NSLocationWhenInUseUsageDescription" = "VSTech Home Services dùng vị trí của bạn để thợ tìm đúng địa chỉ làm việc khi đặt lịch.";
