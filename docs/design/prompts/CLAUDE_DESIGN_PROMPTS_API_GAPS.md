@@ -3,6 +3,8 @@
 > Nguồn: đối chiếu `docs/api/openapi.yaml` với 81 màn hiện có (2026-10-07).
 > Đánh số tiếp theo ma trận Concept 02 (ô cuối hiện tại: Cell 131) → bắt đầu từ **Cell 132**.
 >
+> **Cập nhật 2026-10-12:** Batch 14–15 đã sửa lại cho khớp API thật sau Pha 2–5 (mã đơn dạng số `#502`, API không trả tên/ảnh thợ, chưa có API upload ảnh, ví có "có thể rút" + "đang tạm giữ"). Batch 16–17 đã làm xong trong app — bỏ qua.
+>
 > **Cách dùng:** mỗi phiên Claude Design, dán **Khối ngữ cảnh chung** trước, rồi dán prompt của batch.
 > Mỗi batch nên làm trong một phiên riêng để giữ chất lượng.
 
@@ -10,8 +12,8 @@
 | :--- | :--- | :--- | :--- |
 | 14 | Báo giá chi tiết (thợ gửi, khách duyệt) | 132–135 | `POST /bookings/{id}/quote`, `/quote/approve`, `/quote/reject` |
 | 15 | Nạp tiền vào ví thợ | 136–138 | `POST /wallets/payments/deposit`, `GET /wallets/me` |
-| 16 | Thông báo: đọc tất cả (khách) + cài đặt thông báo (thợ) | 139–140 | `POST /notifications/read-all`, `GET/PUT /notifications/settings` |
-| 17 | Lịch sử cuộc gọi của đơn | 141 | `GET /voip/calls?bookingId=` |
+| ~~16~~ | ~~Thông báo: đọc tất cả + cài đặt thông báo thợ~~ — **đã làm ở Pha 5, không cần dán** | 139–140 | `POST /notifications/read-all`, `GET/PUT /notifications/settings` |
+| ~~17~~ | ~~Lịch sử cuộc gọi của đơn~~ — **đã làm ở Pha 5 (hiện trong khung chat), không cần dán** | 141 | `GET /voip/calls?bookingId=` |
 
 **Không có prompt:**
 - `POST /wallets/payments/withdraw`: trùng chức năng với `/wallets/withdrawals` (đã có UI). Chờ backend xác nhận mục đích.
@@ -48,74 +50,82 @@ Với mỗi màn, hãy vẽ đầy đủ các trạng thái được liệt kê,
 
 ## Batch 14 — Báo giá chi tiết (Cells 132–135)
 
-**Bối cảnh API:** thợ gửi báo giá gồm nhiều dòng chi phí (`itemName`, `amount`, `receiptUrl` tuỳ chọn) và danh sách ảnh bằng chứng `evidencePhotoUrls`. Server trả `totalAmount`, `status`, `submittedAt`. Khách chỉ có hai thao tác là Duyệt hoặc Từ chối, không gửi kèm lý do. Hiện tại màn Đang thực hiện (`WorkerExecutingPage`) chỉ có dialog nhập 1 tên + 1 giá, chưa có ảnh.
+**Bối cảnh API (đã đối chiếu 2026-10-12):**
+- Thợ gửi `POST /bookings/{id}/quote` gồm nhiều dòng (`itemName`, `amount`, `receiptUrl` tuỳ chọn) + `evidencePhotoUrls`; server trả `totalAmount`, `status`, `submittedAt`. Khách chỉ có **Duyệt** / **Từ chối** (`/quote/approve`, `/quote/reject`), không gửi lý do.
+- **Chưa có API upload ảnh** → ảnh hoá đơn / ảnh bằng chứng phải thiết kế sao cho màn vẫn trọn vẹn khi **không có ảnh** (app sẽ ẩn khu ảnh tới khi backend có upload).
+- **Khách chưa có API đọc báo giá** (`BookingResponse` không chứa báo giá) — đã báo backend (NOTES L12). Vẫn thiết kế màn khách để sẵn sàng.
+- API **không trả tên / ảnh / đánh giá của thợ** → dùng nhãn vai trò "Thợ phụ trách", không vẽ avatar thật.
+- Mã đơn là số: hiển thị `#502`. Không có push → khách vào màn duyệt từ **Chi tiết đơn**.
+- Hiện app: thợ gửi qua một hộp thoại 1 tên + 1 giá ở màn Đang thực hiện — Batch này thay hộp thoại đó.
 
 ```
-Batch 14 — Báo giá chi tiết chi phí phát sinh. Thiết kế 4 màn (Cell 132–135):
+Batch 14 — Báo giá chi phí phát sinh. Thiết kế 4 màn (Cell 132–135). Lưu ý dữ liệu: mã đơn dạng "#502"; app KHÔNG có tên/ảnh/đánh giá của thợ, chỉ ghi vai trò "Thợ phụ trách"; tính năng ảnh có thể chưa có ở bản đầu nên mỗi màn có khu ảnh phải vẽ thêm biến thể KHÔNG có khu ảnh mà vẫn cân đối.
 
-Cell 132 — [Thợ] Lập báo giá chi phí phát sinh (full-screen, mở từ nút "+ Yêu cầu chi phí phát sinh" ở màn Đang thực hiện).
-- Header: nút Quay lại (icon + nhãn), tiêu đề "Báo giá phát sinh", dòng phụ mã đơn "#HS-24817 · Vệ sinh máy lạnh".
-- Thẻ thông tin: giá dịch vụ đã chốt ban đầu (ví dụ 350.000đ) để thợ đối chiếu.
-- Danh sách dòng chi phí (tối thiểu 1, tối đa 10): mỗi dòng là một card gồm ô "Tên vật tư/hạng mục" (VD: "Gas R32 bổ sung"), ô "Số tiền" có hậu tố đ, ô ảnh hoá đơn tuỳ chọn (ô vuông squircle viền đứt "+ Ảnh hoá đơn"; khi đã có ảnh thì hiện thumbnail + nút Xoá có nhãn), nút "Xoá dòng" (icon thùng rác + nhãn, màu error) — ẩn khi chỉ còn 1 dòng.
-- Nút phụ "+ Thêm hạng mục" (viền, không phải CTA chính).
-- Khu "Ảnh bằng chứng tại hiện trường": lưới 3 cột ô ảnh squircle, ô đầu là "+ Chụp/Chọn ảnh", tối đa 6 ảnh, ghi chú nhỏ "Ảnh giúp khách duyệt nhanh hơn".
-- Thanh tổng cố định phía trên CTA: "Tổng phát sinh" + số tiền lớn đậm; dòng phụ "Khách sẽ trả thêm khoản này sau khi duyệt".
-- CTA chính (teal, full-width): "Gửi báo giá cho khách".
-- Trạng thái cần vẽ: (a) trống ban đầu — CTA bị khoá; (b) đã nhập 2 dòng + 1 ảnh hoá đơn + 3 ảnh bằng chứng — CTA bật; (c) lỗi kiểm tra: dòng có số tiền 0 hoặc thiếu tên → viền error + chữ lỗi dưới ô (icon + chữ); (d) đang gửi — CTA hiện spinner, khoá thao tác.
+Cell 132 — [Thợ] Lập báo giá phát sinh (full-screen, mở từ nút "+ Báo giá phát sinh" ở màn Đang thực hiện).
+- Header: nút Quay lại (icon + nhãn), tiêu đề "Báo giá phát sinh", dòng phụ "Đơn #502 · Vệ sinh máy lạnh".
+- Thẻ đối chiếu: "Giá ước tính ban đầu 350.000đ" + ghi chú nhỏ "Tổng tiền đơn không được vượt 1,5 lần giá ước tính".
+- Danh sách hạng mục (tối thiểu 1, tối đa 10), mỗi hạng mục là 1 card: ô "Tên vật tư / hạng mục" (VD "Gas R32 bổ sung"), ô "Số tiền" hậu tố đ, ô ảnh hoá đơn tuỳ chọn (squircle viền đứt "+ Ảnh hoá đơn"; có ảnh thì thumbnail + nút "Xoá ảnh" có nhãn), nút "Xoá hạng mục" (icon thùng rác + nhãn, màu error) — ẩn khi chỉ còn 1 hạng mục.
+- Nút phụ viền "+ Thêm hạng mục".
+- Khu "Ảnh hiện trường" (tuỳ chọn): lưới 3 cột squircle, ô đầu "+ Chụp / Chọn ảnh", tối đa 6 ảnh, ghi chú "Ảnh giúp khách duyệt nhanh hơn".
+- Thanh tổng cố định ngay trên CTA: "Tổng phát sinh" + số tiền lớn đậm; dòng phụ "Khách trả thêm khoản này sau khi duyệt".
+- CTA chính teal full-width: "Gửi báo giá cho khách".
+- Trạng thái: (a) trống — CTA khoá; (b) 2 hạng mục hợp lệ (biến thể có ảnh và biến thể không có khu ảnh) — CTA bật; (c) lỗi: hạng mục thiếu tên hoặc số tiền 0 → viền error + icon + chữ lỗi dưới ô; vượt 1,5 lần giá ước tính → banner lỗi trên thanh tổng (icon + chữ); (d) đang gửi — spinner trong CTA, khoá thao tác.
 
-Cell 133 — [Thợ] Trạng thái báo giá (bottom sheet hoặc thẻ nổi trong màn Đang thực hiện).
-- (a) "Đang chờ khách duyệt": icon đồng hồ + nhãn + màu warning, tổng tiền, số hạng mục, thời điểm gửi, nút phụ "Xem lại báo giá".
-- (b) "Khách đã duyệt": icon check + nhãn + màu success, tổng mới của đơn = giá gốc + phát sinh.
-- (c) "Khách từ chối": icon X + nhãn + màu error, gợi ý "Tiếp tục làm theo giá gốc hoặc nhắn tin với khách", 2 nút: "Nhắn tin khách" (phụ) và "Tiếp tục công việc" (chính).
+Cell 133 — [Thợ] Trạng thái báo giá (thẻ trong màn Đang thực hiện).
+- (a) "Đang chờ khách duyệt": icon đồng hồ + nhãn + màu warning, tổng phát sinh, số hạng mục, giờ gửi "14:30 · 12/10/2026", nút phụ "Xem lại báo giá".
+- (b) "Khách đã duyệt": icon check + nhãn + màu success, "Tổng mới của đơn" = giá ban đầu + phát sinh.
+- (c) "Khách đã từ chối": icon X + nhãn + màu error, gợi ý "Tiếp tục theo giá ban đầu hoặc nhắn tin với khách", 2 nút: "Nhắn tin" (phụ, icon + nhãn) và "Tiếp tục công việc" (chính).
 
-Cell 134 — [Khách] Duyệt báo giá phát sinh (full-screen, mở từ thông báo/push hoặc bong bóng chat "Yêu cầu chi phí phát sinh").
-- Header: Quay lại + tiêu đề "Thợ gửi báo giá phát sinh"; thẻ thợ (ảnh đại diện squircle, tên, đánh giá).
+Cell 134 — [Khách] Duyệt báo giá phát sinh (full-screen, mở từ banner "Thợ gửi báo giá phát sinh — Xem & duyệt" ở màn Chi tiết đơn; vẽ luôn banner này ở đầu màn Chi tiết đơn).
+- Header: Quay lại + tiêu đề "Báo giá phát sinh", dòng phụ "Đơn #502 · Thợ phụ trách".
 - Danh sách hạng mục dạng bảng gọn: tên, số tiền, thumbnail hoá đơn nếu có (chạm để phóng to).
-- Lưới ảnh bằng chứng (chạm để xem toàn màn).
-- Bảng tổng: Giá dịch vụ ban đầu / Chi phí phát sinh / Tổng mới (đậm nhất). Ghi chú bảo vệ: "Bạn chỉ thanh toán sau khi nghiệm thu".
-- Hai nút: "Từ chối" (viền, chữ error, đặt trên/trái) và "Duyệt & tiếp tục" (CTA teal duy nhất).
-- Hộp xác nhận khi bấm Từ chối: tiêu đề "Từ chối báo giá?", nội dung "Thợ sẽ tiếp tục theo giá ban đầu.", nút "Quay lại" và "Từ chối báo giá".
-- Trạng thái: (a) mặc định; (b) đang xử lý (nút spinner); (c) lỗi mạng — SnackBar "Không có kết nối mạng…" + nút Thử lại; (d) báo giá đã được xử lý trước đó — banner thông tin, ẩn 2 nút.
+- Lưới ảnh hiện trường nếu có (chạm để xem toàn màn).
+- Bảng tổng: Giá ban đầu / Chi phí phát sinh / Tổng mới (đậm nhất). Ghi chú: "Bạn chỉ thanh toán sau khi nghiệm thu".
+- Hai nút: "Từ chối" (viền, chữ error) và "Duyệt báo giá" (CTA teal duy nhất).
+- Hộp xác nhận khi bấm Từ chối: "Từ chối báo giá?" / "Thợ sẽ tiếp tục theo giá ban đầu." / nút "Quay lại" và "Từ chối báo giá" (error).
+- Trạng thái: (a) mặc định có ảnh; (b) không có khu ảnh; (c) đang xử lý — spinner trong nút; (d) lỗi mạng — SnackBar "Không có kết nối mạng…" + Thử lại; (e) báo giá đã xử lý trước đó — banner thông tin (icon + nhãn), ẩn 2 nút.
 
-Cell 135 — [Khách] Kết quả sau khi duyệt/từ chối (màn xác nhận ngắn).
-- (a) Đã duyệt: icon check lớn (success), "Đã duyệt chi phí phát sinh", tổng mới, CTA "Quay lại theo dõi đơn".
-- (b) Đã từ chối: icon thông tin (slate), "Đã từ chối báo giá", "Thợ sẽ tiếp tục theo giá ban đầu 350.000đ", CTA "Quay lại theo dõi đơn".
+Cell 135 — [Khách] Kết quả sau khi duyệt / từ chối (màn xác nhận ngắn).
+- (a) Đã duyệt: icon check lớn (success) + "Đã duyệt chi phí phát sinh" + tổng mới; CTA "Về chi tiết đơn".
+- (b) Đã từ chối: icon thông tin (slate) + "Đã từ chối báo giá" + "Thợ tiếp tục theo giá ban đầu 350.000đ"; CTA "Về chi tiết đơn".
 ```
 
 ---
 
 ## Batch 15 — Nạp tiền vào ví thợ (Cells 136–138)
 
-**Bối cảnh API:** `POST /wallets/payments/deposit` nhận `amount` (> 0), `gateway` và `gatewayTxId`, trả về giao dịch (`status`: PENDING/COMPLETED/FAILED). Màn ví thợ (Cell 117) chưa có lối nạp tiền.
-⚠ Giả định: ví được nạp là ví thợ, dùng để bù phí nền tảng cho các đơn khách trả tiền mặt. Cần xác nhận với BA/backend trước khi chốt.
+**Bối cảnh API (đã đối chiếu 2026-10-12):**
+- `POST /wallets/payments/deposit` nhận `amount` (> 0), `gateway`, `gatewayTxId` (mã giao dịch **do cổng thanh toán trả về** — app gửi sau khi người dùng trả tiền xong ở VNPay/ZaloPay); trả về giao dịch có `status` PENDING / COMPLETED / FAILED. Giao dịch hiện trong sổ ví với loại `DEPOSIT`.
+- Màn Ví thợ hiện tại (Cell 117, đã nối API) có: thẻ số dư **"Có thể rút"** + dòng **"Đang tạm giữ"**, nút "Rút tiền", 4 chip lọc giao dịch (Tất cả / Thu nhập / Rút tiền / Tạm giữ). Không còn "Tổng thu nhập / Đã rút".
+- ⚠ **Chưa chốt nạp vào ví nào** (đang giả định ví thợ, dùng bù phí nền tảng cho đơn khách trả tiền mặt) — chờ BA. Mức tối thiểu 50.000đ là quy tắc app đề xuất (API không ghi).
 
 ```
-Batch 15 — Nạp tiền vào ví thu nhập của Thợ. Bổ sung nút "Nạp tiền" (phụ, viền) cạnh nút "Rút tiền" trên thẻ số dư ở màn Ví thu nhập (Cell 117), và thiết kế 3 màn (Cell 136–138):
+Batch 15 — Nạp tiền vào ví của Thợ. Thẻ số dư ở màn Ví (Cell 117) hiện có "Có thể rút" (số lớn) + dòng "Đang tạm giữ" và nút chính "Rút tiền". Bổ sung nút phụ viền "Nạp tiền" (icon + nhãn) cạnh "Rút tiền" — giữ "Rút tiền" là CTA chính duy nhất. Thiết kế 3 màn (Cell 136–138):
 
 Cell 136 — [Thợ] Nạp tiền vào ví.
 - Header: Quay lại + tiêu đề "Nạp tiền vào ví".
-- Thẻ số dư hiện tại (VD 4.860.000đ) + dòng phụ "Số dư sau khi nạp" cập nhật theo số tiền nhập.
-- Ô nhập số tiền lớn (≥16px chữ nhập, hiển thị dạng 500.000đ), ghi chú "Tối thiểu 50.000đ".
-- 4 chip chọn nhanh: 100K, 200K, 500K, 1 triệu (trạng thái chọn = nền #F0FDFA + viền teal + check).
-- Chọn cổng thanh toán: 2 card lựa chọn VNPay và ZaloPay (logo dạng ảnh squircle + tên + mô tả ngắn "Thẻ ATM/QR ngân hàng", "Ví ZaloPay"), card đang chọn có viền teal + check.
-- Ghi chú minh bạch: "Miễn phí nạp tiền. Tiền vào ví ngay khi cổng thanh toán xác nhận."
+- Thẻ số dư "Có thể rút 4.860.000đ" + dòng phụ "Sau khi nạp: 5.360.000đ" cập nhật theo số tiền nhập.
+- Ô nhập số tiền lớn (chữ nhập ≥16px, hiển thị "500.000đ"), ghi chú "Tối thiểu 50.000đ".
+- 4 chip chọn nhanh: 100.000đ, 200.000đ, 500.000đ, 1.000.000đ (đang chọn = nền #F0FDFA + viền teal + check).
+- Chọn cổng thanh toán: 2 card VNPay và ZaloPay (logo dạng ảnh squircle + tên + mô tả "Thẻ ATM / QR ngân hàng", "Ví ZaloPay"); card đang chọn viền teal + check.
+- Ghi chú minh bạch (icon thông tin + chữ): "Miễn phí nạp tiền. Tiền vào ví khi cổng thanh toán xác nhận."
 - CTA chính: "Nạp 500.000đ" (số tiền động).
-- Trạng thái: (a) trống — CTA khoá; (b) đã chọn 500K + VNPay; (c) lỗi số tiền dưới mức tối thiểu (icon + chữ lỗi).
+- Trạng thái: (a) trống — CTA khoá; (b) đã chọn 500.000đ + VNPay; (c) lỗi dưới mức tối thiểu (icon + chữ lỗi dưới ô).
 
-Cell 137 — [Thợ] Đang xử lý nạp tiền (sau khi quay lại từ cổng thanh toán).
-- Icon đồng hồ/loader, tiêu đề "Đang xác nhận giao dịch", số tiền, cổng thanh toán, mã giao dịch cổng (VD "VNP-14220931"), ghi chú "Thường mất dưới 1 phút. Bạn có thể rời màn hình này."
-- Nút phụ "Về ví thu nhập".
+Cell 137 — [Thợ] Đang xác nhận giao dịch (sau khi quay lại từ cổng thanh toán).
+- Loader + tiêu đề "Đang xác nhận giao dịch", số tiền, cổng thanh toán, mã giao dịch cổng (VD "VNP-14220931"), ghi chú "Thường mất dưới 1 phút. Bạn có thể rời màn hình này."
+- Nút phụ "Về ví".
 
 Cell 138 — [Thợ] Kết quả nạp tiền.
-- (a) Thành công: icon check success, "Nạp tiền thành công", số tiền +500.000đ (màu success), số dư mới, mã giao dịch, thời gian; CTA "Về ví thu nhập".
-- (b) Thất bại: icon X error, "Nạp tiền không thành công", lý do ngắn "Giao dịch bị huỷ hoặc hết hạn", dòng trấn an "Bạn chưa bị trừ tiền"; CTA "Thử lại", nút phụ "Đổi cổng thanh toán".
-- (c) Đang xử lý lâu (PENDING sau 5 phút): icon warning, "Giao dịch đang được đối soát", hướng dẫn liên hệ hỗ trợ (icon + nhãn "Gọi hỗ trợ").
-- Thêm: dòng giao dịch "Nạp tiền" trong sổ cái ví (Cell 117) với icon mũi tên vào, nhãn trạng thái Hoàn tất/Đang xử lý/Thất bại (icon + nhãn + màu).
+- (a) Thành công: icon check success, "Nạp tiền thành công", "+500.000đ" (màu success), số dư mới, mã giao dịch, thời gian "14:30 · 12/10/2026"; CTA "Về ví".
+- (b) Thất bại: icon X error, "Nạp tiền không thành công", lý do ngắn "Giao dịch bị huỷ hoặc hết hạn", trấn an "Bạn chưa bị trừ tiền"; CTA "Thử lại", nút phụ "Đổi cổng thanh toán".
+- (c) Xử lý lâu (vẫn PENDING sau 5 phút): icon warning, "Giao dịch đang được đối soát", nút "Gọi hỗ trợ" (icon + nhãn).
+- Kèm: dòng giao dịch "Nạp tiền" trong sổ ví (Cell 117) với icon mũi tên vào, số tiền +, trạng thái Hoàn tất / Đang xử lý / Thất bại (icon + nhãn + màu).
 ```
 
 ---
 
-## Batch 16 — Thông báo (Cells 139–140)
+## Batch 16 — Thông báo (Cells 139–140) — ✅ đã làm ở Pha 5, không cần dán
 
 **Bối cảnh API:** `POST /notifications/read-all`; settings gồm 3 cờ bắt buộc: `systemEnabled`, `bookingEnabled`, `promoEnabled`. Thông báo của khách (Cell 64) chưa có nút đọc tất cả. Thợ chưa có màn cài đặt thông báo (khách đã có).
 
@@ -141,7 +151,7 @@ Cell 140 — [Thợ] Cài đặt thông báo (mở từ Hồ sơ Thợ — Cell 
 
 ---
 
-## Batch 17 — Lịch sử cuộc gọi của đơn (Cell 141)
+## Batch 17 — Lịch sử cuộc gọi của đơn (Cell 141) — ✅ đã làm ở Pha 5, không cần dán
 
 **Bối cảnh API:** `GET /voip/calls?bookingId=` trả danh sách gồm `callerId`, `receiverId`, `durationSeconds`, `startedAt`, `endedAt`. `recordingUrl` chỉ dành cho admin, không hiển thị trong app. Cuộc gọi là ẩn số (masked).
 

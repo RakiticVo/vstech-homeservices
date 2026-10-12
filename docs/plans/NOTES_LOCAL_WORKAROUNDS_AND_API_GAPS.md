@@ -8,7 +8,7 @@
 ## 0. Tóm tắt nhanh — đọc phần này trước
 
 - **Đã nối API:** đăng nhập/đăng ký/hồ sơ, danh mục, đặt lịch + đơn hàng, luồng thợ (nhận/bắt đầu/báo giá/hoàn thành, GPS 2s), ví + rút tiền, thông báo + cài đặt, chat realtime, nhật ký cuộc gọi.
-- **Chưa thử trên UAT thật** — mới chạy bằng test (351 test xanh). Cần tài khoản test (việc #1) để chạy thử đầu-cuối.
+- **Chưa thử trên UAT thật** — mới chạy bằng test (351 test xanh). Đang chờ tài khoản test (việc #1).
 - **Đang giả lập:** OTP (`123456`), PIN rút tiền, bật/tắt Online, **âm thanh cuộc gọi** (chỉ ghi nhật ký) — chi tiết ở mục 2.
 - **Realtime:** WebSocket là **JSON thuần, không STOMP** (đã chốt theo doc, CLAUDE.md đã sửa, đã gỡ `stomp_dart_client`).
 - **Biến môi trường:** `.env.development` / `.env.production` ở thư mục gốc (không lên git), chạy bằng `flutter run --dart-define-from-file=.env.development`.
@@ -17,30 +17,27 @@
 
 ## 1. Việc bạn cần làm / quyết định
 
-**Ưu tiên cao (đang chặn chạy thử thật):**
+**Đang chờ (bạn đã biết, làm sau):**
 
-| # | Việc | Vì sao |
+| # | Việc | Ghi chú |
 | :- | :--- | :--- |
-| 1 | Xin **2 tài khoản test UAT** (1 khách, 1 thợ) — điền vào `.env.development` (`TEST_CUSTOMER_*`, `TEST_WORKER_*`) | Chưa chạy thử đăng nhập / đặt lịch / nhận việc / chat thật trên UAT |
-| 2 | **Gửi backend mục 2, 4, 5** dưới đây — ưu tiên: L26 (`senderId` cùng loại id với hồ sơ?), C14 (`recordingUrl` bắt buộc?), L22 (`bookingId` trong thông báo), L24 (tên người bên kia trong chat), C2 (id int64 hay UUID) | Sai id → tin nhắn của mình hiện như của bên kia; thiếu `recordingUrl` → server có thể từ chối ghi kết thúc cuộc gọi |
-| 3 | Xin **URL backend production** (+ Google Maps key production) — điền `.env.production` | Thiếu thì bản production rơi về UAT (có log cảnh báo) |
+| 1 | **Tài khoản test UAT** (1 khách, 1 thợ) → điền `.env.development` (`TEST_CUSTOMER_*`, `TEST_WORKER_*`) | Chưa đăng ký được — chờ. Khi có, chạy thử đầu-cuối các Pha 1–5 trên UAT |
+| 2 | **Gửi backend mục 2, 4, 5** dưới đây | Không bắt buộc để app chạy (app đã có cách làm tạm), nhưng nên gửi: L26 (`senderId` cùng loại id với hồ sơ — sai thì tin của mình hiện như của bên kia), C14 (`recordingUrl` bắt buộc — sai thì server từ chối ghi kết thúc cuộc gọi), L12 (khách chưa đọc được báo giá), L22, L24, C2. Kiểm chứng được ngay khi có tài khoản test |
+| 3 | **URL backend production** (+ Google Maps key production) → `.env.production` | Chỉ cần trước khi phát hành bản production; dev/UAT không cần |
+| 4 | **Nạp tiền vào ví nào** (Batch 15 đang giả định ví thợ) | Bạn sẽ hỏi BA sau. Chưa làm `POST /wallets/payments/deposit` |
+| 5 | **Firebase** (`google-services.json`, `GoogleService-Info.plist`) | Bạn tạo sau. Cần cho FCM / push / Crashlytics; backend cũng chưa gửi push |
+| 6 | **Claude Design Batch 14–15** — prompt đã cập nhật ở `docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md` | Dán *Khối ngữ cảnh chung* + prompt từng batch, mỗi batch 1 phiên. Batch 16–17 đã làm, bỏ qua |
+| 7 | **VoIP tự dựng server** — gửi mình tài liệu khi có | App cần từ phía bạn: (a) signaling (gợi ý: thêm sự kiện gọi/nhận/huỷ vào WebSocket JSON sẵn có), (b) STUN/TURN (coturn) nếu dùng WebRTC hoặc SIP server (Asterisk/FreeSWITCH), (c) API cấp token/credential, (d) **báo cuộc gọi đến** khi app đóng (iOS PushKit/CallKit, Android FCM high-priority — cần Firebase), (e) URL file ghi âm nếu muốn lưu `recordingUrl`. App sẽ dùng `flutter_webrtc` (hoặc SIP client) + `flutter_callkit_incoming`; phần nhật ký `/voip/calls` hiện có giữ nguyên |
+| 8 | **Git identity** (tuỳ chọn): `git config --global user.name "Tên bạn"` + `user.email` | Chỉ để commit ghi đúng tên/email của bạn (hiện ghi `Admin <admin@Admins-MacBook-Pro.local>`). Không ảnh hưởng code |
+| 9 | Cài **CocoaPods** nếu muốn build iOS trên máy này (`brew install cocoapods`) | Máy hiện build iOS báo thiếu CocoaPods |
 
-**Cần quyết định:**
+**Đã chốt:**
 
-| # | Việc | Vì sao |
-| :- | :--- | :--- |
-| 4 | Chọn **nhà cung cấp VoIP** (Stringee / Twilio / Agora…) | Hiện gọi điện **không có âm thanh** (L27), không có cuộc gọi đến (L28) |
-| 5 | Xác nhận với BA: **nạp tiền là ví nào** (Batch 15 đang giả định ví thợ) | `POST /wallets/payments/deposit` chưa rõ đối tượng — chưa làm |
-| 6 | Bản production thiếu `API_BASE_URL`: giữ **rơi về UAT + cảnh báo** (hiện tại) hay **dừng app** | Tránh phát hành nhầm bản trỏ về UAT |
-
-**Cần chuẩn bị:**
-
-| # | Việc | Vì sao |
-| :- | :--- | :--- |
-| 7 | Cấu hình **Firebase** (`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`) | Cần cho đăng ký FCM (`/devices/*`), push và Crashlytics — đang hoãn. Lưu ý: theo doc `08-notifications`, backend **chưa gửi** push |
-| 8 | Thiết kế **Claude Design Batch 14–15** (`docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`) — báo giá chi tiết, nạp tiền ví | Batch 16–17 (thông báo, lịch sử cuộc gọi) đã làm ở Pha 5 theo design system hiện có — có thể bỏ hoặc dùng để đánh bóng lại |
-| 9 | Đặt **git identity**: `git config --global user.name/user.email` | Đang commit bằng `Admin <admin@Admins-MacBook-Pro.local>` |
-| 10 | Bản dịch tiếng Anh cho câu xin quyền vị trí iOS (`NSLocationWhenInUseUsageDescription`) | Hiện chỉ có tiếng Việt trong `Info.plist` |
+| Việc | Quyết định |
+| :--- | :--- |
+| Bản production thiếu `API_BASE_URL` | **Giữ: rơi về UAT + log cảnh báo** (không dừng app) |
+| Câu xin quyền vị trí iOS tiếng Anh | ✅ Đã làm: `ios/Runner/en.lproj` + `vi.lproj/InfoPlist.strings`, `CFBundleLocalizations` = vi, en |
+| WebSocket STOMP hay JSON | ✅ JSON thuần (C9) |
 
 ---
 
