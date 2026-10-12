@@ -112,15 +112,28 @@ import 'package:vstech_home_services/features/worker_task/presentation/bloc/work
 GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
   initialLocation: AppRoutes.splash,
   refreshListenable: GoRouterRefreshStream(session.stream),
-  redirect: (context, state) => sessionRedirect(session.state, state.matchedLocation),
+  redirect: (context, state) =>
+      sessionRedirect(session.state, state.matchedLocation),
   routes: [
     GoRoute(
       path: AppRoutes.splash,
-      builder: (context, state) => BlocProvider(create: (_) => getIt<SplashCubit>(), child: const SplashPage()),
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<SplashCubit>(),
+        child: const SplashPage(),
+      ),
     ),
-    GoRoute(path: AppRoutes.onboarding, builder: (context, state) => const OnboardingPage()),
-    GoRoute(path: AppRoutes.intro, builder: (context, state) => const IntroValuePage()),
-    GoRoute(path: AppRoutes.roleGateway, builder: (context, state) => const RoleGatewayPage()),
+    GoRoute(
+      path: AppRoutes.onboarding,
+      builder: (context, state) => const OnboardingPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.intro,
+      builder: (context, state) => const IntroValuePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.roleGateway,
+      builder: (context, state) => const RoleGatewayPage(),
+    ),
     GoRoute(
       path: AppRoutes.login,
       builder: (context, state) {
@@ -147,7 +160,11 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         final phone = state.uri.queryParameters['phone'] ?? '0901 234 567';
         final role = state.uri.queryParameters['role'] ?? 'customer';
         final otpContext = state.uri.queryParameters['context'] ?? 'register';
-        return OtpVerificationPage(phone: phone, role: role, otpContext: otpContext);
+        return OtpVerificationPage(
+          phone: phone,
+          role: role,
+          otpContext: otpContext,
+        );
       },
     ),
     GoRoute(
@@ -160,19 +177,31 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
     GoRoute(
       path: AppRoutes.resetPassword,
-      builder: (context, state) => ResetPasswordPage(role: state.uri.queryParameters['role'] ?? 'customer'),
+      builder: (context, state) => ResetPasswordPage(
+        role: state.uri.queryParameters['role'] ?? 'customer',
+      ),
     ),
     GoRoute(
       path: AppRoutes.resetPasswordSuccess,
-      builder: (context, state) => ResetPasswordSuccessPage(role: state.uri.queryParameters['role'] ?? 'customer'),
+      builder: (context, state) => ResetPasswordSuccessPage(
+        role: state.uri.queryParameters['role'] ?? 'customer',
+      ),
     ),
-    GoRoute(path: AppRoutes.customerHome, builder: (context, state) => _withCategories(const CustomerHomePage())),
-    GoRoute(path: AppRoutes.categories, builder: (context, state) => _withCategories(const CategoriesPage())),
+    GoRoute(
+      path: AppRoutes.customerHome,
+      builder: (context, state) => _withCategories(const CustomerHomePage()),
+    ),
+    GoRoute(
+      path: AppRoutes.categories,
+      builder: (context, state) => _withCategories(const CategoriesPage()),
+    ),
     GoRoute(
       path: AppRoutes.serviceDetail,
       builder: (context, state) => BlocProvider(
         create: (_) => getIt<CategoryDetailCubit>(),
-        child: ServiceDetailPage(serviceId: state.uri.queryParameters['id'] ?? ''),
+        child: ServiceDetailPage(
+          serviceId: state.uri.queryParameters['id'] ?? '',
+        ),
       ),
     ),
     GoRoute(
@@ -187,12 +216,14 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
     GoRoute(
       path: AppRoutes.workerJobDetail,
-      builder: (context, state) => _withWorkerTask(WorkerJobDetailPage(bookingId: _bookingId(state))),
+      builder: (context, state) =>
+          _withWorkerTask(WorkerJobDetailPage(bookingId: _bookingId(state))),
     ),
     GoRoute(
       path: AppRoutes.workerKyc,
       builder: (context, state) {
-        final step = int.tryParse(state.uri.queryParameters['step'] ?? '2') ?? 2;
+        final step =
+            int.tryParse(state.uri.queryParameters['step'] ?? '2') ?? 2;
         return WorkerKycWizardPage(initialStep: step);
       },
     ),
@@ -205,45 +236,64 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
     // One BookingFlowBloc shared by every step of the booking wizard (draft survives back/forward).
     ShellRoute(
-      builder: (context, state, child) => BlocProvider(create: (_) => getIt<BookingFlowBloc>(), child: child),
+      builder: (context, state, child) =>
+          BlocProvider(create: (_) => getIt<BookingFlowBloc>(), child: child),
       routes: [
         GoRoute(
           path: AppRoutes.bookingStep1,
-          builder: (context, state) =>
-              BookingStep1ServiceOptionPage(categoryId: state.uri.queryParameters['categoryId'] ?? ''),
+          builder: (context, state) => BookingStep1ServiceOptionPage(
+            categoryId: state.uri.queryParameters['categoryId'] ?? '',
+          ),
         ),
-        GoRoute(path: AppRoutes.bookingStep2, builder: (context, state) => const BookingStep2ScheduleAddressPage()),
-        GoRoute(path: AppRoutes.bookingStep3, builder: (context, state) => const BookingStep3ConfirmPage()),
-        GoRoute(path: AppRoutes.bookingSuccess, builder: (context, state) => const BookingSuccessPage()),
+        GoRoute(
+          path: AppRoutes.bookingStep2,
+          builder: (context, state) => const BookingStep2ScheduleAddressPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.bookingStep3,
+          builder: (context, state) => const BookingStep3ConfirmPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.bookingSuccess,
+          builder: (context, state) => const BookingSuccessPage(),
+        ),
       ],
     ),
     GoRoute(
       path: AppRoutes.bookingMatching,
       builder: (context, state) {
-        final stage = int.tryParse(state.uri.queryParameters['stage'] ?? '0') ?? 0;
+        final stage =
+            int.tryParse(state.uri.queryParameters['stage'] ?? '0') ?? 0;
         final rematch = state.uri.queryParameters['rematch'] == 'true';
-        return DispatchRadarMatchingPage(initialStage: stage, isWorkerCancelled: rematch);
+        return DispatchRadarMatchingPage(
+          initialStage: stage,
+          isWorkerCancelled: rematch,
+        );
       },
     ),
     GoRoute(
       path: AppRoutes.customerTracking,
       builder: (context, state) {
-        final stage = int.tryParse(state.uri.queryParameters['stage'] ?? '1') ?? 1;
+        final stage =
+            int.tryParse(state.uri.queryParameters['stage'] ?? '1') ?? 1;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
         return CustomerTrackingPage(initialStage: stage, orderCode: code);
       },
     ),
     GoRoute(
       path: AppRoutes.workerEnRoute,
-      builder: (context, state) => WorkerEnRoutePage(bookingId: _bookingId(state)),
+      builder: (context, state) =>
+          WorkerEnRoutePage(bookingId: _bookingId(state)),
     ),
     GoRoute(
       path: AppRoutes.workerArrived,
-      builder: (context, state) => _withWorkerTask(WorkerArrivedPage(bookingId: _bookingId(state))),
+      builder: (context, state) =>
+          _withWorkerTask(WorkerArrivedPage(bookingId: _bookingId(state))),
     ),
     GoRoute(
       path: AppRoutes.workerExecuting,
-      builder: (context, state) => _withWorkerTask(WorkerExecutingPage(bookingId: _bookingId(state))),
+      builder: (context, state) =>
+          _withWorkerTask(WorkerExecutingPage(bookingId: _bookingId(state))),
     ),
     GoRoute(
       path: AppRoutes.inspectionSignoff,
@@ -255,10 +305,17 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.orderPaymentSummary,
       builder: (context, state) {
-        final labour = int.tryParse(state.uri.queryParameters['labour'] ?? '350000') ?? 350000;
-        final addons = int.tryParse(state.uri.queryParameters['addons'] ?? '30000') ?? 30000;
-        final premises = int.tryParse(state.uri.queryParameters['premises'] ?? '20000') ?? 20000;
-        final extra = int.tryParse(state.uri.queryParameters['extra'] ?? '0') ?? 0;
+        final labour =
+            int.tryParse(state.uri.queryParameters['labour'] ?? '350000') ??
+            350000;
+        final addons =
+            int.tryParse(state.uri.queryParameters['addons'] ?? '30000') ??
+            30000;
+        final premises =
+            int.tryParse(state.uri.queryParameters['premises'] ?? '20000') ??
+            20000;
+        final extra =
+            int.tryParse(state.uri.queryParameters['extra'] ?? '0') ?? 0;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
         return OrderPaymentSummaryPage(
           labourFee: labour,
@@ -272,16 +329,24 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.paymentGateway,
       builder: (context, state) {
-        final amount = int.tryParse(state.uri.queryParameters['amount'] ?? '400000') ?? 400000;
+        final amount =
+            int.tryParse(state.uri.queryParameters['amount'] ?? '400000') ??
+            400000;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
         final failed = state.uri.queryParameters['state'] == 'fail';
-        return PaymentGatewayPage(amount: amount, orderCode: code, initialFailed: failed);
+        return PaymentGatewayPage(
+          amount: amount,
+          orderCode: code,
+          initialFailed: failed,
+        );
       },
     ),
     GoRoute(
       path: AppRoutes.paymentSuccess,
       builder: (context, state) {
-        final amount = int.tryParse(state.uri.queryParameters['amount'] ?? '400000') ?? 400000;
+        final amount =
+            int.tryParse(state.uri.queryParameters['amount'] ?? '400000') ??
+            400000;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
         return PaymentSuccessPage(amount: amount, orderCode: code);
       },
@@ -289,7 +354,9 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.electronicReceipt,
       builder: (context, state) {
-        final amount = int.tryParse(state.uri.queryParameters['amount'] ?? '400000') ?? 400000;
+        final amount =
+            int.tryParse(state.uri.queryParameters['amount'] ?? '400000') ??
+            400000;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
         return ElectronicReceiptPage(amount: amount, orderCode: code);
       },
@@ -297,21 +364,37 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.orderReviewTip,
       builder: (context, state) {
-        final rating = int.tryParse(state.uri.queryParameters['rating'] ?? '5') ?? 5;
+        final rating =
+            int.tryParse(state.uri.queryParameters['rating'] ?? '5') ?? 5;
         final tip = int.tryParse(state.uri.queryParameters['tip'] ?? '0') ?? 0;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        return OrderReviewTipPage(initialRating: rating, initialTip: tip, orderCode: code);
+        return OrderReviewTipPage(
+          initialRating: rating,
+          initialTip: tip,
+          orderCode: code,
+        );
       },
     ),
-    GoRoute(path: AppRoutes.orderThanks, builder: (context, state) => const OrderThanksPage()),
+    GoRoute(
+      path: AppRoutes.orderThanks,
+      builder: (context, state) => const OrderThanksPage(),
+    ),
     GoRoute(
       path: AppRoutes.workerJobCompletion,
       builder: (context, state) {
         final stage = state.uri.queryParameters['stage'] ?? 'inspection';
-        final total = int.tryParse(state.uri.queryParameters['total'] ?? '400000') ?? 400000;
+        final total =
+            int.tryParse(state.uri.queryParameters['total'] ?? '400000') ??
+            400000;
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        final extra = int.tryParse(state.uri.queryParameters['extra'] ?? '0') ?? 0;
-        return WorkerJobCompletionPage(initialStage: stage, totalPrice: total, extraCost: extra, orderCode: code);
+        final extra =
+            int.tryParse(state.uri.queryParameters['extra'] ?? '0') ?? 0;
+        return WorkerJobCompletionPage(
+          initialStage: stage,
+          totalPrice: total,
+          extraCost: extra,
+          orderCode: code,
+        );
       },
     ),
     GoRoute(
@@ -329,7 +412,9 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       builder: (context, state) {
         return BlocProvider(
           create: (_) => getIt<OrderDetailCubit>(),
-          child: CustomerOrderDetailPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+          child: CustomerOrderDetailPage(
+            bookingId: state.uri.queryParameters['id'] ?? '',
+          ),
         );
       },
     ),
@@ -343,18 +428,26 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         );
       },
     ),
-    GoRoute(path: AppRoutes.customerNotifications, builder: (context, state) => const CustomerNotificationsPage()),
+    GoRoute(
+      path: AppRoutes.customerNotifications,
+      builder: (context, state) => const CustomerNotificationsPage(),
+    ),
     GoRoute(
       path: AppRoutes.customerNotificationSettings,
       builder: (context, state) => const CustomerNotificationSettingsPage(),
     ),
-    GoRoute(path: AppRoutes.workerNotifications, builder: (context, state) => const WorkerNotificationsPage()),
+    GoRoute(
+      path: AppRoutes.workerNotifications,
+      builder: (context, state) => const WorkerNotificationsPage(),
+    ),
     GoRoute(
       path: AppRoutes.customerCancel,
       builder: (context, state) {
         return BlocProvider(
           create: (_) => getIt<BookingActionCubit>(),
-          child: CustomerCancellationPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+          child: CustomerCancellationPage(
+            bookingId: state.uri.queryParameters['id'] ?? '',
+          ),
         );
       },
     ),
@@ -377,7 +470,9 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       builder: (context, state) {
         return BlocProvider(
           create: (_) => getIt<BookingActionCubit>(),
-          child: DisputeReportPage(bookingId: state.uri.queryParameters['id'] ?? ''),
+          child: DisputeReportPage(
+            bookingId: state.uri.queryParameters['id'] ?? '',
+          ),
         );
       },
     ),
@@ -385,18 +480,26 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
       path: AppRoutes.orderDisputed,
       builder: (context, state) {
         final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        final complaint = state.uri.queryParameters['complaint'] ?? '#KN-0425-031';
+        final complaint =
+            state.uri.queryParameters['complaint'] ?? '#KN-0425-031';
         return OrderDisputedPage(orderCode: code, complaintCode: complaint);
       },
     ),
-    GoRoute(path: AppRoutes.customerDisputeList, builder: (context, state) => const CustomerDisputeListPage()),
+    GoRoute(
+      path: AppRoutes.customerDisputeList,
+      builder: (context, state) => const CustomerDisputeListPage(),
+    ),
     GoRoute(
       path: AppRoutes.disputeDetail,
       builder: (context, state) {
         final id = state.uri.queryParameters['id'] ?? '#KN-0228-014';
         final order = state.uri.queryParameters['order'] ?? 'HS-2026-0054';
         final needInfo = state.uri.queryParameters['needInfo'] == 'true';
-        return DisputeDetailPage(complaintId: id, orderCode: order, isNeedInfo: needInfo);
+        return DisputeDetailPage(
+          complaintId: id,
+          orderCode: order,
+          isNeedInfo: needInfo,
+        );
       },
     ),
     GoRoute(
@@ -412,7 +515,11 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         final code = state.uri.queryParameters['code'] ?? 'HS-20250318-0087';
         final expired = state.uri.queryParameters['expired'] == 'true';
         final hasRequest = state.uri.queryParameters['hasRequest'] == 'true';
-        return WarrantyCertificatePage(orderCode: code, isExpired: expired, hasExistingRequest: hasRequest);
+        return WarrantyCertificatePage(
+          orderCode: code,
+          isExpired: expired,
+          hasExistingRequest: hasRequest,
+        );
       },
     ),
     GoRoute(
@@ -425,7 +532,8 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.warrantyStatus,
       builder: (context, state) {
-        final stage = int.tryParse(state.uri.queryParameters['stage'] ?? '1') ?? 1;
+        final stage =
+            int.tryParse(state.uri.queryParameters['stage'] ?? '1') ?? 1;
         return WarrantyStatusPage(stage: stage);
       },
     ),
@@ -436,7 +544,10 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         return WorkerWarrantyJobDetailPage(orderCode: code);
       },
     ),
-    GoRoute(path: AppRoutes.workerWarrantyDecline, builder: (context, state) => const WorkerWarrantyDeclinePage()),
+    GoRoute(
+      path: AppRoutes.workerWarrantyDecline,
+      builder: (context, state) => const WorkerWarrantyDeclinePage(),
+    ),
     GoRoute(
       path: AppRoutes.chat,
       builder: (context, state) {
@@ -445,7 +556,13 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         final order = state.uri.queryParameters['order'] ?? '#HS20250425-0012';
         final peer = state.uri.queryParameters['peer'];
         final status = state.uri.queryParameters['status'] ?? 'Đang thực hiện';
-        return ChatPage(role: role, isClosed: isClosed, orderCode: order, peerName: peer, orderStatus: status);
+        return ChatPage(
+          role: role,
+          isClosed: isClosed,
+          orderCode: order,
+          peerName: peer,
+          orderStatus: status,
+        );
       },
     ),
     GoRoute(
@@ -455,28 +572,74 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         final mode = state.uri.queryParameters['mode'] ?? 'callout';
         final peer = state.uri.queryParameters['peer'];
         final order = state.uri.queryParameters['order'] ?? '#HS20250425-0012';
-        return VoipCallPage(role: role, mode: mode, peerName: peer, orderCode: order);
+        return VoipCallPage(
+          role: role,
+          mode: mode,
+          peerName: peer,
+          orderCode: order,
+        );
       },
     ),
     // --- Batch 12: Devices, AI Assistant & Account Settings ---
-    GoRoute(path: AppRoutes.myHomeDevices, builder: (context, state) => const MyHomeDevicesPage()),
-    GoRoute(path: AppRoutes.aiAssistant, builder: (context, state) => const AiAssistantPage()),
-    GoRoute(path: AppRoutes.aiSuggestions, builder: (context, state) => const AiSuggestionsPage()),
-    GoRoute(path: AppRoutes.customerProfile, builder: (context, state) => _withProfile(const CustomerProfilePage())),
-    GoRoute(path: AppRoutes.editProfile, builder: (context, state) => _withProfile(const EditProfilePage())),
-    GoRoute(path: AppRoutes.myAddresses, builder: (context, state) => const MyAddressesPage()),
-    GoRoute(path: AppRoutes.editAddress, builder: (context, state) => _withProfile(const EditAddressPage())),
-    GoRoute(path: AppRoutes.paymentMethods, builder: (context, state) => const PaymentMethodsPage()),
-    GoRoute(path: AppRoutes.linkWallet, builder: (context, state) => const LinkWalletPage()),
-    GoRoute(path: AppRoutes.favouritePros, builder: (context, state) => const FavouriteProsPage()),
-    GoRoute(path: AppRoutes.workerProfilePreview, builder: (context, state) => const WorkerProfilePreviewPage()),
+    GoRoute(
+      path: AppRoutes.myHomeDevices,
+      builder: (context, state) => const MyHomeDevicesPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.aiAssistant,
+      builder: (context, state) => const AiAssistantPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.aiSuggestions,
+      builder: (context, state) => const AiSuggestionsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.customerProfile,
+      builder: (context, state) => _withProfile(const CustomerProfilePage()),
+    ),
+    GoRoute(
+      path: AppRoutes.editProfile,
+      builder: (context, state) => _withProfile(const EditProfilePage()),
+    ),
+    GoRoute(
+      path: AppRoutes.myAddresses,
+      builder: (context, state) => const MyAddressesPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.editAddress,
+      builder: (context, state) => _withProfile(const EditAddressPage()),
+    ),
+    GoRoute(
+      path: AppRoutes.paymentMethods,
+      builder: (context, state) => const PaymentMethodsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.linkWallet,
+      builder: (context, state) => const LinkWalletPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.favouritePros,
+      builder: (context, state) => const FavouriteProsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.workerProfilePreview,
+      builder: (context, state) => const WorkerProfilePreviewPage(),
+    ),
     GoRoute(
       path: AppRoutes.customerSettings,
-      builder: (context, state) =>
-          BlocProvider(create: (_) => getIt<LogoutCubit>(), child: const CustomerSettingsPage()),
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<LogoutCubit>(),
+        child: const CustomerSettingsPage(),
+      ),
     ),
-    GoRoute(path: AppRoutes.changePassword, builder: (context, state) => const ChangePasswordPage()),
-    GoRoute(path: AppRoutes.deleteAccount, builder: (context, state) => const DeleteAccountPage()),
+    GoRoute(
+      path: AppRoutes.changePassword,
+      builder: (context, state) => const ChangePasswordPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.deleteAccount,
+      builder: (context, state) => const DeleteAccountPage(),
+    ),
     // --- Batch 13: Worker Wallet, Withdrawals, Schedule & Operations ---
     GoRoute(
       path: AppRoutes.workerWallet,
@@ -498,10 +661,17 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
     // One WithdrawCubit shared by the amount/bank form and the PIN step.
     ShellRoute(
-      builder: (context, state, child) => BlocProvider(create: (_) => getIt<WithdrawCubit>(), child: child),
+      builder: (context, state, child) =>
+          BlocProvider(create: (_) => getIt<WithdrawCubit>(), child: child),
       routes: [
-        GoRoute(path: AppRoutes.workerWithdraw, builder: (context, state) => const WorkerWithdrawPage()),
-        GoRoute(path: AppRoutes.workerWithdrawPin, builder: (context, state) => const WorkerWithdrawPinPage()),
+        GoRoute(
+          path: AppRoutes.workerWithdraw,
+          builder: (context, state) => const WorkerWithdrawPage(),
+        ),
+        GoRoute(
+          path: AppRoutes.workerWithdrawPin,
+          builder: (context, state) => const WorkerWithdrawPinPage(),
+        ),
       ],
     ),
     GoRoute(
@@ -511,16 +681,36 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
         child: WorkerWithdrawStatusPage(withdrawalId: _bookingId(state)),
       ),
     ),
-    GoRoute(path: AppRoutes.workerSchedule, builder: (context, state) => const WorkerScheduleWeekPage()),
-    GoRoute(path: AppRoutes.workerAvailability, builder: (context, state) => const WorkerAvailabilityPage()),
-    GoRoute(path: AppRoutes.workerWorkZone, builder: (context, state) => const WorkerWorkZonePage()),
-    GoRoute(path: AppRoutes.workerSkills, builder: (context, state) => const WorkerSkillsPage()),
-    GoRoute(path: AppRoutes.workerUploadCert, builder: (context, state) => const WorkerUploadCertPage()),
-    GoRoute(path: AppRoutes.workerPerformance, builder: (context, state) => const WorkerPerformancePage()),
+    GoRoute(
+      path: AppRoutes.workerSchedule,
+      builder: (context, state) => const WorkerScheduleWeekPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.workerAvailability,
+      builder: (context, state) => const WorkerAvailabilityPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.workerWorkZone,
+      builder: (context, state) => const WorkerWorkZonePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.workerSkills,
+      builder: (context, state) => const WorkerSkillsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.workerUploadCert,
+      builder: (context, state) => const WorkerUploadCertPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.workerPerformance,
+      builder: (context, state) => const WorkerPerformancePage(),
+    ),
     GoRoute(
       path: AppRoutes.workerProfile,
-      builder: (context, state) =>
-          BlocProvider(create: (_) => getIt<LogoutCubit>(), child: _withProfile(const WorkerProfilePage())),
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<LogoutCubit>(),
+        child: _withProfile(const WorkerProfilePage()),
+      ),
     ),
   ],
 );
@@ -529,7 +719,8 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
 String _bookingId(GoRouterState state) => state.uri.queryParameters['id'] ?? '';
 
 /// Provides a fresh [WorkerTaskCubit]; the page loads its booking.
-Widget _withWorkerTask(Widget page) => BlocProvider(create: (_) => getIt<WorkerTaskCubit>(), child: page);
+Widget _withWorkerTask(Widget page) =>
+    BlocProvider(create: (_) => getIt<WorkerTaskCubit>(), child: page);
 
 /// A [BookingListCubit] already loading `GET /bookings` (customer orders or worker jobs).
 BookingListCubit _loadedBookingList() {
@@ -567,7 +758,9 @@ bool isPublicLocation(String location) =>
     location.startsWith('/auth/');
 
 /// Landing screen for a signed-in [role].
-String homeRouteFor(UserRole role) => role == UserRole.worker ? AppRoutes.workerDashboard : AppRoutes.customerHome;
+String homeRouteFor(UserRole role) => role == UserRole.worker
+    ? AppRoutes.workerDashboard
+    : AppRoutes.customerHome;
 
 /// Auth guard + role guard, evaluated on every navigation and whenever [SessionCubit] changes:
 /// - signed out (or session expired) on a protected screen → login;
@@ -585,7 +778,12 @@ String? sessionRedirect(SessionState session, String location) {
       // Splash, login, register and the OTP step navigate on their own right after signing in
       // (register sends workers to KYC), so the guard must not race them.
       if (role == null ||
-          const {AppRoutes.splash, AppRoutes.login, AppRoutes.register, AppRoutes.verifyOtp}.contains(location)) {
+          const {
+            AppRoutes.splash,
+            AppRoutes.login,
+            AppRoutes.register,
+            AppRoutes.verifyOtp,
+          }.contains(location)) {
         return null;
       }
       final home = homeRouteFor(role);

@@ -23,37 +23,53 @@ import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 import '../../fixtures/booking/booking_fixtures.dart';
 import '../../helpers/mocks.dart';
 
-Widget _createTestOrdersWidget(Widget child, {MockBookingListCubit? orders, MockOrderDetailCubit? detail}) {
+Widget _createTestOrdersWidget(
+  Widget child, {
+  MockBookingListCubit? orders,
+  MockOrderDetailCubit? detail,
+}) {
   final router = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(path: '/', builder: (context, state) => child),
       GoRoute(
         path: AppRoutes.customerOrderDetail,
-        builder: (context, state) => Scaffold(body: Text('Detail:${state.uri.queryParameters['id']}')),
+        builder: (context, state) =>
+            Scaffold(body: Text('Detail:${state.uri.queryParameters['id']}')),
       ),
       GoRoute(
         path: AppRoutes.customerCancel,
-        builder: (context, state) => Scaffold(body: Text('Cancel:${state.uri.queryParameters['id']}')),
+        builder: (context, state) =>
+            Scaffold(body: Text('Cancel:${state.uri.queryParameters['id']}')),
       ),
       GoRoute(
         path: AppRoutes.disputeReport,
-        builder: (context, state) => Scaffold(body: Text('Dispute:${state.uri.queryParameters['id']}')),
+        builder: (context, state) =>
+            Scaffold(body: Text('Dispute:${state.uri.queryParameters['id']}')),
       ),
       GoRoute(
         path: AppRoutes.categories,
-        builder: (context, state) => const Scaffold(body: Text('CategoriesTarget')),
+        builder: (context, state) =>
+            const Scaffold(body: Text('CategoriesTarget')),
       ),
       GoRoute(
         path: AppRoutes.workerJobDetail,
-        builder: (context, state) => Scaffold(body: Text('JobDetail:${state.uri.queryParameters['id']}')),
+        builder: (context, state) => Scaffold(
+          body: Text('JobDetail:${state.uri.queryParameters['id']}'),
+        ),
       ),
-      GoRoute(path: AppRoutes.customerNotifications, builder: (context, state) => const CustomerNotificationsPage()),
+      GoRoute(
+        path: AppRoutes.customerNotifications,
+        builder: (context, state) => const CustomerNotificationsPage(),
+      ),
       GoRoute(
         path: AppRoutes.customerNotificationSettings,
         builder: (context, state) => const CustomerNotificationSettingsPage(),
       ),
-      GoRoute(path: AppRoutes.workerNotifications, builder: (context, state) => const WorkerNotificationsPage()),
+      GoRoute(
+        path: AppRoutes.workerNotifications,
+        builder: (context, state) => const WorkerNotificationsPage(),
+      ),
     ],
   );
 
@@ -71,8 +87,12 @@ Widget _createTestOrdersWidget(Widget child, {MockBookingListCubit? orders, Mock
   );
   return MultiBlocProvider(
     providers: [
-      BlocProvider<BookingListCubit>.value(value: orders ?? MockBookingListCubit()),
-      BlocProvider<OrderDetailCubit>.value(value: detail ?? MockOrderDetailCubit()),
+      BlocProvider<BookingListCubit>.value(
+        value: orders ?? MockBookingListCubit(),
+      ),
+      BlocProvider<OrderDetailCubit>.value(
+        value: detail ?? MockOrderDetailCubit(),
+      ),
     ],
     child: app,
   );
@@ -80,219 +100,285 @@ Widget _createTestOrdersWidget(Widget child, {MockBookingListCubit? orders, Mock
 
 void main() {
   group('Batch 8: Orders Hub & Notifications Widget Tests', () {
-    testWidgets('CustomerOrdersPage groups API bookings into Active / Waiting / Done tabs', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(800, 1600));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      final orders = MockBookingListCubit();
-      when(orders.load).thenAnswer((_) async {});
-      when(orders.loadMore).thenAnswer((_) async {});
-      whenListen(
-        orders,
-        const Stream<BookingListState>.empty(),
-        initialState: BookingListLoadedState(
-          bookings: [pendingBooking, acceptedBooking, completedBooking],
-          categoryNames: const {'1': 'Sửa máy lạnh', '2': 'Vệ sinh nhà'},
-          page: 0,
-          hasMore: true,
-        ),
-      );
+    testWidgets(
+      'CustomerOrdersPage groups API bookings into Active / Waiting / Done tabs',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(800, 1600));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final orders = MockBookingListCubit();
+        when(orders.load).thenAnswer((_) async {});
+        when(orders.loadMore).thenAnswer((_) async {});
+        whenListen(
+          orders,
+          const Stream<BookingListState>.empty(),
+          initialState: BookingListLoadedState(
+            bookings: [pendingBooking, acceptedBooking, completedBooking],
+            categoryNames: const {'1': 'Sửa máy lạnh', '2': 'Vệ sinh nhà'},
+            page: 0,
+            hasMore: true,
+          ),
+        );
 
-      await tester.pumpWidget(_createTestOrdersWidget(const CustomerOrdersPage(), orders: orders));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          _createTestOrdersWidget(const CustomerOrdersPage(), orders: orders),
+        );
+        await tester.pumpAndSettle();
 
-      // Active: accepted booking with Track CTA, status as Icon + Label + Color.
-      expect(find.text('#502'), findsOneWidget);
-      expect(find.byKey(const Key('booking_status_accepted')), findsOneWidget);
-      expect(find.text('Thợ đã nhận việc'), findsOneWidget);
-      expect(find.text('Theo dõi thợ'), findsOneWidget);
-      expect(find.text('#501'), findsNothing);
+        // Active: accepted booking with Track CTA, status as Icon + Label + Color.
+        expect(find.text('#502'), findsOneWidget);
+        expect(
+          find.byKey(const Key('booking_status_accepted')),
+          findsOneWidget,
+        );
+        expect(find.text('Thợ đã nhận việc'), findsOneWidget);
+        expect(find.text('Theo dõi thợ'), findsOneWidget);
+        expect(find.text('#501'), findsNothing);
 
-      // Waiting: pending booking.
-      await tester.tap(find.text('Đang chờ'));
-      await tester.pumpAndSettle();
-      expect(find.text('#501'), findsOneWidget);
-      expect(find.text('Đang tìm thợ'), findsOneWidget);
-      expect(find.text('Sửa máy lạnh'), findsOneWidget);
-      expect(find.text('500.000đ'), findsOneWidget);
+        // Waiting: pending booking.
+        await tester.tap(find.text('Đang chờ'));
+        await tester.pumpAndSettle();
+        expect(find.text('#501'), findsOneWidget);
+        expect(find.text('Đang tìm thợ'), findsOneWidget);
+        expect(find.text('Sửa máy lạnh'), findsOneWidget);
+        expect(find.text('500.000đ'), findsOneWidget);
 
-      // Done: completed booking shows its final price.
-      await tester.tap(find.text('Hoàn thành').first);
-      await tester.pumpAndSettle();
-      expect(find.text('#503'), findsOneWidget);
-      expect(find.text('Giá chốt'), findsOneWidget);
-      expect(find.text('320.000đ'), findsOneWidget);
+        // Done: completed booking shows its final price.
+        await tester.tap(find.text('Hoàn thành').first);
+        await tester.pumpAndSettle();
+        expect(find.text('#503'), findsOneWidget);
+        expect(find.text('Giá chốt'), findsOneWidget);
+        expect(find.text('320.000đ'), findsOneWidget);
 
-      // Manual paging + detail navigation by booking id.
-      await tester.tap(find.byKey(const Key('orders_load_more_button')));
-      verify(orders.loadMore).called(1);
-      await tester.tap(find.byKey(const Key('order_detail_button_503')));
-      await tester.pumpAndSettle();
-      expect(find.text('Detail:503'), findsOneWidget);
-    });
+        // Manual paging + detail navigation by booking id.
+        await tester.tap(find.byKey(const Key('orders_load_more_button')));
+        verify(orders.loadMore).called(1);
+        await tester.tap(find.byKey(const Key('order_detail_button_503')));
+        await tester.pumpAndSettle();
+        expect(find.text('Detail:503'), findsOneWidget);
+      },
+    );
 
-    testWidgets('CustomerOrdersPage shows the empty state with a CTA to book (Cell 74)', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(800, 1600));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      final orders = MockBookingListCubit();
-      whenListen(
-        orders,
-        const Stream<BookingListState>.empty(),
-        initialState: const BookingListLoadedState(bookings: [], categoryNames: {}, page: 0, hasMore: false),
-      );
+    testWidgets(
+      'CustomerOrdersPage shows the empty state with a CTA to book (Cell 74)',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(800, 1600));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final orders = MockBookingListCubit();
+        whenListen(
+          orders,
+          const Stream<BookingListState>.empty(),
+          initialState: const BookingListLoadedState(
+            bookings: [],
+            categoryNames: {},
+            page: 0,
+            hasMore: false,
+          ),
+        );
 
-      await tester.pumpWidget(_createTestOrdersWidget(const CustomerOrdersPage(), orders: orders));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          _createTestOrdersWidget(const CustomerOrdersPage(), orders: orders),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key('orders_empty_state')), findsOneWidget);
-      expect(find.text('Chưa có đơn đặt lịch nào'), findsOneWidget);
-    });
+        expect(find.byKey(const Key('orders_empty_state')), findsOneWidget);
+        expect(find.text('Chưa có đơn đặt lịch nào'), findsOneWidget);
+      },
+    );
 
-    testWidgets('CustomerOrderDetailPage shows booking fields and the actions its status allows', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(800, 1600));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      final detail = MockOrderDetailCubit();
-      when(() => detail.load(any(), refresh: any(named: 'refresh'))).thenAnswer((_) async {});
-      final states = StreamController<OrderDetailState>.broadcast();
-      addTearDown(states.close);
-      whenListen(
-        detail,
-        states.stream,
-        initialState: OrderDetailLoadedState(pendingBooking, serviceName: 'Sửa máy lạnh'),
-      );
-
-      await tester.pumpWidget(_createTestOrdersWidget(const CustomerOrderDetailPage(bookingId: '501'), detail: detail));
-      await tester.pumpAndSettle();
-
-      verify(() => detail.load('501')).called(1);
-      expect(find.text('Mã đơn hàng: #501'), findsOneWidget);
-      expect(find.text('Đang tìm thợ'), findsOneWidget);
-      expect(find.text('Sửa máy lạnh'), findsOneWidget);
-      expect(find.text('123 Đường ABC, Quận 1'), findsOneWidget);
-      expect(find.text('Máy lạnh không mát'), findsOneWidget);
-      expect(find.text('500.000đ'), findsOneWidget);
-      // PENDING: cancel only.
-      expect(find.byKey(const Key('order_detail_cancel_button')), findsOneWidget);
-      expect(find.byKey(const Key('order_detail_dispute_button')), findsNothing);
-      expect(find.byKey(const Key('order_detail_track_button')), findsNothing);
-
-      await tester.tap(find.byKey(const Key('order_detail_cancel_button')));
-      await tester.pumpAndSettle();
-      expect(find.text('Cancel:501'), findsOneWidget);
-
-      // COMPLETED: report an issue only.
-      tester.state<NavigatorState>(find.byType(Navigator).last).pop();
-      await tester.pumpAndSettle();
-      states.add(OrderDetailLoadedState(completedBooking, serviceName: 'Vệ sinh nhà'));
-      await tester.pumpAndSettle();
-      expect(find.byKey(const Key('order_detail_dispute_button')), findsOneWidget);
-      expect(find.byKey(const Key('order_detail_cancel_button')), findsNothing);
-      expect(find.text('320.000đ'), findsOneWidget);
-    });
-
-    testWidgets('WorkerJobsHubPage lists the worker jobs by status with the next-step action', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(800, 1600));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      final jobs = MockBookingListCubit();
-      whenListen(
-        jobs,
-        const Stream<BookingListState>.empty(),
-        initialState: BookingListLoadedState(
-          bookings: [
+    testWidgets(
+      'CustomerOrderDetailPage shows booking fields and the actions its status allows',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(800, 1600));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final detail = MockOrderDetailCubit();
+        when(() => detail.load(any(), refresh: any(named: 'refresh')))
+            .thenAnswer((_) async {});
+        final states = StreamController<OrderDetailState>.broadcast();
+        addTearDown(states.close);
+        whenListen(
+          detail,
+          states.stream,
+          initialState: OrderDetailLoadedState(
             pendingBooking,
-            acceptedBooking,
-            completedBooking,
-            pendingBooking.copyWith(id: '504', status: BookingStatus.inProgress),
-          ],
-          categoryNames: const {'1': 'Sửa máy lạnh', '2': 'Vệ sinh nhà'},
-          page: 0,
-          hasMore: false,
-        ),
-      );
+            serviceName: 'Sửa máy lạnh',
+          ),
+        );
 
-      await tester.pumpWidget(_createTestOrdersWidget(const WorkerJobsHubPage(), orders: jobs));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          _createTestOrdersWidget(
+            const CustomerOrderDetailPage(bookingId: '501'),
+            detail: detail,
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.textContaining('Quản lý công việc'), findsOneWidget);
-      // Assigned: the offer (accept) and the accepted job (start travelling).
-      expect(find.text('#501'), findsOneWidget);
-      expect(find.text('#502'), findsOneWidget);
-      expect(find.text('Xem & Nhận việc'), findsOneWidget);
-      expect(find.text('Bắt đầu di chuyển'), findsOneWidget);
+        verify(() => detail.load('501')).called(1);
+        expect(find.text('Mã đơn hàng: #501'), findsOneWidget);
+        expect(find.text('Đang tìm thợ'), findsOneWidget);
+        expect(find.text('Sửa máy lạnh'), findsOneWidget);
+        expect(find.text('123 Đường ABC, Quận 1'), findsOneWidget);
+        expect(find.text('Máy lạnh không mát'), findsOneWidget);
+        expect(find.text('500.000đ'), findsOneWidget);
+        // PENDING: cancel only.
+        expect(
+          find.byKey(const Key('order_detail_cancel_button')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('order_detail_dispute_button')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('order_detail_track_button')),
+          findsNothing,
+        );
 
-      await tester.tap(find.byKey(const Key('worker_job_action_501')));
-      await tester.pumpAndSettle();
-      expect(find.text('JobDetail:501'), findsOneWidget);
-      tester.state<NavigatorState>(find.byType(Navigator).last).pop();
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('order_detail_cancel_button')));
+        await tester.pumpAndSettle();
+        expect(find.text('Cancel:501'), findsOneWidget);
 
-      await tester.tap(find.text('Đang làm'));
-      await tester.pumpAndSettle();
-      expect(find.text('#504'), findsOneWidget);
-      expect(find.text('Tiếp tục công việc'), findsOneWidget);
+        // COMPLETED: report an issue only.
+        tester.state<NavigatorState>(find.byType(Navigator).last).pop();
+        await tester.pumpAndSettle();
+        states.add(
+          OrderDetailLoadedState(completedBooking, serviceName: 'Vệ sinh nhà'),
+        );
+        await tester.pumpAndSettle();
+        expect(
+          find.byKey(const Key('order_detail_dispute_button')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('order_detail_cancel_button')),
+          findsNothing,
+        );
+        expect(find.text('320.000đ'), findsOneWidget);
+      },
+    );
 
-      await tester.tap(find.text('Đã hoàn tất'));
-      await tester.pumpAndSettle();
-      expect(find.text('#503'), findsOneWidget);
-      expect(find.text('320.000đ'), findsOneWidget);
-      expect(find.byKey(const Key('worker_job_action_503')), findsNothing);
-    });
+    testWidgets(
+      'WorkerJobsHubPage lists the worker jobs by status with the next-step action',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(800, 1600));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final jobs = MockBookingListCubit();
+        whenListen(
+          jobs,
+          const Stream<BookingListState>.empty(),
+          initialState: BookingListLoadedState(
+            bookings: [
+              pendingBooking,
+              acceptedBooking,
+              completedBooking,
+              pendingBooking.copyWith(
+                id: '504',
+                status: BookingStatus.inProgress,
+              ),
+            ],
+            categoryNames: const {'1': 'Sửa máy lạnh', '2': 'Vệ sinh nhà'},
+            page: 0,
+            hasMore: false,
+          ),
+        );
 
-    testWidgets('CustomerNotificationsPage renders timeline sections, filter chips and notification tiles', (
-      tester,
-    ) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestOrdersWidget(const CustomerNotificationsPage()));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          _createTestOrdersWidget(const WorkerJobsHubPage(), orders: jobs),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.textContaining('Thông báo'), findsWidgets);
-      expect(find.textContaining('Hôm nay'), findsOneWidget);
-      expect(find.textContaining('Trước đó'), findsOneWidget);
+        expect(find.textContaining('Quản lý công việc'), findsOneWidget);
+        // Assigned: the offer (accept) and the accepted job (start travelling).
+        expect(find.text('#501'), findsOneWidget);
+        expect(find.text('#502'), findsOneWidget);
+        expect(find.text('Xem & Nhận việc'), findsOneWidget);
+        expect(find.text('Bắt đầu di chuyển'), findsOneWidget);
 
-      // Filter chips
-      expect(find.textContaining('Tất cả'), findsOneWidget);
-      expect(find.textContaining('Đơn hàng'), findsOneWidget);
-      expect(find.textContaining('Khuyến mãi'), findsOneWidget);
+        await tester.tap(find.byKey(const Key('worker_job_action_501')));
+        await tester.pumpAndSettle();
+        expect(find.text('JobDetail:501'), findsOneWidget);
+        tester.state<NavigatorState>(find.byType(Navigator).last).pop();
+        await tester.pumpAndSettle();
 
-      // Notifications feed items
-      expect(find.textContaining('Thợ đang di chuyển'), findsOneWidget);
-      expect(find.textContaining('NHAMOICHI15'), findsOneWidget);
-      expect(find.textContaining('Bảo hành điện tử'), findsOneWidget);
-    });
+        await tester.tap(find.text('Đang làm'));
+        await tester.pumpAndSettle();
+        expect(find.text('#504'), findsOneWidget);
+        expect(find.text('Tiếp tục công việc'), findsOneWidget);
 
-    testWidgets('CustomerNotificationSettingsPage renders channel toggles and save button', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestOrdersWidget(const CustomerNotificationSettingsPage()));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Đã hoàn tất'));
+        await tester.pumpAndSettle();
+        expect(find.text('#503'), findsOneWidget);
+        expect(find.text('320.000đ'), findsOneWidget);
+        expect(find.byKey(const Key('worker_job_action_503')), findsNothing);
+      },
+    );
 
-      expect(find.textContaining('Cài đặt thông báo'), findsOneWidget);
-      expect(find.textContaining('Thông báo đẩy'), findsOneWidget);
-      expect(find.textContaining('SMS'), findsWidgets);
-      expect(find.textContaining('Zalo'), findsWidgets);
-      expect(find.textContaining('Lưu thay đổi'), findsOneWidget);
+    testWidgets(
+      'CustomerNotificationsPage renders timeline sections, filter chips and notification tiles',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 1400));
+        await tester.pumpWidget(
+          _createTestOrdersWidget(const CustomerNotificationsPage()),
+        );
+        await tester.pumpAndSettle();
 
-      // Tap on a switch
-      final switches = find.byType(Switch);
-      expect(switches, findsNWidgets(4));
-      await tester.tap(switches.first);
-      await tester.pumpAndSettle();
+        expect(find.textContaining('Thông báo'), findsWidgets);
+        expect(find.textContaining('Hôm nay'), findsOneWidget);
+        expect(find.textContaining('Trước đó'), findsOneWidget);
 
-      // Tap save
-      await tester.tap(find.textContaining('Lưu thay đổi'));
-      await tester.pumpAndSettle();
-    });
+        // Filter chips
+        expect(find.textContaining('Tất cả'), findsOneWidget);
+        expect(find.textContaining('Đơn hàng'), findsOneWidget);
+        expect(find.textContaining('Khuyến mãi'), findsOneWidget);
 
-    testWidgets('WorkerNotificationsPage renders dispatch assignments, wallet credits and safety alerts', (
-      tester,
-    ) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1400));
-      await tester.pumpWidget(_createTestOrdersWidget(const WorkerNotificationsPage()));
-      await tester.pumpAndSettle();
+        // Notifications feed items
+        expect(find.textContaining('Thợ đang di chuyển'), findsOneWidget);
+        expect(find.textContaining('NHAMOICHI15'), findsOneWidget);
+        expect(find.textContaining('Bảo hành điện tử'), findsOneWidget);
+      },
+    );
 
-      expect(find.textContaining('Thông báo'), findsWidgets);
-      expect(find.textContaining('Đã đọc tất cả'), findsOneWidget);
-      expect(find.textContaining('Yêu cầu công việc mới'), findsOneWidget);
-      expect(find.textContaining('ví thu nhập'), findsOneWidget);
-      expect(find.textContaining('an toàn lao động'), findsOneWidget);
-    });
+    testWidgets(
+      'CustomerNotificationSettingsPage renders channel toggles and save button',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 1400));
+        await tester.pumpWidget(
+          _createTestOrdersWidget(const CustomerNotificationSettingsPage()),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.textContaining('Cài đặt thông báo'), findsOneWidget);
+        expect(find.textContaining('Thông báo đẩy'), findsOneWidget);
+        expect(find.textContaining('SMS'), findsWidgets);
+        expect(find.textContaining('Zalo'), findsWidgets);
+        expect(find.textContaining('Lưu thay đổi'), findsOneWidget);
+
+        // Tap on a switch
+        final switches = find.byType(Switch);
+        expect(switches, findsNWidgets(4));
+        await tester.tap(switches.first);
+        await tester.pumpAndSettle();
+
+        // Tap save
+        await tester.tap(find.textContaining('Lưu thay đổi'));
+        await tester.pumpAndSettle();
+      },
+    );
+
+    testWidgets(
+      'WorkerNotificationsPage renders dispatch assignments, wallet credits and safety alerts',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 1400));
+        await tester.pumpWidget(
+          _createTestOrdersWidget(const WorkerNotificationsPage()),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.textContaining('Thông báo'), findsWidgets);
+        expect(find.textContaining('Đã đọc tất cả'), findsOneWidget);
+        expect(find.textContaining('Yêu cầu công việc mới'), findsOneWidget);
+        expect(find.textContaining('ví thu nhập'), findsOneWidget);
+        expect(find.textContaining('an toàn lao động'), findsOneWidget);
+      },
+    );
   });
 }
