@@ -1427,6 +1427,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get notificationsEmpty => 'Không có thông báo mới';
 
   @override
+  String get notificationsLoadMore => 'Xem thêm thông báo';
+
+  @override
+  String get notificationsUnread => 'Chưa đọc';
+
+  @override
+  String get notificationsTypeOther => 'Khác';
+
+  @override
+  String get notificationsEmptyHint =>
+      'Thông báo về đơn hàng, ưu đãi và hệ thống sẽ hiện ở đây.';
+
+  @override
   String get notifSettingsTitle => 'Cài đặt thông báo';
 
   @override

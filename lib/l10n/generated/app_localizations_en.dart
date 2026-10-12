@@ -1425,6 +1425,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsEmpty => 'No new notifications';
 
   @override
+  String get notificationsLoadMore => 'Load more notifications';
+
+  @override
+  String get notificationsUnread => 'Unread';
+
+  @override
+  String get notificationsTypeOther => 'Other';
+
+  @override
+  String get notificationsEmptyHint =>
+      'Updates about your orders, offers and the system will appear here.';
+
+  @override
   String get notifSettingsTitle => 'Notification Settings';
 
   @override

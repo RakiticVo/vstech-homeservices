@@ -38,6 +38,8 @@ import 'package:vstech_home_services/features/home/presentation/bloc/categories_
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
 import 'package:vstech_home_services/features/notifications/data/datasources/notification_remote_data_source.dart';
 import 'package:vstech_home_services/features/notifications/domain/repositories/notification_repository.dart';
+import 'package:vstech_home_services/features/notifications/domain/usecases/notification_use_cases.dart';
+import 'package:vstech_home_services/features/notifications/presentation/bloc/notifications_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart';
@@ -197,3 +199,15 @@ class MockNotificationRemoteDataSource extends Mock
     implements NotificationRemoteDataSource;
 
 class MockNotificationRepository extends Mock implements NotificationRepository;
+
+class MockGetNotificationsUseCase extends Mock
+    implements GetNotificationsUseCase;
+
+class MockMarkNotificationReadUseCase extends Mock
+    implements MarkNotificationReadUseCase;
+
+class MockMarkAllNotificationsReadUseCase extends Mock
+    implements MarkAllNotificationsReadUseCase;
+
+class MockNotificationsCubit extends MockCubit<NotificationsState>
+    implements NotificationsCubit;

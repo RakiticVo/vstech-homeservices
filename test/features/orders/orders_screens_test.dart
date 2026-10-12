@@ -13,11 +13,9 @@ import 'package:vstech_home_services/features/booking/domain/entities/booking_st
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_notification_settings_page.dart';
-import 'package:vstech_home_services/features/orders/presentation/pages/customer_notifications_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_order_detail_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_orders_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/worker_jobs_hub_page.dart';
-import 'package:vstech_home_services/features/orders/presentation/pages/worker_notifications_page.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
 import '../../fixtures/booking/booking_fixtures.dart';
@@ -59,16 +57,8 @@ Widget _createTestOrdersWidget(
         ),
       ),
       GoRoute(
-        path: AppRoutes.customerNotifications,
-        builder: (context, state) => const CustomerNotificationsPage(),
-      ),
-      GoRoute(
         path: AppRoutes.customerNotificationSettings,
         builder: (context, state) => const CustomerNotificationSettingsPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.workerNotifications,
-        builder: (context, state) => const WorkerNotificationsPage(),
       ),
     ],
   );
@@ -313,31 +303,6 @@ void main() {
     );
 
     testWidgets(
-      'CustomerNotificationsPage renders timeline sections, filter chips and notification tiles',
-      (tester) async {
-        await tester.binding.setSurfaceSize(const Size(390, 1400));
-        await tester.pumpWidget(
-          _createTestOrdersWidget(const CustomerNotificationsPage()),
-        );
-        await tester.pumpAndSettle();
-
-        expect(find.textContaining('Thông báo'), findsWidgets);
-        expect(find.textContaining('Hôm nay'), findsOneWidget);
-        expect(find.textContaining('Trước đó'), findsOneWidget);
-
-        // Filter chips
-        expect(find.textContaining('Tất cả'), findsOneWidget);
-        expect(find.textContaining('Đơn hàng'), findsOneWidget);
-        expect(find.textContaining('Khuyến mãi'), findsOneWidget);
-
-        // Notifications feed items
-        expect(find.textContaining('Thợ đang di chuyển'), findsOneWidget);
-        expect(find.textContaining('NHAMOICHI15'), findsOneWidget);
-        expect(find.textContaining('Bảo hành điện tử'), findsOneWidget);
-      },
-    );
-
-    testWidgets(
       'CustomerNotificationSettingsPage renders channel toggles and save button',
       (tester) async {
         await tester.binding.setSurfaceSize(const Size(390, 1400));
@@ -361,23 +326,6 @@ void main() {
         // Tap save
         await tester.tap(find.textContaining('Lưu thay đổi'));
         await tester.pumpAndSettle();
-      },
-    );
-
-    testWidgets(
-      'WorkerNotificationsPage renders dispatch assignments, wallet credits and safety alerts',
-      (tester) async {
-        await tester.binding.setSurfaceSize(const Size(390, 1400));
-        await tester.pumpWidget(
-          _createTestOrdersWidget(const WorkerNotificationsPage()),
-        );
-        await tester.pumpAndSettle();
-
-        expect(find.textContaining('Thông báo'), findsWidgets);
-        expect(find.textContaining('Đã đọc tất cả'), findsOneWidget);
-        expect(find.textContaining('Yêu cầu công việc mới'), findsOneWidget);
-        expect(find.textContaining('ví thu nhập'), findsOneWidget);
-        expect(find.textContaining('an toàn lao động'), findsOneWidget);
       },
     );
   });

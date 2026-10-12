@@ -2720,6 +2720,30 @@ abstract class AppLocalizations {
   /// **'Không có thông báo mới'**
   String get notificationsEmpty;
 
+  /// No description provided for @notificationsLoadMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem thêm thông báo'**
+  String get notificationsLoadMore;
+
+  /// No description provided for @notificationsUnread.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đọc'**
+  String get notificationsUnread;
+
+  /// No description provided for @notificationsTypeOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get notificationsTypeOther;
+
+  /// No description provided for @notificationsEmptyHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông báo về đơn hàng, ưu đãi và hệ thống sẽ hiện ở đây.'**
+  String get notificationsEmptyHint;
+
   /// No description provided for @notifSettingsTitle.
   ///
   /// In vi, this message translates to:
