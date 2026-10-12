@@ -165,7 +165,9 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                     decoration: BoxDecoration(
                       color: AppColors.secondarySurface,
                       borderRadius: BorderRadius.circular(AppRadius.control),
-                      border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: Row(
                       children: [
@@ -222,9 +224,7 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                 if (_currentStage == 3) ...[
                   const WorkingTimerWidget(),
                   const SizedBox(height: AppSpacing.md),
-                  ServiceChecklistWidget(
-                    completedSteps: _completedSteps,
-                  ),
+                  ServiceChecklistWidget(completedSteps: _completedSteps),
                 ],
 
                 // Stage 4: Ready for Sign-off
@@ -341,7 +341,11 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                             child: OutlinedButton.icon(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(context.l10n.trackingMaskedCall)),
+                                  SnackBar(
+                                    content: Text(
+                                      context.l10n.trackingMaskedCall,
+                                    ),
+                                  ),
                                 );
                               },
                               icon: const Icon(Icons.call_rounded, size: 18),
@@ -349,9 +353,13 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.primary,
                                 side: const BorderSide(color: AppColors.border),
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.control),
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.control,
+                                  ),
                                 ),
                               ),
                             ),
@@ -361,17 +369,26 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                             child: OutlinedButton.icon(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(context.l10n.trackingChat)),
+                                  SnackBar(
+                                    content: Text(context.l10n.trackingChat),
+                                  ),
                                 );
                               },
-                              icon: const Icon(Icons.chat_bubble_outline_rounded, size: 18),
+                              icon: const Icon(
+                                Icons.chat_bubble_outline_rounded,
+                                size: 18,
+                              ),
                               label: Text(context.l10n.trackingChat),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.primary,
                                 side: const BorderSide(color: AppColors.border),
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.control),
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.control,
+                                  ),
                                 ),
                               ),
                             ),
@@ -390,7 +407,11 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
                     label: context.l10n.trackingProceedToInspection,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(context.l10n.trackingProceedToInspection)),
+                        SnackBar(
+                          content: Text(
+                            context.l10n.trackingProceedToInspection,
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -445,7 +466,9 @@ class _StageChip extends StatelessWidget {
                 child: Text(
                   '$stageNumber',
                   style: AppTextStyles.labelSmall.copyWith(
-                    color: isSelected ? AppColors.onPrimary : AppColors.textSecondary,
+                    color: isSelected
+                        ? AppColors.onPrimary
+                        : AppColors.textSecondary,
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
                   ),

@@ -28,7 +28,8 @@ class CustomerOrderDetailPage extends StatefulWidget {
   final String bookingId;
 
   @override
-  State<CustomerOrderDetailPage> createState() => _CustomerOrderDetailPageState();
+  State<CustomerOrderDetailPage> createState() =>
+      _CustomerOrderDetailPageState();
 }
 
 class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
@@ -80,10 +81,16 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: ErrorRetryView(
             message: context.l10n.failureMessage(failure),
-            onRetry: () => unawaited(context.read<OrderDetailCubit>().load(widget.bookingId, refresh: true)),
+            onRetry: () => unawaited(
+              context.read<OrderDetailCubit>().load(
+                widget.bookingId,
+                refresh: true,
+              ),
+            ),
           ),
         ),
-        OrderDetailLoadedState(:final booking, :final serviceName) => _buildBody(booking, serviceName),
+        OrderDetailLoadedState(:final booking, :final serviceName) =>
+          _buildBody(booking, serviceName),
       },
     );
   }
@@ -91,7 +98,9 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
   Widget _buildBody(Booking booking, String? serviceName) {
     final l10n = context.l10n;
     final scheduledTime = booking.scheduledTime;
-    final canTrack = booking.status == BookingStatus.accepted || booking.status == BookingStatus.inProgress;
+    final canTrack =
+        booking.status == BookingStatus.accepted ||
+        booking.status == BookingStatus.inProgress;
     return Column(
       children: [
         Expanded(
@@ -105,7 +114,10 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                     Expanded(
                       child: Text(
                         l10n.complaintDetailOrderCode('#${booking.id}'),
-                        style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+                        style: AppTextStyles.labelLarge.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     ),
                     BookingStatusChip(status: booking.status),
@@ -123,14 +135,26 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                     if (serviceName != null)
                       Text(
                         serviceName,
-                        style: AppTextStyles.titleLg.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+                        style: AppTextStyles.titleLg.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     if (scheduledTime != null)
-                      _InfoRow(icon: Icons.calendar_today_outlined, text: bookingScheduleLabel(context, scheduledTime)),
+                      _InfoRow(
+                        icon: Icons.calendar_today_outlined,
+                        text: bookingScheduleLabel(context, scheduledTime),
+                      ),
                     if (booking.addressDetail?.isNotEmpty ?? false)
-                      _InfoRow(icon: Icons.location_on_outlined, text: booking.addressDetail!),
+                      _InfoRow(
+                        icon: Icons.location_on_outlined,
+                        text: booking.addressDetail!,
+                      ),
                     if (booking.description?.isNotEmpty ?? false)
-                      _InfoRow(icon: Icons.description_outlined, text: booking.description!),
+                      _InfoRow(
+                        icon: Icons.description_outlined,
+                        text: booking.description!,
+                      ),
                   ],
                 ),
               ),
@@ -142,7 +166,10 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                 child: Column(
                   children: [
                     if (booking.estimatedPrice != null)
-                      _PriceRow(label: l10n.bookingEstimatedPreview, value: MoneyFormatter.format(booking.estimatedPrice!)),
+                      _PriceRow(
+                        label: l10n.bookingEstimatedPreview,
+                        value: MoneyFormatter.format(booking.estimatedPrice!),
+                      ),
                     if (booking.finalPrice != null) ...[
                       const SizedBox(height: AppSpacing.sm),
                       _PriceRow(
@@ -154,12 +181,18 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                     const SizedBox(height: AppSpacing.sm),
                     Row(
                       children: [
-                        const Icon(Icons.info_outline, size: 16, color: AppColors.textSecondary),
+                        const Icon(
+                          Icons.info_outline,
+                          size: 16,
+                          color: AppColors.textSecondary,
+                        ),
                         const SizedBox(width: AppSpacing.xs),
                         Expanded(
                           child: Text(
                             l10n.bookingPayAfterInspectNotice,
-                            style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
                           ),
                         ),
                       ],
@@ -187,9 +220,14 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                     key: const Key('order_detail_track_button'),
                     label: l10n.ordersTrackWorkerCta,
                     icon: Icons.map_outlined,
-                    onPressed: () => unawaited(context.push('${AppRoutes.customerTracking}?code=${booking.id}')),
+                    onPressed: () => unawaited(
+                      context.push(
+                        '${AppRoutes.customerTracking}?code=${booking.id}',
+                      ),
+                    ),
                   ),
-                if (canTrack && (booking.status.canCancel || booking.status.canDispute))
+                if (canTrack &&
+                    (booking.status.canCancel || booking.status.canDispute))
                   const SizedBox(height: AppSpacing.sm),
                 if (booking.status.canCancel)
                   AppSecondaryButton(
@@ -198,7 +236,11 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                     icon: Icons.cancel_outlined,
                     isFullWidth: true,
                     textColor: AppColors.error,
-                    onPressed: () => unawaited(_pushAndReload(AppRoutes.customerCancelLocation(booking.id))),
+                    onPressed: () => unawaited(
+                      _pushAndReload(
+                        AppRoutes.customerCancelLocation(booking.id),
+                      ),
+                    ),
                   ),
                 if (booking.status.canDispute)
                   AppSecondaryButton(
@@ -206,7 +248,11 @@ class _CustomerOrderDetailPageState extends State<CustomerOrderDetailPage> {
                     label: l10n.orderDetailReportIssue,
                     icon: Icons.report_problem_outlined,
                     isFullWidth: true,
-                    onPressed: () => unawaited(_pushAndReload(AppRoutes.disputeReportLocation(booking.id))),
+                    onPressed: () => unawaited(
+                      _pushAndReload(
+                        AppRoutes.disputeReportLocation(booking.id),
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -238,7 +284,10 @@ class _Section extends StatelessWidget {
           if (title != null) ...[
             Text(
               title!,
-              style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary, fontWeight: FontWeight.w700),
+              style: AppTextStyles.labelMedium.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: AppSpacing.sm),
           ],
@@ -264,7 +313,14 @@ class _InfoRow extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: AppColors.textMuted),
           const SizedBox(width: AppSpacing.xs),
-          Expanded(child: Text(text, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary))),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -272,7 +328,11 @@ class _InfoRow extends StatelessWidget {
 }
 
 class _PriceRow extends StatelessWidget {
-  const _PriceRow({required this.label, required this.value, this.emphasized = false});
+  const _PriceRow({
+    required this.label,
+    required this.value,
+    this.emphasized = false,
+  });
 
   final String label;
   final String value;
@@ -283,14 +343,23 @@ class _PriceRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+          child: Text(
+            label,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
         ),
         Text(
           value,
-          style: (emphasized ? AppTextStyles.headlineSmall : AppTextStyles.bodyMedium).copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
+          style:
+              (emphasized
+                      ? AppTextStyles.headlineSmall
+                      : AppTextStyles.bodyMedium)
+                  .copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                  ),
         ),
       ],
     );

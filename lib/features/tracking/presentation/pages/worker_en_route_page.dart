@@ -47,23 +47,37 @@ class WorkerEnRoutePage extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
           // Map view with route & ETA
-          const TrackingMapWidget(height: 250, workerEtaText: '8 phút · 2.4 km', destinationLabel: 'Căn hộ 802'),
+          const TrackingMapWidget(
+            height: 250,
+            workerEtaText: '8 phút · 2.4 km',
+            destinationLabel: 'Căn hộ 802',
+          ),
           const SizedBox(height: AppSpacing.md),
 
           // Open Google Maps Action
           OutlinedButton.icon(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.workerOpenNavigation)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(context.l10n.workerOpenNavigation)),
+              );
             },
-            icon: const Icon(Icons.navigation_outlined, color: AppColors.primary, size: 18),
+            icon: const Icon(
+              Icons.navigation_outlined,
+              color: AppColors.primary,
+              size: 18,
+            ),
             label: Text(
               context.l10n.workerOpenNavigation,
-              style: AppTextStyles.labelLarge.copyWith(color: AppColors.primary),
+              style: AppTextStyles.labelLarge.copyWith(
+                color: AppColors.primary,
+              ),
             ),
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: AppColors.primary),
               padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.control)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.control),
+              ),
             ),
           ),
 
@@ -82,7 +96,11 @@ class WorkerEnRoutePage extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.location_on_rounded, color: AppColors.primary, size: 20),
+                    const Icon(
+                      Icons.location_on_rounded,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
                       context.l10n.workerDestinationLabel,
@@ -104,7 +122,9 @@ class WorkerEnRoutePage extends StatelessWidget {
                 ),
                 Text(
                   '1453 Phạm Văn Đồng, P. Linh Tây, TP. Thủ Đức, TP.HCM',
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Container(
@@ -112,11 +132,17 @@ class WorkerEnRoutePage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.secondarySurface,
                     borderRadius: BorderRadius.circular(AppRadius.control),
-                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                    border: Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 18),
+                      const Icon(
+                        Icons.info_outline_rounded,
+                        color: AppColors.primary,
+                        size: 18,
+                      ),
                       const SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: Text(
@@ -149,8 +175,14 @@ class WorkerEnRoutePage extends StatelessWidget {
                 Container(
                   width: 44,
                   height: 44,
-                  decoration: const BoxDecoration(color: AppColors.secondarySurface, shape: BoxShape.circle),
-                  child: const Icon(Icons.person_rounded, color: AppColors.primary),
+                  decoration: const BoxDecoration(
+                    color: AppColors.secondarySurface,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.person_rounded,
+                    color: AppColors.primary,
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -166,23 +198,34 @@ class WorkerEnRoutePage extends StatelessWidget {
                       ),
                       Text(
                         'Dọn dẹp căn hộ 70m²',
-                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 IconButton(
                   onPressed: () {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(context.l10n.trackingMaskedCall)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(context.l10n.trackingMaskedCall)),
+                    );
                   },
-                  icon: const Icon(Icons.call_rounded, color: AppColors.primary),
+                  icon: const Icon(
+                    Icons.call_rounded,
+                    color: AppColors.primary,
+                  ),
                 ),
                 IconButton(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.trackingChat)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(context.l10n.trackingChat)),
+                    );
                   },
-                  icon: const Icon(Icons.chat_bubble_outline_rounded, color: AppColors.primary),
+                  icon: const Icon(
+                    Icons.chat_bubble_outline_rounded,
+                    color: AppColors.primary,
+                  ),
                 ),
               ],
             ),
@@ -194,7 +237,9 @@ class WorkerEnRoutePage extends StatelessWidget {
           AppButton(
             label: context.l10n.workerArrivedConfirm,
             onPressed: () {
-              unawaited(context.push(AppRoutes.workerArrivedLocation(bookingId)));
+              unawaited(
+                context.push(AppRoutes.workerArrivedLocation(bookingId)),
+              );
             },
           ),
 
@@ -208,7 +253,10 @@ class WorkerEnRoutePage extends StatelessWidget {
                   context: context,
                   builder: (ctx) => AlertDialog(
                     backgroundColor: AppColors.surface,
-                    title: Text(context.l10n.workerCancelJobPrompt, style: AppTextStyles.headlineSmall),
+                    title: Text(
+                      context.l10n.workerCancelJobPrompt,
+                      style: AppTextStyles.headlineSmall,
+                    ),
                     content: Text(
                       'Huỷ việc khi đang di chuyển sẽ làm giảm tỷ lệ nhận việc (96% -> 95%). Bạn có chắc chắn muốn huỷ không?',
                       style: AppTextStyles.bodyMedium,
@@ -216,14 +264,24 @@ class WorkerEnRoutePage extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(ctx).pop(),
-                        child: Text('Không', style: AppTextStyles.labelLarge.copyWith(color: AppColors.textSecondary)),
+                        child: Text(
+                          'Không',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(ctx).pop();
                           Navigator.of(context).maybePop();
                         },
-                        child: Text('Xác nhận huỷ', style: AppTextStyles.labelLarge.copyWith(color: AppColors.error)),
+                        child: Text(
+                          'Xác nhận huỷ',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: AppColors.error,
+                          ),
+                        ),
                       ),
                     ],
                   ),
