@@ -43,7 +43,12 @@ class WorkerFloatingDock extends StatelessWidget {
     ];
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.md),
+      margin: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        0,
+        AppSpacing.md,
+        AppSpacing.md,
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -76,7 +81,9 @@ class WorkerFloatingDock extends StatelessWidget {
                   Icon(
                     isSelected ? tab.activeIcon : tab.icon,
                     size: 20,
-                    color: isSelected ? AppColors.onPrimary : AppColors.textSecondary,
+                    color: isSelected
+                        ? AppColors.onPrimary
+                        : AppColors.textSecondary,
                   ),
                   if (isSelected) ...[
                     const SizedBox(width: AppSpacing.xs),

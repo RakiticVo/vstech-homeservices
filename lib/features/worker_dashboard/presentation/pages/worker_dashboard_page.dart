@@ -58,7 +58,11 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
     final jobs = context.watch<BookingListCubit>().state;
     final offer = jobs is BookingListLoadedState
         ? jobs.bookings
-              .where((b) => b.status == BookingStatus.pending && !_dismissedOfferIds.contains(b.id))
+              .where(
+                (b) =>
+                    b.status == BookingStatus.pending &&
+                    !_dismissedOfferIds.contains(b.id),
+              )
               .firstOrNull
         : null;
     return BlocListener<WorkerPresenceCubit, WorkerPresenceState>(
@@ -73,7 +77,12 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                   // Top worker header
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.md,
+                        AppSpacing.md,
+                        AppSpacing.md,
+                        AppSpacing.sm,
+                      ),
                       child: Row(
                         children: [
                           // Worker avatar
@@ -82,10 +91,18 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                             height: 44,
                             decoration: BoxDecoration(
                               color: AppColors.secondary,
-                              borderRadius: BorderRadius.circular(AppRadius.control),
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.control,
+                              ),
                               border: Border.all(color: AppColors.border),
                             ),
-                            child: const Center(child: Icon(Icons.person_rounded, color: AppColors.primary, size: 24)),
+                            child: const Center(
+                              child: Icon(
+                                Icons.person_rounded,
+                                color: AppColors.primary,
+                                size: 24,
+                              ),
+                            ),
                           ),
                           const SizedBox(width: AppSpacing.sm),
                           Expanded(
@@ -101,7 +118,9 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                                 ),
                                 Text(
                                   context.l10n.workerGreetingSubtitle,
-                                  style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                                  style: AppTextStyles.caption.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                               ],
                             ),
@@ -109,14 +128,27 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                           // Online / Offline toggle button
                           GestureDetector(
                             key: const Key('worker_online_toggle'),
-                            onTap: () => unawaited(context.read<WorkerPresenceCubit>().toggle()),
+                            onTap: () => unawaited(
+                              context.read<WorkerPresenceCubit>().toggle(),
+                            ),
                             behavior: HitTestBehavior.opaque,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
-                                color: isOnline ? AppColors.secondarySurface : AppColors.surface,
-                                borderRadius: BorderRadius.circular(AppRadius.full),
-                                border: Border.all(color: isOnline ? AppColors.primary : AppColors.border),
+                                color: isOnline
+                                    ? AppColors.secondarySurface
+                                    : AppColors.surface,
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.full,
+                                ),
+                                border: Border.all(
+                                  color: isOnline
+                                      ? AppColors.primary
+                                      : AppColors.border,
+                                ),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -125,15 +157,21 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                                     width: 8,
                                     height: 8,
                                     decoration: BoxDecoration(
-                                      color: isOnline ? AppColors.success : AppColors.textMuted,
+                                      color: isOnline
+                                          ? AppColors.success
+                                          : AppColors.textMuted,
                                       shape: BoxShape.circle,
                                     ),
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
-                                    isOnline ? context.l10n.workerOnline : context.l10n.workerOffline,
+                                    isOnline
+                                        ? context.l10n.workerOnline
+                                        : context.l10n.workerOffline,
                                     style: AppTextStyles.caption.copyWith(
-                                      color: isOnline ? AppColors.primary : AppColors.textSecondary,
+                                      color: isOnline
+                                          ? AppColors.primary
+                                          : AppColors.textSecondary,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -165,16 +203,28 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                           WorkerJobRequestCard(
                             key: Key('worker_job_offer_${offer.id}'),
                             jobTitle:
-                                (jobs as BookingListLoadedState).categoryNames[offer.categoryId] ??
+                                (jobs as BookingListLoadedState)
+                                    .categoryNames[offer.categoryId] ??
                                 offer.description ??
                                 '',
                             schedule: offer.scheduledTime == null
                                 ? null
-                                : bookingScheduleLabel(context, offer.scheduledTime!),
+                                : bookingScheduleLabel(
+                                    context,
+                                    offer.scheduledTime!,
+                                  ),
                             address: offer.addressDetail,
-                            price: offer.estimatedPrice == null ? null : MoneyFormatter.format(offer.estimatedPrice!),
-                            onViewAndAccept: () => unawaited(context.push(AppRoutes.workerJobDetailLocation(offer.id))),
-                            onDecline: () => setState(() => _dismissedOfferIds.add(offer.id)),
+                            price: offer.estimatedPrice == null
+                                ? null
+                                : MoneyFormatter.format(offer.estimatedPrice!),
+                            onViewAndAccept: () => unawaited(
+                              context.push(
+                                AppRoutes.workerJobDetailLocation(offer.id),
+                              ),
+                            ),
+                            onDecline: () => setState(
+                              () => _dismissedOfferIds.add(offer.id),
+                            ),
                           ),
                           const SizedBox(height: AppSpacing.lg),
                         ],
@@ -191,10 +241,15 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppColors.secondarySurface,
-                                borderRadius: BorderRadius.circular(AppRadius.chip),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.chip,
+                                ),
                                 border: Border.all(color: AppColors.border),
                               ),
                               child: Text(
@@ -291,7 +346,10 @@ class _ScheduleJobTile extends StatelessWidget {
             ),
             child: Text(
               time,
-              style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
+              style: AppTextStyles.caption.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -301,20 +359,32 @@ class _ScheduleJobTile extends StatelessWidget {
               children: [
                 Text(
                   serviceName,
-                  style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
                 const SizedBox(height: 2),
-                Text(customerName, style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                Text(
+                  customerName,
+                  style: AppTextStyles.caption.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ],
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: isDone ? AppColors.success.withValues(alpha: 0.12) : AppColors.secondarySurface,
+              color: isDone
+                  ? AppColors.success.withValues(alpha: 0.12)
+                  : AppColors.secondarySurface,
               borderRadius: BorderRadius.circular(AppRadius.chip),
               border: Border.all(
-                color: isDone ? AppColors.success.withValues(alpha: 0.3) : AppColors.primary.withValues(alpha: 0.3),
+                color: isDone
+                    ? AppColors.success.withValues(alpha: 0.3)
+                    : AppColors.primary.withValues(alpha: 0.3),
               ),
             ),
             child: Text(

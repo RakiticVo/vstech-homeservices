@@ -37,7 +37,10 @@ class HomeTopHeader extends StatelessWidget {
               onTap: onAddressTap,
               borderRadius: BorderRadius.circular(AppRadius.control),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(AppRadius.control),
@@ -128,9 +131,7 @@ class HomeTopHeader extends StatelessWidget {
         const SizedBox(height: 2),
         Text(
           context.l10n.homeGreetingSubtitle,
-          style: AppTextStyles.bodyMd.copyWith(
-            color: AppColors.textSecondary,
-          ),
+          style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
         ),
       ],
     );

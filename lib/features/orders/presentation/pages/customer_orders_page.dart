@@ -45,7 +45,10 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
   @override
   void initState() {
     super.initState();
-    _selectedTab = widget.initialTab.clamp(0, CustomerOrdersPage.tabStatuses.length - 1);
+    _selectedTab = widget.initialTab.clamp(
+      0,
+      CustomerOrdersPage.tabStatuses.length - 1,
+    );
   }
 
   void _onDockTabSelected(int index) {
@@ -86,7 +89,10 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
               // Segmented Tabs Filter (3 Tabs)
               Container(
                 color: AppColors.surface,
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.sm,
+                ),
                 child: Row(
                   children: [
                     _buildFilterTab(0, context.l10n.ordersTabActive),
@@ -103,15 +109,20 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
               Expanded(
                 child: BlocBuilder<BookingListCubit, BookingListState>(
                   builder: (context, state) => switch (state) {
-                    BookingListInitialState() || BookingListLoadingState() => const Center(
-                      child: CircularProgressIndicator(color: AppColors.primary),
+                    BookingListInitialState() ||
+                    BookingListLoadingState() => const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primary,
+                      ),
                     ),
                     BookingListErrorState(:final failure) => ListView(
                       padding: const EdgeInsets.all(AppSpacing.lg),
                       children: [
                         ErrorRetryView(
                           message: context.l10n.failureMessage(failure),
-                          onRetry: () => unawaited(context.read<BookingListCubit>().load()),
+                          onRetry: () => unawaited(
+                            context.read<BookingListCubit>().load(),
+                          ),
                         ),
                       ],
                     ),
@@ -149,24 +160,36 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
       onRefresh: () => context.read<BookingListCubit>().load(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.dockClearanceMax),
-        itemCount: (bookings.isEmpty ? 1 : bookings.length) + (showLoadMore ? 1 : 0),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.dockClearanceMax,
+        ),
+        itemCount:
+            (bookings.isEmpty ? 1 : bookings.length) + (showLoadMore ? 1 : 0),
         separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
         itemBuilder: (context, index) {
           if (bookings.isEmpty && index == 0) return _buildEmptyState();
           if (index >= bookings.length) {
             return state.isLoadingMore
-                ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+                ? const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  )
                 : AppSecondaryButton(
                     key: const Key('orders_load_more_button'),
                     label: context.l10n.ordersLoadMore,
                     icon: Icons.expand_more,
                     isFullWidth: true,
-                    onPressed: () => unawaited(context.read<BookingListCubit>().loadMore()),
+                    onPressed: () =>
+                        unawaited(context.read<BookingListCubit>().loadMore()),
                   );
           }
           final booking = bookings[index];
-          return _BookingCard(booking: booking, serviceName: state.categoryNames[booking.categoryId]);
+          return _BookingCard(
+            booking: booking,
+            serviceName: state.categoryNames[booking.categoryId],
+          );
         },
       ),
     );
@@ -205,7 +228,9 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
           Text(
             context.l10n.ordersEmptyDesc,
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.textSecondary,
+            ),
           ),
           const SizedBox(height: AppSpacing.lg),
           AppButton.primary(
@@ -261,7 +286,9 @@ class _BookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheduledTime = booking.scheduledTime;
     final price = booking.finalPrice ?? booking.estimatedPrice;
-    final canTrack = booking.status == BookingStatus.accepted || booking.status == BookingStatus.inProgress;
+    final canTrack =
+        booking.status == BookingStatus.accepted ||
+        booking.status == BookingStatus.inProgress;
     return Container(
       key: Key('order_card_${booking.id}'),
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -278,7 +305,10 @@ class _BookingCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   '#${booking.id}',
-                  style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                  style: AppTextStyles.labelLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -298,11 +328,18 @@ class _BookingCard extends StatelessWidget {
           ),
           if (scheduledTime != null) ...[
             const SizedBox(height: 4),
-            _InfoRow(icon: Icons.access_time_rounded, text: bookingScheduleLabel(context, scheduledTime)),
+            _InfoRow(
+              icon: Icons.access_time_rounded,
+              text: bookingScheduleLabel(context, scheduledTime),
+            ),
           ],
-          if (booking.addressDetail != null && booking.addressDetail!.isNotEmpty) ...[
+          if (booking.addressDetail != null &&
+              booking.addressDetail!.isNotEmpty) ...[
             const SizedBox(height: 4),
-            _InfoRow(icon: Icons.location_on_outlined, text: booking.addressDetail!),
+            _InfoRow(
+              icon: Icons.location_on_outlined,
+              text: booking.addressDetail!,
+            ),
           ],
           if (price != null) ...[
             const SizedBox(height: AppSpacing.md),
@@ -312,13 +349,20 @@ class _BookingCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    booking.finalPrice != null ? context.l10n.ordersFinalPrice : context.l10n.bookingEstimatedPreview,
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                    booking.finalPrice != null
+                        ? context.l10n.ordersFinalPrice
+                        : context.l10n.bookingEstimatedPreview,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
                 Text(
                   MoneyFormatter.format(price),
-                  style: AppTextStyles.labelLarge.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w800),
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ],
             ),
@@ -331,7 +375,11 @@ class _BookingCard extends StatelessWidget {
                   key: Key('order_detail_button_${booking.id}'),
                   label: context.l10n.ordersViewDetailCta,
                   isFullWidth: true,
-                  onPressed: () => unawaited(context.push(AppRoutes.customerOrderDetailLocation(booking.id))),
+                  onPressed: () => unawaited(
+                    context.push(
+                      AppRoutes.customerOrderDetailLocation(booking.id),
+                    ),
+                  ),
                 ),
               ),
               if (canTrack) ...[
@@ -341,7 +389,11 @@ class _BookingCard extends StatelessWidget {
                     label: context.l10n.ordersTrackWorkerCta,
                     icon: Icons.map_outlined,
                     isFullWidth: true,
-                    onPressed: () => unawaited(context.push('${AppRoutes.customerTracking}?code=${booking.id}')),
+                    onPressed: () => unawaited(
+                      context.push(
+                        '${AppRoutes.customerTracking}?code=${booking.id}',
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -366,7 +418,14 @@ class _InfoRow extends StatelessWidget {
       children: [
         Icon(icon, size: 16, color: AppColors.textMuted),
         const SizedBox(width: 6),
-        Expanded(child: Text(text, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary))),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ),
       ],
     );
   }

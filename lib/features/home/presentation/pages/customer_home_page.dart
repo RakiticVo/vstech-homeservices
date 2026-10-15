@@ -69,7 +69,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     borderRadius: BorderRadius.circular(AppRadius.full),
                     child: Container(
                       height: 48,
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(AppRadius.full),
@@ -77,7 +79,11 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.search, size: 20, color: AppColors.textMuted),
+                          const Icon(
+                            Icons.search,
+                            size: 20,
+                            color: AppColors.textMuted,
+                          ),
                           const SizedBox(width: AppSpacing.sm),
                           Expanded(
                             child: Text(
@@ -160,14 +166,22 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     builder: (context, state) => switch (state) {
                       CategoriesErrorState(:final failure) => ErrorRetryView(
                         message: context.l10n.failureMessage(failure),
-                        onRetry: () => unawaited(context.read<CategoriesCubit>().load()),
+                        onRetry: () =>
+                            unawaited(context.read<CategoriesCubit>().load()),
                       ),
-                      CategoriesLoadedState(:final categories) when categories.isEmpty => Text(
-                        context.l10n.categoriesEmpty,
-                        style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
-                      ),
+                      CategoriesLoadedState(:final categories)
+                          when categories.isEmpty =>
+                        Text(
+                          context.l10n.categoriesEmpty,
+                          style: AppTextStyles.bodyMd.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
                       CategoriesLoadedState(:final categories) => _CategoryGrid(
-                        itemCount: categories.length.clamp(0, _homeCategoryCount),
+                        itemCount: categories.length.clamp(
+                          0,
+                          _homeCategoryCount,
+                        ),
                         itemBuilder: (context, index) {
                           final category = categories[index];
                           return ServiceCategoryTile(
@@ -177,7 +191,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                           );
                         },
                       ),
-                      CategoriesInitialState() || CategoriesLoadingState() => _CategoryGrid(
+                      CategoriesInitialState() ||
+                      CategoriesLoadingState() => _CategoryGrid(
                         itemCount: _homeCategoryCount,
                         itemBuilder: (_, _) => const _CategoryTilePlaceholder(),
                       ),

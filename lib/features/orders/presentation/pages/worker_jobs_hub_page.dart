@@ -50,7 +50,10 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
   @override
   void initState() {
     super.initState();
-    _selectedTab = widget.initialTab.clamp(0, WorkerJobsHubPage.tabStatuses.length - 1);
+    _selectedTab = widget.initialTab.clamp(
+      0,
+      WorkerJobsHubPage.tabStatuses.length - 1,
+    );
   }
 
   void _onDockTabSelected(int index) {
@@ -77,8 +80,12 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_none_rounded, color: AppColors.textPrimary),
-            onPressed: () => unawaited(context.push(AppRoutes.workerNotifications)),
+            icon: const Icon(
+              Icons.notifications_none_rounded,
+              color: AppColors.textPrimary,
+            ),
+            onPressed: () =>
+                unawaited(context.push(AppRoutes.workerNotifications)),
           ),
         ],
         bottom: PreferredSize(
@@ -93,7 +100,10 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
               // 3-Segment Filter Bar
               Container(
                 color: AppColors.surface,
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.sm,
+                ),
                 child: Row(
                   children: [
                     _buildTabItem(0, context.l10n.workerJobsTabAssigned),
@@ -110,15 +120,20 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
               Expanded(
                 child: BlocBuilder<BookingListCubit, BookingListState>(
                   builder: (context, state) => switch (state) {
-                    BookingListInitialState() || BookingListLoadingState() => const Center(
-                      child: CircularProgressIndicator(color: AppColors.primary),
+                    BookingListInitialState() ||
+                    BookingListLoadingState() => const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primary,
+                      ),
                     ),
                     BookingListErrorState(:final failure) => ListView(
                       padding: const EdgeInsets.all(AppSpacing.lg),
                       children: [
                         ErrorRetryView(
                           message: context.l10n.failureMessage(failure),
-                          onRetry: () => unawaited(context.read<BookingListCubit>().load()),
+                          onRetry: () => unawaited(
+                            context.read<BookingListCubit>().load(),
+                          ),
                         ),
                       ],
                     ),
@@ -134,7 +149,10 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: WorkerFloatingDock(currentIndex: 0, onTabSelected: _onDockTabSelected),
+            child: WorkerFloatingDock(
+              currentIndex: 0,
+              onTabSelected: _onDockTabSelected,
+            ),
           ),
         ],
       ),
@@ -152,7 +170,12 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
       onRefresh: () => context.read<BookingListCubit>().load(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.dockClearanceMax),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.dockClearanceMax,
+        ),
         itemCount: (jobs.isEmpty ? 1 : jobs.length) + (state.hasMore ? 1 : 0),
         separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
         itemBuilder: (context, index) {
@@ -163,23 +186,31 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
               child: Text(
                 context.l10n.workerJobsEmpty,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodyMd.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             );
           }
           if (index >= jobs.length) {
             return state.isLoadingMore
-                ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+                ? const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  )
                 : AppSecondaryButton(
                     key: const Key('worker_jobs_load_more_button'),
                     label: context.l10n.ordersLoadMore,
                     icon: Icons.expand_more,
                     isFullWidth: true,
-                    onPressed: () => unawaited(context.read<BookingListCubit>().loadMore()),
+                    onPressed: () =>
+                        unawaited(context.read<BookingListCubit>().loadMore()),
                   );
           }
           final job = jobs[index];
-          return _JobCard(booking: job, serviceName: state.categoryNames[job.categoryId]);
+          return _JobCard(
+            booking: job,
+            serviceName: state.categoryNames[job.categoryId],
+          );
         },
       ),
     );
@@ -196,7 +227,10 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
           decoration: BoxDecoration(
             color: isSelected ? AppColors.secondarySurface : AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadius.control),
-            border: Border.all(color: isSelected ? AppColors.primary : AppColors.border, width: isSelected ? 1.5 : 1),
+            border: Border.all(
+              color: isSelected ? AppColors.primary : AppColors.border,
+              width: isSelected ? 1.5 : 1,
+            ),
           ),
           child: Center(
             child: Text(
@@ -226,9 +260,18 @@ class _JobCard extends StatelessWidget {
     final scheduledTime = booking.scheduledTime;
     final price = booking.finalPrice ?? booking.estimatedPrice;
     final (String? label, String? location) = switch (booking.status) {
-      BookingStatus.pending => (l10n.workerViewAndAccept, AppRoutes.workerJobDetailLocation(booking.id)),
-      BookingStatus.accepted => (l10n.workerStartTravelCta, AppRoutes.workerEnRouteLocation(booking.id)),
-      BookingStatus.inProgress => (l10n.workerContinueJobCta, AppRoutes.workerExecutingLocation(booking.id)),
+      BookingStatus.pending => (
+        l10n.workerViewAndAccept,
+        AppRoutes.workerJobDetailLocation(booking.id),
+      ),
+      BookingStatus.accepted => (
+        l10n.workerStartTravelCta,
+        AppRoutes.workerEnRouteLocation(booking.id),
+      ),
+      BookingStatus.inProgress => (
+        l10n.workerContinueJobCta,
+        AppRoutes.workerExecutingLocation(booking.id),
+      ),
       _ => (null, null),
     };
     return Container(
@@ -247,7 +290,10 @@ class _JobCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   '#${booking.id}',
-                  style: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                  style: AppTextStyles.labelLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
               BookingStatusChip(status: booking.status),
@@ -265,11 +311,20 @@ class _JobCard extends StatelessWidget {
             ),
           ),
           if (scheduledTime != null)
-            _InfoRow(icon: Icons.access_time_rounded, text: bookingScheduleLabel(context, scheduledTime)),
+            _InfoRow(
+              icon: Icons.access_time_rounded,
+              text: bookingScheduleLabel(context, scheduledTime),
+            ),
           if (booking.addressDetail?.isNotEmpty ?? false)
-            _InfoRow(icon: Icons.location_on_outlined, text: booking.addressDetail!),
+            _InfoRow(
+              icon: Icons.location_on_outlined,
+              text: booking.addressDetail!,
+            ),
           if (booking.description?.isNotEmpty ?? false)
-            _InfoRow(icon: Icons.description_outlined, text: booking.description!),
+            _InfoRow(
+              icon: Icons.description_outlined,
+              text: booking.description!,
+            ),
           if (price != null) ...[
             const SizedBox(height: AppSpacing.md),
             const Divider(height: 1, color: AppColors.border),
@@ -278,13 +333,20 @@ class _JobCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    booking.finalPrice != null ? l10n.ordersFinalPrice : l10n.bookingEstimatedPreview,
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                    booking.finalPrice != null
+                        ? l10n.ordersFinalPrice
+                        : l10n.bookingEstimatedPreview,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
                 Text(
                   MoneyFormatter.format(price),
-                  style: AppTextStyles.labelLarge.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w800),
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ],
             ),
@@ -319,7 +381,12 @@ class _InfoRow extends StatelessWidget {
           Icon(icon, size: 16, color: AppColors.textMuted),
           const SizedBox(width: 6),
           Expanded(
-            child: Text(text, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
+            child: Text(
+              text,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
           ),
         ],
       ),
