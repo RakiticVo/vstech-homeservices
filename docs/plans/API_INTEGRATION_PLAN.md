@@ -19,7 +19,7 @@
 | 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ✅ Code xong 2026-10-10 (commit 3.1–3.4) — ⏳ chờ tài khoản test UAT |
 | 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ✅ Code xong 2026-10-10 (commit 4.1–4.3) — ⏳ chờ tài khoản test UAT |
 | 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ✅ Code xong 2026-10-12 (commit 5.1–5.6) — ⏳ chờ tài khoản test UAT; VoIP chưa có âm thanh |
-| 6 | Theo dõi thợ realtime: khách nghe `/ws/tracking/customer` (vị trí, kết thúc theo dõi) | ⏳ Đề xuất — API đã có, màn đang mock; bản đồ thật cần Google Maps key |
+| 6 | Theo dõi thợ realtime: khách nghe `/ws/tracking/customer` (vị trí, kết thúc theo dõi) | 🔄 Đang làm (2026-10-15) — bản đồ thật cần Google Maps key |
 
 ### B. UI còn thiếu cho API có sẵn (bạn làm trên Claude Design → mình chuyển sang Flutter + nối API)
 
@@ -203,6 +203,19 @@ VoIP chỉ ghi log cuộc gọi.
 > - Chat: `RealtimeSocket` JSON thuần (chốt C9 theo doc), phòng theo `bookingId`, lịch sử + tin trực tiếp, gửi qua REST, gộp trùng theo id, phòng đóng chỉ đọc, trạng thái kết nối + kết nối lại. Mở từ chi tiết đơn, theo dõi thợ, thợ đang đến / đã đến.
 > - VoIP: ghi nhật ký bắt đầu / kết thúc cuộc gọi, lịch sử cuộc gọi hiện trong khung chat; **chưa có âm thanh** (L27), bỏ màn cuộc gọi đến (L28).
 > - Bỏ: tin nhắn mock, chi phí phát sinh trong chat, gửi ảnh / vị trí (chưa có upload), kênh SMS / Zalo / Push trong cài đặt.
+
+**Pha 6 — Theo dõi thợ realtime (khách)**
+
+> **Kế hoạch commit Pha 6** (mỗi bước: analyze sạch + test xanh → commit; push khi xong 6.2):
+>
+> Doc `09-location-tracking` §2.3: khách mở `/ws/tracking/customer` (JSON thuần, token ở header), gửi `{"action":"SUBSCRIBE","bookingId":<số>}`, nhận `CONNECTED` / `LOCATION_UPDATE` / `TRACKING_ENDED` / `ERROR`; chỉ theo dõi được đơn ACCEPTED / IN_PROGRESS của chính mình; server tự đóng sau `TRACKING_ENDED` hoặc `ERROR`.
+>
+> | # | Commit | Nội dung |
+> | :- | :--- | :--- |
+> | 6.1 | `feat(tracking): add customer tracking socket data layer` | DTO `TrackingSubscribeRequest` / `TrackingMessageResponse`; datasource trên `RealtimeSocket` (gửi lại SUBSCRIBE mỗi lần kết nối lại); entity vị trí thợ + sự kiện; `TrackingConnection`; tính khoảng cách (haversine); unit test với channel giả |
+> | 6.2 | `feat(tracking): show the worker's live position to the customer` | `CustomerTrackingCubit` theo `bookingId`: đọc đơn → giai đoạn theo trạng thái (ACCEPTED = thợ đang đến, IN_PROGRESS = đang làm, COMPLETED = chờ nghiệm thu), mở socket khi ACCEPTED / IN_PROGRESS, `TRACKING_ENDED` → tải lại đơn, `ERROR` → dừng; màn theo dõi bỏ chip giả lập 4 giai đoạn, giờ check-in / ETA / tên thợ / checklist giả; hiện trạng thái kết nối, "cập nhật lúc", khoảng cách tới toạ độ hồ sơ (API không trả toạ độ đơn); test |
+>
+> Không làm ở Pha 6: bản đồ Google thật (cần `GOOGLE_MAPS_API_KEY` + gắn key vào Android/iOS — thiếu key thì iOS crash), ETA (không có API chỉ đường), trạng thái "đã đến" (API không có), thợ gửi GPS qua `/ws/tracking` (đang dùng REST `PUT /technician/location` mỗi 2 giây — đã chạy).
 
 ## 5. Kiểm thử & xác minh mỗi pha
 
