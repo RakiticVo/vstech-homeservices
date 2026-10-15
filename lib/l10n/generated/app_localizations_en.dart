@@ -1039,6 +1039,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackingHelpSupport => 'Help & Support';
 
   @override
+  String trackingDistanceAway(String distance) {
+    return 'About $distance from your address';
+  }
+
+  @override
+  String get trackingDistanceNote =>
+      'Straight-line distance to the default address in your profile';
+
+  @override
+  String trackingUpdatedAt(String time) {
+    return 'Location updated at $time';
+  }
+
+  @override
+  String get trackingWaitingGps => 'Waiting for the pro’s location…';
+
+  @override
+  String get trackingWorkingNotice => 'Your pro is working at your home';
+
+  @override
+  String get trackingSignoffBody =>
+      'Your pro reported the job as done. Please check the work, then sign off.';
+
+  @override
+  String get trackingNotActive =>
+      'This order is not at a trackable stage right now.';
+
+  @override
+  String get trackingConnOffline =>
+      'Disconnected, the location won’t update automatically';
+
+  @override
+  String get trackingRejected => 'This order can’t be tracked right now';
+
+  @override
+  String trackingMeters(String meters) {
+    return '$meters m';
+  }
+
+  @override
+  String trackingKilometers(String km) {
+    return '$km km';
+  }
+
+  @override
   String get workerEnRouteTitle => 'En Route to Customer';
 
   @override

@@ -77,6 +77,7 @@ import 'package:vstech_home_services/features/orders/presentation/bloc/order_det
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_order_detail_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/customer_orders_page.dart';
 import 'package:vstech_home_services/features/orders/presentation/pages/worker_jobs_hub_page.dart';
+import 'package:vstech_home_services/features/tracking/presentation/bloc/customer_tracking_cubit.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/customer_tracking_page.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_arrived_page.dart';
 import 'package:vstech_home_services/features/tracking/presentation/pages/worker_en_route_page.dart';
@@ -279,10 +280,15 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     GoRoute(
       path: AppRoutes.customerTracking,
       builder: (context, state) {
-        final stage =
-            int.tryParse(state.uri.queryParameters['stage'] ?? '1') ?? 1;
-        final code = state.uri.queryParameters['code'] ?? 'HS-2026-0012';
-        return CustomerTrackingPage(initialStage: stage, orderCode: code);
+        final bookingId = state.uri.queryParameters['code'] ?? '';
+        return BlocProvider(
+          create: (_) {
+            final cubit = getIt<CustomerTrackingCubit>();
+            unawaited(cubit.load(bookingId));
+            return cubit;
+          },
+          child: CustomerTrackingPage(bookingId: bookingId),
+        );
       },
     ),
     GoRoute(

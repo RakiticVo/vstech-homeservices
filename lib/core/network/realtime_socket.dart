@@ -56,6 +56,7 @@ class RealtimeSocket {
   String? _path;
   int _attempts = 0;
   bool _closed = false;
+  bool _disposed = false;
 
   /// Decoded JSON objects received from the server (non-object frames are dropped).
   Stream<Map<String, dynamic>> get messages => _messages.stream;
@@ -84,13 +85,22 @@ class RealtimeSocket {
     return true;
   }
 
-  Future<void> close() async {
-    if (_closed && _channel == null) return;
+  /// Drops the connection and stops reconnecting, but keeps [messages] / [status] open so [connect]
+  /// can be called again — e.g. after the server rejected a subscription and then closed.
+  Future<void> disconnect() async {
+    if (_disposed || (_closed && _channel == null)) return;
     _closed = true;
     _reconnectTimer?.cancel();
     await _dropChannel();
     networkLogger.i('🔌 WS closed $_path');
     _emitStatus(RealtimeSocketStatus.closed);
+  }
+
+  /// [disconnect]s for good and closes the streams. The socket cannot be reused afterwards.
+  Future<void> close() async {
+    if (_disposed) return;
+    await disconnect();
+    _disposed = true;
     await _messages.close();
     await _status.close();
   }

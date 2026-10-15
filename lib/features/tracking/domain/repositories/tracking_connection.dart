@@ -8,5 +8,8 @@ abstract interface class TrackingConnection {
 
   Future<void> connect(String bookingId);
 
+  /// Stops tracking (no reconnect) but allows [connect] again.
+  Future<void> disconnect();
+
   Future<void> close();
 }

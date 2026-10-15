@@ -2018,6 +2018,72 @@ abstract class AppLocalizations {
   /// **'Trợ giúp'**
   String get trackingHelpSupport;
 
+  /// No description provided for @trackingDistanceAway.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cách địa chỉ của bạn khoảng {distance}'**
+  String trackingDistanceAway(String distance);
+
+  /// No description provided for @trackingDistanceNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính theo đường chim bay tới địa chỉ mặc định trong hồ sơ'**
+  String get trackingDistanceNote;
+
+  /// No description provided for @trackingUpdatedAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vị trí cập nhật lúc {time}'**
+  String trackingUpdatedAt(String time);
+
+  /// No description provided for @trackingWaitingGps.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chờ vị trí của thợ…'**
+  String get trackingWaitingGps;
+
+  /// No description provided for @trackingWorkingNotice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thợ đang thực hiện công việc tại nhà bạn'**
+  String get trackingWorkingNotice;
+
+  /// No description provided for @trackingSignoffBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thợ đã báo hoàn thành công việc. Mời bạn kiểm tra chất lượng rồi nghiệm thu.'**
+  String get trackingSignoffBody;
+
+  /// No description provided for @trackingNotActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn này hiện không ở giai đoạn theo dõi thợ.'**
+  String get trackingNotActive;
+
+  /// No description provided for @trackingConnOffline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mất kết nối, vị trí sẽ không tự cập nhật'**
+  String get trackingConnOffline;
+
+  /// No description provided for @trackingRejected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không theo dõi được đơn này lúc này'**
+  String get trackingRejected;
+
+  /// No description provided for @trackingMeters.
+  ///
+  /// In vi, this message translates to:
+  /// **'{meters} m'**
+  String trackingMeters(String meters);
+
+  /// No description provided for @trackingKilometers.
+  ///
+  /// In vi, this message translates to:
+  /// **'{km} km'**
+  String trackingKilometers(String km);
+
   /// No description provided for @workerEnRouteTitle.
   ///
   /// In vi, this message translates to:

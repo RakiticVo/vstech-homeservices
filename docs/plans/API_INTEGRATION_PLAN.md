@@ -19,7 +19,7 @@
 | 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ✅ Code xong 2026-10-10 (commit 3.1–3.4) — ⏳ chờ tài khoản test UAT |
 | 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ✅ Code xong 2026-10-10 (commit 4.1–4.3) — ⏳ chờ tài khoản test UAT |
 | 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ✅ Code xong 2026-10-12 (commit 5.1–5.6) — ⏳ chờ tài khoản test UAT; VoIP chưa có âm thanh |
-| 6 | Theo dõi thợ realtime: khách nghe `/ws/tracking/customer` (vị trí, kết thúc theo dõi) | 🔄 Đang làm (2026-10-15) — bản đồ thật cần Google Maps key |
+| 6 | Theo dõi thợ realtime: khách nghe `/ws/tracking/customer` (vị trí, kết thúc theo dõi) | ✅ Code xong 2026-10-15 (commit 6.1–6.2) — ⏳ chờ tài khoản test UAT; bản đồ thật cần Google Maps key |
 
 ### B. UI còn thiếu cho API có sẵn (bạn làm trên Claude Design → mình chuyển sang Flutter + nối API)
 
@@ -216,6 +216,11 @@ VoIP chỉ ghi log cuộc gọi.
 > | 6.2 | `feat(tracking): show the worker's live position to the customer` | `CustomerTrackingCubit` theo `bookingId`: đọc đơn → giai đoạn theo trạng thái (ACCEPTED = thợ đang đến, IN_PROGRESS = đang làm, COMPLETED = chờ nghiệm thu), mở socket khi ACCEPTED / IN_PROGRESS, `TRACKING_ENDED` → tải lại đơn, `ERROR` → dừng; màn theo dõi bỏ chip giả lập 4 giai đoạn, giờ check-in / ETA / tên thợ / checklist giả; hiện trạng thái kết nối, "cập nhật lúc", khoảng cách tới toạ độ hồ sơ (API không trả toạ độ đơn); test |
 >
 > Không làm ở Pha 6: bản đồ Google thật (cần `GOOGLE_MAPS_API_KEY` + gắn key vào Android/iOS — thiếu key thì iOS crash), ETA (không có API chỉ đường), trạng thái "đã đến" (API không có), thợ gửi GPS qua `/ws/tracking` (đang dùng REST `PUT /technician/location` mỗi 2 giây — đã chạy).
+
+> **Kết quả Pha 6 (2026-10-15):**
+> - Màn theo dõi thợ của khách đọc đơn thật và suy giai đoạn từ trạng thái: ACCEPTED = thợ đang đến (vị trí trực tiếp + khoảng cách tới địa chỉ hồ sơ + giờ cập nhật), IN_PROGRESS = đang làm, COMPLETED = chờ nghiệm thu (nút Tiến hành nghiệm thu), trạng thái khác = không theo dõi.
+> - Socket `/ws/tracking/customer` mở / đóng theo cubit, tự gửi lại SUBSCRIBE khi kết nối lại; `TRACKING_ENDED` → tải lại đơn; `ERROR` → dừng, hiện lý do + Kết nối lại. `RealtimeSocket` có thêm `disconnect()` (ngắt mà vẫn dùng lại được).
+> - Bỏ: chip giả lập 4 giai đoạn, ETA / giờ check-in / tên + đánh giá thợ / đồng hồ + checklist giả (API không có).
 
 ## 5. Kiểm thử & xác minh mỗi pha
 

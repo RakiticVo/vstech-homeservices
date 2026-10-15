@@ -30,6 +30,13 @@ class CustomerTrackingSocketDataSource {
     await _socket.connect(ApiEndpoints.wsTrackingCustomer);
   }
 
+  /// Stops tracking but keeps the socket reusable for a later [connect].
+  Future<void> disconnect() async {
+    await _resubscribe?.cancel();
+    _resubscribe = null;
+    await _socket.disconnect();
+  }
+
   Future<void> close() async {
     await _resubscribe?.cancel();
     _resubscribe = null;

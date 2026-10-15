@@ -1038,6 +1038,51 @@ class AppLocalizationsVi extends AppLocalizations {
   String get trackingHelpSupport => 'Trợ giúp';
 
   @override
+  String trackingDistanceAway(String distance) {
+    return 'Cách địa chỉ của bạn khoảng $distance';
+  }
+
+  @override
+  String get trackingDistanceNote =>
+      'Tính theo đường chim bay tới địa chỉ mặc định trong hồ sơ';
+
+  @override
+  String trackingUpdatedAt(String time) {
+    return 'Vị trí cập nhật lúc $time';
+  }
+
+  @override
+  String get trackingWaitingGps => 'Đang chờ vị trí của thợ…';
+
+  @override
+  String get trackingWorkingNotice =>
+      'Thợ đang thực hiện công việc tại nhà bạn';
+
+  @override
+  String get trackingSignoffBody =>
+      'Thợ đã báo hoàn thành công việc. Mời bạn kiểm tra chất lượng rồi nghiệm thu.';
+
+  @override
+  String get trackingNotActive =>
+      'Đơn này hiện không ở giai đoạn theo dõi thợ.';
+
+  @override
+  String get trackingConnOffline => 'Mất kết nối, vị trí sẽ không tự cập nhật';
+
+  @override
+  String get trackingRejected => 'Không theo dõi được đơn này lúc này';
+
+  @override
+  String trackingMeters(String meters) {
+    return '$meters m';
+  }
+
+  @override
+  String trackingKilometers(String km) {
+    return '$km km';
+  }
+
+  @override
   String get workerEnRouteTitle => 'Đang di chuyển đến khách';
 
   @override

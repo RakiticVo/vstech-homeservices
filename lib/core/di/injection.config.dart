@@ -150,6 +150,8 @@ import 'package:vstech_home_services/features/tracking/domain/repositories/track
     as _i729;
 import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart'
     as _i434;
+import 'package:vstech_home_services/features/tracking/presentation/bloc/customer_tracking_cubit.dart'
+    as _i586;
 import 'package:vstech_home_services/features/wallet/data/datasources/wallet_remote_data_source.dart'
     as _i964;
 import 'package:vstech_home_services/features/wallet/data/repositories/wallet_repository_impl.dart'
@@ -455,6 +457,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i78.UpdateNotificationSettingsUseCase>(
       () => _i78.UpdateNotificationSettingsUseCase(
         gh<_i634.NotificationRepository>(),
+      ),
+    );
+    gh.factory<_i586.CustomerTrackingCubit>(
+      () => _i586.CustomerTrackingCubit(
+        gh<_i736.GetBookingUseCase>(),
+        gh<_i294.GetProfileUseCase>(),
+        gh<_i729.TrackingConnection>(),
       ),
     );
     gh.factory<_i101.WorkerTaskCubit>(

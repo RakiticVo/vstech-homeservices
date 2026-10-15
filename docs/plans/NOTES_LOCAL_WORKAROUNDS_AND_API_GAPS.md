@@ -73,6 +73,8 @@
 | L27 | **Âm thanh cuộc gọi VoIP** | Màn gọi chỉ **ghi nhật ký** (`POST /voip/calls` → `/end` kèm số giây), có ghi chú "Bản thử" — không có âm thanh, không đổ chuông máy bên kia | Chọn SDK/nhà cung cấp VoIP (Stringee, Twilio, Agora…) + API cấp token / signaling | `voip_call_cubit.dart`, `voip_call_page.dart` |
 | L28 | **Cuộc gọi đến** | Đã bỏ màn "Cuộc gọi đến" — không có kênh nào báo cho máy nhận | Push (FCM — backend chưa gửi) hoặc WebSocket báo cuộc gọi đến | `voip_call_page.dart` |
 | L29 | **Kết quả duyệt báo giá phía thợ** | Thẻ trạng thái (Cell 133) chỉ biết báo giá vừa gửi từ chính máy này (lưu trong bộ nhớ, **mất khi tắt app**); "Khách đã duyệt / từ chối" chưa bao giờ hiện vì không có API báo kết quả | `GET /bookings/{id}/quote` hoặc thêm báo giá vào `BookingResponse` / sự kiện WebSocket | `booking_repository_impl.dart` (`cachedQuote`), `quote_status_card.dart` |
+| L30 | **Khoảng cách thợ → nhà khách** | Màn theo dõi tính đường chim bay tới toạ độ **địa chỉ mặc định trong hồ sơ** (có ghi chú); không có ETA | Trả `locationLat/locationLng` của đơn trong `BookingResponse` (+ API chỉ đường / ETA nếu cần) | `customer_tracking_state.dart` |
+| L31 | **Bản đồ theo dõi** | Vẫn là bản đồ vẽ tạm (không phải Google Maps), chỉ thêm dữ liệu thật: giai đoạn, kết nối, vị trí, giờ cập nhật | Không cần API mới — cần `GOOGLE_MAPS_API_KEY` + gắn key vào Android/iOS | `tracking_map_widget.dart` |
 | L16 | **Ngôn ngữ** (vi/en) | Chỉ đổi trên máy, không lưu vào hồ sơ | Đã có field `locale` trong `PUT /profiles` — **chưa nối** (tính năng, không cần API mới) | `language_toggle_button.dart` |
 
 ---
@@ -81,7 +83,7 @@
 
 | Nhóm | Màn |
 | :--- | :--- |
-| Khách | Theo dõi thợ (bản đồ), Tìm thợ (radar), Nghiệm thu, Thanh toán đơn (VNPay/ZaloPay), Hoá đơn, Đánh giá & tip, Bảo hành (5 màn), Gợi ý AI / Trợ lý AI, Thợ yêu thích, Hồ sơ thợ (xem trước), Phương thức thanh toán / Liên kết ví, Danh sách & chi tiết khiếu nại, Thiết bị trong nhà |
+| Khách | Bản đồ Google trên màn theo dõi thợ (dữ liệu đã thật — L31), Tìm thợ (radar), Nghiệm thu, Thanh toán đơn (VNPay/ZaloPay), Hoá đơn, Đánh giá & tip, Bảo hành (5 màn), Gợi ý AI / Trợ lý AI, Thợ yêu thích, Hồ sơ thợ (xem trước), Phương thức thanh toán / Liên kết ví, Danh sách & chi tiết khiếu nại, Thiết bị trong nhà |
 | Thợ | Bản đồ & dẫn đường, checklist các bước làm, màn quyết toán sau hoàn tất (thu nhập/phí), thẻ thu nhập trên Dashboard, lịch tuần, khung giờ sẵn sàng, vùng làm việc, kỹ năng & chứng chỉ, hiệu suất, KYC (thiếu upload), Huỷ việc / Khách vắng mặt |
 | Chung | Gọi VoIP: chỉ ghi nhật ký, chưa có âm thanh (L27) |
 

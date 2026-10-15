@@ -30,6 +30,9 @@ class TrackingConnectionImpl implements TrackingConnection {
   Future<void> connect(String bookingId) => _socket.connect(bookingId);
 
   @override
+  Future<void> disconnect() => _socket.disconnect();
+
+  @override
   Future<void> close() => _socket.close();
 
   /// Unknown frame types are ignored (null).

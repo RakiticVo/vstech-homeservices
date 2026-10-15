@@ -1,58 +1,36 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
+import 'package:vstech_home_services/core/error/failure.dart';
+import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
+import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/widgets/app_button.dart';
-import 'package:vstech_home_services/features/tracking/presentation/widgets/service_checklist_widget.dart';
+import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
+import 'package:vstech_home_services/features/booking/presentation/widgets/booking_status_chip.dart';
+import 'package:vstech_home_services/features/tracking/domain/entities/worker_position.dart';
+import 'package:vstech_home_services/features/tracking/presentation/bloc/customer_tracking_cubit.dart';
 import 'package:vstech_home_services/features/tracking/presentation/widgets/tracking_map_widget.dart';
-import 'package:vstech_home_services/features/tracking/presentation/widgets/working_timer_widget.dart';
 
-/// Customer Real-time Job Tracking Screen (Concept 02: Cells 43, 45, 47, 49).
-/// Transitions across 4 stages: En Route -> Arrived -> Executing -> Pending Sign-off.
-class CustomerTrackingPage extends StatefulWidget {
-  const CustomerTrackingPage({
-    super.key,
-    this.initialStage = 1,
-    this.orderCode = 'HS-2026-0012',
-  });
+/// Customer's job tracking (Concept 02: Cells 43, 45, 47, 49), driven by the booking status:
+/// ACCEPTED → the worker is on the way (live position over `/ws/tracking/customer`, straight-line
+/// distance to the profile's default address), IN_PROGRESS → working, COMPLETED → sign-off. The API
+/// has no "arrived" status, ETA, or worker name, so those mock parts are gone.
+class CustomerTrackingPage extends StatelessWidget {
+  const CustomerTrackingPage({required this.bookingId, super.key});
 
-  /// 1: En Route, 2: Arrived, 3: Executing, 4: Pending Sign-off
-  final int initialStage;
-  final String orderCode;
-
-  @override
-  State<CustomerTrackingPage> createState() => _CustomerTrackingPageState();
-}
-
-class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
-  late int _currentStage;
-  final Set<int> _completedSteps = {0, 1};
-
-  @override
-  void initState() {
-    super.initState();
-    _currentStage = widget.initialStage;
-  }
-
-  void _onStageSelected(int stage) {
-    setState(() {
-      _currentStage = stage;
-      if (stage >= 3) {
-        _completedSteps.addAll([0, 1]);
-      }
-      if (stage == 4) {
-        _completedSteps.addAll([0, 1, 2, 3, 4]);
-      }
-    });
-  }
+  final String bookingId;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -60,6 +38,7 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           color: AppColors.textPrimary,
           onPressed: () => Navigator.of(context).maybePop(),
@@ -68,429 +47,471 @@ class _CustomerTrackingPageState extends State<CustomerTrackingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.l10n.trackingTitle,
+              l10n.trackingTitle,
               style: AppTextStyles.headlineSmall.copyWith(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
               ),
             ),
             Text(
-              context.l10n.trackingOrderCode(widget.orderCode),
+              l10n.trackingOrderCode(bookingId),
               style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.textMuted,
+                color: AppColors.textSecondary,
               ),
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.headset_mic_outlined),
-            color: AppColors.textSecondary,
-            tooltip: context.l10n.trackingHelpSupport,
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.l10n.trackingHelpSupport)),
-              );
-            },
-          ),
-          const SizedBox(width: AppSpacing.xs),
-        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(color: AppColors.border, height: 1),
         ),
       ),
-      body: Column(
-        children: [
-          // Stage Selector Simulator Chips
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: AppSpacing.sm,
-            ),
-            color: AppColors.surface,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _StageChip(
-                    label: context.l10n.trackingStageEnRoute,
-                    stageNumber: 1,
-                    isSelected: _currentStage == 1,
-                    onTap: () => _onStageSelected(1),
-                  ),
-                  const SizedBox(width: 8),
-                  _StageChip(
-                    label: context.l10n.trackingStageArrived,
-                    stageNumber: 2,
-                    isSelected: _currentStage == 2,
-                    onTap: () => _onStageSelected(2),
-                  ),
-                  const SizedBox(width: 8),
-                  _StageChip(
-                    label: context.l10n.trackingStageExecuting,
-                    stageNumber: 3,
-                    isSelected: _currentStage == 3,
-                    onTap: () => _onStageSelected(3),
-                  ),
-                  const SizedBox(width: 8),
-                  _StageChip(
-                    label: context.l10n.trackingStageSignoff,
-                    stageNumber: 4,
-                    isSelected: _currentStage == 4,
-                    onTap: () => _onStageSelected(4),
-                  ),
-                ],
+      body: BlocBuilder<CustomerTrackingCubit, CustomerTrackingState>(
+        builder: (context, state) => switch (state) {
+          CustomerTrackingLoadingState() => const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          ),
+          CustomerTrackingErrorState(:final failure) => Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ErrorRetryView(
+                message: l10n.failureMessage(failure),
+                onRetry: () => unawaited(
+                  context.read<CustomerTrackingCubit>().load(bookingId),
+                ),
               ),
             ),
           ),
-          Container(color: AppColors.border, height: 1),
+          CustomerTrackingLoadedState() => _Body(
+            state: state,
+            bookingId: bookingId,
+          ),
+        },
+      ),
+    );
+  }
+}
 
-          // Scrollable Stage Body
+class _Body extends StatelessWidget {
+  const _Body({required this.state, required this.bookingId});
+
+  final CustomerTrackingLoadedState state;
+  final String bookingId;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final cubit = context.read<CustomerTrackingCubit>();
+    final stage = state.stage;
+
+    return RefreshIndicator(
+      color: AppColors.primary,
+      onRefresh: () => cubit.load(bookingId),
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        children: [
+          _StageHeader(state: state),
+          if (stage.isTrackable) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _ConnectionRow(
+              status: state.connection,
+              rejected: state.errorCode != null,
+              onReconnect: () => unawaited(cubit.reconnect()),
+            ),
+          ],
+          if (state.errorCode != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _Notice(
+              key: const Key('tracking_rejected'),
+              icon: Icons.error_outline_rounded,
+              color: AppColors.error,
+              text: state.errorCode!.isEmpty
+                  ? l10n.trackingRejected
+                  : l10n.failureMessage(
+                      Failure(
+                        kind: NetworkErrorKind.server,
+                        errorCode: state.errorCode,
+                      ),
+                    ),
+            ),
+          ],
+          const SizedBox(height: AppSpacing.md),
+          if (stage == TrackingStage.enRoute) ...[
+            TrackingMapWidget(
+              height: 220,
+              workerEtaText: _distanceLabel(context, state.distanceMeters),
+              destinationLabel: state.booking.addressDetail,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            _PositionCard(state: state),
+          ],
+          if (stage == TrackingStage.working) ...[
+            _Notice(
+              icon: Icons.handyman_outlined,
+              color: AppColors.textSecondary,
+              text: l10n.trackingWorkingNotice,
+            ),
+            if (state.position != null) ...[
+              const SizedBox(height: AppSpacing.sm),
+              _UpdatedAt(position: state.position!),
+            ],
+          ],
+          if (stage == TrackingStage.awaitingSignoff)
+            _Notice(
+              icon: Icons.task_alt_rounded,
+              color: AppColors.successDark,
+              text: l10n.trackingSignoffBody,
+            ),
+          if (stage == TrackingStage.inactive)
+            _Notice(
+              icon: Icons.info_outline_rounded,
+              color: AppColors.textSecondary,
+              text: l10n.trackingNotActive,
+            ),
+          const SizedBox(height: AppSpacing.lg),
+          if (stage.isTrackable) _WorkerCard(bookingId: bookingId),
+          if (stage == TrackingStage.awaitingSignoff)
+            AppButton.primary(
+              key: const Key('tracking_signoff_button'),
+              label: l10n.trackingProceedToInspection,
+              icon: Icons.fact_check_outlined,
+              onPressed: () => unawaited(
+                context.push('${AppRoutes.inspectionSignoff}?code=$bookingId'),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  static String? _distanceLabel(BuildContext context, double? meters) {
+    if (meters == null) return null;
+    final l10n = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
+    if (meters < 1000) {
+      return l10n.trackingMeters(
+        NumberFormat.decimalPattern(locale).format((meters / 10).round() * 10),
+      );
+    }
+    return l10n.trackingKilometers(
+      NumberFormat.decimalPatternDigits(
+        locale: locale,
+        decimalDigits: 1,
+      ).format(meters / 1000),
+    );
+  }
+}
+
+/// Stage of the job as Icon + Label + Color, plus the booking status chip.
+class _StageHeader extends StatelessWidget {
+  const _StageHeader({required this.state});
+
+  final CustomerTrackingLoadedState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final (IconData icon, Color color, String? label) = switch (state.stage) {
+      TrackingStage.enRoute => (
+        Icons.two_wheeler_rounded,
+        AppColors.primaryPressed,
+        l10n.trackingStageEnRoute,
+      ),
+      TrackingStage.working => (
+        Icons.handyman_outlined,
+        AppColors.primaryPressed,
+        l10n.trackingStageExecuting,
+      ),
+      TrackingStage.awaitingSignoff => (
+        Icons.task_alt_rounded,
+        AppColors.successDark,
+        l10n.trackingStageSignoff,
+      ),
+      TrackingStage.inactive => (
+        Icons.info_outline_rounded,
+        AppColors.textSecondary,
+        null,
+      ),
+    };
+    return Row(
+      children: [
+        if (label != null) ...[
+          Icon(icon, size: 24, color: color),
+          const SizedBox(width: AppSpacing.sm),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              children: [
-                // Stage 1 & 2: Map View
-                if (_currentStage == 1 || _currentStage == 2) ...[
-                  TrackingMapWidget(
-                    height: 250,
-                    workerEtaText: _currentStage == 1 ? '8 phút' : 'Đã đến',
-                    destinationLabel: 'Căn hộ 802',
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                ],
-
-                // Stage 1 Status Banner
-                if (_currentStage == 1)
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondarySurface,
-                      borderRadius: BorderRadius.circular(AppRadius.control),
-                      border: Border.all(
-                        color: AppColors.primary.withValues(alpha: 0.3),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.near_me_rounded,
-                          color: AppColors.primary,
-                          size: 22,
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: Text(
-                            context.l10n.trackingEtaNotice(8, '2.4'),
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                // Stage 2 Status Banner (Arrived Check-in)
-                if (_currentStage == 2)
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(AppRadius.control),
-                      border: Border.all(color: AppColors.success),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.check_circle_rounded,
-                          color: AppColors.success,
-                          size: 22,
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: Text(
-                            context.l10n.trackingCheckInAt('13:58'),
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                // Stage 3: Live Working Timer + Service Checklist
-                if (_currentStage == 3) ...[
-                  const WorkingTimerWidget(),
-                  const SizedBox(height: AppSpacing.md),
-                  ServiceChecklistWidget(completedSteps: _completedSteps),
-                ],
-
-                // Stage 4: Ready for Sign-off
-                if (_currentStage == 4) ...[
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(AppRadius.card),
-                      border: Border.all(color: AppColors.primary),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 56,
-                          height: 56,
-                          decoration: const BoxDecoration(
-                            color: AppColors.secondarySurface,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.task_alt_rounded,
-                            color: AppColors.primary,
-                            size: 32,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        Text(
-                          context.l10n.trackingStageSignoff,
-                          style: AppTextStyles.headlineSmall.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xs),
-                        Text(
-                          'Thợ đã hoàn thành toàn bộ 5 bước kỹ thuật. Mời bạn kiểm tra thực tế chất lượng.',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  const ServiceChecklistWidget(
-                    completedSteps: {0, 1, 2, 3, 4},
-                    currentStep: 4,
-                  ),
-                ],
-
-                const SizedBox(height: AppSpacing.lg),
-
-                // Assigned Partner Worker Card (Present across all tracking stages)
-                Container(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(AppRadius.card),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 52,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              color: AppColors.secondarySurface,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.border),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.person_rounded,
-                                color: AppColors.primary,
-                                size: 30,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.md),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  context.l10n.trackingWorkerName,
-                                  style: AppTextStyles.headlineSmall.copyWith(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  context.l10n.trackingWorkerRating,
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: AppColors.textSecondary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      const Divider(height: 1, color: AppColors.border),
-                      const SizedBox(height: AppSpacing.sm),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              key: const Key('tracking_call_button'),
-                              onPressed: () => unawaited(
-                                context.push(
-                                  AppRoutes.voipCallLocation(
-                                    bookingId: widget.orderCode,
-                                    isWorker: false,
-                                  ),
-                                ),
-                              ),
-                              icon: const Icon(Icons.call_rounded, size: 18),
-                              label: Text(context.l10n.trackingMaskedCall),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.primary,
-                                side: const BorderSide(color: AppColors.border),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    AppRadius.control,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.md),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              key: const Key('tracking_chat_button'),
-                              onPressed: () => unawaited(
-                                context.push(
-                                  AppRoutes.chatLocation(
-                                    bookingId: widget.orderCode,
-                                    isWorker: false,
-                                  ),
-                                ),
-                              ),
-                              icon: const Icon(
-                                Icons.chat_bubble_outline_rounded,
-                                size: 18,
-                              ),
-                              label: Text(context.l10n.trackingChat),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.primary,
-                                side: const BorderSide(color: AppColors.border),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    AppRadius.control,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: AppSpacing.xl),
-
-                // Action CTA in Stage 4 (Proceed to Inspection)
-                if (_currentStage == 4)
-                  AppButton(
-                    label: context.l10n.trackingProceedToInspection,
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            context.l10n.trackingProceedToInspection,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-              ],
+            child: Text(
+              label,
+              key: Key('tracking_stage_${state.stage.name}'),
+              style: AppTextStyles.headlineSmall.copyWith(
+                color: color,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
+        ] else
+          const Spacer(),
+        BookingStatusChip(status: state.booking.status),
+      ],
+    );
+  }
+}
+
+class _PositionCard extends StatelessWidget {
+  const _PositionCard({required this.state});
+
+  final CustomerTrackingLoadedState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final position = state.position;
+    final distance = _Body._distanceLabel(context, state.distanceMeters);
+    return Container(
+      key: const Key('tracking_position_card'),
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.near_me_outlined,
+                size: 22,
+                color: AppColors.textSecondary,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  position == null
+                      ? l10n.trackingWaitingGps
+                      : distance == null
+                      ? l10n.trackingStageEnRoute
+                      : l10n.trackingDistanceAway(distance),
+                  style: AppTextStyles.labelLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (position != null) ...[
+            const SizedBox(height: AppSpacing.xs),
+            _UpdatedAt(position: position),
+          ],
+          if (distance != null) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              l10n.trackingDistanceNote,
+              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+            ),
+          ],
         ],
       ),
     );
   }
 }
 
-class _StageChip extends StatelessWidget {
-  const _StageChip({
-    required this.label,
-    required this.stageNumber,
-    required this.isSelected,
-    required this.onTap,
-  });
+class _UpdatedAt extends StatelessWidget {
+  const _UpdatedAt({required this.position});
 
-  final String label;
-  final int stageNumber;
-  final bool isSelected;
-  final VoidCallback onTap;
+  final WorkerPosition position;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadius.chip),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.secondarySurface : AppColors.surface,
-          borderRadius: BorderRadius.circular(AppRadius.chip),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
-            width: isSelected ? 1.5 : 1,
+    final at = position.updatedAt?.toLocal();
+    if (at == null) return const SizedBox.shrink();
+    return Text(
+      context.l10n.trackingUpdatedAt(DateFormat('HH:mm:ss').format(at)),
+      key: const Key('tracking_updated_at'),
+      style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+    );
+  }
+}
+
+/// Live / connecting / offline — always Icon + Label + Color.
+class _ConnectionRow extends StatelessWidget {
+  const _ConnectionRow({
+    required this.status,
+    required this.rejected,
+    required this.onReconnect,
+  });
+
+  final TrackingConnectionStatus status;
+  final bool rejected;
+  final VoidCallback onReconnect;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final (IconData icon, Color color, String label) = switch (status) {
+      TrackingConnectionStatus.live => (
+        Icons.wifi_rounded,
+        AppColors.successDark,
+        l10n.chatConnLive,
+      ),
+      TrackingConnectionStatus.connecting ||
+      TrackingConnectionStatus.reconnecting => (
+        Icons.sync_rounded,
+        AppColors.textSecondary,
+        l10n.chatConnConnecting,
+      ),
+      TrackingConnectionStatus.offline => (
+        Icons.wifi_off_rounded,
+        AppColors.error,
+        l10n.trackingConnOffline,
+      ),
+    };
+    return Row(
+      key: Key('tracking_connection_${status.name}'),
+      children: [
+        Icon(icon, size: 16, color: color),
+        const SizedBox(width: AppSpacing.xs),
+        Expanded(
+          child: Text(
+            label,
+            style: AppTextStyles.caption.copyWith(
+              color: color,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : AppColors.border,
-                shape: BoxShape.circle,
+        if (status == TrackingConnectionStatus.offline)
+          AppSecondaryButton(
+            key: const Key('tracking_reconnect'),
+            label: l10n.chatReconnect,
+            icon: Icons.refresh_rounded,
+            onPressed: onReconnect,
+          ),
+      ],
+    );
+  }
+}
+
+class _Notice extends StatelessWidget {
+  const _Notice({
+    required this.icon,
+    required this.color,
+    required this.text,
+    super.key,
+  });
+
+  final IconData icon;
+  final Color color;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(AppSpacing.md),
+    decoration: BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(AppRadius.control),
+      border: Border.all(
+        color: color == AppColors.textSecondary ? AppColors.border : color,
+      ),
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 22, color: color),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+/// The assigned worker: the API gives no name or rating, so only the role, with masked call and chat.
+class _WorkerCard extends StatelessWidget {
+  const _WorkerCard({required this.bookingId});
+
+  final String bookingId;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.person_outline_rounded,
+                size: 24,
+                color: AppColors.textSecondary,
               ),
-              child: Center(
-                child: Text(
-                  '$stageNumber',
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: isSelected
-                        ? AppColors.onPrimary
-                        : AppColors.textSecondary,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                l10n.chatPeerWorker,
+                style: AppTextStyles.labelLarge.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: AppSecondaryButton(
+                  key: const Key('tracking_call_button'),
+                  label: l10n.trackingMaskedCall,
+                  icon: Icons.call_outlined,
+                  isFullWidth: true,
+                  onPressed: () => unawaited(
+                    context.push(
+                      AppRoutes.voipCallLocation(
+                        bookingId: bookingId,
+                        isWorker: false,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: AppSecondaryButton(
+                  key: const Key('tracking_chat_button'),
+                  label: l10n.trackingChat,
+                  icon: Icons.chat_bubble_outline_rounded,
+                  isFullWidth: true,
+                  onPressed: () => unawaited(
+                    context.push(
+                      AppRoutes.chatLocation(
+                        bookingId: bookingId,
+                        isWorker: false,
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }
