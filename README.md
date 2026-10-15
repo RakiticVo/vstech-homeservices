@@ -85,6 +85,18 @@ thêm `--dart-define-from-file=.env.development` vào ô *Additional run args*. 
 | `LOG_LEVEL` | `trace`/`debug`/`info`/`warning`/`error`/`off` |
 | `GOOGLE_MAPS_API_KEY` | Key bản đồ theo dõi (chưa gắn vào native) |
 | `TEST_CUSTOMER_*`, `TEST_WORKER_*` | Tài khoản test UAT do backend cấp — chỉ có trong `.env.development` |
+| `DEBUG_CONSOLE` | `true` = hiện nút **Debug** nổi trong app cho tester (development); `false` ở production |
+
+#### Bảng debug cho tester
+
+Khi `DEBUG_CONSOLE=true`, app có nút **Debug** nổi (kéo được) trên mọi màn. Bấm vào để xem:
+
+- **Mạng**: từng request/response (mã trạng thái, thời gian, mã lỗi `HS-…`, header/body). Token và mật khẩu luôn được che `***`.
+- **Log**: log app, chuyển trạng thái BLoC, lỗi không bắt được; lọc theo Tất cả / Cảnh báo trở lên / Chỉ lỗi.
+- **Thông tin**: môi trường, URL API/WebSocket, chế độ build, thiết bị, ngôn ngữ, phiên đăng nhập.
+- **Sao chép tất cả** → dán vào báo cáo lỗi; **Xoá** để làm sạch trước khi tái hiện lỗi.
+
+Dữ liệu chỉ nằm trong bộ nhớ của app (tối đa 500 log, 200 request), mất khi tắt app. Bản cài cho tester build bằng `.env.development` (vd. `flutter build apk --release --dart-define-from-file=.env.development`) vẫn có nút này; bản production thì không.
 
 ### 3. Sinh mã tự động (Code Generation)
 Dự án sử dụng `freezed`, `json_serializable`, và `injectable`. Khi tạo DTOs hoặc Repositories:

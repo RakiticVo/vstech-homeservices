@@ -1,16 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
+import 'package:vstech_home_services/core/config/app_env.dart';
+import 'package:vstech_home_services/core/debug/debug_log_store.dart';
 
 /// Three colour-coded log channels so app, network and BLoC output are easy to tell apart in the
 /// `flutter run` / VS Code / Android Studio console (Xcode's console does not render ANSI colours).
 /// Use these instead of `print()` anywhere in the codebase.
 ///
-/// Logging is on in debug/profile builds and off in release. Lower the noise with
+/// Logging is on in debug/profile builds and off in release — unless `DEBUG_CONSOLE=true`, which
+/// keeps it on and also feeds the in-app debug console (`DebugLogStore`). Lower the noise with
 /// `--dart-define=LOG_LEVEL=info` (trace | debug | info | warning | error | off).
 
 /// General app logs, coloured by severity: trace grey · debug blue · info green · warning orange ·
 /// error red · fatal magenta.
-final Logger appLogger = Logger(filter: AppLogFilter(), printer: appLogPrinter);
+final Logger appLogger = Logger(
+  filter: AppLogFilter(),
+  printer: appLogPrinter,
+  output: _withDebugConsole(DebugLogSource.app),
+);
 
 /// Printer behind [appLogger] (exposed so tests can assert the colours).
 final LogPrinter appLogPrinter = PrettyPrinter(
@@ -56,6 +63,7 @@ final LogPrinter networkLogPrinter = PrettyPrinter(
 final Logger blocLogger = Logger(
   filter: AppLogFilter(),
   printer: blocLogPrinter,
+  output: _withDebugConsole(DebugLogSource.bloc),
 );
 
 /// Printer behind [blocLogger].
@@ -70,10 +78,50 @@ final LogPrinter blocLogPrinter = PrettyPrinter(
   levelEmojis: const {Level.debug: '🧩', Level.error: '💥'},
 );
 
-/// Logs everything at or above `LOG_LEVEL` (default: trace) except in release builds.
+/// Console output, plus the debug console store when `DEBUG_CONSOLE` is on. HTTP calls reach the
+/// store in structured form through `NetworkLogInterceptor`, so [networkLogger] stays console-only.
+LogOutput _withDebugConsole(DebugLogSource source) => AppEnv.debugConsoleEnabled
+    ? MultiOutput([ConsoleOutput(), DebugStoreOutput(source)])
+    : ConsoleOutput();
+
+/// Copies each log event (plain message, no ANSI / box drawing) into a [DebugLogStore].
+class DebugStoreOutput extends LogOutput {
+  DebugStoreOutput(this.source, {DebugLogStore? store})
+    : _store = store ?? DebugLogStore.instance;
+
+  final DebugLogSource source;
+  final DebugLogStore _store;
+
+  @override
+  void output(OutputEvent event) {
+    final origin = event.origin;
+    final error = origin.error;
+    _store.addLog(
+      DebugLogEntry(
+        time: origin.time,
+        source: source,
+        level: toDebugLevel(origin.level),
+        message: error == null
+            ? '${origin.message}'
+            : '${origin.message}\n$error',
+      ),
+    );
+  }
+
+  @visibleForTesting
+  static DebugLogLevel toDebugLevel(Level level) => switch (level) {
+    Level.debug => DebugLogLevel.debug,
+    Level.info => DebugLogLevel.info,
+    Level.warning => DebugLogLevel.warning,
+    Level.error || Level.fatal => DebugLogLevel.error,
+    _ => DebugLogLevel.trace,
+  };
+}
+
+/// Logs everything at or above `LOG_LEVEL` (default: trace) when [AppEnv.loggingEnabled].
 class AppLogFilter extends LogFilter {
   AppLogFilter({bool? enabled, Level? minLevel})
-    : _enabled = enabled ?? !kReleaseMode,
+    : _enabled = enabled ?? AppEnv.loggingEnabled,
       _minLevel =
           minLevel ?? parseLogLevel(const String.fromEnvironment('LOG_LEVEL'));
 

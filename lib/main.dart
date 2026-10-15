@@ -12,7 +12,23 @@ import 'package:vstech_home_services/core/utils/logger.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kReleaseMode) Bloc.observer = const AppBlocObserver();
+  if (AppEnv.loggingEnabled) {
+    Bloc.observer = const AppBlocObserver();
+    // Uncaught errors also reach the debug console (Crashlytics is not wired yet).
+    final presentError = FlutterError.onError;
+    FlutterError.onError = (details) {
+      appLogger.e(
+        'Flutter error: ${details.exceptionAsString()}',
+        error: details.exception,
+        stackTrace: details.stack,
+      );
+      presentError?.call(details);
+    };
+    PlatformDispatcher.instance.onError = (error, stack) {
+      appLogger.e('Uncaught error', error: error, stackTrace: stack);
+      return false;
+    };
+  }
   await configureDependencies();
   final session = getIt<SessionCubit>();
   await session.restore();

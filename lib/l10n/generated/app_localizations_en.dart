@@ -3669,4 +3669,89 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wwdstStep3Pending => 'Once accounting approves the request';
+
+  @override
+  String get debugConsoleTitle => 'Debug console';
+
+  @override
+  String get debugOpen => 'Debug';
+
+  @override
+  String get debugTabNetwork => 'Network';
+
+  @override
+  String get debugTabLogs => 'Logs';
+
+  @override
+  String get debugTabInfo => 'Info';
+
+  @override
+  String get debugCopyAll => 'Copy all';
+
+  @override
+  String get debugCopy => 'Copy';
+
+  @override
+  String get debugCopied => 'Copied to clipboard';
+
+  @override
+  String get debugClear => 'Clear';
+
+  @override
+  String get debugClose => 'Close';
+
+  @override
+  String get debugBack => 'Back';
+
+  @override
+  String get debugEmpty => 'Nothing yet';
+
+  @override
+  String get debugPending => 'Pending…';
+
+  @override
+  String get debugFilterAll => 'All';
+
+  @override
+  String get debugFilterWarnings => 'Warnings +';
+
+  @override
+  String get debugFilterErrors => 'Errors only';
+
+  @override
+  String get debugRequest => 'Request';
+
+  @override
+  String get debugResponse => 'Response';
+
+  @override
+  String get debugHeaders => 'Headers';
+
+  @override
+  String get debugError => 'Error';
+
+  @override
+  String get debugInfoEnv => 'Environment';
+
+  @override
+  String get debugInfoApi => 'API';
+
+  @override
+  String get debugInfoWs => 'WebSocket';
+
+  @override
+  String get debugInfoBuild => 'Build mode';
+
+  @override
+  String get debugInfoPlatform => 'Device';
+
+  @override
+  String get debugInfoLocale => 'Language';
+
+  @override
+  String get debugInfoSession => 'Session';
+
+  @override
+  String get debugInfoPrivacy =>
+      'Tokens and passwords are always masked (***). Data stays in app memory only and is gone when the app closes.';
 }

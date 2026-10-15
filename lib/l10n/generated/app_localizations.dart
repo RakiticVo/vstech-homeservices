@@ -6798,6 +6798,174 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Sau khi kế toán duyệt yêu cầu'**
   String get wwdstStep3Pending;
+
+  /// No description provided for @debugConsoleTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng debug'**
+  String get debugConsoleTitle;
+
+  /// No description provided for @debugOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Debug'**
+  String get debugOpen;
+
+  /// No description provided for @debugTabNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mạng'**
+  String get debugTabNetwork;
+
+  /// No description provided for @debugTabLogs.
+  ///
+  /// In vi, this message translates to:
+  /// **'Log'**
+  String get debugTabLogs;
+
+  /// No description provided for @debugTabInfo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin'**
+  String get debugTabInfo;
+
+  /// No description provided for @debugCopyAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép tất cả'**
+  String get debugCopyAll;
+
+  /// No description provided for @debugCopy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép'**
+  String get debugCopy;
+
+  /// No description provided for @debugCopied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép vào bộ nhớ tạm'**
+  String get debugCopied;
+
+  /// No description provided for @debugClear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá'**
+  String get debugClear;
+
+  /// No description provided for @debugClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get debugClose;
+
+  /// No description provided for @debugBack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại'**
+  String get debugBack;
+
+  /// No description provided for @debugEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có dữ liệu'**
+  String get debugEmpty;
+
+  /// No description provided for @debugPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chờ…'**
+  String get debugPending;
+
+  /// No description provided for @debugFilterAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get debugFilterAll;
+
+  /// No description provided for @debugFilterWarnings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cảnh báo trở lên'**
+  String get debugFilterWarnings;
+
+  /// No description provided for @debugFilterErrors.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ lỗi'**
+  String get debugFilterErrors;
+
+  /// No description provided for @debugRequest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Request'**
+  String get debugRequest;
+
+  /// No description provided for @debugResponse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Response'**
+  String get debugResponse;
+
+  /// No description provided for @debugHeaders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Headers'**
+  String get debugHeaders;
+
+  /// No description provided for @debugError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lỗi'**
+  String get debugError;
+
+  /// No description provided for @debugInfoEnv.
+  ///
+  /// In vi, this message translates to:
+  /// **'Môi trường'**
+  String get debugInfoEnv;
+
+  /// No description provided for @debugInfoApi.
+  ///
+  /// In vi, this message translates to:
+  /// **'API'**
+  String get debugInfoApi;
+
+  /// No description provided for @debugInfoWs.
+  ///
+  /// In vi, this message translates to:
+  /// **'WebSocket'**
+  String get debugInfoWs;
+
+  /// No description provided for @debugInfoBuild.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chế độ build'**
+  String get debugInfoBuild;
+
+  /// No description provided for @debugInfoPlatform.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết bị'**
+  String get debugInfoPlatform;
+
+  /// No description provided for @debugInfoLocale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngôn ngữ'**
+  String get debugInfoLocale;
+
+  /// No description provided for @debugInfoSession.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đăng nhập'**
+  String get debugInfoSession;
+
+  /// No description provided for @debugInfoPrivacy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Token và mật khẩu luôn được che (***). Dữ liệu chỉ nằm trong bộ nhớ của app, mất khi tắt app.'**
+  String get debugInfoPrivacy;
 }
 
 class _AppLocalizationsDelegate

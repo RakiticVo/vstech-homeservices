@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// Build-time environment config, injected via `--dart-define` / `--dart-define-from-file`.
 ///
 /// Values live in `.env.development` / `.env.production` at the project root (gitignored —
@@ -48,4 +50,12 @@ abstract final class AppEnv {
   static const String testWorkerPassword = String.fromEnvironment(
     'TEST_WORKER_PASSWORD',
   );
+
+  /// In-app debug console (floating bug button → network / logs / info) for testers — from
+  /// `DEBUG_CONSOLE`. On in development/UAT files, off in production. When on, logging also runs in
+  /// release builds so a tester's installed build can show what happened.
+  static const bool debugConsoleEnabled = bool.fromEnvironment('DEBUG_CONSOLE');
+
+  /// Whether logs are produced at all: always in debug/profile, in release only with the console.
+  static bool get loggingEnabled => !kReleaseMode || debugConsoleEnabled;
 }

@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:vstech_home_services/core/config/app_env.dart';
 import 'package:vstech_home_services/core/network/api_endpoints.dart';
 import 'package:vstech_home_services/core/network/api_response.dart';
 import 'package:vstech_home_services/core/network/auth_token_store.dart';
@@ -65,7 +66,7 @@ class ApiClient {
     dio.interceptors.add(
       InterceptorsWrapper(onRequest: _onRequest, onError: _onError),
     );
-    if (!kReleaseMode) {
+    if (AppEnv.loggingEnabled) {
       final logger = NetworkLogInterceptor();
       dio.interceptors.add(logger);
       _refreshDio.interceptors.add(logger);

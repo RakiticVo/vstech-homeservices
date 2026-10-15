@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vstech_home_services/core/config/app_env.dart';
+import 'package:vstech_home_services/core/debug/debug_console_overlay.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
 import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 
@@ -34,6 +36,11 @@ class VstechHomeServicesApp extends StatelessWidget {
             locale: currentLocale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
+            builder: AppEnv.debugConsoleEnabled
+                ? (context, child) => DebugConsoleOverlay(
+                    child: child ?? const SizedBox.shrink(),
+                  )
+                : null,
           ),
         );
       },

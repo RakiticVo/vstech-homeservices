@@ -3670,4 +3670,89 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get wwdstStep3Pending => 'Sau khi kế toán duyệt yêu cầu';
+
+  @override
+  String get debugConsoleTitle => 'Bảng debug';
+
+  @override
+  String get debugOpen => 'Debug';
+
+  @override
+  String get debugTabNetwork => 'Mạng';
+
+  @override
+  String get debugTabLogs => 'Log';
+
+  @override
+  String get debugTabInfo => 'Thông tin';
+
+  @override
+  String get debugCopyAll => 'Sao chép tất cả';
+
+  @override
+  String get debugCopy => 'Sao chép';
+
+  @override
+  String get debugCopied => 'Đã sao chép vào bộ nhớ tạm';
+
+  @override
+  String get debugClear => 'Xoá';
+
+  @override
+  String get debugClose => 'Đóng';
+
+  @override
+  String get debugBack => 'Quay lại';
+
+  @override
+  String get debugEmpty => 'Chưa có dữ liệu';
+
+  @override
+  String get debugPending => 'Đang chờ…';
+
+  @override
+  String get debugFilterAll => 'Tất cả';
+
+  @override
+  String get debugFilterWarnings => 'Cảnh báo trở lên';
+
+  @override
+  String get debugFilterErrors => 'Chỉ lỗi';
+
+  @override
+  String get debugRequest => 'Request';
+
+  @override
+  String get debugResponse => 'Response';
+
+  @override
+  String get debugHeaders => 'Headers';
+
+  @override
+  String get debugError => 'Lỗi';
+
+  @override
+  String get debugInfoEnv => 'Môi trường';
+
+  @override
+  String get debugInfoApi => 'API';
+
+  @override
+  String get debugInfoWs => 'WebSocket';
+
+  @override
+  String get debugInfoBuild => 'Chế độ build';
+
+  @override
+  String get debugInfoPlatform => 'Thiết bị';
+
+  @override
+  String get debugInfoLocale => 'Ngôn ngữ';
+
+  @override
+  String get debugInfoSession => 'Phiên đăng nhập';
+
+  @override
+  String get debugInfoPrivacy =>
+      'Token và mật khẩu luôn được che (***). Dữ liệu chỉ nằm trong bộ nhớ của app, mất khi tắt app.';
 }

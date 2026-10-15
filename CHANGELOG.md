@@ -7,6 +7,10 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Bảng debug cho tester
+- Biến `.env` `DEBUG_CONSOLE` (`AppEnv.debugConsoleEnabled`; bật ở development, tắt ở production). Khi bật: log chạy cả trong bản release, nút **Debug** nổi kéo được trên mọi màn (đếm số request lỗi), mở bảng debug 3 tab — **Mạng** (từng request: trạng thái Icon + Nhãn + Màu, thời gian, mã lỗi, header / request / response đã che token & mật khẩu, xem chi tiết + sao chép), **Log** (app / BLoC / lỗi không bắt được, lọc theo mức), **Thông tin** (môi trường, API, WebSocket, build, thiết bị, ngôn ngữ, phiên) — kèm **Sao chép tất cả** và **Xoá**.
+- `DebugLogStore` (bộ nhớ vòng: 500 log, 200 request, không ghi đĩa); `DebugStoreOutput` cho `appLogger` / `blocLogger`; `NetworkLogInterceptor` ghi từng request vào store; `FlutterError.onError` / `PlatformDispatcher.onError` đưa lỗi không bắt được vào log. Unit + widget test.
+
 ### Fixed
 - **Thanh điều hướng dưới (dock) không chuyển màn**: dock khách ở Trang chủ chỉ đổi tab đang tô sáng, ở Đơn hàng thiếu tab AI / Tài khoản; dock thợ ở Dashboard cũng chỉ đổi tô sáng, ở Việc chỉ mở Ví. Giờ `CustomerFloatingDock` / `WorkerFloatingDock` tự điều hướng: Trang chủ ↔ Đơn hàng (khách) và Việc (thợ) thay màn (`go`); AI, Thông báo, Tài khoản (khách) và Lịch, Ví, Hồ sơ (thợ) mở chồng lên (`push`) để có nút quay lại.
 - **Header Trang chủ**: hiện tên và địa chỉ mặc định từ hồ sơ (`GET /profiles`) thay cho "Mai" / "Chung cư Sunrise City" viết cứng, bỏ số thông báo chưa đọc giả (2); nút chuông mở Thông báo, ô địa chỉ mở Sửa địa chỉ (trước không làm gì).

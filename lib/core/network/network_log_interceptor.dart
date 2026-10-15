@@ -3,20 +3,33 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
+import 'package:vstech_home_services/core/config/app_env.dart';
+import 'package:vstech_home_services/core/debug/debug_log_store.dart';
 import 'package:vstech_home_services/core/utils/logger.dart';
 
-/// Colour-coded HTTP logging on [networkLogger] (debug/profile only — added by `ApiClient`).
+/// Colour-coded HTTP logging on [networkLogger] (added by `ApiClient` when logging is enabled),
+/// and — with `DEBUG_CONSOLE` on — each call recorded in the [DebugLogStore] for the in-app console.
 /// Tokens and passwords are always masked so logs can be shared safely.
 class NetworkLogInterceptor extends Interceptor {
-  NetworkLogInterceptor({Logger? logger, this.maxBodyLength = 3000})
-    : _logger = logger ?? networkLogger;
+  NetworkLogInterceptor({
+    Logger? logger,
+    DebugLogStore? store,
+    this.maxBodyLength = 3000,
+  }) : _logger = logger ?? networkLogger,
+       _store =
+           store ??
+           (AppEnv.debugConsoleEnabled ? DebugLogStore.instance : null);
 
   final Logger _logger;
+
+  /// Null when the debug console is off.
+  final DebugLogStore? _store;
 
   /// Longer bodies are cut so one big list response doesn't flood the console.
   final int maxBodyLength;
 
   static const String _startedAtExtra = 'logStartedAt';
+  static const String _callIdExtra = 'debugCallId';
 
   /// JSON keys whose values are never printed.
   static const Set<String> sensitiveKeys = {
@@ -29,6 +42,19 @@ class NetworkLogInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.extra[_startedAtExtra] = DateTime.now();
+    final store = _store;
+    if (store != null) {
+      options.extra[_callIdExtra] = store.startCall(
+        method: options.method,
+        url: '${options.uri}',
+        requestHeaders: options.headers.isEmpty
+            ? null
+            : _pretty(redactHeaders(options.headers)),
+        requestBody: options.data == null
+            ? null
+            : _pretty(redact(options.data)),
+      );
+    }
     _logger.d(
       [
         '${options.method} ${options.uri}',
@@ -53,6 +79,7 @@ class NetworkLogInterceptor extends Interceptor {
         ..._responseSection(response.data),
       ].join('\n'),
     );
+    _finish(options, statusCode: response.statusCode, body: response.data);
     handler.next(response);
   }
 
@@ -75,6 +102,13 @@ class NetworkLogInterceptor extends Interceptor {
     } else {
       _logger.e(message);
     }
+    _finish(
+      options,
+      statusCode: status,
+      body: body,
+      errorCode: body is Map ? body['errorCode'] as String? : null,
+      errorMessage: status == null ? (err.message ?? err.type.name) : null,
+    );
     handler.next(err);
   }
 
@@ -88,6 +122,29 @@ class NetworkLogInterceptor extends Interceptor {
   List<String> _responseSection(Object? body) => [
     if (body != null && body != '') 'Response: ${_pretty(redact(body))}',
   ];
+
+  void _finish(
+    RequestOptions options, {
+    int? statusCode,
+    Object? body,
+    String? errorCode,
+    String? errorMessage,
+  }) {
+    final store = _store;
+    final id = options.extra[_callIdExtra];
+    if (store == null || id is! int) return;
+    final startedAt = options.extra[_startedAtExtra];
+    store.finishCall(
+      id,
+      statusCode: statusCode,
+      durationMs: startedAt is DateTime
+          ? DateTime.now().difference(startedAt).inMilliseconds
+          : null,
+      responseBody: body == null || body == '' ? null : _pretty(redact(body)),
+      errorCode: errorCode,
+      errorMessage: errorMessage,
+    );
+  }
 
   String _elapsed(RequestOptions options) {
     final startedAt = options.extra[_startedAtExtra];
