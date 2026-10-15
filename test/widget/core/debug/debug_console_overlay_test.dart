@@ -119,4 +119,49 @@ void main() {
     expect(store.logs, isEmpty);
     expect(find.text('Chưa có dữ liệu'), findsOneWidget);
   });
+
+  testWidgets(
+    'logging while a widget builds does not rebuild the console mid-build',
+    (tester) async {
+      final store = DebugLogStore();
+      final rebuild = ValueNotifier(0);
+      addTearDown(rebuild.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          builder: (context, child) =>
+              DebugConsoleOverlay(store: store, child: child!),
+          home: ValueListenableBuilder<int>(
+            valueListenable: rebuild,
+            builder: (context, value, _) {
+              // e.g. a cubit emitting in its constructor while its route is being built.
+              store.addLog(
+                DebugLogEntry(
+                  time: DateTime(2026),
+                  source: DebugLogSource.bloc,
+                  level: DebugLogLevel.debug,
+                  message: 'built $value',
+                ),
+              );
+              return const Scaffold(body: Text('AppScreen'));
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      rebuild.value = 1;
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(store.logs.first.message, 'built 1');
+    },
+  );
 }

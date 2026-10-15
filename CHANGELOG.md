@@ -7,6 +7,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Fixed
+- Bảng debug: ghi log trong lúc một màn đang dựng (vd. cubit đổi trạng thái ngay khi tạo) làm nút Debug dựng lại giữa chừng → lỗi → lỗi lại được ghi log → vòng lặp vô hạn, app treo. `DebugLogStore` giờ gom và báo thay đổi sau khung hình (microtask). Có test hồi quy.
+
 ### Added — Bảng debug cho tester
 - Biến `.env` `DEBUG_CONSOLE` (`AppEnv.debugConsoleEnabled`; bật ở development, tắt ở production). Khi bật: log chạy cả trong bản release, nút **Debug** nổi kéo được trên mọi màn (đếm số request lỗi), mở bảng debug 3 tab — **Mạng** (từng request: trạng thái Icon + Nhãn + Màu, thời gian, mã lỗi, header / request / response đã che token & mật khẩu, xem chi tiết + sao chép), **Log** (app / BLoC / lỗi không bắt được, lọc theo mức), **Thông tin** (môi trường, API, WebSocket, build, thiết bị, ngôn ngữ, phiên) — kèm **Sao chép tất cả** và **Xoá**.
 - `DebugLogStore` (bộ nhớ vòng: 500 log, 200 request, không ghi đĩa); `DebugStoreOutput` cho `appLogger` / `blocLogger`; `NetworkLogInterceptor` ghi từng request vào store; `FlutterError.onError` / `PlatformDispatcher.onError` đưa lỗi không bắt được vào log. Unit + widget test.

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
@@ -98,6 +99,8 @@ class DebugLogStore extends ChangeNotifier {
   final ListQueue<DebugLogEntry> _logs = ListQueue();
   final ListQueue<DebugNetworkCall> _calls = ListQueue();
   int _nextCallId = 0;
+  bool _notifyScheduled = false;
+  bool _disposed = false;
 
   /// Newest first.
   List<DebugLogEntry> get logs =>
@@ -112,7 +115,7 @@ class DebugLogStore extends ChangeNotifier {
     while (_logs.length > maxLogs) {
       _logs.removeFirst();
     }
-    notifyListeners();
+    _scheduleNotify();
   }
 
   /// Records the start of a call and returns its id for [finishCall].
@@ -136,7 +139,7 @@ class DebugLogStore extends ChangeNotifier {
     while (_calls.length > maxCalls) {
       _calls.removeFirst();
     }
-    notifyListeners();
+    _scheduleNotify();
     return id;
   }
 
@@ -163,13 +166,31 @@ class DebugLogStore extends ChangeNotifier {
     _calls
       ..clear()
       ..addAll(list);
-    notifyListeners();
+    _scheduleNotify();
   }
 
   void clear() {
     _logs.clear();
     _calls.clear();
-    notifyListeners();
+    _scheduleNotify();
+  }
+
+  /// Coalesces change notifications into one microtask. Logs are often written while a widget is
+  /// building (e.g. a cubit emitting in its constructor); notifying listeners right then would mark
+  /// the console widgets dirty mid-build, whose error would be logged again — an endless loop.
+  void _scheduleNotify() {
+    if (_notifyScheduled || _disposed) return;
+    _notifyScheduled = true;
+    scheduleMicrotask(() {
+      _notifyScheduled = false;
+      if (!_disposed) notifyListeners();
+    });
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 
   /// Plain-text dump (oldest first) for "Copy all", so a tester can paste it to the team.
