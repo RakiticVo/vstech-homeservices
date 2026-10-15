@@ -136,12 +136,18 @@ import 'package:vstech_home_services/features/orders/presentation/bloc/booking_l
     as _i428;
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart'
     as _i23;
+import 'package:vstech_home_services/features/tracking/data/datasources/customer_tracking_socket_data_source.dart'
+    as _i680;
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart'
     as _i308;
 import 'package:vstech_home_services/features/tracking/data/repositories/technician_location_repository_impl.dart'
     as _i61;
+import 'package:vstech_home_services/features/tracking/data/repositories/tracking_connection_impl.dart'
+    as _i533;
 import 'package:vstech_home_services/features/tracking/domain/repositories/technician_location_repository.dart'
     as _i435;
+import 'package:vstech_home_services/features/tracking/domain/repositories/tracking_connection.dart'
+    as _i729;
 import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart'
     as _i434;
 import 'package:vstech_home_services/features/wallet/data/datasources/wallet_remote_data_source.dart'
@@ -196,6 +202,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i138.ChatSocketDataSource>(
       () => _i138.ChatSocketDataSource(gh<_i348.RealtimeSocketFactory>()),
+    );
+    gh.factory<_i680.CustomerTrackingSocketDataSource>(
+      () => _i680.CustomerTrackingSocketDataSource(
+        gh<_i348.RealtimeSocketFactory>(),
+      ),
     );
     gh.lazySingleton<_i223.ApiClient>(
       () => registerModule.apiClient(
@@ -263,6 +274,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i435.TechnicianLocationRepository>(
       () => _i61.TechnicianLocationRepositoryImpl(
         gh<_i308.TechnicianLocationRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i729.TrackingConnection>(
+      () => _i533.TrackingConnectionImpl(
+        gh<_i680.CustomerTrackingSocketDataSource>(),
       ),
     );
     gh.factory<_i516.RegisterCubit>(

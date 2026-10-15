@@ -53,6 +53,7 @@ import 'package:vstech_home_services/features/notifications/presentation/bloc/no
 import 'package:vstech_home_services/features/orders/presentation/bloc/booking_list_cubit.dart';
 import 'package:vstech_home_services/features/orders/presentation/bloc/order_detail_cubit.dart';
 import 'package:vstech_home_services/features/tracking/data/datasources/technician_location_remote_data_source.dart';
+import 'package:vstech_home_services/features/tracking/domain/repositories/tracking_connection.dart';
 import 'package:vstech_home_services/features/tracking/domain/usecases/update_technician_location_use_case.dart';
 import 'package:vstech_home_services/features/wallet/data/datasources/wallet_remote_data_source.dart';
 import 'package:vstech_home_services/features/wallet/domain/repositories/wallet_repository.dart';
@@ -269,3 +270,6 @@ class MockGetCallHistoryUseCase extends Mock implements GetCallHistoryUseCase;
 
 class MockVoipCallCubit extends MockCubit<VoipCallState>
     implements VoipCallCubit;
+
+// --- customer tracking ---
+class MockTrackingConnection extends Mock implements TrackingConnection;
