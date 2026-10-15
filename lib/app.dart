@@ -9,7 +9,9 @@ import 'package:vstech_home_services/l10n/generated/app_localizations.dart';
 const Size _baselineDesignSize = Size(390, 844);
 
 /// Global locale notifier allowing instant language switching (VI / EN) throughout the app.
-final ValueNotifier<Locale> appLocaleNotifier = ValueNotifier<Locale>(const Locale('vi'));
+final ValueNotifier<Locale> appLocaleNotifier = ValueNotifier<Locale>(
+  const Locale('vi'),
+);
 
 class VstechHomeServicesApp extends StatelessWidget {
   const VstechHomeServicesApp({required this.router, super.key});

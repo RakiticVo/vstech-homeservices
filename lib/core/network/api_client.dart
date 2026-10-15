@@ -62,7 +62,9 @@ class ApiClient {
       dio.httpClientAdapter = httpClientAdapter;
       _refreshDio.httpClientAdapter = httpClientAdapter;
     }
-    dio.interceptors.add(InterceptorsWrapper(onRequest: _onRequest, onError: _onError));
+    dio.interceptors.add(
+      InterceptorsWrapper(onRequest: _onRequest, onError: _onError),
+    );
     if (!kReleaseMode) {
       final logger = NetworkLogInterceptor();
       dio.interceptors.add(logger);
@@ -91,7 +93,13 @@ class ApiClient {
     required DataDecoder<T> decode,
     Map<String, dynamic>? query,
     bool authenticated = true,
-  }) => _send(path, method: 'GET', decode: decode, query: query, authenticated: authenticated);
+  }) => _send(
+    path,
+    method: 'GET',
+    decode: decode,
+    query: query,
+    authenticated: authenticated,
+  );
 
   Future<ApiResponse<T>> post<T>(
     String path, {
@@ -115,14 +123,26 @@ class ApiClient {
     required DataDecoder<T> decode,
     Object? body,
     bool authenticated = true,
-  }) => _send(path, method: 'PUT', decode: decode, body: body, authenticated: authenticated);
+  }) => _send(
+    path,
+    method: 'PUT',
+    decode: decode,
+    body: body,
+    authenticated: authenticated,
+  );
 
   Future<ApiResponse<T>> delete<T>(
     String path, {
     required DataDecoder<T> decode,
     Map<String, dynamic>? query,
     bool authenticated = true,
-  }) => _send(path, method: 'DELETE', decode: decode, query: query, authenticated: authenticated);
+  }) => _send(
+    path,
+    method: 'DELETE',
+    decode: decode,
+    query: query,
+    authenticated: authenticated,
+  );
 
   /// For the few endpoints that return a bare body without the [ApiResponse] envelope
   /// (e.g. `POST /api/v1/bookings` → 201). Returns the raw decoded JSON.
@@ -177,7 +197,10 @@ class ApiClient {
             );
     } on Object catch (e, st) {
       appLogger.e('Failed to decode $method $path', error: e, stackTrace: st);
-      throw NetworkException(kind: NetworkErrorKind.unknown, statusCode: response.statusCode);
+      throw NetworkException(
+        kind: NetworkErrorKind.unknown,
+        statusCode: response.statusCode,
+      );
     }
     if (!envelope.isSuccess) {
       throw NetworkException(
@@ -203,7 +226,13 @@ class ApiClient {
         path,
         data: body,
         queryParameters: query,
-        options: Options(method: method, extra: {_authenticatedExtra: authenticated, _idempotentExtra: idempotent}),
+        options: Options(
+          method: method,
+          extra: {
+            _authenticatedExtra: authenticated,
+            _idempotentExtra: idempotent,
+          },
+        ),
       );
     } on DioException catch (e) {
       final error = e.error;
@@ -212,7 +241,10 @@ class ApiClient {
     }
   }
 
-  Future<void> _onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> _onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (options.extra[_authenticatedExtra] != false) {
       final token = await _tokenStore.readAccessToken();
       if (token != null) {
@@ -230,7 +262,10 @@ class ApiClient {
     handler.next(options);
   }
 
-  Future<void> _onError(DioException error, ErrorInterceptorHandler handler) async {
+  Future<void> _onError(
+    DioException error,
+    ErrorInterceptorHandler handler,
+  ) async {
     final options = error.requestOptions;
     final shouldRefresh =
         error.response?.statusCode == 401 &&
@@ -241,7 +276,8 @@ class ApiClient {
     // Another request may already have refreshed while this one was in flight — only refresh
     // if the token we sent is still the current one.
     final current = await _tokenStore.readAccessToken();
-    final alreadyRefreshed = current != null && current != options.extra[_sentTokenExtra];
+    final alreadyRefreshed =
+        current != null && current != options.extra[_sentTokenExtra];
     final refreshed = alreadyRefreshed || await _refreshOnce();
 
     if (!refreshed) {
@@ -260,7 +296,9 @@ class ApiClient {
   }
 
   Future<bool> _refreshOnce() {
-    return _refreshing ??= _refreshAccessToken().whenComplete(() => _refreshing = null);
+    return _refreshing ??= _refreshAccessToken().whenComplete(
+      () => _refreshing = null,
+    );
   }
 
   Future<bool> _refreshAccessToken() async {
@@ -280,7 +318,10 @@ class ApiClient {
       final accessToken = envelope.data?.accessToken;
       if (!envelope.isSuccess || accessToken == null) return false;
       // Keep the current refresh token unless the server rotated it.
-      await _tokenStore.saveTokens(accessToken: accessToken, refreshToken: envelope.data?.refreshToken ?? refreshToken);
+      await _tokenStore.saveTokens(
+        accessToken: accessToken,
+        refreshToken: envelope.data?.refreshToken ?? refreshToken,
+      );
       return true;
     } on Object catch (e) {
       appLogger.w('Token refresh failed', error: e);

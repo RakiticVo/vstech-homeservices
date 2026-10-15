@@ -28,7 +28,10 @@ final LogPrinter appLogPrinter = PrettyPrinter(
 
 /// HTTP traffic (see `NetworkLogInterceptor`): request ➡️ cyan · 2xx ✅ green · 4xx ⚠️ orange ·
 /// 5xx / transport ❌ red.
-final Logger networkLogger = Logger(filter: AppLogFilter(), printer: networkLogPrinter);
+final Logger networkLogger = Logger(
+  filter: AppLogFilter(),
+  printer: networkLogPrinter,
+);
 
 /// Printer behind [networkLogger].
 final LogPrinter networkLogPrinter = PrettyPrinter(
@@ -41,18 +44,29 @@ final LogPrinter networkLogPrinter = PrettyPrinter(
     Level.warning: AnsiColor.fg(214),
     Level.error: AnsiColor.fg(196),
   },
-  levelEmojis: const {Level.debug: '➡️', Level.info: '✅', Level.warning: '⚠️', Level.error: '❌'},
+  levelEmojis: const {
+    Level.debug: '➡️',
+    Level.info: '✅',
+    Level.warning: '⚠️',
+    Level.error: '❌',
+  },
 );
 
 /// Cubit/BLoC state transitions (see `AppBlocObserver`): change 🧩 purple · error 💥 red.
-final Logger blocLogger = Logger(filter: AppLogFilter(), printer: blocLogPrinter);
+final Logger blocLogger = Logger(
+  filter: AppLogFilter(),
+  printer: blocLogPrinter,
+);
 
 /// Printer behind [blocLogger].
 final LogPrinter blocLogPrinter = PrettyPrinter(
   methodCount: 0,
   dateTimeFormat: DateTimeFormat.onlyTime,
   noBoxingByDefault: true,
-  levelColors: const {Level.debug: AnsiColor.fg(141), Level.error: AnsiColor.fg(196)},
+  levelColors: const {
+    Level.debug: AnsiColor.fg(141),
+    Level.error: AnsiColor.fg(196),
+  },
   levelEmojis: const {Level.debug: '🧩', Level.error: '💥'},
 );
 
@@ -60,13 +74,15 @@ final LogPrinter blocLogPrinter = PrettyPrinter(
 class AppLogFilter extends LogFilter {
   AppLogFilter({bool? enabled, Level? minLevel})
     : _enabled = enabled ?? !kReleaseMode,
-      _minLevel = minLevel ?? parseLogLevel(const String.fromEnvironment('LOG_LEVEL'));
+      _minLevel =
+          minLevel ?? parseLogLevel(const String.fromEnvironment('LOG_LEVEL'));
 
   final bool _enabled;
   final Level _minLevel;
 
   @override
-  bool shouldLog(LogEvent event) => _enabled && event.level.value >= _minLevel.value;
+  bool shouldLog(LogEvent event) =>
+      _enabled && event.level.value >= _minLevel.value;
 }
 
 /// Parses the `LOG_LEVEL` dart-define; unknown or empty values mean [Level.trace].

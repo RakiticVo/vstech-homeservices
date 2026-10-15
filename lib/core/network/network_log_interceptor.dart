@@ -8,7 +8,8 @@ import 'package:vstech_home_services/core/utils/logger.dart';
 /// Colour-coded HTTP logging on [networkLogger] (debug/profile only — added by `ApiClient`).
 /// Tokens and passwords are always masked so logs can be shared safely.
 class NetworkLogInterceptor extends Interceptor {
-  NetworkLogInterceptor({Logger? logger, this.maxBodyLength = 3000}) : _logger = logger ?? networkLogger;
+  NetworkLogInterceptor({Logger? logger, this.maxBodyLength = 3000})
+    : _logger = logger ?? networkLogger;
 
   final Logger _logger;
 
@@ -18,7 +19,12 @@ class NetworkLogInterceptor extends Interceptor {
   static const String _startedAtExtra = 'logStartedAt';
 
   /// JSON keys whose values are never printed.
-  static const Set<String> sensitiveKeys = {'password', 'accessToken', 'refreshToken', 'token'};
+  static const Set<String> sensitiveKeys = {
+    'password',
+    'accessToken',
+    'refreshToken',
+    'token',
+  };
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -26,7 +32,8 @@ class NetworkLogInterceptor extends Interceptor {
     _logger.d(
       [
         '${options.method} ${options.uri}',
-        if (options.headers.isNotEmpty) 'Headers: ${_pretty(redactHeaders(options.headers))}',
+        if (options.headers.isNotEmpty)
+          'Headers: ${_pretty(redactHeaders(options.headers))}',
         ..._requestSection(options),
       ].join('\n'),
     );
@@ -34,7 +41,10 @@ class NetworkLogInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
+  void onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
     final options = response.requestOptions;
     _logger.i(
       [
@@ -53,10 +63,12 @@ class NetworkLogInterceptor extends Interceptor {
     final body = err.response?.data;
     final message = [
       '${status ?? err.type.name} ${options.method} ${options.uri}${_elapsed(options)}',
-      if (body is Map && body['errorCode'] != null) 'errorCode: ${body['errorCode']} — ${body['message']}',
+      if (body is Map && body['errorCode'] != null)
+        'errorCode: ${body['errorCode']} — ${body['message']}',
       ..._requestSection(options),
       ..._responseSection(body),
-      if ((body == null || body == '') && err.message != null) 'Error: ${err.message}',
+      if ((body == null || body == '') && err.message != null)
+        'Error: ${err.message}',
     ].join('\n');
     if (status != null && status < 500) {
       _logger.w(message);
@@ -68,20 +80,29 @@ class NetworkLogInterceptor extends Interceptor {
 
   /// Query + body that were sent, repeated on the response/error entry so each one reads on its own.
   List<String> _requestSection(RequestOptions options) => [
-    if (options.queryParameters.isNotEmpty) 'Query: ${_pretty(options.queryParameters)}',
+    if (options.queryParameters.isNotEmpty)
+      'Query: ${_pretty(options.queryParameters)}',
     if (options.data != null) 'Request: ${_pretty(redact(options.data))}',
   ];
 
-  List<String> _responseSection(Object? body) => [if (body != null && body != '') 'Response: ${_pretty(redact(body))}'];
+  List<String> _responseSection(Object? body) => [
+    if (body != null && body != '') 'Response: ${_pretty(redact(body))}',
+  ];
 
   String _elapsed(RequestOptions options) {
     final startedAt = options.extra[_startedAtExtra];
-    return startedAt is DateTime ? ' · ${DateTime.now().difference(startedAt).inMilliseconds}ms' : '';
+    return startedAt is DateTime
+        ? ' · ${DateTime.now().difference(startedAt).inMilliseconds}ms'
+        : '';
   }
 
   String _pretty(Object? data) {
-    final text = data is Map || data is List ? const JsonEncoder.withIndent('  ').convert(data) : '$data';
-    return text.length <= maxBodyLength ? text : '${text.substring(0, maxBodyLength)}… (${text.length} chars)';
+    final text = data is Map || data is List
+        ? const JsonEncoder.withIndent('  ').convert(data)
+        : '$data';
+    return text.length <= maxBodyLength
+        ? text
+        : '${text.substring(0, maxBodyLength)}… (${text.length} chars)';
   }
 
   /// Replaces [sensitiveKeys] anywhere in a JSON-like structure with `***`.
@@ -89,7 +110,9 @@ class NetworkLogInterceptor extends Interceptor {
   static Object? redact(Object? data) => switch (data) {
     final Map<dynamic, dynamic> map => {
       for (final entry in map.entries)
-        entry.key: sensitiveKeys.contains(entry.key) && entry.value != null ? '***' : redact(entry.value),
+        entry.key: sensitiveKeys.contains(entry.key) && entry.value != null
+            ? '***'
+            : redact(entry.value),
     },
     final List<dynamic> list => [for (final item in list) redact(item)],
     _ => data,
@@ -99,6 +122,8 @@ class NetworkLogInterceptor extends Interceptor {
   @visibleForTesting
   static Map<String, dynamic> redactHeaders(Map<String, dynamic> headers) => {
     for (final entry in headers.entries)
-      entry.key: entry.key.toLowerCase() == 'authorization' ? 'Bearer ***' : entry.value,
+      entry.key: entry.key.toLowerCase() == 'authorization'
+          ? 'Bearer ***'
+          : entry.value,
   };
 }
