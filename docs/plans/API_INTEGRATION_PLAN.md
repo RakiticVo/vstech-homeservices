@@ -18,7 +18,8 @@
 | 2 | Khách: danh mục, ước tính, tạo booking, danh sách đơn, huỷ, khiếu nại, duyệt/từ chối báo giá | ✅ Code xong 2026-10-10 (hướng "Gọn theo API") — ⏳ chờ tài khoản test UAT; UI duyệt báo giá chờ Batch 14 |
 | 3 | Thợ: nhận việc, bắt đầu, gửi báo giá, hoàn thành, GPS 2s | ✅ Code xong 2026-10-10 (commit 3.1–3.4) — ⏳ chờ tài khoản test UAT |
 | 4 | Ví thợ: số dư, sổ giao dịch, tạo/list yêu cầu rút | ✅ Code xong 2026-10-10 (commit 4.1–4.3) — ⏳ chờ tài khoản test UAT |
-| 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ⏳ Chưa làm |
+| 5 | Thông báo + cài đặt, Chat REST + WS, log VoIP | ✅ Code xong 2026-10-12 (commit 5.1–5.6) — ⏳ chờ tài khoản test UAT; VoIP chưa có âm thanh |
+| 6 | Theo dõi thợ realtime: khách nghe `/ws/tracking/customer` (vị trí, kết thúc theo dõi) | ⏳ Đề xuất — API đã có, màn đang mock; bản đồ thật cần Google Maps key |
 
 ### B. UI còn thiếu cho API có sẵn (bạn làm trên Claude Design → mình chuyển sang Flutter + nối API)
 
@@ -26,10 +27,10 @@ Prompt: `docs/design/prompts/CLAUDE_DESIGN_PROMPTS_API_GAPS.md`
 
 | Batch | Nội dung | Cells | Thiết kế | Flutter + API |
 | :--- | :--- | :--- | :--- | :--- |
-| 14 | Báo giá chi tiết (thợ gửi, khách duyệt) | 132–135 | ⏳ | ⏳ (gắn với Pha 2/3) |
-| 15 | Nạp tiền ví thợ (⚠ cần BA xác nhận ví nào) | 136–138 | ⏳ | ⏳ (gắn với Pha 4) |
-| 16 | Đọc tất cả thông báo (khách) + cài đặt thông báo (thợ) | 139–140 | ⏳ | ⏳ (gắn với Pha 5) |
-| 17 | Lịch sử cuộc gọi của đơn | 141 | ⏳ | ⏳ (gắn với Pha 5) |
+| 14 | Báo giá chi tiết (thợ gửi, khách duyệt) | 132–135 | ✅ 2026-10-15 | ✅ phía thợ (132–133, bản không ảnh) — ⏳ phía khách (134–135) chờ API đọc báo giá |
+| 15 | Nạp tiền ví thợ (⚠ cần BA xác nhận ví nào) | 136–138 | ✅ 2026-10-15 | ⏳ chờ BA + tích hợp SDK VNPay/ZaloPay |
+| 16 | Đọc tất cả thông báo (khách) + cài đặt thông báo (thợ) | 139–140 | — không cần | ✅ làm trong Pha 5 |
+| 17 | Lịch sử cuộc gọi của đơn | 141 | — không cần | ✅ làm trong Pha 5 (hiện trong chat) |
 
 ### C. Màn hình thiếu API (backend đang bổ sung — chờ API doc mới)
 
