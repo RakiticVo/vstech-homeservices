@@ -11,6 +11,7 @@ import 'package:vstech_home_services/core/error/failure_message.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/widgets/error_retry_view.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
 import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart';
 import 'package:vstech_home_services/features/home/presentation/widgets/customer_floating_dock.dart';
 import 'package:vstech_home_services/features/home/presentation/widgets/home_devices_card.dart';
@@ -29,10 +30,14 @@ class CustomerHomePage extends StatefulWidget {
 }
 
 class _CustomerHomePageState extends State<CustomerHomePage> {
-  int _currentDockTab = 0;
-
   void _onCategoryTapped(String serviceId) {
     unawaited(context.push('${AppRoutes.serviceDetail}?id=$serviceId'));
+  }
+
+  /// Vietnamese names end with the given name: "Nguyễn Thị Mai" → "Mai".
+  static String _firstName(String fullName) {
+    final parts = fullName.trim().split(RegExp(r'\s+'));
+    return parts.isEmpty ? '' : parts.last;
   }
 
   void _onNavigateToCategories() {
@@ -59,7 +64,23 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Top Greeting Header
-                  const HomeTopHeader(),
+                  BlocBuilder<ProfileCubit, ProfileState>(
+                    builder: (context, state) {
+                      final profile = state.profile;
+                      final address = profile?.defaultAddress;
+                      return HomeTopHeader(
+                        userName: _firstName(profile?.fullName ?? ''),
+                        address: address == null || address.isEmpty
+                            ? null
+                            : address,
+                        onAddressTap: () =>
+                            unawaited(context.push(AppRoutes.editAddress)),
+                        onNotificationTap: () => unawaited(
+                          context.push(AppRoutes.customerNotifications),
+                        ),
+                      );
+                    },
+                  ),
 
                   const SizedBox(height: AppSpacing.lg),
 
@@ -208,16 +229,11 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             ),
 
             // Fixed Floating Navigation Dock at bottom
-            Positioned(
+            const Positioned(
               bottom: 0,
               left: 0,
               right: 0,
-              child: CustomerFloatingDock(
-                currentIndex: _currentDockTab,
-                onTabSelected: (index) {
-                  setState(() => _currentDockTab = index);
-                },
-              ),
+              child: CustomerFloatingDock(currentIndex: 0),
             ),
           ],
         ),

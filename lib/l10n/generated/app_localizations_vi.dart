@@ -326,7 +326,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get homeGreetingSubtitle => 'Hôm nay nhà bạn cần hỗ trợ gì?';
 
   @override
-  String get homeDefaultAddress => 'Chung cư Sunrise City, Q.7';
+  String get homeDefaultAddress => 'Thêm địa chỉ của bạn';
 
   @override
   String get homeSearchPlaceholder => 'Tìm kiếm dịch vụ: máy lạnh, dọn dẹp...';

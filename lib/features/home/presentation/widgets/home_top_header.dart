@@ -8,9 +8,9 @@ import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
 class HomeTopHeader extends StatelessWidget {
   const HomeTopHeader({
     super.key,
-    this.userName = 'Mai',
+    this.userName = '',
     this.address,
-    this.unreadNotificationsCount = 2,
+    this.unreadNotificationsCount = 0,
     this.onAddressTap,
     this.onNotificationTap,
   });
@@ -122,7 +122,9 @@ class HomeTopHeader extends StatelessWidget {
 
         // Personal Greeting Text
         Text(
-          '${context.l10n.homeGreeting} $userName 👋',
+          userName.isEmpty
+              ? '${context.l10n.homeGreeting} 👋'
+              : '${context.l10n.homeGreeting} $userName 👋',
           style: AppTextStyles.headlineMd.copyWith(
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,

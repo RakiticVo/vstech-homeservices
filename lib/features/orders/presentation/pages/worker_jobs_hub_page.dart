@@ -56,11 +56,6 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
     );
   }
 
-  void _onDockTabSelected(int index) {
-    if (index == 0) return; // already here
-    if (index == 2) unawaited(context.push(AppRoutes.workerWallet));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,14 +140,11 @@ class _WorkerJobsHubPageState extends State<WorkerJobsHubPage> {
           ),
 
           // Floating Capsule Bottom Dock for Worker
-          Positioned(
+          const Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: WorkerFloatingDock(
-              currentIndex: 0,
-              onTabSelected: _onDockTabSelected,
-            ),
+            child: WorkerFloatingDock(currentIndex: 0),
           ),
         ],
       ),

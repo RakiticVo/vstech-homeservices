@@ -1,21 +1,47 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
+import 'package:vstech_home_services/core/router/app_routes.dart';
 
 /// Fixed Floating Bottom Navigation Dock for Worker role (4 tabs).
 /// Adheres strictly to Master Spec v9.0: Capsule shape (rounded-full), white surface,
 /// 1px hairline border, Zero Shadows, active tab in Teal pill.
+///
+/// Tabs navigate on their own ([navigate]) unless [onTabSelected] is given: Jobs goes back to the
+/// dashboard (`go`), Schedule / Wallet / Profile open on top (`push`) so they keep their back button.
 class WorkerFloatingDock extends StatelessWidget {
   const WorkerFloatingDock({
     required this.currentIndex,
-    required this.onTabSelected,
+    this.onTabSelected,
     super.key,
   });
 
   final int currentIndex;
-  final ValueChanged<int> onTabSelected;
+  final ValueChanged<int>? onTabSelected;
+
+  /// Opens tab [index] from the screen showing tab [currentIndex].
+  static void navigate(
+    BuildContext context, {
+    required int index,
+    required int currentIndex,
+  }) {
+    if (index == currentIndex) return;
+    switch (index) {
+      case 0:
+        context.go(AppRoutes.workerDashboard);
+      case 1:
+        unawaited(context.push(AppRoutes.workerSchedule));
+      case 2:
+        unawaited(context.push(AppRoutes.workerWallet));
+      case 3:
+        unawaited(context.push(AppRoutes.workerProfile));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +88,9 @@ class WorkerFloatingDock extends StatelessWidget {
           final tab = tabs[index];
 
           return GestureDetector(
-            onTap: () => onTabSelected(index),
+            onTap: () => onTabSelected != null
+                ? onTabSelected!(index)
+                : navigate(context, index: index, currentIndex: currentIndex),
             behavior: HitTestBehavior.opaque,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),

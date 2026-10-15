@@ -34,8 +34,6 @@ class WorkerDashboardPage extends StatefulWidget {
 }
 
 class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
-  int _currentTabIndex = 0;
-
   /// Offers hidden with the decline button on this device — the API has no decline endpoint yet.
   final Set<String> _dismissedOfferIds = {};
 
@@ -289,18 +287,11 @@ class _WorkerDashboardPageState extends State<WorkerDashboardPage> {
               ),
 
               // Fixed Floating Bottom Dock
-              Positioned(
+              const Positioned(
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: WorkerFloatingDock(
-                  currentIndex: _currentTabIndex,
-                  onTabSelected: (index) {
-                    setState(() {
-                      _currentTabIndex = index;
-                    });
-                  },
-                ),
+                child: WorkerFloatingDock(currentIndex: 0),
               ),
             ],
           ),

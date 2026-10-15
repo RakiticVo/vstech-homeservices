@@ -701,7 +701,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeDefaultAddress.
   ///
   /// In vi, this message translates to:
-  /// **'Chung cư Sunrise City, Q.7'**
+  /// **'Thêm địa chỉ của bạn'**
   String get homeDefaultAddress;
 
   /// No description provided for @homeSearchPlaceholder.

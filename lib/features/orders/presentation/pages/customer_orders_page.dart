@@ -51,15 +51,6 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
     );
   }
 
-  void _onDockTabSelected(int index) {
-    if (index == 1) return; // already here
-    if (index == 0) {
-      unawaited(context.push(AppRoutes.customerHome));
-    } else if (index == 3) {
-      unawaited(context.push(AppRoutes.customerNotifications));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,14 +125,11 @@ class _CustomerOrdersPageState extends State<CustomerOrdersPage> {
           ),
 
           // Floating Capsule Bottom Dock
-          Positioned(
+          const Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: CustomerFloatingDock(
-              currentIndex: 1, // Orders tab active
-              onTabSelected: _onDockTabSelected,
-            ),
+            child: CustomerFloatingDock(currentIndex: 1),
           ),
         ],
       ),

@@ -1,21 +1,50 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vstech_home_services/core/constants/app_colors.dart';
 import 'package:vstech_home_services/core/constants/app_spacing.dart';
 import 'package:vstech_home_services/core/constants/app_text_styles.dart';
 import 'package:vstech_home_services/core/extensions/l10n_extension.dart';
+import 'package:vstech_home_services/core/router/app_routes.dart';
 
 /// Fixed Floating Bottom Navigation Dock for Customer role.
 /// Adheres strictly to Master Spec v9.0: Capsule shape (rounded-full), white surface,
 /// 1px hairline border, Zero Shadows, active tab in Teal pill.
+///
+/// Tabs navigate on their own ([navigate]) unless [onTabSelected] is given: Home and Orders replace
+/// the current tab screen (`go`), AI / Notifications / Account open on top (`push`) so they keep
+/// their back button.
 class CustomerFloatingDock extends StatelessWidget {
   const CustomerFloatingDock({
     required this.currentIndex,
-    required this.onTabSelected,
+    this.onTabSelected,
     super.key,
   });
 
   final int currentIndex;
-  final ValueChanged<int> onTabSelected;
+  final ValueChanged<int>? onTabSelected;
+
+  /// Opens tab [index] from the screen showing tab [currentIndex].
+  static void navigate(
+    BuildContext context, {
+    required int index,
+    required int currentIndex,
+  }) {
+    if (index == currentIndex) return;
+    switch (index) {
+      case 0:
+        context.go(AppRoutes.customerHome);
+      case 1:
+        context.go(AppRoutes.customerOrders);
+      case 2:
+        unawaited(context.push(AppRoutes.aiAssistant));
+      case 3:
+        unawaited(context.push(AppRoutes.customerNotifications));
+      case 4:
+        unawaited(context.push(AppRoutes.customerProfile));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +96,9 @@ class CustomerFloatingDock extends StatelessWidget {
           final tab = tabs[index];
 
           return GestureDetector(
-            onTap: () => onTabSelected(index),
+            onTap: () => onTabSelected != null
+                ? onTabSelected!(index)
+                : navigate(context, index: index, currentIndex: currentIndex),
             behavior: HitTestBehavior.opaque,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),

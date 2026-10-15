@@ -9,6 +9,7 @@ import 'package:vstech_home_services/core/error/failure.dart';
 import 'package:vstech_home_services/core/network/network_exception.dart';
 import 'package:vstech_home_services/core/router/app_routes.dart';
 import 'package:vstech_home_services/core/theme/app_theme.dart';
+import 'package:vstech_home_services/features/auth/presentation/bloc/profile_cubit.dart';
 import 'package:vstech_home_services/features/home/domain/entities/service_category.dart';
 import 'package:vstech_home_services/features/home/presentation/bloc/categories_cubit.dart';
 import 'package:vstech_home_services/features/home/presentation/bloc/category_detail_cubit.dart';
@@ -29,6 +30,16 @@ final List<ServiceCategory> _tenCategories = [
     ServiceCategory(id: '$i', name: 'Dịch vụ $i', basePrice: 100000 * i),
 ];
 
+MockProfileCubit _idleProfile() {
+  final profile = MockProfileCubit();
+  whenListen(
+    profile,
+    const Stream<ProfileState>.empty(),
+    initialState: const ProfileInitialState(),
+  );
+  return profile;
+}
+
 Widget _createTestHomeWidget(
   Widget child, {
   required MockCategoriesCubit categories,
@@ -45,6 +56,23 @@ Widget _createTestHomeWidget(
         ),
       ),
       GoRoute(
+        path: AppRoutes.customerOrders,
+        builder: (context, state) => const Scaffold(body: Text('OrdersTab')),
+      ),
+      GoRoute(
+        path: AppRoutes.aiAssistant,
+        builder: (context, state) => const Scaffold(body: Text('AiTab')),
+      ),
+      GoRoute(
+        path: AppRoutes.customerNotifications,
+        builder: (context, state) =>
+            const Scaffold(body: Text('NotificationsTab')),
+      ),
+      GoRoute(
+        path: AppRoutes.customerProfile,
+        builder: (context, state) => const Scaffold(body: Text('AccountTab')),
+      ),
+      GoRoute(
         path: AppRoutes.bookingStep1,
         builder: (context, state) => Scaffold(
           body: Text('BookingStep1:${state.uri.queryParameters['categoryId']}'),
@@ -56,6 +84,7 @@ Widget _createTestHomeWidget(
   return MultiBlocProvider(
     providers: [
       BlocProvider<CategoriesCubit>.value(value: categories),
+      BlocProvider<ProfileCubit>.value(value: _idleProfile()),
       BlocProvider<CategoryDetailCubit>.value(
         value: detail ?? MockCategoryDetailCubit(),
       ),
@@ -143,25 +172,40 @@ void main() {
       },
     );
 
-    testWidgets('CustomerHomePage dock tab selection updates active tab', (
-      tester,
-    ) async {
-      whenListen(
-        categories,
-        const Stream<CategoriesState>.empty(),
-        initialState: const CategoriesLoadingState(),
-      );
+    for (final (icon, target) in [
+      (Icons.receipt_long_outlined, 'OrdersTab'),
+      (Icons.auto_awesome_outlined, 'AiTab'),
+      (Icons.notifications_none_outlined, 'NotificationsTab'),
+      (Icons.person_outline, 'AccountTab'),
+    ]) {
+      testWidgets('CustomerHomePage dock opens the $target screen', (
+        tester,
+      ) async {
+        whenListen(
+          categories,
+          const Stream<CategoriesState>.empty(),
+          initialState: const CategoriesLoadingState(),
+        );
 
-      await tester.pumpWidget(
-        _createTestHomeWidget(const CustomerHomePage(), categories: categories),
-      );
-      await tester.pump();
+        await tester.pumpWidget(
+          _createTestHomeWidget(
+            const CustomerHomePage(),
+            categories: categories,
+          ),
+        );
+        await tester.pump();
 
-      await tester.tap(find.byIcon(Icons.receipt_long_outlined));
-      await tester.pump();
+        await tester.tap(
+          find.descendant(
+            of: find.byType(CustomerFloatingDock),
+            matching: find.byIcon(icon),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('Đơn hàng'), findsOneWidget);
-    });
+        expect(find.text(target), findsOneWidget);
+      });
+    }
 
     testWidgets(
       'CategoriesPage lists API categories with starting price and filters by search',

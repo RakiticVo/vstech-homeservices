@@ -195,7 +195,8 @@ GoRouter createAppRouter({required SessionCubit session}) => GoRouter(
     ),
     GoRoute(
       path: AppRoutes.customerHome,
-      builder: (context, state) => _withCategories(const CustomerHomePage()),
+      builder: (context, state) =>
+          _withCategories(_withProfile(const CustomerHomePage())),
     ),
     GoRoute(
       path: AppRoutes.categories,

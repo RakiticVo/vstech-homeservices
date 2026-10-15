@@ -7,6 +7,10 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Fixed
+- **Thanh điều hướng dưới (dock) không chuyển màn**: dock khách ở Trang chủ chỉ đổi tab đang tô sáng, ở Đơn hàng thiếu tab AI / Tài khoản; dock thợ ở Dashboard cũng chỉ đổi tô sáng, ở Việc chỉ mở Ví. Giờ `CustomerFloatingDock` / `WorkerFloatingDock` tự điều hướng: Trang chủ ↔ Đơn hàng (khách) và Việc (thợ) thay màn (`go`); AI, Thông báo, Tài khoản (khách) và Lịch, Ví, Hồ sơ (thợ) mở chồng lên (`push`) để có nút quay lại.
+- **Header Trang chủ**: hiện tên và địa chỉ mặc định từ hồ sơ (`GET /profiles`) thay cho "Mai" / "Chung cư Sunrise City" viết cứng, bỏ số thông báo chưa đọc giả (2); nút chuông mở Thông báo, ô địa chỉ mở Sửa địa chỉ (trước không làm gì).
+
 ### Added — Pha 6 theo dõi thợ realtime (khách)
 - **6.1** Lớp data cho `/ws/tracking/customer` (doc `09-location-tracking` §2.3): DTO `TrackingSubscribeRequest` (`{"action":"SUBSCRIBE","bookingId":<số>}`) / `TrackingMessageResponse` (CONNECTED / LOCATION_UPDATE / TRACKING_ENDED / ERROR); `CustomerTrackingSocketDataSource` trên `RealtimeSocket`, tự gửi lại SUBSCRIBE mỗi lần kết nối lại; `TrackingConnection` → sự kiện vị trí / kết thúc / lỗi; entity `WorkerPosition` + khoảng cách haversine; unit test với channel giả.
 - **6.2** Màn theo dõi thợ (khách) dùng dữ liệu thật: `CustomerTrackingCubit` theo `bookingId` (đọc đơn mới nhất + toạ độ hồ sơ; giai đoạn theo trạng thái đơn — ACCEPTED: thợ đang đến, IN_PROGRESS: đang làm, COMPLETED: chờ nghiệm thu; mở socket khi ACCEPTED / IN_PROGRESS; `TRACKING_ENDED` → tải lại đơn; `ERROR` → dừng + Kết nối lại); màn bỏ chip giả lập 4 giai đoạn, ETA, giờ check-in, tên / đánh giá thợ, đồng hồ và checklist giả; hiện giai đoạn (Icon + Nhãn + Màu) + chip trạng thái đơn, dòng kết nối, khoảng cách đường chim bay tới địa chỉ hồ sơ, giờ cập nhật vị trí, nút Gọi ẩn danh / Nhắn tin, nút Tiến hành nghiệm thu khi đã hoàn thành; kéo để làm mới. `RealtimeSocket.disconnect()` ngắt kết nối mà vẫn dùng lại được (dùng khi server từ chối theo dõi). Widget + bloc test.

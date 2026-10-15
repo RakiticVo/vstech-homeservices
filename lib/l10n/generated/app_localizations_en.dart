@@ -325,7 +325,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeGreetingSubtitle => 'What does your home need today?';
 
   @override
-  String get homeDefaultAddress => 'Sunrise City Apt, Dist. 7';
+  String get homeDefaultAddress => 'Add your address';
 
   @override
   String get homeSearchPlaceholder => 'Search services: air-con, cleaning...';
