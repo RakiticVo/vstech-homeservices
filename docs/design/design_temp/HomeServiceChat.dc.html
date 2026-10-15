@@ -80,7 +80,7 @@ a:hover{color:#0B5A53}
                     <sc-if value="{{ costAct }}">
                       <div style="display:flex;gap:8px;margin-top:10px">
                         <div onClick="{{ costNo }}" style="flex:none;width:84px;height:40px;border-radius:20px;border:1px solid var(--line-strong,#E1D8C8);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--ink-2,#374151);cursor:pointer">{{ t.no }}</div>
-                        <div onClick="{{ costOk }}" style="flex:1;height:40px;border-radius:20px;background:var(--amber,#F59E0B);display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:800;color:var(--on-amber,#3A2410);cursor:pointer">{{ t.ok }}</div>
+                        <div onClick="{{ costOk }}" style="flex:1;height:40px;border-radius:20px;background:var(--acc-deep,#0E5952);display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:800;color:#FFFFFF;cursor:pointer">{{ t.ok }}</div>
                       </div>
                     </sc-if>
                     <sc-if value="{{ costNote }}"><div style="font-size:12px;font-weight:800;color:{{ costNoteInk }};margin-top:10px">{{ costNote }}</div></sc-if>
@@ -275,7 +275,7 @@ class Component extends DCLogic {
       t: {
         privacy:T('Số điện thoại của hai bên được ẩn','Both phone numbers are hidden'), callBack:T('Gọi lại','Call back'),
         locT:T('Vị trí hiện tại','Current location'), costK:T('ĐỀ XUẤT CHI PHÍ PHÁT SINH','EXTRA COST REQUEST'),
-        costT:T('Thay ron vòi sen','Replace shower-head seal'), costB:T('Vật tư + công, ảnh đính kèm phía trên','Parts + labour, photo above'),
+        costT:T('Thay ron vòi sen','Replace shower-head seal'), costB:T('2 hạng mục: ron cao su 30.000đ + công thay 15.000đ','2 items: rubber seal 30.000đ + labour 15.000đ'),
         ok:T('Đồng ý','Approve'), no:T('Từ chối','Decline'),
         maskNote:T('Số điện thoại đã được ẩn để bảo vệ hai bên.','Phone number hidden to protect both sides.'),
         closed:T('Cuộc trò chuyện đã đóng 24 giờ sau khi hoàn tất đơn. Cần hỗ trợ, vui lòng liên hệ Trung tâm hỗ trợ.','This chat closed 24 hours after the order was completed. For help, contact Support.'),

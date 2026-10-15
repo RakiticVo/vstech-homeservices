@@ -1467,6 +1467,8 @@ a:hover{color:var(--acc-ink,#0B5A53)}
       <div style="flex:1;display:flex;flex-direction:column;min-height:0">
         <div style="flex:none;display:flex;align-items:center;gap:8px;padding:2px 20px 14px"><div onClick="{{ odBack }}" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;margin-left:-8px;cursor:pointer"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" style="stroke:var(--acc-deep-ink,#0E5952)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></div><div style="flex:1;font-size:19px;font-weight:800;letter-spacing:-.5px;color:var(--acc-deep-ink,#0E5952)">{{ od.h }}</div></div>
         <div class="hs-scroll" style="flex:1;min-height:0;padding:0 20px 16px">
+          <sc-if value="{{ qBan }}"><div onClick="{{ qOpen }}" style="border-radius:20px;border:1.5px solid var(--amber-ink,#A35A06);background:var(--tint-amber,#FDF0D8);padding:13px 14px 13px 16px;margin-bottom:12px;display:flex;gap:11px;align-items:center;cursor:pointer"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="stroke:var(--amber-ink,#A35A06);flex:none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 17.5v-11"></path></svg><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:800;color:var(--ink,#14312E)">{{ qTx.t }}</div><div style="font-size:13px;font-weight:600;color:var(--ink-2,#374151);margin-top:2px;font-variant-numeric:tabular-nums">{{ qTx.b }}</div></div><div style="display:flex;align-items:center;gap:3px;font-size:14px;font-weight:800;color:var(--amber-ink,#A35A06)">{{ qTx.a }}<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></div></div></sc-if>
+          <sc-if value="{{ qResT }}"><div style="border-radius:16px;border:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:12px 14px;margin-bottom:12px;font-size:13.5px;font-weight:700;color:var(--ink-2,#374151);font-variant-numeric:tabular-nums">{{ qResT }}</div></sc-if>
           <div style="border-radius:20px;border:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:12px 16px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div style="font-size:13px;font-weight:800;color:var(--acc-ink,#0F766E);font-variant-numeric:tabular-nums">#HS20250425-0012</div><div style="padding:4px 10px;border-radius:8px;background:{{ odTag.bg }};font-size:10px;font-weight:800;color:{{ odTag.ink }}">{{ odTag.t }}</div></div>
             <div style="margin-top:4px"><sc-for list="{{ od.tl }}" as="t" hint-placeholder-count="4"><div style="display:flex;gap:12px;align-items:center;padding:8px 0"><div style="width:16px;height:16px;flex:none;border-radius:8px;background:{{ t.bg }};border:2px solid {{ t.edge }}"></div><div style="flex:1;font-size:13px;font-weight:{{ t.w }};color:{{ t.ink }}">{{ t.t }}</div><div style="font-size:12px;font-weight:700;color:var(--ink-4,#767065);font-variant-numeric:tabular-nums">{{ t.m }}</div></div></sc-for></div>
@@ -1932,10 +1934,13 @@ a:hover{color:var(--acc-ink,#0B5A53)}
 
   </div>
 
+  <sc-if value="{{ qOvC }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:38"><dc-import name="HomeServiceQuote" cell="134" v="a" th="{{ th }}" lang="{{ qLangC }}" on-back="{{ qCloseC }}" on-done="{{ qDoneC }}" hint-size="390px,844px"></dc-import></div>
+  </sc-if>
   <!-- ══ WORKER EXPERIENCE ══ -->
   <sc-if value="{{ isWorker }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;inset:0;z-index:40">
-      <dc-import name="HomeServiceWorker" screen="{{ wScreen }}" theme="{{ themeProp }}" lang="{{ langProp }}" kyc-step="{{ kycStep }}" kyc-status="{{ kycStatus }}" dlg="{{ wDlg }}" on-logout="{{ onWorkerLogout }}" ost="{{ ostProp }}" j-tab="{{ jTabProp }}" chat="{{ chatW }}" chat-closed="{{ chatRO }}" sim-kind="{{ simKindP }}" sim-n="{{ simNP }}" wbh="{{ wbhP }}" cst="{{ cstP }}" ns="{{ nsP }}" wcx="{{ wcxP }}" wd="{{ wdP }}" xc="{{ xcP }}" hint-size="390px,844px"></dc-import>
+      <dc-import name="HomeServiceWorker" screen="{{ wScreen }}" theme="{{ themeProp }}" lang="{{ langProp }}" kyc-step="{{ kycStep }}" kyc-status="{{ kycStatus }}" dlg="{{ wDlg }}" on-logout="{{ onWorkerLogout }}" ost="{{ ostProp }}" j-tab="{{ jTabProp }}" chat="{{ chatW }}" chat-closed="{{ chatRO }}" sim-kind="{{ simKindP }}" sim-n="{{ simNP }}" wbh="{{ wbhP }}" cst="{{ cstP }}" ns="{{ nsP }}" wcx="{{ wcxP }}" wd="{{ wdP }}" xc="{{ xcP }}" tu="{{ tuP }}" hint-size="390px,844px"></dc-import>
     </div>
   </sc-if>
 </div>
@@ -2718,11 +2723,11 @@ class Component extends DCLogic {
       else if (!this.state.chat) this.setState(s => ({ unread: (s.unread === undefined || s.unread === null ? 1 : s.unread) + 1,
         toast: { t:'Trần Văn Hùng', b: (this.state.uiLang || p.lang) === 'en' ? 'I\u2019m at the lobby, could you open the door?' : 'Chị ơi em tới sảnh rồi, chị mở cửa giúp em nhé.' } }));
     }
-    const KEYS = ['screen','role','kycStep','kycStatus','otpPreset','payState','matchState','tip','stars','completed','svc','cancelFee','ost','oTab','jTab','chat','chatClosed','bh','bhId','wbh','cst','kId','wpId','ns','wcx','wd','xc'];
+    const KEYS = ['screen','role','kycStep','kycStatus','otpPreset','payState','matchState','tip','stars','completed','svc','cancelFee','ost','oTab','jTab','chat','chatClosed','bh','bhId','wbh','cst','kId','wpId','ns','wcx','wd','xc','xq'];
     if (KEYS.some(k => prev[k] !== p[k]))
       this.setState({ screen:null, role:null, pick:null, otpCtx:null, otp:null, otpErr:null, left:60, dlg:null,
         svc:null, pk:0, ad:null, house:null, floor:null, lift:null, addr:null, sheet:false, media:2, mMode:'photo', vid:false, pm:null, vch:false,
-        payLeft:600, payRes:null, mt:0, match:null, stars:null, fb:null, rvPhoto:false, tip:null, tipOther:false, completed:null, rc:null, rcFrom:null, svcFrom:null, cxFee:null, cxR:null, ost:null, el:4350, tlOpen:false, call:null, dt:null, dPhoto:false, oTab:null, oF:null, chat:null, toast:null, bhSt:null, bhId:null, bhFrom:null, kId:null, kSt:null, odFrom:null, pd:null, ae:null, cf:null, pl:null, pwF:null, daR:null, prefW:null, wpId:null, profMsg:null, pwOk:false });
+        payLeft:600, payRes:null, mt:0, match:null, stars:null, fb:null, rvPhoto:false, tip:null, tipOther:false, completed:null, rc:null, rcFrom:null, svcFrom:null, cxFee:null, cxR:null, ost:null, el:4350, tlOpen:false, call:null, dt:null, dPhoto:false, oTab:null, oF:null, chat:null, toast:null, bhSt:null, bhId:null, bhFrom:null, kId:null, kSt:null, odFrom:null, pd:null, ae:null, cf:null, pl:null, pwF:null, daR:null, prefW:null, wpId:null, profMsg:null, pwOk:false, qOvC:false, qRes:null });
   }
   go(s){ return () => this.setState({screen:s}); }
 
@@ -2745,7 +2750,7 @@ class Component extends DCLogic {
       goChat:this.go('chat'), goSuggest:this.go('suggestions'), goProfile:this.go('profile'), goSettings:this.go('settings') };
 
     /* ---------- roles & auth ---------- */
-    const WK = ['whome','wns','wnsrep','wnsdone','wcxl','wwd','wwdpin','wwdst','wtx','wavail','wzone','wskill','wcert','wperf','wnotif','wnset','wreply','wjobs','wcal','wbh','wbhno','wjob','wgo','warr','wwork','wwait','wwallet','wprofile','wkyc'];
+    const WK = ['wtop','wtopc','wtopr','whome','wns','wnsrep','wnsdone','wcxl','wwd','wwdpin','wwdst','wtx','wavail','wzone','wskill','wcert','wperf','wnotif','wnset','wreply','wjobs','wcal','wbh','wbhno','wjob','wgo','warr','wwork','wwait','wwallet','wprofile','wkyc'];
     const role = this.state.role || this.props.role || (WK.includes(s) ? 'worker' : 'customer');
     const pick = this.state.pick !== null ? this.state.pick : (this.props.pick || null);
     const isW = role === 'worker';
@@ -3235,7 +3240,12 @@ class Component extends DCLogic {
     const addOn = !!S8.kTxt;
     const od0 = ost;
     const D8 = {
-      isOdetail: s==='odetail', isNotif: s==='notif', isNset: s==='nset', isClist: s==='clist', isCdetail: s==='cdetail', isCadd: s==='cadd',
+      isOdetail: s==='odetail',
+      tuP: P8.tu, qBan: P8.xq === 'pend' && !S8.qRes, qOpen: () => this.setState({ qOvC:true }), qOvC: !!S8.qOvC,
+      qCloseC: () => this.setState({ qOvC:false }), qDoneC: r => this.setState({ qOvC:false, qRes:r }),
+      qResT: S8.qRes === 'ok' ? T('Đã duyệt chi phí phát sinh · Tổng mới 445.000đ','Extra cost approved · New total 445.000đ') : S8.qRes === 'no' ? T('Đã từ chối báo giá · Giữ giá ban đầu 400.000đ','Quote declined · Original 400.000đ kept') : null,
+      qTx: { t:T('Thợ gửi báo giá phát sinh','Your pro sent an extra-cost quote'), b:T('+45.000đ · 2 hạng mục · 14:41','+45.000đ · 2 items · 14:41'), a:T('Xem & duyệt','View & approve') },
+      qLangC: (S8.uiLang || P8.lang) === 'en' ? 'en' : 'vi', isNotif: s==='notif', isNset: s==='nset', isClist: s==='clist', isCdetail: s==='cdetail', isCadd: s==='cadd',
       trBack: this.go('orders'),
       goOdetail: go8('odetail', { odFrom:s }), odBack: this.go(S8.odFrom || 'tracking'), goNset: go8('nset'), goClist: go8('clist'), goCdetail: go8('cdetail'), goCadd: go8('cadd', { kTxt:false, kPh:false }),
       goK031: go8('cdetail', { kId:'031' }),

@@ -15,6 +15,7 @@ a{color:#0F766E;text-decoration:none}
 a:hover{color:#0B5A53}
 .hs-scroll{overflow-y:auto;scrollbar-width:none}
 .hs-scroll::-webkit-scrollbar{display:none}
+@keyframes hsw-spin{to{transform:rotate(360deg)}}
 [data-th="light"]{--tint-red:#FDE8E4;--err-ink:#B91C1C;--bg:#FAF6EE;--sf:#FFFFFF;--dock:#FFFDF8;--tile:#FFFFFF;--line:#EAE2D4;--line-strong:#E1D8C8;--line-soft:#EFE8DC;--line-teal:#CFE0D9;--line-amber:#F2E3C4;--ink:#14312E;--ink-2:#374151;--ink-3:#5F6871;--ink-4:#767065;--acc:#0F766E;--acc-ink:#0F766E;--acc-deep:#0E5952;--acc-deep-ink:#0E5952;--on-acc:#FFFFFF;--on-amber:#3A2410;--amber:#F59E0B;--amber-ink:#A35A06;--green:#10B981;--green-ink:#047857;--tint-teal:#E3F1EA;--tint-teal-soft:#F1F7F4;--tint-blue:#EAF2FB;--tint-amber:#FDF0D8;--tint-amber-2:#FBEBD2;--tint-amber-3:#FCE3B5;--hero-bg:#DCEFF0}
 [data-th="dark"]{--tint-red:#3A1E1E;--err-ink:#F87171;--bg:#171D1B;--sf:#202826;--dock:#1C2422;--tile:#FFFFFF;--line:#303B38;--line-strong:#3C4844;--line-soft:#2A3431;--line-teal:#2F4A44;--line-amber:#4A3A1E;--ink:#F2EEE4;--ink-2:#DCD6C9;--ink-3:#A7B0AB;--ink-4:#909B96;--acc:#11827A;--acc-ink:#5EEAD4;--acc-deep:#0E6F68;--acc-deep-ink:#5EEAD4;--on-acc:#FFFFFF;--amber:#FBBF24;--on-amber:#2A1A08;--amber-ink:#FBBF24;--green:#34D399;--green-ink:#34D399;--tint-teal:#1E3B36;--tint-teal-soft:#1B332F;--tint-blue:#1C2C40;--tint-amber:#3A2C16;--tint-amber-2:#42311A;--tint-amber-3:#4C3A1A;--hero-bg:#1E3B36}
 </style>
@@ -199,6 +200,8 @@ a:hover{color:#0B5A53}
             </div>
           </div>
 
+          <sc-if value="{{ qNone }}"><div onClick="{{ qNew }}" style="height:50px;margin-top:12px;border-radius:25px;border:1.5px solid var(--acc,#0F766E);background:var(--sf,#FFFFFF);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-size:15px;font-weight:800;color:var(--acc-ink,#0F766E)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>{{ qBtn }}</div></sc-if>
+          <sc-if value="{{ qSt }}"><div style="margin-top:12px"><dc-import name="HomeServiceQuote" cell="133" mode="card" v="{{ qSt }}" th="{{ th }}" lang="{{ qLang }}" on-review="{{ qReview }}" on-chat="{{ openChatMsg }}" hint-size="100%,180px"></dc-import></div></sc-if>
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin:20px 0 6px">
             <div style="font-size:15px;font-weight:800;letter-spacing:-.2px;color:var(--ink,#14312E)">{{ W.w20 }}</div>
             <div style="font-size:12.5px;font-weight:800;color:var(--acc-ink,#0F766E);font-variant-numeric:tabular-nums">{{ doneCount }}</div>
@@ -239,7 +242,10 @@ a:hover{color:#0B5A53}
         <div style="border-radius:22px;background:var(--acc-deep,#0E5952);padding:20px;color:#FFFFFF">
           <div style="font-size:12px;font-weight:700;color:#CDE9E2">{{ W.w23 }}</div>
           <div style="font-size:32px;font-weight:800;letter-spacing:-1px;margin-top:4px;font-variant-numeric:tabular-nums">{{ balTxt }}</div>
-          <div onClick="{{ goWd }}" style="height:46px;border-radius:23px;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#0E5952;margin-top:16px;cursor:pointer">{{ W.w24 }}</div>
+          <div style="display:flex;gap:10px;margin-top:16px">
+            <div onClick="{{ goWd }}" style="flex:1.45;height:48px;border-radius:24px;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#0E5952;cursor:pointer">{{ W.w24 }}</div>
+            <div onClick="{{ tu.go }}" style="flex:1;height:48px;box-sizing:border-box;border-radius:24px;border:1.5px solid rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:800;color:#FFFFFF;cursor:pointer"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>{{ tu.L.top }}</div>
+          </div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
@@ -254,6 +260,20 @@ a:hover{color:#0B5A53}
 
         <div style="border-radius:18px;border:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:4px 16px;margin-top:12px"><sc-for list="{{ z.balRows }}" as="r" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line-soft,#EFE8DC)"><div style="font-size:13px;font-weight:700;color:{{ r.kc }}">{{ r.k }}</div><div style="font-size:14px;font-weight:800;color:{{ r.vc }};font-variant-numeric:tabular-nums">{{ r.v }}</div></div></sc-for></div>
         <div style="font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--ink,#14312E);margin:22px 0 4px">{{ W.w25 }}</div>
+        <sc-if value="{{ tu.row }}">
+          <div onClick="{{ tu.row.go }}" style="display:flex;align-items:center;gap:13px;padding:13px 2px;border-bottom:1px solid var(--line-soft,#EFE8DC);cursor:pointer">
+            <div style="width:42px;height:42px;flex:none;box-sizing:border-box;border-radius:13px;background:var(--tint-teal,#E3F1EA);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--acc-ink,#0F766E)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17"></path><path d="M17 17H7V7"></path></svg></div>
+            <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;letter-spacing:-.2px;color:var(--ink,#14312E)">{{ tu.row.t }}</div><div style="font-size:12px;font-weight:600;color:var(--ink-4,#767065);margin-top:2px;font-variant-numeric:tabular-nums">{{ tu.row.d }}</div></div>
+            <div style="text-align:right"><div style="font-size:14.5px;font-weight:800;color:{{ tu.row.ink }};text-decoration:{{ tu.row.deco }};font-variant-numeric:tabular-nums">+500.000đ</div>
+              <div style="display:flex;align-items:center;justify-content:flex-end;gap:4px;margin-top:3px;font-size:11.5px;font-weight:800;color:{{ tu.row.stInk }}">
+                <sc-if value="{{ tu.row.ok }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+                <sc-if value="{{ tu.row.proc }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></sc-if>
+                <sc-if value="{{ tu.row.fail }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></sc-if>
+                {{ tu.row.st }}
+              </div>
+            </div>
+          </div>
+        </sc-if>
         <sc-for list="{{ ledger }}" as="x" hint-placeholder-count="6">
           <div onClick="{{ x.go }}" style="display:flex;align-items:center;gap:13px;padding:13px 2px;border-bottom:1px solid var(--line-soft,#EFE8DC);cursor:pointer">
             <div style="width:42px;height:42px;flex:none;border-radius:13px;overflow:hidden;background:var(--tile,#FFFFFF);border:1px solid var(--line,#EAE2D4)"><img src="{{ x.icon }}" width="40" height="40" alt="" style="display:block;margin:0 auto"></div>
@@ -527,6 +547,99 @@ a:hover{color:#0B5A53}
         <div style="flex:none;border-top:1px solid var(--line,#EAE2D4);background:var(--bg,#FAF6EE);padding:14px 20px 22px">
           <div onClick="{{ z.cxCta.go }}" style="height:52px;border-radius:26px;border:1.5px solid {{ z.cxCta.edge }};display:flex;align-items:center;justify-content:center;font-size:15.5px;font-weight:800;color:{{ z.cxCta.ink }};cursor:pointer">{{ z.cxCta.t }}</div>
           <div onClick="{{ goGo }}" style="text-align:center;font-size:13.5px;font-weight:800;color:var(--acc-ink,#0F766E);margin-top:14px;cursor:pointer">{{ z.cxKeep }}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ══ W-TOPUP 136 ══ -->
+    <sc-if value="{{ tu.isTop }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div style="flex:none;padding:0 20px 12px">
+          <div onClick="{{ goWallet }}" style="display:inline-flex;align-items:center;gap:4px;height:44px;margin-left:-10px;padding:0 10px;cursor:pointer;font-size:15px;font-weight:800;color:var(--acc-deep-ink,#0E5952)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>{{ tu.L.back }}</div>
+          <div style="font-size:23px;font-weight:800;letter-spacing:-.6px;color:var(--acc-deep-ink,#0E5952);margin-top:2px">{{ tu.L.title }}</div>
+        </div>
+        <div class="hs-scroll" style="flex:1;min-height:0;padding:0 20px 20px">
+          <div style="border-radius:20px;border:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:14px 16px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><div style="font-size:14px;font-weight:700;color:var(--ink-3,#5F6871)">{{ tu.L.avail }}</div><div style="font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--ink,#14312E);font-variant-numeric:tabular-nums">{{ tu.bal }}</div></div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:8px;padding-top:9px;border-top:1px solid var(--line-soft,#EFE8DC)"><div style="font-size:13.5px;font-weight:600;color:var(--ink-3,#5F6871)">{{ tu.L.after }}</div><div style="font-size:15px;font-weight:800;color:{{ tu.afterInk }};font-variant-numeric:tabular-nums">{{ tu.after }}</div></div>
+          </div>
+
+          <div style="font-size:14px;font-weight:700;color:var(--ink-2,#374151);margin:20px 0 8px">{{ tu.L.amtL }}</div>
+          <div style="height:64px;box-sizing:border-box;border-radius:16px;border:{{ tu.edge }};background:var(--sf,#FFFFFF);display:flex;align-items:center;gap:10px;padding:0 16px">
+            <input inputmode="numeric" value="{{ tu.amtTxt }}" onChange="{{ tu.onAmt }}" placeholder="0" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:inherit;font-size:26px;font-weight:800;letter-spacing:-.6px;color:var(--ink,#14312E);padding:0;font-variant-numeric:tabular-nums">
+            <sc-if value="{{ tu.err }}"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--err-ink,#B91C1C)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg></sc-if>
+            <div style="font-size:22px;font-weight:800;color:var(--ink-3,#5F6871)">đ</div>
+          </div>
+          <sc-if value="{{ tu.err }}"><div style="display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--err-ink,#B91C1C);margin-top:7px">{{ tu.L.minErr }}</div></sc-if>
+          <sc-if value="{{ tu.noErr }}"><div style="font-size:13px;font-weight:600;color:var(--ink-4,#767065);margin-top:7px">{{ tu.L.min }}</div></sc-if>
+
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px">
+            <sc-for list="{{ tu.chips }}" as="c" hint-placeholder-count="4">
+              <div onClick="{{ c.go }}" style="height:48px;box-sizing:border-box;border-radius:14px;border:{{ c.edge }};background:{{ c.bg }};display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-size:15.5px;font-weight:800;color:{{ c.ink }};font-variant-numeric:tabular-nums">
+                <sc-if value="{{ c.on }}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>{{ c.t }}
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="font-size:16px;font-weight:800;letter-spacing:-.2px;margin:24px 0 10px">{{ tu.L.gwH }}</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ tu.gws }}" as="g" hint-placeholder-count="2">
+              <div onClick="{{ g.go }}" style="display:flex;align-items:center;gap:13px;padding:13px 14px;border-radius:18px;border:{{ g.edge }};background:{{ g.bg }};cursor:pointer">
+                <div style="width:48px;height:48px;flex:none;box-sizing:border-box;border-radius:15px;border:1px solid var(--line,#EAE2D4);background:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;letter-spacing:-.2px;color:{{ g.logoInk }}">{{ g.mark }}</div>
+                <div style="flex:1;min-width:0"><div style="font-size:16px;font-weight:800;color:var(--ink,#14312E)">{{ g.name }}</div><div style="font-size:13px;font-weight:600;color:var(--ink-3,#5F6871);margin-top:2px">{{ g.desc }}</div></div>
+                <sc-if value="{{ g.on }}"><div style="width:24px;height:24px;flex:none;border-radius:12px;background:var(--acc,#0F766E);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></div></sc-if>
+                <sc-if value="{{ g.off }}"><div style="width:24px;height:24px;flex:none;box-sizing:border-box;border-radius:12px;border:1.5px solid var(--line-strong,#E1D8C8)"></div></sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;gap:9px;align-items:flex-start;margin-top:16px;padding:12px 14px;border-radius:16px;background:var(--tint-teal-soft,#F1F7F4)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--acc-ink,#0F766E)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+            <div style="font-size:13.5px;font-weight:600;line-height:1.5;color:var(--ink-2,#374151)">{{ tu.L.note }}</div>
+          </div>
+        </div>
+        <div style="flex:none;border-top:1px solid var(--line,#EAE2D4);background:var(--bg,#FAF6EE);padding:14px 20px 26px">
+          <div onClick="{{ tu.pay }}" style="height:52px;border-radius:26px;background:{{ tu.cta.bg }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:{{ tu.cta.ink }};cursor:{{ tu.cta.cur }};font-variant-numeric:tabular-nums">{{ tu.cta.t }}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ══ W-TOPUP 137 · ĐANG XÁC NHẬN ══ -->
+    <sc-if value="{{ tu.isConf }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0 20px 26px">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+          {{ tu.spin }}
+          <div style="font-size:23px;font-weight:800;letter-spacing:-.5px;margin-top:22px">{{ tu.L.confT }}</div>
+          <div style="font-size:30px;font-weight:800;letter-spacing:-.8px;color:var(--ink,#14312E);margin-top:8px;font-variant-numeric:tabular-nums">{{ tu.amtFmt }}</div>
+          <div style="width:100%;margin-top:20px;border-radius:20px;border:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:4px 16px;text-align:left">
+            <sc-for list="{{ tu.confRows }}" as="r" hint-placeholder-count="2"><div style="display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:{{ r.bt }};font-size:14px;font-weight:600;color:var(--ink-3,#5F6871);font-variant-numeric:tabular-nums"><div>{{ r.k }}</div><div style="font-weight:800;color:var(--ink,#14312E)">{{ r.v }}</div></div></sc-for>
+          </div>
+          <div style="font-size:13.5px;font-weight:600;line-height:1.55;color:var(--ink-3,#5F6871);margin-top:14px;max-width:300px">{{ tu.L.confNote }}</div>
+        </div>
+        <div onClick="{{ tu.toWallet }}" style="height:52px;box-sizing:border-box;border-radius:26px;border:1.5px solid var(--line-strong,#E1D8C8);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--acc-deep-ink,#0E5952);cursor:pointer">{{ tu.L.toWallet }}</div>
+      </div>
+    </sc-if>
+
+    <!-- ══ W-TOPUP 138 · KẾT QUẢ ══ -->
+    <sc-if value="{{ tu.isRes }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;min-height:0;padding:0 20px 26px">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+          <sc-if value="{{ tu.rOk }}"><svg viewBox="0 0 24 24" width="76" height="76" fill="none" stroke="var(--green-ink,#047857)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m8 12 3 3 5-6"></path></svg></sc-if>
+          <sc-if value="{{ tu.rFail }}"><svg viewBox="0 0 24 24" width="76" height="76" fill="none" stroke="var(--err-ink,#B91C1C)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg></sc-if>
+          <sc-if value="{{ tu.rPend }}"><svg viewBox="0 0 24 24" width="76" height="76" fill="none" stroke="var(--amber-ink,#A35A06)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></sc-if>
+          <div style="font-size:24px;font-weight:800;letter-spacing:-.6px;line-height:1.25;margin-top:20px;text-wrap:balance">{{ tu.res.t }}</div>
+          <sc-if value="{{ tu.rOk }}"><div style="font-size:32px;font-weight:800;letter-spacing:-.8px;color:var(--green-ink,#047857);margin-top:8px;font-variant-numeric:tabular-nums">{{ tu.plus }}</div></sc-if>
+          <sc-if value="{{ tu.res.b }}"><div style="font-size:15px;font-weight:600;line-height:1.5;color:var(--ink-2,#374151);margin-top:8px;max-width:310px">{{ tu.res.b }}</div></sc-if>
+          <sc-if value="{{ tu.rFail }}"><div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;border-radius:14px;background:var(--tint-teal,#E3F1EA);font-size:14px;font-weight:800;color:var(--acc-deep-ink,#0E5952)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>{{ tu.L.noCharge }}</div></sc-if>
+          <div style="width:100%;margin-top:20px;border-radius:20px;border:1px solid var(--line,#EAE2D4);background:var(--sf,#FFFFFF);padding:4px 16px;text-align:left">
+            <sc-for list="{{ tu.resRows }}" as="r" hint-placeholder-count="3"><div style="display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:{{ r.bt }};font-size:14px;font-weight:600;color:var(--ink-3,#5F6871);font-variant-numeric:tabular-nums"><div>{{ r.k }}</div><div style="font-weight:800;color:{{ r.vc }}">{{ r.v }}</div></div></sc-for>
+          </div>
+          <sc-if value="{{ tu.called }}"><div style="font-size:13.5px;font-weight:700;color:var(--acc-ink,#0F766E);margin-top:12px">{{ tu.L.calling }}</div></sc-if>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-if value="{{ tu.rFail }}"><div onClick="{{ tu.changeGw }}" style="height:52px;box-sizing:border-box;border-radius:26px;border:1.5px solid var(--line-strong,#E1D8C8);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--acc-deep-ink,#0E5952);cursor:pointer">{{ tu.L.changeGw }}</div></sc-if>
+          <sc-if value="{{ tu.rPend }}"><div onClick="{{ tu.call }}" style="height:52px;box-sizing:border-box;border-radius:26px;border:1.5px solid var(--line-strong,#E1D8C8);display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:800;color:var(--acc-deep-ink,#0E5952);cursor:pointer"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>{{ tu.L.callSup }}</div></sc-if>
+          <div onClick="{{ tu.res.go }}" style="height:52px;border-radius:26px;background:var(--acc-deep,#0E5952);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#FFFFFF;cursor:pointer">{{ tu.res.cta }}</div>
         </div>
       </div>
     </sc-if>
@@ -1005,6 +1118,9 @@ a:hover{color:#0B5A53}
         <dc-import name="HomeServiceChat" role="worker" mode="{{ chatMode }}" readonly="{{ chatRO }}" theme="{{ chatTheme }}" lang="{{ chatLang }}" ost="{{ chatOst }}" sim-kind="{{ simKindP }}" sim-n="{{ simNP }}" on-close="{{ closeChat }}" hint-size="390px,844px"></dc-import>
       </div>
     </sc-if>
+    <sc-if value="{{ qOv }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:43"><dc-import name="HomeServiceQuote" cell="{{ qOv.cell }}" v="{{ qOv.v }}" th="{{ th }}" lang="{{ qLang }}" on-back="{{ qClose }}" on-sent="{{ qSent }}" hint-size="390px,844px"></dc-import></div>
+    </sc-if>
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
       <div onClick="{{ toastGo }}" style="position:absolute;left:12px;right:12px;top:50px;z-index:44;border-radius:18px;background:var(--sf,#FFFFFF);border:1px solid var(--line,#EAE2D4);box-shadow:0 10px 30px rgba(20,49,46,.18);padding:12px 14px;display:flex;gap:11px;align-items:center;cursor:pointer">
         <div style="width:36px;height:36px;flex:none;border-radius:18px;background:var(--tint-teal,#E3F1EA);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" style="stroke:var(--acc-ink,#0F766E)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg></div>
@@ -1305,8 +1421,8 @@ class Component extends DCLogic {
       else if (!this.state.chat) this.setState(s => ({ unread: (s.unread === undefined || s.unread === null ? 1 : s.unread) + 1,
         toast: { t:'Nguyễn Thị Mai', b: p.lang === 'en' ? 'Could you bring a large rubbish bag too?' : 'Anh ơi mang giúp em thêm túi rác lớn nhé.' } }));
     }
-    if (prev.screen !== p.screen || prev.kycStep !== p.kycStep || prev.kycStatus !== p.kycStatus || prev.dlg !== p.dlg || prev.ost !== p.ost || prev.jTab !== p.jTab || prev.chat !== p.chat || prev.chatClosed !== p.chatClosed || prev.wbh !== p.wbh || prev.cst !== p.cst || prev.ns !== p.ns || prev.wcx !== p.wcx || prev.wd !== p.wd || prev.txId !== p.txId || prev.xc !== p.xc)
-      this.setState({ screen:null, kyc:null, kycSt:null, round:0, idF:false, idB:false, face:false, sk:null, cert:false, dlg:null, nav:false, call:null, paid:false, jTab:null, chat:null, toast:null, wbh:null, wbhR:null, wbhAck:false, wkSent:false, ns:null, nsLeft:null, nsPh:false, nsNote:false, wcx:null, wcxR:null, wds:null, wdAmt:null, pin:0, txId:null, calDay:null, ct:null });
+    if (prev.tu !== p.tu || prev.screen !== p.screen || prev.kycStep !== p.kycStep || prev.kycStatus !== p.kycStatus || prev.dlg !== p.dlg || prev.ost !== p.ost || prev.jTab !== p.jTab || prev.chat !== p.chat || prev.chatClosed !== p.chatClosed || prev.wbh !== p.wbh || prev.cst !== p.cst || prev.ns !== p.ns || prev.wcx !== p.wcx || prev.wd !== p.wd || prev.txId !== p.txId || prev.xc !== p.xc)
+      this.setState({ qOv:null, qSt:null, tuAmt:undefined, tuGw:undefined, tuR:undefined, tuLed:undefined, tuLive:false, tuCall:false, screen:null, kyc:null, kycSt:null, round:0, idF:false, idB:false, face:false, sk:null, cert:false, dlg:null, nav:false, call:null, paid:false, jTab:null, chat:null, toast:null, wbh:null, wbhR:null, wbhAck:false, wkSent:false, ns:null, nsLeft:null, nsPh:false, nsNote:false, wcx:null, wcxR:null, wds:null, wdAmt:null, pin:0, txId:null, calDay:null, ct:null });
   }
   go(s){ return () => this.setState({ screen:s }); }
 
@@ -1595,7 +1711,8 @@ class Component extends DCLogic {
       { id:'r1', kind:'bonus', t:S('Thưởng hoàn thành 10 việc'), d:'20/04', amt:100000, st:'ok', icon:IMG.sup_rate },
       { id:'op', kind:'op', t:T('Số dư chuyển sang','Balance brought forward'), d:'01/04', amt:5884500, st:'ok', icon:IMG.sup_wallet }
     ];
-    const avail = LG.filter(r => r.st !== 'hold').reduce((n,r) => n + r.amt, 0);
+    const tuAdd = ((Z0.tuLed !== undefined ? Z0.tuLed : PZ.tu) === 'ok') ? (Z0.tuAmt || 500000) : 0;
+    const avail = LG.filter(r => r.st !== 'hold').reduce((n,r) => n + r.amt, 0) + tuAdd;
     const locked = LG.filter(r => r.st === 'hold').reduce((n,r) => n + r.amt, 0);
     const earned = LG.filter(r => r.amt > 0 && r.st !== 'hold').reduce((n,r) => n + r.amt, 0);
     const wdOut = -LG.filter(r => r.kind === 'wd').reduce((n,r) => n + r.amt, 0);
@@ -1637,6 +1754,54 @@ class Component extends DCLogic {
     const ctD = Z0.ctD || { type:null, ph:false, exp:null };
     const txKind = { job:T('Thu nhập từ việc','Job earnings'), wd:T('Rút tiền','Withdrawal'), ns:T('Phí khách vắng mặt','No-show compensation'), pen:T('Khấu trừ','Deduction'), bh:T('Việc bảo hành','Warranty job'), bonus:T('Thưởng','Bonus'), op:T('Số dư đầu kỳ','Opening balance') };
     const rowZ = (k, v, o) => ({ k, v, kc:'var(--ink-3,#5F6871)', vc:INK, fs:'13.5px', cur:'default', go:() => {}, ...(o || {}) });
+    const TU = (() => {
+      const P = PZ.tu, Sx = Z0, def = (k, v) => Sx[k] !== undefined ? Sx[k] : v;
+      const amt = def('tuAmt', ['b','c137','ok','fail','pend'].includes(P) ? 500000 : P === 'c' ? 30000 : null);
+      const gw = def('tuGw', P && P !== 'a' ? 'vnp' : null);
+      const res = def('tuR', ['ok','fail','pend'].includes(P) ? P : null);
+      const led = def('tuLed', ['ok','proc','fail'].includes(P) ? P : null);
+      const bal = avail, bal0 = avail - tuAdd;
+      const L = { top:T('Nạp tiền','Top up'), back:T('Quay lại','Back'), title:T('Nạp tiền vào ví','Top up wallet'), avail:T('Có thể rút','Available to withdraw'),
+        after:T('Sau khi nạp','After top-up'), amtL:T('Số tiền nạp','Top-up amount'), min:T('Tối thiểu 50.000đ','Minimum 50.000đ'),
+        minErr:T('Số tiền tối thiểu là 50.000đ','The minimum amount is 50.000đ'), gwH:T('Cổng thanh toán','Payment gateway'),
+        note:T('Miễn phí nạp tiền. Tiền vào ví khi cổng thanh toán xác nhận.','Top-ups are free. The money lands in your wallet once the gateway confirms.'),
+        confT:T('Đang xác nhận giao dịch','Confirming transaction'), confNote:T('Thường mất dưới 1 phút. Bạn có thể rời màn hình này.','Usually takes under a minute. You can leave this screen.'),
+        toWallet:T('Về ví','Back to wallet'), noCharge:T('Bạn chưa bị trừ tiền','You have not been charged'), changeGw:T('Đổi cổng thanh toán','Change gateway'),
+        callSup:T('Gọi hỗ trợ','Call support'), calling:T('Đang kết nối tổng đài hỗ trợ…','Connecting to support…') };
+      const err = amt !== null && amt > 0 && amt < 50000, valid = amt >= 50000 && !!gw;
+      const GW = { vnp:['VNPay','VNPAY',T('Thẻ ATM / QR ngân hàng','ATM card / bank QR'),'#005BAA','VNP-14220931'], zlp:['ZaloPay','Zalo',T('Ví ZaloPay','ZaloPay wallet'),'#0068FF','ZLP-14220931'] };
+      const g = GW[gw || 'vnp'];
+      const sel = on => on ? { edge:'1.5px solid var(--acc,#0F766E)', bg:'var(--tint-teal-soft,#F1F7F4)', ink:'var(--acc-ink,#0F766E)' } : { edge:'1px solid var(--line-strong,#E1D8C8)', bg:'var(--sf,#FFFFFF)', ink:'var(--ink,#14312E)' };
+      const goRes = r => this.setState({ screen:'wtopr', tuR:r, tuLed: r === 'pend' ? 'proc' : r, tuLive:false });
+      const startConf = () => { this.setState({ screen:'wtopc', tuLive:true, tuCall:false, tuAmt:amt, tuGw:gw || 'vnp' }); clearTimeout(this._tuT);
+        this._tuT = setTimeout(() => { if (this.state.tuLive && (this.state.screen === 'wtopc')) goRes('ok'); }, 2600); };
+      const rr = (k, v, o) => ({ k, v, vc:INK, bt:'1px solid var(--line-soft,#EFE8DC)', ...(o || {}) });
+      const first = a => a.map((x, i) => i ? x : { ...x, bt:'none' });
+      const RES = { ok:{ t:T('Nạp tiền thành công','Top-up successful'), b:null, cta:L.toWallet, go:() => this.setState({ screen:'wwallet', tuLed:'ok' }) },
+        fail:{ t:T('Nạp tiền không thành công','Top-up failed'), b:T('Giao dịch bị huỷ hoặc hết hạn','The transaction was cancelled or expired'), cta:T('Thử lại','Try again'), go:startConf },
+        pend:{ t:T('Giao dịch đang được đối soát','Transaction under reconciliation'), b:T('Đã hơn 5 phút cổng thanh toán chưa trả kết quả. Chúng tôi sẽ báo cho bạn ngay khi có kết quả.','The gateway has not replied for over 5 minutes. We’ll notify you as soon as there is a result.'), cta:L.toWallet, go:() => this.setState({ screen:'wwallet', tuLed:'proc' }) } };
+      const ST = { ok:[T('Hoàn tất','Completed'), GREEN], proc:[T('Đang xử lý','Processing'), AMB], fail:[T('Thất bại','Failed'), RED] };
+      return { L, isTop: s === 'wtop', isConf: s === 'wtopc', isRes: s === 'wtopr',
+        go: gz('wtop', { tuAmt:null, tuGw:null, tuR:undefined }),
+        bal: vnd(bal), after: amt >= 50000 ? vnd(bal + amt) : '—', afterInk: amt >= 50000 ? 'var(--acc-ink,#0F766E)' : 'var(--ink-4,#767065)',
+        amtTxt: amt ? amt.toLocaleString('vi-VN') : '', err, noErr: !err, edge: err ? '1.5px solid var(--err-ink,#B91C1C)' : '1px solid var(--line-strong,#E1D8C8)',
+        onAmt: ev => { const d = ev.target.value.replace(/\D/g, '').slice(0, 9); this.setState({ tuAmt: d === '' ? null : Number(d) }); },
+        chips: [100000, 200000, 500000, 1000000].map(v => ({ t:vnd(v), on: amt === v, ...sel(amt === v), go:() => this.setState({ tuAmt:v }) })),
+        gws: ['vnp','zlp'].map(k => ({ name:GW[k][0], mark:GW[k][1], desc:GW[k][2], logoInk:GW[k][3], on: gw === k, off: gw !== k, ...sel(gw === k), go:() => this.setState({ tuGw:k }) })),
+        cta: valid ? { t:T('Nạp ','Top up ') + vnd(amt), bg: dark ? '#0E6F68' : '#0E5952', ink:'#FFFFFF', cur:'pointer' }
+          : { t: amt >= 50000 ? T('Chọn cổng thanh toán','Choose a gateway') : L.top, bg: dark ? '#2A3431' : '#ECE6DA', ink:MUTE, cur:'not-allowed' },
+        pay: () => { if (valid) startConf(); },
+        spin: React.createElement('span', { style:{ width:60, height:60, boxSizing:'border-box', borderRadius:30, border:'4px solid ' + (dark ? '#2F4A44' : '#CFE0D9'), borderTopColor: dark ? '#5EEAD4' : '#0F766E', animation:'hsw-spin .9s linear infinite', display:'block' } }),
+        amtFmt: vnd(amt || 500000), plus: '+' + vnd(amt || 500000),
+        confRows: first([rr(T('Cổng thanh toán','Gateway'), g[0]), rr(T('Mã giao dịch','Transaction ID'), g[4])]),
+        toWallet: () => { clearTimeout(this._tuT); this.setState({ screen:'wwallet', tuLed:'proc', tuLive:false }); },
+        rOk: res === 'ok', rFail: res === 'fail', rPend: res === 'pend', res: RES[res] || RES.ok,
+        resRows: first(res === 'ok' ? [rr(T('Số dư mới','New balance'), vnd(bal0 + (amt || 500000)), { vc:'var(--acc-ink,#0F766E)' }), rr(T('Mã giao dịch','Transaction ID'), g[4]), rr(T('Thời gian','Time'), '14:30 · 25/04/2025'), rr(T('Cổng thanh toán','Gateway'), g[0])]
+          : [rr(T('Số tiền','Amount'), vnd(amt || 500000)), rr(T('Mã giao dịch','Transaction ID'), g[4]), rr(T('Thời gian','Time'), '14:30 · 25/04/2025')]),
+        changeGw: () => this.setState({ screen:'wtop', tuGw:null, tuR:undefined }), call: () => this.setState({ tuCall:true }), called: !!Sx.tuCall && res === 'pend',
+        row: led ? { t:T('Nạp tiền qua ','Top-up via ') + g[0], d:T('Hôm nay 14:30 · ','Today 14:30 · ') + g[4], ink: led === 'ok' ? GREEN : MUTE, deco: led === 'fail' ? 'line-through' : 'none',
+          st:ST[led][0], stInk:ST[led][1], ok: led === 'ok', proc: led === 'proc', fail: led === 'fail', go:() => goRes(led === 'proc' ? 'pend' : led) } : null };
+    })();
     const Z = {
       isNs: s==='wns', isNsRep: s==='wnsrep', isNsDone: s==='wnsdone', isWcx: s==='wcxl', isWd: s==='wwd', isWdPin: s==='wwdpin', isWdSt: s==='wwdst', isTx: s==='wtx',
       isAvail: s==='wavail', isZone: s==='wzone', isSkill: s==='wskill', isCert: s==='wcert', isPerf: s==='wperf',
@@ -1682,6 +1847,7 @@ class Component extends DCLogic {
           { k:T('Tổng thu nhập đã về','Total earned'), v:vnd(earned), kc:'var(--ink-3,#5F6871)', vc:INK },
           { k:T('Đã rút / đang rút','Withdrawn / pending'), v:'−' + vnd(wdOut), kc:'var(--ink-3,#5F6871)', vc:INK },
           ...(penOut ? [{ k:T('Khấu trừ','Deductions'), v:'−' + vnd(penOut), kc:'var(--ink-3,#5F6871)', vc:INK }] : []),
+          ...(tuAdd ? [{ k:T('Đã nạp vào ví','Topped up'), v:'+' + vnd(tuAdd), kc:'var(--ink-3,#5F6871)', vc:INK }] : []),
           { k:T('Có thể rút','Available'), v:vnd(avail), kc:INK, vc:TEAL },
           ...(locked ? [{ k:T('Đang tạm giữ (không tính vào số dư)','On hold (not in balance)'), v:vnd(locked), kc:AMB, vc:AMB }] : [])
         ],
@@ -1813,7 +1979,10 @@ class Component extends DCLogic {
 
     return {
       IMG, W, ...KYC, th: dark ? 'dark' : 'light',
-      isHome: s==='whome', isJob: s==='wjob', isWork: s==='wwork', isWallet: s==='wwallet', isProfile: s==='wprofile',
+      isHome: s==='whome', isJob: s==='wjob', isWork: s==='wwork',
+      tu: TU, qNone: !this.state.qSt, qLang: this.props.lang === 'en' ? 'en' : 'vi', qSt: this.state.qSt || null, qOv: this.state.qOv || null, qBtn: this.props.lang === 'en' ? 'Extra-cost quote' : 'Báo giá phát sinh',
+      qNew: () => this.setState({ qOv:{ cell:'132', v:'a' } }), qClose: () => this.setState({ qOv:null }),
+      qSent: () => this.setState({ qOv:null, qSt:'a' }), qReview: () => this.setState({ qOv:{ cell:'134', v:'wv' } }), isWallet: s==='wwallet', isProfile: s==='wprofile',
       showDock: s in dockFor,
       goHome: this.go('whome'), goJob: this.go('wjob'),
 

@@ -51,8 +51,8 @@ a:hover{color:#0B5A53}
         </sc-for>
       </div>
       <div style="margin-left:auto;text-align:right">
-        <div style="font-size:13px;font-weight:700;color:#7A7364">128 màn hình · 7 hành trình · 390 × 844 px</div>
-        <div style="font-size:13px;font-weight:700;color:#7A7364;margin-top:5px;font-variant-numeric:tabular-nums">Tháng 9, 2026</div>
+        <div style="font-size:13px;font-weight:700;color:#7A7364">128 màn hình · 7 hành trình + Batch 14–15 · 390 × 844 px</div>
+        <div style="font-size:13px;font-weight:700;color:#7A7364;margin-top:5px;font-variant-numeric:tabular-nums">Tháng 10, 2026</div>
       </div>
     </div>
   </section>
@@ -75,7 +75,8 @@ a:hover{color:#0B5A53}
             <div style="width:265px;height:574px;position:relative">
               <div style="position:absolute;top:0;left:0;transform:scale(.6801);transform-origin:top left">
                 <div style="width:390px;height:844px;border-radius:30px;overflow:hidden;border:1px solid #D8CFBC;background:#FAF6EE">
-                  <dc-import name="HomeServicePhone" screen="{{ s.k }}" ob-slide="{{ s.ob }}" theme="light" lang="vi" role="{{ s.role }}" otp-preset="{{ s.otpPreset }}" otp-err="{{ s.otpErr }}" otp-ctx="{{ s.otpCtx }}" dlg="{{ s.dlg }}" kyc-step="{{ s.kycStep }}" kyc-status="{{ s.kycStatus }}" svc="{{ s.svc }}" pay-state="{{ s.payState }}" match-state="{{ s.matchState }}" stars="{{ s.stars }}" tip="{{ s.tip }}" completed="{{ s.completed }}" cancel-fee="{{ s.cancelFee }}" ost="{{ s.ost }}" o-tab="{{ s.oTab }}" j-tab="{{ s.jTab }}" chat="{{ s.chat }}" chat-closed="{{ s.chatClosed }}" bh="{{ s.bh }}" bh-id="{{ s.bhId }}" wbh="{{ s.wbh }}" cst="{{ s.cst }}" k-id="{{ s.kId }}" ns="{{ s.ns }}" wcx="{{ s.wcx }}" wd="{{ s.wd }}" xc="{{ s.xc }}" hint-size="390px,844px"></dc-import>
+                  <sc-if value="{{ s.isQ }}"><dc-import name="HomeServiceQuote" cell="{{ s.qc }}" v="{{ s.qv }}" th="light" lang="vi" hint-size="390px,844px"></dc-import></sc-if>
+                  <sc-if value="{{ s.isP }}"><dc-import name="HomeServicePhone" screen="{{ s.k }}" ob-slide="{{ s.ob }}" theme="light" lang="vi" role="{{ s.role }}" otp-preset="{{ s.otpPreset }}" otp-err="{{ s.otpErr }}" otp-ctx="{{ s.otpCtx }}" dlg="{{ s.dlg }}" kyc-step="{{ s.kycStep }}" kyc-status="{{ s.kycStatus }}" svc="{{ s.svc }}" pay-state="{{ s.payState }}" match-state="{{ s.matchState }}" stars="{{ s.stars }}" tip="{{ s.tip }}" completed="{{ s.completed }}" cancel-fee="{{ s.cancelFee }}" ost="{{ s.ost }}" o-tab="{{ s.oTab }}" j-tab="{{ s.jTab }}" chat="{{ s.chat }}" chat-closed="{{ s.chatClosed }}" bh="{{ s.bh }}" bh-id="{{ s.bhId }}" wbh="{{ s.wbh }}" cst="{{ s.cst }}" k-id="{{ s.kId }}" ns="{{ s.ns }}" wcx="{{ s.wcx }}" wd="{{ s.wd }}" xc="{{ s.xc }}" tu="{{ s.tu }}" hint-size="390px,844px"></dc-import></sc-if>
                 </div>
               </div>
             </div>
@@ -259,12 +260,28 @@ const REORDERED = JOURNEYS.map((j, gi) => {
 });
 G.length = 0; REORDERED.forEach(g => G.push(g));
 
+const Q15 = [
+  ['117','wwallet','Ví',[['ok','117·a','Nạp tiền · Hoàn tất','Nút viền Nạp tiền cạnh Rút về tài khoản; dòng +500.000đ xanh.'],['proc','117·b','Nạp tiền · Đang xử lý','Số dư chưa đổi, nhãn hổ phách.'],['fail','117·c','Nạp tiền · Thất bại','Số tiền gạch ngang, nhãn đỏ.']]],
+  ['136','wtop','Nạp tiền',[['a','136a','Trống','Nút mờ.'],['b','136b','500.000đ · VNPay','Nút Nạp 500.000đ.'],['c','136c','Dưới mức tối thiểu','30.000đ, dòng lỗi dưới ô nhập.']]],
+  ['137','wtopc','Đang xác nhận',[['c137','137','Đang xác nhận giao dịch','Mã VNP-14220931; nút phụ Về ví.']]],
+  ['138','wtopr','Kết quả',[['ok','138a','Thành công','Số dư mới 5.360.000đ.'],['fail','138b','Không thành công','Bạn chưa bị trừ tiền; Thử lại.'],['pend','138c','Đang đối soát','Gọi hỗ trợ.']]]
+];
+const Q14 = [
+  ['132','w','Thợ tạo báo giá',[['a','132a','Trống','Một hạng mục rỗng; nút gửi mờ cho tới khi nhập.'],['b','132b','Hai hạng mục · có ảnh','Ron cao su 30.000đ có ảnh hoá đơn + công thay 15.000đ; ba ảnh hiện trường.'],['b2','132b′','Hai hạng mục · không có ảnh','Bỏ ô hoá đơn và lưới hiện trường cho bản phát hành đầu.'],['c','132c','Lỗi hạng mục','Thiếu tên, số tiền 0đ: viền đỏ, icon, dòng lỗi dưới trường.'],['c2','132c′','Vượt 1,5 lần','Tổng đơn 620.000đ vượt 600.000đ: banner đỏ trên thanh tổng.'],['d','132d','Đang gửi','Spinner trong nút, trường bị khoá.']]],
+  ['133','w','Trạng thái báo giá',[['a','133a','Đang chờ khách duyệt','+45.000đ, 2 hạng mục, gửi 14:41; nút Xem lại báo giá.'],['b','133b','Khách đã duyệt','Tổng mới 445.000đ, thực nhận 385.000đ.'],['c','133c','Khách đã từ chối','Nhắn tin / Tiếp tục công việc; nút Hoàn tất tạm ẩn.']]],
+  ['134','c','Khách duyệt báo giá',[['od','134·0','Banner ở Chi tiết đơn','Thợ gửi báo giá phát sinh — Xem & duyệt.'],['a','134a','Mặc định · có ảnh','Bảng hạng mục có ảnh hoá đơn, lưới ảnh hiện trường.'],['b','134b','Không có ảnh','Bảng hạng mục gọn, không lưới ảnh.'],['r','134r','Xác nhận từ chối','Quay lại / Từ chối báo giá.'],['c','134c','Đang xử lý','Spinner trong nút Duyệt.'],['d','134d','Mất mạng','SnackBar kèm Thử lại.'],['e','134e','Đã xử lý','Banner thông tin, ẩn hai nút.']]],
+  ['135','c','Kết quả',[['a','135a','Đã duyệt','Tổng mới 445.000đ.'],['b','135b','Đã từ chối','Giữ giá ban đầu 400.000đ.']]]
+];
 class Component extends DCLogic {
   renderVals(){
     const tiles = [];
     for (const [gn, gt, chip, list] of G)
       for (const s of list)
-        tiles.push({ n:s[0], k:s[1], ob:s[2], t:s[3], b:s[4], chip, gn, gt, ...(s[5] || {}) });
+        tiles.push({ n:s[0], k:s[1], ob:s[2], t:s[3], b:s[4], chip, gn, gt, isP:true, ...(s[5] || {}) });
+    for (const [cn, k, ct, fr] of Q15) for (const f of fr)
+      tiles.push({ n:f[1], k, t:'Cell ' + cn + ' · Thợ — ' + f[2], b:f[3], chip:'#A35A06', gn:'09', gt:'Nạp tiền vào ví · ' + ct, isP:true, role:'worker', tu:f[0] });
+    for (const [qc, lane, ct, fr] of Q14) for (const f of fr)
+      tiles.push({ n:f[1], t:'Cell ' + qc + ' · ' + (lane === 'w' ? 'Thợ' : 'Khách') + ' — ' + f[2], b:f[3], chip: lane === 'w' ? '#A35A06' : '#14312E', gn:'08', gt:'Báo giá phát sinh · ' + ct, isQ:true, qc, qv:f[0] });
 
     const pages = [];
     for (let i = 0; i < tiles.length; i += 3) {

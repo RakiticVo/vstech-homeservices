@@ -63,7 +63,7 @@ Side outcomes: **Khách vắng mặt** (worker reports after 15 min; job ends in
 | Tip | Amber CTA; 100% to the worker | — |
 | Withdrawal | — | Min 100.000đ, fee 0đ, manual approval ≤ 24 h. Balance = Σ credits − withdrawals − deductions (sample 4.860.000đ) |
 
-Solid amber appears only on: Xác nhận đặt lịch · Thanh toán [amount] · Gửi đánh giá · Tip [amount] · approving an extra cost in chat.
+Solid amber appears only on: Xác nhận đặt lịch · Thanh toán [amount] · Gửi đánh giá · Tip [amount]. Approving an extra cost (quote screen "Duyệt báo giá" and the chat card "Đồng ý") is solid teal — decided in batch 14; the money is only charged at payment.
 
 ### Screen table (board order, 128 cells)
 
@@ -557,6 +557,42 @@ Demo props: `oTab` (Customer), `jTab` (Worker).
 
 ---
 
+## 7j. Worker wallet top-up (batch 15, Cells 136–138)
+
+Built inside `HomeServiceWorker.dc.html` (screens `wtop` · `wtopc` · `wtopr`, prop `tu`, forwarded by the shell). Wallet balance card: white solid "Rút về tài khoản" stays the only primary; "+ Nạp tiền" is outlined white next to it.
+
+Sample: available 4.860.000đ; top-up 500.000đ via VNPay → 5.360.000đ; transaction VNP-14220931 (ZaloPay: ZLP-14220931); 14:30 · 25/04/2025. Free, minimum 50.000đ.
+
+| Cell | Screen | States (`tu`) |
+| --- | --- | --- |
+| 117 | `wwallet` ledger row "Nạp tiền qua VNPay" (incoming-arrow tile) | ok Hoàn tất (green, balance +500.000) · proc Đang xử lý (amber) · fail Thất bại (red, amount struck) |
+| 136 | `wtop` Nạp tiền vào ví | a empty (CTA disabled) · b 500.000đ + VNPay · c 30.000đ below minimum |
+| 137 | `wtopc` Đang xác nhận giao dịch | c137 static; in the live flow it resolves to success after ~2.6 s, "Về ví" leaves it as Đang xử lý |
+| 138 | `wtopr` Kết quả | ok · fail (Thử lại / Đổi cổng thanh toán) · pend after 5 min (Gọi hỗ trợ) |
+
+Selected chips and gateway cards use `--tint-teal-soft` + 1.5px teal border + check. Gateway logos are placeholder squircles with the name in type until real logo files are supplied. Tapping the ledger row opens the matching result screen.
+
+---
+
+## 7i. Extra-cost quote (batch 14, Cells 132–135)
+
+One component `HomeServiceQuote.dc.html`, props `cell` (132 · 133 · 134 · 135), `v` (state), `th`, `lang`, `mode` (frame | card), callbacks `onBack`, `onSent`, `onReview`, `onChat`, `onDone`, `onDecide`. Same tokens and `data-th` sets as the shell. Every frame is interactive.
+
+Sample: order #HS20250425-0012 · Vệ sinh nhà cửa · estimate 400.000đ · cap 1.5× = 600.000đ (extra ≤ 200.000đ). Quote = Ron cao su vòi sen 30.000đ (receipt) + Công thay ron 15.000đ = **+45.000đ**, sent 14:41, decided 14:45 · 25/04/2025. Approved: 445.000đ for the customer, 385.000đ net to the worker. The customer-facing label for the worker is "Thợ phụ trách".
+
+| Cell | Role | States (`v`) |
+| --- | --- | --- |
+| 132 Tạo báo giá | Worker | a empty (CTA disabled) · b 2 items + photos · b2 2 items, no photo areas · c item errors · c2 over the 1.5× cap · d sending |
+| 133 Trạng thái báo giá | Worker | a Đang chờ khách duyệt · b Khách đã duyệt · c Khách đã từ chối (finish CTA hidden until "Tiếp tục công việc") |
+| 134 Duyệt báo giá | Customer | od banner on Order detail · a with photos · b no photos · r reject dialog · c processing · d network error · e already handled |
+| 135 Kết quả | Customer | a approved · b rejected |
+
+Rules: 1–10 items; name required, amount > 0; receipt and on-site photos optional (max 6); total bar pinned above the CTA; cap error is a red banner above the total bar. Photos are placeholder squircles until real images exist; with `b2` / `b` the photo areas are removed, not left empty.
+
+Wiring: Worker `wwork` has "+ Báo giá phát sinh" → overlay 132 → after sending, the 133 card (`mode="card"`) sits under the timer. Customer `odetail` shows the banner when `xq="pend"` → overlay 134 → 135 → banner becomes the result line. Board: section 08 at the bottom, plus MÔ PHỎNG "Báo giá · Thợ / Khách" for the live phone. Print: the last pages.
+
+---
+
 ## 7d. In-app chat & masked calls (UC-B2C-08, UC-W-04)
 
 Phase 1, batch 6. One shared component `HomeServiceChat.dc.html` (props `role`, `mode` chat | callout | callin, `readonly`, `ost`, `theme`, `lang`, `simKind`, `simN`, `onClose`). Both roles render the **same message list** (`BASE`) and flip sides by `role`, so the conversation is identical on both phones.
@@ -567,7 +603,7 @@ Phase 1, batch 6. One shared component `HomeServiceChat.dc.html` (props `role`, 
 
 **Thread** — header: other person, order ID, current status; persistent banner "Số điện thoại của hai bên được ẩn". Message types: text, photo, current location (code-drawn mini map), system lines (accepted, check-in, call log, missed call with "Gọi lại"), extra-cost card. Read receipts ("Đã gửi" → "Đã xem") on your last message; typing indicator before incoming messages. Quick replies differ per role. Tapping the input fills a sample draft; the send button is a tinted icon so the amber approve button stays the only solid block. Phone numbers typed in a message are masked (`0901 ••• •••`) with a note under the bubble.
 
-**Extra-cost card** — "Thay ron vòi sen +60.000đ". Customer: amber "Đồng ý" / outline "Từ chối"; worker sees "Đang chờ khách xác nhận". The approval only changes the card state: batch 5 (extra-cost flow and bill update) has not been built, so totals stay 400.000đ / 340.000đ.
+**Extra-cost card** — "Thay ron vòi sen +45.000đ", body "2 hạng mục: ron cao su 30.000đ + công thay 15.000đ". Customer: teal "Đồng ý" / outline "Từ chối"; worker sees "Đang chờ khách xác nhận". The approval only changes the card state: batch 5 (extra-cost flow and bill update) has not been built, so totals stay 400.000đ / 340.000đ.
 
 **Calls** — outgoing: avatar, name, role, "Đang kết nối…" (2 s) then duration, mute / speaker toggles, red end button; ending adds a call-log line. Incoming: teal "Nghe máy", red-outline "Từ chối"; declining or 20 s without answer adds a missed-call line with "Gọi lại". Recording notice on both call screens.
 
@@ -977,7 +1013,7 @@ Updated at the end of Phase 1.
 **Not built**
 - Vouchers / promotions screen ("Mã ưu đãi" removed from the menu).
 - Full complaint centre on the operator side; accounting approval screen for withdrawals.
-- Extra-cost request form on the Worker side (the request exists as a chat card; approval changes totals only through the `xc` prop).
+- Extra-cost quote (batch 14) does not yet feed the shell totals: approving in `HomeServiceQuote` updates only the banner on Order detail; the paid totals still follow the `xc` prop.
 - Preferred-pro matching (step 3 shows it; matching still assigns Trần Văn Hùng).
 - Availability, work zone and services do not filter the job list.
 - Family members, device purchase history, admin/back-office.

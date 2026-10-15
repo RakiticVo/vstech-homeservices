@@ -24,7 +24,7 @@ a:hover{color:#0B5A53}
     <div style="flex:1;min-width:300px">
       <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:#8A8271">HOMESERVICE · MOBILE · 390×844</div>
       <div style="font-size:31px;font-weight:800;letter-spacing:-.9px;color:#0E5952;margin-top:7px">Dịch vụ gia đình · Contemporary Folk Utility</div>
-      <div style="font-size:14px;font-weight:500;color:#5B6572;margin-top:9px;max-width:660px;line-height:1.55;text-wrap:pretty">Điện thoại bên dưới chạy thật: bấm đặt dịch vụ, đổi khung giờ, chuyển tab, theo dõi đơn. Máy bắt đầu từ Splash và chạy trọn một luồng qua chọn vai trò, đăng nhập, rồi vào đúng trải nghiệm Khách hoặc Thợ. Bảng bên dưới là toàn bộ 128 màn, chia theo 7 hành trình; mỗi hành trình có hai làn Khách và Thợ thẳng cột theo từng chặng.</div>
+      <div style="font-size:14px;font-weight:500;color:#5B6572;margin-top:9px;max-width:660px;line-height:1.55;text-wrap:pretty">Điện thoại bên dưới chạy thật: bấm đặt dịch vụ, đổi khung giờ, chuyển tab, theo dõi đơn. Máy bắt đầu từ Splash và chạy trọn một luồng qua chọn vai trò, đăng nhập, rồi vào đúng trải nghiệm Khách hoặc Thợ. Bảng bên dưới là toàn bộ 128 màn, chia theo 7 hành trình; mỗi hành trình có hai làn Khách và Thợ thẳng cột theo từng chặng. Batch 15 (Cell 136–138, nạp tiền vào ví) và Batch 14 (Cell 132–135, báo giá phát sinh) nằm cuối trang.</div>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <sc-for list="{{ controls }}" as="c" hint-placeholder-count="2">
@@ -54,7 +54,7 @@ a:hover{color:#0B5A53}
         <div style="position:absolute;left:-3px;top:302px;width:3px;height:58px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#36363A,#1B1B1E)"></div>
         <div style="position:absolute;right:-3px;top:250px;width:3px;height:92px;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#36363A,#1B1B1E)"></div>
         <div style="width:390px;height:844px;border-radius:47px;overflow:hidden;background:#FAF6EE;position:relative">
-          <dc-import name="HomeServicePhone" screen="{{ live.k }}" ob-slide="{{ live.ob }}" theme="{{ theme }}" lang="{{ lang }}" role="{{ live.role }}" otp-preset="{{ live.otpPreset }}" otp-err="{{ live.otpErr }}" otp-ctx="{{ live.otpCtx }}" dlg="{{ live.dlg }}" kyc-step="{{ live.kycStep }}" kyc-status="{{ live.kycStatus }}" svc="{{ live.svc }}" pay-state="{{ live.payState }}" match-state="{{ live.matchState }}" stars="{{ live.stars }}" tip="{{ live.tip }}" completed="{{ live.completed }}" cancel-fee="{{ live.cancelFee }}" ost="{{ live.ost }}" o-tab="{{ live.oTab }}" j-tab="{{ live.jTab }}" chat="{{ live.chat }}" chat-closed="{{ live.chatClosed }}" sim-kind="{{ simKind }}" sim-n="{{ simN }}" bh="{{ live.bh }}" bh-id="{{ live.bhId }}" wbh="{{ live.wbh }}" cst="{{ live.cst }}" k-id="{{ live.kId }}" ns="{{ live.ns }}" wcx="{{ live.wcx }}" wd="{{ live.wd }}" xc="{{ live.xc }}" hint-size="390px,844px"></dc-import>
+          <dc-import name="HomeServicePhone" screen="{{ live.k }}" ob-slide="{{ live.ob }}" theme="{{ theme }}" lang="{{ lang }}" role="{{ live.role }}" otp-preset="{{ live.otpPreset }}" otp-err="{{ live.otpErr }}" otp-ctx="{{ live.otpCtx }}" dlg="{{ live.dlg }}" kyc-step="{{ live.kycStep }}" kyc-status="{{ live.kycStatus }}" svc="{{ live.svc }}" pay-state="{{ live.payState }}" match-state="{{ live.matchState }}" stars="{{ live.stars }}" tip="{{ live.tip }}" completed="{{ live.completed }}" cancel-fee="{{ live.cancelFee }}" ost="{{ live.ost }}" o-tab="{{ live.oTab }}" j-tab="{{ live.jTab }}" chat="{{ live.chat }}" chat-closed="{{ live.chatClosed }}" sim-kind="{{ simKind }}" sim-n="{{ simN }}" bh="{{ live.bh }}" bh-id="{{ live.bhId }}" wbh="{{ live.wbh }}" cst="{{ live.cst }}" k-id="{{ live.kId }}" ns="{{ live.ns }}" wcx="{{ live.wcx }}" wd="{{ live.wd }}" xc="{{ live.xc }}" xq="{{ live.xq }}" hint-size="390px,844px"></dc-import>
           <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;border-radius:16px;background:#0A0A0B"></div>
         </div>
       </div>
@@ -178,6 +178,56 @@ a:hover{color:#0B5A53}
       </div>
     </sc-for>
   </div>
+
+  <sc-for list="{{ batches }}" as="bt" hint-placeholder-count="2">
+  <div id="{{ bt.id }}" style="margin-top:64px">
+    <div style="display:flex;align-items:center;gap:16px;padding-bottom:15px;border-bottom:1px solid #DDD5C4">
+      <div style="width:42px;height:42px;flex:none;border-radius:13px;background:{{ bt.badge }};display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:800;color:#fff">{{ bt.n }}</div>
+      <div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.6px;color:#0E5952">{{ bt.t }}</div>
+        <div style="font-size:13px;font-weight:600;color:#7A7364;margin-top:3px">{{ bt.b }}</div>
+      </div>
+      <div style="margin-left:auto;font-size:11.5px;font-weight:800;letter-spacing:1px;color:#A89F8C">{{ bt.count }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:30px;margin-top:22px">
+      <sc-for list="{{ bt.cells }}" as="qc" hint-placeholder-count="4">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <div style="font-size:11px;font-weight:800;padding:3px 7px;border-radius:5px;background:{{ qc.laneBg }};color:#FFFFFF;font-variant-numeric:tabular-nums">CELL {{ qc.n }}</div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:{{ qc.laneBg }}">{{ qc.lane }}</div>
+            <div style="font-size:17px;font-weight:800;letter-spacing:-.3px;color:#14312E">{{ qc.t }}</div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:#7A7364;margin-top:5px;max-width:880px;line-height:1.55">{{ qc.b }}</div>
+          <div style="overflow-x:auto;margin-top:16px;padding-bottom:12px">
+            <div style="display:flex;gap:34px;width:max-content">
+              <sc-for list="{{ qc.fr }}" as="f" hint-placeholder-count="3">
+                <div id="{{ f.id }}" style="width:286px">
+                  <div style="width:286px;height:600px;position:relative">
+                    <div style="position:absolute;top:0;left:0;transform:scale(.691);transform-origin:top left">
+                      <div style="position:relative;width:414px;height:868px;box-sizing:border-box;padding:12px;border-radius:58px;background:linear-gradient(145deg,#4A4A4E 0%,#232326 26%,#17171A 55%,#2E2E32 100%);box-shadow:0 22px 44px rgba(31,41,55,.2)">
+                        <div style="position:absolute;inset:6px;border-radius:52px;border:1px solid rgba(255,255,255,.14);pointer-events:none"></div>
+                        <div style="width:390px;height:844px;border-radius:47px;overflow:hidden;background:#FAF6EE;position:relative">
+                          <sc-if value="{{ f.isQ }}"><dc-import name="HomeServiceQuote" cell="{{ f.cell }}" v="{{ f.v }}" th="{{ theme }}" lang="{{ lang }}" hint-size="390px,844px"></dc-import></sc-if>
+                          <sc-if value="{{ f.isW }}"><dc-import name="HomeServicePhone" role="worker" screen="{{ f.k }}" tu="{{ f.v }}" theme="{{ theme }}" lang="{{ lang }}" hint-size="390px,844px"></dc-import></sc-if>
+                          <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:31px;border-radius:16px;background:#0A0A0B"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:baseline;gap:9px;margin-top:16px">
+                    <div style="font-size:10px;font-weight:800;font-variant-numeric:tabular-nums;background:{{ qc.laneBg }};color:#FFFFFF;padding:3px 6px;border-radius:5px">{{ f.id }}</div>
+                    <div style="font-size:14.5px;font-weight:800;letter-spacing:-.3px;color:#14312E">{{ f.t }}</div>
+                  </div>
+                  <div style="font-size:12px;font-weight:500;line-height:1.55;color:#7A7364;margin-top:6px;text-wrap:pretty">{{ f.b }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-for>
 
 </div>
 
@@ -350,10 +400,57 @@ const XP = s => ({ role: (s[5] && s[5].role) || undefined, otpPreset: s[5] && s[
   svc: s[5] && s[5].svc, payState: s[5] && s[5].payState, matchState: s[5] && s[5].matchState, stars: s[5] && s[5].stars, tip: s[5] && s[5].tip, completed: s[5] && s[5].completed, cancelFee: s[5] && s[5].cancelFee, ost: s[5] && s[5].ost, oTab: s[5] && s[5].oTab, jTab: s[5] && s[5].jTab, chat: s[5] && s[5].chat, chatClosed: s[5] && s[5].chatClosed, bh: s[5] && s[5].bh, bhId: s[5] && s[5].bhId, wbh: s[5] && s[5].wbh, cst: s[5] && s[5].cst, kId: s[5] && s[5].kId, ns: s[5] && s[5].ns, wcx: s[5] && s[5].wcx, wd: s[5] && s[5].wd, xc: s[5] && s[5].xc });
 const FLAT = GROUPS.flatMap(g => g.screens);
 
+const Q14 = [
+  ['132','w','Tạo báo giá phát sinh','Mở từ nút “+ Báo giá phát sinh” ở màn Đang thực hiện. 1–10 hạng mục, ảnh hoá đơn và ảnh hiện trường đều không bắt buộc. Tổng phát sinh ghim ngay trên nút gửi.',[
+    ['a','132a','Trống','Một hạng mục rỗng, không có nút xoá. Nút gửi mờ cho tới khi nhập.'],
+    ['b','132b','Hai hạng mục · có ảnh','Ron cao su vòi sen 30.000đ có ảnh hoá đơn, công thay ron 15.000đ chưa có. Ba ảnh hiện trường.'],
+    ['b2','132b′','Hai hạng mục · không có ảnh','Bản phát hành đầu chưa có ảnh: bỏ ô hoá đơn và lưới hiện trường, thẻ vẫn cân.'],
+    ['c','132c','Lỗi hạng mục','Thiếu tên và số tiền 0đ: viền đỏ, icon và dòng lỗi ngay dưới trường.'],
+    ['c2','132c′','Vượt 1,5 lần','Phát sinh 220.000đ đưa tổng đơn lên 620.000đ, vượt 600.000đ: banner đỏ trên thanh tổng.'],
+    ['d','132d','Đang gửi','Spinner trong nút, mọi trường bị khoá.']]],
+  ['133','w','Trạng thái báo giá','Thẻ nằm trong màn Đang thực hiện, ngay dưới đồng hồ. Trạng thái luôn có icon, nhãn và màu.',[
+    ['a','133a','Đang chờ khách duyệt','Tổng phát sinh, số hạng mục, giờ gửi; nút phụ Xem lại báo giá.'],
+    ['b','133b','Khách đã duyệt','400.000đ + 45.000đ = Tổng mới của đơn 445.000đ; thực nhận về ví 385.000đ.'],
+    ['c','133c','Khách đã từ chối','Nhắn tin (phụ) và Tiếp tục công việc (chính); nút Hoàn tất tạm ẩn để màn chỉ có một nút đặc.']]],
+  ['134','c','Khách duyệt báo giá','Mở từ banner ở Chi tiết đơn. Bảng hạng mục, ảnh bằng chứng, bảng tổng; Từ chối viền đỏ, Duyệt báo giá là nút teal duy nhất.',[
+    ['od','134·0','Banner ở Chi tiết đơn','“Thợ gửi báo giá phát sinh — Xem & duyệt” đứng đầu màn, chạm cả thẻ để mở.'],
+    ['a','134a','Mặc định · có ảnh','Ảnh hoá đơn cạnh hạng mục, lưới ảnh hiện trường; chạm để phóng to.'],
+    ['b','134b','Không có ảnh','Bảng hạng mục gọn, không cột ảnh và không lưới.'],
+    ['r','134r','Xác nhận từ chối','Hộp thoại: Quay lại / Từ chối báo giá (đỏ).'],
+    ['c','134c','Đang xử lý','Spinner trong nút Duyệt, nút Từ chối mờ.'],
+    ['d','134d','Mất mạng','SnackBar “Không có kết nối mạng…” kèm Thử lại.'],
+    ['e','134e','Đã xử lý','Banner thông tin, ẩn cả hai nút.']]],
+  ['135','c','Kết quả sau khi duyệt / từ chối','Màn xác nhận ngắn, một nút Về chi tiết đơn; quay về thì banner ở Chi tiết đơn đổi theo kết quả.',[
+    ['a','135a','Đã duyệt','Check xanh lớn, bảng tổng mới 445.000đ.'],
+    ['b','135b','Đã từ chối','Icon thông tin xám, giữ giá ban đầu 400.000đ.']]]
+].map(c => ({ n:c[0], lane: c[1] === 'w' ? 'THỢ' : 'KHÁCH HÀNG', laneBg: c[1] === 'w' ? '#A35A06' : '#14312E', t:c[2], b:c[3],
+  fr: c[4].map(f => ({ cell:c[0], v:f[0], id:f[1], t:f[2], b:f[3], isQ:true })) }));
+const Q15 = [
+  ['117','w','Ví — nút Nạp tiền và dòng nạp tiền','Thẻ số dư thêm nút viền “Nạp tiền” cạnh “Rút về tài khoản”; nút rút vẫn là nút đặc duy nhất. Dòng nạp tiền đứng đầu lịch sử, trạng thái luôn có icon, nhãn và màu.',[
+    ['ok','117·a','Nạp tiền · Hoàn tất','Số dư 5.360.000đ, dòng +500.000đ xanh.'],
+    ['proc','117·b','Nạp tiền · Đang xử lý','Số dư chưa đổi, dòng +500.000đ xám, nhãn hổ phách.'],
+    ['fail','117·c','Nạp tiền · Thất bại','Số tiền gạch ngang, nhãn đỏ; chạm để xem lý do.']],'wwallet'],
+  ['136','w','Nạp tiền vào ví','Số dư sau khi nạp cập nhật theo số tiền nhập. Bốn mức chọn nhanh, hai cổng VNPay và ZaloPay; nút chính ghi rõ số tiền.',[
+    ['a','136a','Trống','Chưa nhập số tiền, chưa chọn cổng: nút mờ.'],
+    ['b','136b','500.000đ · VNPay','Chip 500.000đ và thẻ VNPay ở trạng thái chọn; nút “Nạp 500.000đ”.'],
+    ['c','136c','Dưới mức tối thiểu','30.000đ: viền đỏ, icon và dòng lỗi dưới ô nhập.']],'wtop'],
+  ['137','w','Đang xác nhận giao dịch','Sau khi quay về từ cổng thanh toán. Có thể rời màn; giao dịch hiện “Đang xử lý” trong ví.',[
+    ['c137','137','Đang xác nhận','Vòng xoay, số tiền, cổng, mã VNP-14220931; nút phụ Về ví.']],'wtopc'],
+  ['138','w','Kết quả nạp tiền','Ba kết cục của cổng thanh toán.',[
+    ['ok','138a','Thành công','+500.000đ, số dư mới 5.360.000đ, mã giao dịch, giờ.'],
+    ['fail','138b','Không thành công','Lý do, “Bạn chưa bị trừ tiền”; Thử lại và Đổi cổng thanh toán.'],
+    ['pend','138c','Đang đối soát','Quá 5 phút chưa có kết quả; Gọi hỗ trợ.']],'wtopr']
+].map(c => ({ n:c[0], lane:'THỢ', laneBg:'#A35A06', t:c[2], b:c[3],
+  fr: c[4].map(f => ({ cell:c[0], v:f[0], id:f[1], t:f[2], b:f[3], isW:true, k:c[5] })) }));
+const BATCHES = [
+  { id:'batch15', n:'09', badge:'#0E5952', t:'Nạp tiền vào ví thợ · Batch 15', b:'Số dư mẫu 4.860.000đ, nạp 500.000đ qua VNPay → 5.360.000đ. Miễn phí nạp, tối thiểu 50.000đ.', count:'CELL 136–138 · 10 TRẠNG THÁI', cells:Q15 },
+  { id:'batch14', n:'08', badge:'#A35A06', t:'Báo giá phát sinh · Batch 14', b:'Đơn #HS20250425-0012 · Vệ sinh nhà cửa · giá ước tính 400.000đ, trần 1,5 lần = 600.000đ. Cùng câu chuyện thay ron vòi sen 45.000đ ở Cell 130–131 và thẻ phát sinh trong chat.', count:'CELL 132–135 · 18 TRẠNG THÁI', cells:Q14 }
+];
+
 const OSTN = ['Đã nhận việc','Thợ đang đến','Thợ đã đến','Đang thực hiện','Chờ nghiệm thu','Chờ thanh toán','Hoàn tất','Đang xem xét'];
 class Component extends DCLogic {
   state = { i: 0, theme: 'light', lang: 'vi', ovRole: 'customer', ovOst: null, ovI: -1, ovList: false, simN: 0, simKind: null };
-  at(i){ return () => this.setState({ i: (i + FLAT.length) % FLAT.length }); }
+  at(i){ return () => this.setState({ i: (i + FLAT.length) % FLAT.length, qSim:null }); }
 
   renderVals(){
     const simKind = this.state.simKind, simN = this.state.simN;
@@ -365,6 +462,8 @@ class Component extends DCLogic {
     return {
       simKind, simN,
       live: (() => { const base = { n: cur[0], k: cur[1], ob: cur[2], t: cur[3], ...XP(cur) };
+        if (this.state.qSim === 'c') return { ...base, n:'134·0', k:'odetail', ob:0, role:undefined, ost:3, xq:'pend', t:'Khách · Chi tiết đơn có báo giá phát sinh' };
+        if (this.state.qSim === 'w') return { ...base, n:'132', k:'wwork', ob:0, role:'worker', ost:3, t:'Thợ · Đang thực hiện · Báo giá phát sinh' };
         if (this.state.ovI !== i || this.state.ovOst === null) return base;
         const o = this.state.ovOst, w = this.state.ovRole === 'worker';
         const L = this.state.ovList;
@@ -406,7 +505,9 @@ class Component extends DCLogic {
         ]},
         { k:'MÔ PHỎNG', opts:[
           opt('Huỷ lịch có phí', FLAT[i][1]==='cancel', set('i', FLAT.findIndex(x => x[1]==='cancel' && x[5] && x[5].cancelFee))),
-          opt('Không tìm được thợ', FLAT[i][1]==='matching' && FLAT[i][5] && FLAT[i][5].matchState==='none', set('i', FLAT.findIndex(x => x[1]==='matching' && x[5] && x[5].matchState==='none')))
+          opt('Không tìm được thợ', FLAT[i][1]==='matching' && FLAT[i][5] && FLAT[i][5].matchState==='none', set('i', FLAT.findIndex(x => x[1]==='matching' && x[5] && x[5].matchState==='none'))),
+          opt('Báo giá · Thợ', this.state.qSim === 'w', () => this.setState({ qSim:'w' })),
+          opt('Báo giá · Khách', this.state.qSim === 'c', () => this.setState({ qSim:'c' }))
         ]}
       ],
 
@@ -421,6 +522,7 @@ class Component extends DCLogic {
         {t:'Giá minh bạch từng bước', b:'Tạm tính ghim ở chân màn đặt lịch nên luôn thấy được khi đổi khung giờ. Lịch sử đơn hiện mã đơn, trạng thái và số tiền ngay trên thẻ, không cần mở ra mới biết.'}
       ],
 
+      batches: BATCHES,
       groups: GROUPS.map(g => {
         const tile = s => { const idx = FLAT.indexOf(s); const on = idx === i;
           return { n:s[0], k:s[1], ob:s[2], t:s[3], b:s[4], go:this.at(idx), ...XP(s),
