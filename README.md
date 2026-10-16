@@ -120,14 +120,18 @@ Trong bất kỳ agentic IDE nào (Antigravity, Claude Code, Cursor,...), bạn 
 
 Workflow `.github/workflows/issue-telegram.yml` gửi hoạt động issue vào nhóm Telegram (đúng topic nếu có):
 
-| Sự kiện | Tin nhắn |
-| :--- | :--- |
-| Issue mới | 🆕 tiêu đề, người tạo, nhãn, người xử lý, trích nội dung |
-| Mở lại / Đóng | 🔄 / ✅ (xong) / ⛔ (không xử lý) |
-| Giao việc | 👤 người được giao |
-| Bình luận mới (chỉ issue, không tính PR) | 💬 trích bình luận |
+Định dạng (chữ thường, không định dạng):
 
-Mỗi tin có nút **Mở trên GitHub**. Cần 3 GitHub Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (bỏ trống nếu nhóm không dùng topic). Lưu ý: sự kiện issue luôn chạy workflow từ **nhánh mặc định** của repo (`main`), nên file phải có trên nhánh đó.
+```
+🐛 Issue #100 closed (V-STECH/home_services_mobile)
+Tiêu đề issue
+by tvtrung206
+https://github.com/V-STECH/home_services_mobile/issues/100
+```
+
+Sự kiện: issue `opened` / `reopened` / `closed` / `assigned`, và bình luận mới trên issue (không tính PR) với dạng `💬 Comment mới trên #100 (...)` + 300 ký tự đầu của bình luận.
+
+Cần 3 GitHub Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (bỏ trống nếu nhóm không dùng topic). Lưu ý: sự kiện issue luôn chạy workflow từ **nhánh mặc định** của repo (`main`), nên file phải có trên nhánh đó.
 
 Thử script ở máy (không gửi tin):
 
