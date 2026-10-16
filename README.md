@@ -138,3 +138,22 @@ Thử script ở máy (không gửi tin):
 ```bash
 DRY_RUN=1 TELEGRAM_CHAT_ID=-100123 EVENT_NAME=issues ACTION=opened REPO=org/repo ACTOR=me ISSUE_NUMBER=1 ISSUE_TITLE=Test ISSUE_URL=https://github.com/org/repo/issues/1 bash .github/scripts/telegram_issue_notify.sh
 ```
+
+### Thông báo release lên Telegram
+
+Khi pipeline release (`.github/workflows/release.yml`, chạy theo tag `v*`) kết thúc — thành công hay lỗi — job **Notify Telegram** gửi tin vào cùng nhóm / topic với tin issue:
+
+```
+🚀 Release v1.0.0-uat (V-STECH/home_services_mobile)
+UAT · version 1.0.0 (build 1)
+by RakiticVo
+🤖 Android: ✅ Firebase App Distribution
+🍎 iOS: ✅ TestFlight
+📦 Artifacts: https://github.com/V-STECH/home_services_mobile/actions/runs/...
+```
+
+Có job lỗi thì dòng đầu là `❌ Release … lỗi` và nền tảng hỏng hiện ❌ (test lỗi thì hiện `🧪 Test: ❌`). Tag production (không có `-uat`) ghi `Production`, Google Play / App Store Connect. Dùng chung 3 secret Telegram. Thử ở máy:
+
+```bash
+DRY_RUN=1 TELEGRAM_CHAT_ID=-100123 TAG=v1.0.0-uat REPO=org/repo ACTOR=me RUN_URL=https://example.com APP_VERSION=1.0.0+1 TEST_RESULT=success ANDROID_RESULT=success IOS_RESULT=failure bash .github/scripts/telegram_release_notify.sh
+```

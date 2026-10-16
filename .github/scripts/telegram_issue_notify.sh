@@ -13,7 +13,7 @@
 # Required: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, EVENT_NAME, ACTION, REPO, ISSUE_NUMBER,
 #           ISSUE_TITLE, ISSUE_URL, ACTOR
 # Optional: TELEGRAM_MESSAGE_THREAD_ID (forum topic), COMMENT_BODY
-# DRY_RUN=1 prints the Telegram payload instead of sending it.
+# DRY_RUN=1 prints the Telegram payload instead of sending it (see telegram_send.sh).
 set -euo pipefail
 
 MAX_COMMENT_CHARS="${MAX_COMMENT_CHARS:-300}"
@@ -43,28 +43,4 @@ by ${ACTOR}
 ${ISSUE_URL}"
 fi
 
-payload="$(
-  jq -n \
-    --arg chat_id "${TELEGRAM_CHAT_ID}" \
-    --arg thread_id "${TELEGRAM_MESSAGE_THREAD_ID-}" \
-    --arg text "${text}" \
-    '{chat_id: $chat_id, text: $text, link_preview_options: {is_disabled: true}}
-    + (if $thread_id == "" then {} else {message_thread_id: ($thread_id | tonumber)} end)'
-)"
-
-if [ "${DRY_RUN-}" = "1" ]; then
-  printf '%s\n' "${payload}"
-  exit 0
-fi
-
-: "${TELEGRAM_BOT_TOKEN:?TELEGRAM_BOT_TOKEN is not set}"
-response="$(
-  curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-    -H 'Content-Type: application/json' \
-    --data "${payload}"
-)"
-if [ "$(printf '%s' "${response}" | jq -r '.ok')" != "true" ]; then
-  echo "::error::Telegram sendMessage failed: $(printf '%s' "${response}" | jq -r '.description // "unknown error"')"
-  exit 1
-fi
-echo "Sent to Telegram (message_id $(printf '%s' "${response}" | jq -r '.result.message_id'))"
+bash "$(dirname "$0")/telegram_send.sh" "${text}"

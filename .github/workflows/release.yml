@@ -411,3 +411,40 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-ci-token: $APP_VERSION_CI_TOKEN" \
             -d "{\"version\": \"$CLEAN_VERSION\"}"
+
+  # -------------------------------------------------------------
+  # STAGE 5: Telegram release notification (success or failure)
+  # -------------------------------------------------------------
+  notify-telegram:
+    name: Notify Telegram
+    needs: [test, android-uat, android-prod, ios-uat, ios-prod]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout notifier script and pubspec
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/scripts
+            pubspec.yaml
+          sparse-checkout-cone-mode: false
+
+      - name: Read app version
+        id: version
+        run: echo "value=$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Send release status
+        run: bash .github/scripts/telegram_release_notify.sh
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_MESSAGE_THREAD_ID: ${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          APP_VERSION: ${{ steps.version.outputs.value }}
+          TEST_RESULT: ${{ needs.test.result }}
+          ANDROID_RESULT: ${{ contains(github.ref, '-uat') && needs.android-uat.result || needs.android-prod.result }}
+          IOS_RESULT: ${{ contains(github.ref, '-uat') && needs.ios-uat.result || needs.ios-prod.result }}

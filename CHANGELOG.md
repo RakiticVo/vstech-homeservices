@@ -7,6 +7,22 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Thông báo release lên Telegram
+- Job **Notify Telegram** cuối `release.yml` (luôn chạy, kể cả khi lỗi) + script `.github/scripts/telegram_release_notify.sh`: gửi tag, kênh (UAT / Production), version + build từ `pubspec.yaml`, người tạo tag, kết quả Android / iOS (Icon theo trạng thái) và link run chứa artifact, cùng định dạng chữ thường với tin issue. Phần gửi tách thành `.github/scripts/telegram_send.sh` dùng chung cho tin issue và tin release.
+
+### Fixed — Giải quyết các vấn đề GitHub Issues (#1, #2, #3, #5)
+- **Issue #1 (Màn hình Cập nhật Địa chỉ):**
+  - Khắc phục lỗi khung bản đồ preview bị co hẹp thành dải hẹp 48px do thiếu chiều rộng trong `Column`: bổ sung `width: double.infinity`, thiết kế card bản đồ chuẩn Eco-Clean Sanctuary v9.0 với `_MapGridPainter` và ghim vị trí `LocationOn`.
+  - Loại bỏ viền kép lồng nhau (`Container(border)` + `TextField(border)`) ở ô tìm kiếm địa chỉ và ô ghi chú chi tiết.
+- **Issue #2 (Màn hình Cập nhật Thông tin Cá nhân có 2 khung viền):**
+  - Loại bỏ `Container(border)` bọc ngoài các trường Họ tên, Số điện thoại, Email trong `EditProfilePage`, đưa về 1 viền chuẩn duy nhất từ `InputDecorationTheme` của hệ thống theme, hỗ trợ hiển thị trạng thái `errorBorder` và `focusedBorder` mượt mà.
+- **Issue #3 (Đồng bộ màn hình Cài đặt & bảo mật từ Profile Menu):**
+  - Đổi tiêu đề màn hình cài đặt `settingsTitle` từ "Cài đặt & Lịch sử" thành "Cài đặt & bảo mật" ("Settings & Security") để khớp 1:1 với mục điều hướng tại tab Tài khoản.
+  - Loại bỏ `TabBar` và tab "Lịch sử đơn hàng" thừa (lịch sử đơn hàng đã có tab Đơn hàng riêng), hiển thị trực tiếp danh sách tùy chọn cài đặt, mật khẩu, thông báo và bảo mật tài khoản.
+- **Issue #5 (Chức năng Đăng ký / Đăng nhập nhanh bằng OTP):**
+  - Bổ sung nút "Đăng ký bằng mã OTP" (`registerWithOtp`) trên `RegisterPage` song song với `LoginPage`.
+  - Tích hợp kiểm tra số điện thoại người dùng đã nhập; nếu hợp lệ sẽ tự động điều hướng sang `AppRoutes.verifyOtpLocation` kèm ngữ cảnh `otpContext: 'register'` hoặc `'login'`.
+
 ### Fixed
 - Lane iOS `deploy_app_store`: `DART_DEFINES` giờ mã hoá base64 **từng** biến rồi nối bằng dấu phẩy (đúng định dạng Flutter đọc) — trước đây cả chuỗi bị mã hoá chung nên app nhận `API_BASE_URL` sai; ký thủ công chỉ áp cho target Runner (`update_code_signing_settings`) + `export_options` thay cho truyền profile qua `xcargs` (vốn áp cả vào target CocoaPods và làm build lỗi); Match đọc chứng chỉ kèm `team_id`.
 
