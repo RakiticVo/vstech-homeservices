@@ -85,10 +85,10 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Setup Ruby 3.1
+      - name: Setup Ruby 3.3
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '3.3'
           bundler-cache: true
           working-directory: android
 
@@ -163,10 +163,10 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Setup Ruby 3.1
+      - name: Setup Ruby 3.3
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '3.3'
           bundler-cache: true
           working-directory: android
 
@@ -239,10 +239,10 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.MATCH_SSH_KEY }}
 
-      - name: Setup Ruby 3.1
+      - name: Setup Ruby 3.3
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '3.3'
           bundler-cache: true
           working-directory: ios
 
@@ -322,10 +322,10 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.MATCH_SSH_KEY }}
 
-      - name: Setup Ruby 3.1
+      - name: Setup Ruby 3.3
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '3.3'
           bundler-cache: true
           working-directory: ios
 

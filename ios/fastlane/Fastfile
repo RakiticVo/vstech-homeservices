@@ -16,11 +16,14 @@ platform :ios do
 
     # Not read-only: creates the distribution certificate and the App Store profile if missing,
     # encrypts them with MATCH_PASSWORD and pushes them to MATCH_GIT_URL.
+    # The Matchfile clones the branch directly, which fails on the first run against an empty
+    # repo — let match create the branch here.
     match(
       type: "appstore",
       readonly: false,
       api_key: api_key,
-      team_id: ENV["APPLE_TEAM_ID"]
+      team_id: ENV["APPLE_TEAM_ID"],
+      clone_branch_directly: false
     )
   end
 
