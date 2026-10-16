@@ -43,16 +43,22 @@ platform :ios do
     match(
       type: "appstore",
       readonly: true,
-      api_key: api_key
+      api_key: api_key,
+      team_id: ENV["APPLE_TEAM_ID"]
     )
 
     api_base_url = ENV["API_BASE_URL"].to_s.strip
     app_env = ENV["APP_ENV"] || "production"
     debug_console = ENV["DEBUG_CONSOLE"] || "false"
 
-    # Base64 encode dart defines for Xcode xcargs compatibility
-    dart_defines = "API_BASE_URL=#{api_base_url},APP_ENV=#{app_env},DEBUG_CONSOLE=#{debug_console}"
-    encoded_defines = Base64.strict_encode64(dart_defines)
+    # Flutter's Xcode build reads DART_DEFINES as a comma-separated list where EACH define is
+    # base64-encoded on its own (encoding the whole joined string would hand the app one
+    # API_BASE_URL value containing the other defines).
+    encoded_defines = [
+      "API_BASE_URL=#{api_base_url}",
+      "APP_ENV=#{app_env}",
+      "DEBUG_CONSOLE=#{debug_console}"
+    ].map { |define| Base64.strict_encode64(define) }.join(",")
 
     # Resolve Swift Package Manager deployment target incompatibilities
     package_swift_path = "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift"
@@ -66,6 +72,18 @@ platform :ios do
     app_id = "com.vstech.vstechHomeServices"
     profile_name = ENV["sigh_#{app_id}_appstore"] || "match AppStore #{app_id}"
 
+    # Manual signing for the Runner target only — passing the profile through xcargs would also
+    # apply it to the CocoaPods targets, which fail with "does not support provisioning profiles".
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Runner.xcodeproj",
+      targets: ["Runner"],
+      build_configurations: ["Release"],
+      team_id: ENV["APPLE_TEAM_ID"],
+      code_sign_identity: "Apple Distribution",
+      profile_name: profile_name
+    )
+
     # Build the signed iOS IPA archive using gym
     build_app(
       workspace: "Runner.xcworkspace",
@@ -74,7 +92,10 @@ platform :ios do
       output_directory: "../build/ios/ipa",
       output_name: "vstech_home_services.ipa",
       export_method: "app-store",
-      xcargs: "DART_DEFINES=#{encoded_defines} DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='#{profile_name}'"
+      export_options: {
+        provisioningProfiles: { app_id => profile_name }
+      },
+      xcargs: "DART_DEFINES=#{encoded_defines}"
     )
 
     # Locate upload-symbols binary dynamically from SPM checkouts if Crashlytics is used

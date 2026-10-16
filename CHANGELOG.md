@@ -8,6 +8,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 ## [Unreleased]
 
 ### Fixed
+- Lane iOS `deploy_app_store`: `DART_DEFINES` giờ mã hoá base64 **từng** biến rồi nối bằng dấu phẩy (đúng định dạng Flutter đọc) — trước đây cả chuỗi bị mã hoá chung nên app nhận `API_BASE_URL` sai; ký thủ công chỉ áp cho target Runner (`update_code_signing_settings`) + `export_options` thay cho truyền profile qua `xcargs` (vốn áp cả vào target CocoaPods và làm build lỗi); Match đọc chứng chỉ kèm `team_id`.
+
+### Fixed
 - `setup_certificates` thất bại với repo Match trống (`Remote branch master not found`): lane giờ chạy Match với `clone_branch_directly: false` để Match tự tạo nhánh ở lần đầu. CI dùng Ruby 3.3 (fastlane đã bỏ Ruby 3.1 và kẹt ở 2.234).
 
 ### Added — Tạo chứng chỉ iOS trên CI
