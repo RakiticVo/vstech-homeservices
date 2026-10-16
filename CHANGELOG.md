@@ -7,6 +7,9 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Docs
+- `docs/guide/agent-cicd-universal-blueprint.md`: thêm thông báo Telegram vào quy trình setup CI/CD (sơ đồ luồng, secret `TELEGRAM_*`, cấu trúc thư mục `.github/scripts`, bước trong playbook, job `notify-telegram` trong template `release.yml`, mục **5.5** mẫu đầy đủ các script + workflow issue, mục **5.6** workflow tạo chứng chỉ iOS một lần, lưu ý & checklist). Đồng thời sửa các chỉ dẫn đã sai so với lần chạy thật: Ruby 3.3 thay 3.1, `DART_DEFINES` mã hoá từng biến, ký app chỉ cho target Runner, lần chạy Match đầu tiên với repo trống.
+
 ### Added — Thông báo release lên Telegram
 - Job **Notify Telegram** cuối `release.yml` (luôn chạy, kể cả khi lỗi) + script `.github/scripts/telegram_release_notify.sh`: gửi tag, kênh (UAT / Production), version + build từ `pubspec.yaml`, người tạo tag, kết quả Android / iOS (Icon theo trạng thái) và link run chứa artifact, cùng định dạng chữ thường với tin issue. Phần gửi tách thành `.github/scripts/telegram_send.sh` dùng chung cho tin issue và tin release.
 
