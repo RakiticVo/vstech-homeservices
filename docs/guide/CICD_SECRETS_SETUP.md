@@ -126,15 +126,15 @@ Keystore là "con dấu" của app Android. **Mất keystore = không cập nh�
 
 Fastlane Match lưu chứng chỉ + provisioning profile (đã mã hoá) trong một repo git riêng để CI dùng chung.
 
-1. Tạo repo GitHub **riêng tư, trống**, vd. `V-STECH/ios-certificates`.
-2. `MATCH_GIT_URL` = `git@github.com:V-STECH/ios-certificates.git` (dạng **SSH** — workflow đọc repo bằng SSH key).
+1. Tạo repo GitHub **riêng tư, trống**, vd. `V-STECH/homeservices-ios-certificates`.
+2. `MATCH_GIT_URL` = `git@github.com:V-STECH/homeservices-ios-certificates.git` (dạng **SSH** — workflow đọc repo bằng SSH key).
 3. Tạo SSH key riêng cho CI — chạy trong **Terminal trên máy Mac của bạn**, ở thư mục nào cũng được (không cần ở trong repo; key được tạo trong `~/.ssh`):
 
    ```bash
    ssh-keygen -t ed25519 -C "github-ci-match" -f ~/.ssh/match_deploy_key -N ""
    ```
 
-4. Repo `ios-certificates` → **Settings → Deploy keys → Add deploy key** → dán nội dung `~/.ssh/match_deploy_key.pub` và **tick "Allow write access"** (bước B5 dùng key này để đẩy chứng chỉ vào repo).
+4. Repo `homeservices-ios-certificates` → **Settings → Deploy keys → Add deploy key** → dán nội dung `~/.ssh/match_deploy_key.pub` và **tick "Allow write access"** (bước B5 dùng key này để đẩy chứng chỉ vào repo).
 5. `MATCH_SSH_KEY` = nội dung **private key**: `pbcopy < ~/.ssh/match_deploy_key`.
 6. Nhập secret xong thì cất private key vào kho mật khẩu công ty rồi xoá khỏi máy — chỉ CI cần dùng key này. (Bước B5 bên dưới máy bạn clone repo Match bằng tài khoản GitHub của chính bạn, không dùng key này.)
 
@@ -145,7 +145,7 @@ CI release chạy Match ở chế độ chỉ-đọc, nên chứng chỉ + provi
 1. Chọn một passphrase mạnh để mã hoá chứng chỉ trong repo Match → secret **`MATCH_PASSWORD`** (lưu lại trong kho mật khẩu — mất thì phải tạo lại chứng chỉ).
 2. Đảm bảo đã có đủ secret: `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_API_KEY_P8`, `MATCH_GIT_URL`, `MATCH_SSH_KEY` (deploy key **có quyền ghi**), `MATCH_PASSWORD`.
 3. Repo `home_services_mobile` → **Actions → iOS Setup Certificates (one-time) → Run workflow** (nhánh `main`).
-4. Khoảng 5–10 phút sau, repo `ios-certificates` sẽ có thư mục `certs/` và `profiles/` (đã mã hoá). Xong — từ giờ CI release dùng lại chứng chỉ này.
+4. Khoảng 5–10 phút sau, repo `homeservices-ios-certificates` sẽ có thư mục `certs/` và `profiles/` (đã mã hoá). Xong — từ giờ CI release dùng lại chứng chỉ này.
 5. (Tuỳ chọn) Sau khi chạy xong có thể bỏ tick "Allow write access" của deploy key cho an toàn.
 
 Lưu ý: Apple giới hạn số chứng chỉ Distribution mỗi team (thường 3). Nếu workflow báo đã đủ chứng chỉ, **hỏi team trước khi thu hồi** chứng chỉ cũ — thu hồi có thể ảnh hưởng app khác.
@@ -157,7 +157,7 @@ Chỉ dùng khi máy có fastlane chạy được (Mac Apple Silicon với Homeb
 
 ```bash
 MATCH_PASSWORD='passphrase-vừa-chọn' fastlane match appstore \
-  --git_url git@github.com:V-STECH/ios-certificates.git \
+  --git_url git@github.com:V-STECH/homeservices-ios-certificates.git \
   --app_identifier com.vstech.vstechHomeServices \
   --team_id <APPLE_TEAM_ID> \
   --username <APPLE_ID>
