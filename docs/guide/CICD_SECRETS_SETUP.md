@@ -49,7 +49,7 @@ Keystore là "con dấu" của app Android. **Mất keystore = không cập nh�
 
    | Secret | Giá trị |
    | :--- | :--- |
-   | `ANDROID_KEYSTORE_BASE64` | Chạy `base64 -i upload_keystore.jks \| pbcopy` rồi dán |
+   | `ANDROID_KEYSTORE_BASE64` | Chạy `base64 < upload_keystore.jks \| tr -d '\n' \| pbcopy` rồi dán (chạy được với cả `base64` của macOS lẫn bản GNU; nếu không có `base64` thì dùng `openssl base64 -A -in upload_keystore.jks \| pbcopy`) |
    | `ANDROID_KEYSTORE_PASSWORD` | Mật khẩu vừa đặt |
    | `ANDROID_KEY_ALIAS` | `upload` (alias ở lệnh trên) |
    | `ANDROID_KEY_PASSWORD` | Cùng mật khẩu với keystore |
