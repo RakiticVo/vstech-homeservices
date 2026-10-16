@@ -134,36 +134,37 @@ Fastlane Match lưu chứng chỉ + provisioning profile (đã mã hoá) trong m
    ssh-keygen -t ed25519 -C "github-ci-match" -f ~/.ssh/match_deploy_key -N ""
    ```
 
-4. Repo `ios-certificates` → **Settings → Deploy keys → Add deploy key** → dán nội dung `~/.ssh/match_deploy_key.pub` (chỉ cần quyền đọc).
+4. Repo `ios-certificates` → **Settings → Deploy keys → Add deploy key** → dán nội dung `~/.ssh/match_deploy_key.pub` và **tick "Allow write access"** (bước B5 dùng key này để đẩy chứng chỉ vào repo).
 5. `MATCH_SSH_KEY` = nội dung **private key**: `pbcopy < ~/.ssh/match_deploy_key`.
 6. Nhập secret xong thì cất private key vào kho mật khẩu công ty rồi xoá khỏi máy — chỉ CI cần dùng key này. (Bước B5 bên dưới máy bạn clone repo Match bằng tài khoản GitHub của chính bạn, không dùng key này.)
 
-### B5. Tạo chứng chỉ lần đầu trên Mac → `MATCH_PASSWORD`
+### B5. Tạo chứng chỉ lần đầu → `MATCH_PASSWORD`
 
-CI chạy Match ở chế độ chỉ-đọc, nên phải tạo chứng chỉ một lần trên máy Mac:
+CI release chạy Match ở chế độ chỉ-đọc, nên chứng chỉ + provisioning profile phải được tạo **một lần**. Cách dễ nhất là để GitHub Actions làm — **không cần cài fastlane trên máy, không cần đăng nhập Apple ID / 2FA** (dùng API key ở B3).
 
-1. Cài fastlane (cần Ruby ≥ 3.0 — Ruby có sẵn của macOS 2.6 quá cũ):
+1. Chọn một passphrase mạnh để mã hoá chứng chỉ trong repo Match → secret **`MATCH_PASSWORD`** (lưu lại trong kho mật khẩu — mất thì phải tạo lại chứng chỉ).
+2. Đảm bảo đã có đủ secret: `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_API_KEY_P8`, `MATCH_GIT_URL`, `MATCH_SSH_KEY` (deploy key **có quyền ghi**), `MATCH_PASSWORD`.
+3. Repo `home_services_mobile` → **Actions → iOS Setup Certificates (one-time) → Run workflow** (nhánh `main`).
+4. Khoảng 5–10 phút sau, repo `ios-certificates` sẽ có thư mục `certs/` và `profiles/` (đã mã hoá). Xong — từ giờ CI release dùng lại chứng chỉ này.
+5. (Tuỳ chọn) Sau khi chạy xong có thể bỏ tick "Allow write access" của deploy key cho an toàn.
 
-   ```bash
-   brew install fastlane
-   ```
+Lưu ý: Apple giới hạn số chứng chỉ Distribution mỗi team (thường 3). Nếu workflow báo đã đủ chứng chỉ, **hỏi team trước khi thu hồi** chứng chỉ cũ — thu hồi có thể ảnh hưởng app khác.
 
-   (Nếu Homebrew báo lỗi quyền thư mục, chạy lệnh `sudo chown -R …` mà Homebrew in ra rồi thử lại.)
+<details>
+<summary>Cách khác: chạy trên máy Mac (cần fastlane)</summary>
 
-2. Chọn một passphrase mạnh — dùng để mã hoá chứng chỉ trong repo → đây là secret `MATCH_PASSWORD`.
-3. Chạy (Mac phải clone được repo Match bằng SSH key của chính bạn):
+Chỉ dùng khi máy có fastlane chạy được (Mac Apple Silicon với Homebrew, hoặc Ruby ≥ 3.0 qua rbenv). Mac Intel + Homebrew hiện phải biên dịch llvm/rust từ mã nguồn rất lâu — không khuyến khích.
 
-   ```bash
-   MATCH_PASSWORD='passphrase-vừa-chọn' fastlane match appstore \
-     --git_url git@github.com:V-STECH/ios-certificates.git \
-     --app_identifier com.vstech.vstechHomeServices \
-     --team_id <APPLE_TEAM_ID> \
-     --username <APPLE_ID>
-   ```
+```bash
+MATCH_PASSWORD='passphrase-vừa-chọn' fastlane match appstore \
+  --git_url git@github.com:V-STECH/ios-certificates.git \
+  --app_identifier com.vstech.vstechHomeServices \
+  --team_id <APPLE_TEAM_ID> \
+  --username <APPLE_ID>
+```
 
-   - Đăng nhập Apple ID + mã 2FA khi được hỏi.
-   - Match tạo **Apple Distribution certificate** và profile **`match AppStore com.vstech.vstechHomeServices`**, mã hoá rồi đẩy vào repo.
-   - Apple giới hạn số chứng chỉ Distribution mỗi team (thường 3). Nếu báo đầy, **hỏi team trước khi thu hồi** chứng chỉ cũ — thu hồi có thể ảnh hưởng app khác.
+Lệnh sẽ hỏi đăng nhập Apple ID + mã 2FA.
+</details>
 
 ✅ Checklist iOS: `APPLE_ID`, `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_API_KEY_P8`, `MATCH_GIT_URL`, `MATCH_SSH_KEY`, `MATCH_PASSWORD`, `API_BASE_URL_UAT`.
 

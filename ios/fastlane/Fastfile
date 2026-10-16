@@ -3,6 +3,27 @@ require 'base64'
 default_platform(:ios)
 
 platform :ios do
+  desc "One-time: create the App Store certificate + profile and store them in the Match repo"
+  lane :setup_certificates do
+    setup_ci if ENV["CI"]
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_filepath: "fastlane/api_key.p8",
+      in_house: false
+    )
+
+    # Not read-only: creates the distribution certificate and the App Store profile if missing,
+    # encrypts them with MATCH_PASSWORD and pushes them to MATCH_GIT_URL.
+    match(
+      type: "appstore",
+      readonly: false,
+      api_key: api_key,
+      team_id: ENV["APPLE_TEAM_ID"]
+    )
+  end
+
   desc "Push a new build to App Store Connect / TestFlight"
   lane :deploy_app_store do
     setup_ci if ENV["CI"]

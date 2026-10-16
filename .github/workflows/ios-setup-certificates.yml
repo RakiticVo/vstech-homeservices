@@ -1,0 +1,48 @@
+name: iOS Setup Certificates (one-time)
+
+# Run manually once (Actions → this workflow → Run workflow) to create the App Store distribution
+# certificate and provisioning profile with Fastlane Match and push them (encrypted) to the Match
+# repo. Uses the App Store Connect API key — no Apple ID login or 2FA needed.
+# Requires the Match deploy key (MATCH_SSH_KEY) to have WRITE access on the Match repo.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    name: Create certificates with Fastlane Match
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Key for Fastlane Match
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.MATCH_SSH_KEY }}
+
+      - name: Setup Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: ios
+
+      - name: Setup App Store Connect API Key
+        run: printf "%s" "$APP_STORE_CONNECT_API_KEY_P8" > ios/fastlane/api_key.p8
+        env:
+          APP_STORE_CONNECT_API_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
+
+      - name: Create certificate and profile
+        run: bundle exec fastlane setup_certificates
+        working-directory: ios
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}

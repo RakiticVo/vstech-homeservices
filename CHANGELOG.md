@@ -7,6 +7,47 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — Tạo chứng chỉ iOS trên CI
+- Workflow chạy tay `.github/workflows/ios-setup-certificates.yml` + lane `setup_certificates` (`ios/fastlane/Fastfile`): tạo chứng chỉ Distribution + provisioning profile App Store bằng Fastlane Match qua App Store Connect API key (không cần Apple ID / 2FA, không cần cài fastlane trên máy), đẩy (đã mã hoá) vào repo Match. Hướng dẫn B5 trong `docs/guide/CICD_SECRETS_SETUP.md` cập nhật theo (deploy key cần quyền ghi).
+
+### Added & Changed — Nút gạt phạm vi Home, Dynamic Add-ons & Dropdown Booking, Đăng nhập/Đăng ký OTP
+- **Màn hình Home (Quick Scope Filter Toggle):**
+  - Bổ sung thanh chọn nhanh danh mục theo phạm vi: `[Tất cả]`, `[Trong nhà]` (`INDOOR`), `[Ngoài trời]` (`OUTDOOR`) theo chuẩn Eco-Clean Sanctuary v9.0 (`_ScopeFilterChip`).
+  - Mở rộng `CategoriesState` (`CategoriesLoadedState`, `CategoriesErrorState`) và `CategoriesCubit.load({String? scope})` để quản trị trạng thái lọc.
+- **Màn hình Booking Step 1 (Dynamic Add-ons & Dropdown Loại nhà):**
+  - Dropdown chọn loại hình nhà ở (`APARTMENT` - Chung cư / `TOWNHOUSE` - Nhà đất) kèm badge hiển thị phụ phí ngữ cảnh (`ServiceContextSurcharge`).
+  - Danh sách Add-on (`ServiceAddOn`) kết nối động từ API backend dạng Checkbox tương tác (`_AddOnCard`).
+  - Thanh Action bar cố định đáy phản ứng trực tiếp: tự động cập nhật và nhảy số tổng giá tạm tính (`draft.computedTotal` = base price + add-ons total + context surcharge) ngay khi người dùng chọn/bỏ chọn Add-on hoặc đổi loại nhà.
+  - Cập nhật hiển thị chi tiết phụ phí và add-on đã chọn trong tóm tắt đơn tại Step 3 (`BookingStep3ConfirmPage`).
+- **Màn hình Đăng nhập & Đăng ký (Auth OTP Overhaul):**
+  - Loại bỏ hoàn toàn các nút đăng nhập mạng xã hội bên thứ 3 (Google, Facebook, Apple) và dải phân cách social.
+  - Thay thế bằng hai nút hành động: "Đăng nhập bằng mã OTP" (`loginWithOtp`) và "Đăng ký bằng mã OTP" (`registerWithOtp`), điều hướng đến màn hình xác thực OTP `AppRoutes.verifyOtpLocation` kèm kiểm tra số điện thoại hợp lệ.
+- **Bản địa hóa (L10n) & Kiểm thử tự động:**
+  - Bổ sung chuỗi bản địa hóa 1:1 đầy đủ trong `app_vi.arb` và `app_en.arb`.
+  - Bổ sung widget tests & unit tests kiểm chứng toàn diện chức năng filter Home, đăng nhập OTP và Dynamic Add-ons/Dropdown Booking Step 1.
+
+### Added — Đồng bộ Taxonomy 3 tầng, Service Add-ons & Context Surcharges API
+- Đồng bộ hợp đồng tài liệu API mới từ `docs/mobile/03-categories-dispatch.md` sang `docs/reference/api/03-categories-dispatch.md`.
+- **Taxonomy 3 tầng cho Danh mục dịch vụ:**
+  - `ServiceCategoryResponse` & `ServiceCategory` bổ sung các trường: `scope` (`INDOOR`/`OUTDOOR`/`HYBRID`), `parentId` (`NullableIdConverter`), `requiresSafetyCert` (chứng chỉ an toàn).
+  - `CategoryRemoteDataSource.getCategories` & `CategoryRepository.getCategories` hỗ trợ lọc: `parentId`, `rootOnly`, `scope`.
+  - `GetCategoriesUseCase` hỗ trợ các tham số lọc phân tầng.
+- **Service Add-ons API (Vật tư / Dịch vụ phụ):**
+  - Khai báo endpoint `ApiEndpoints.serviceAddOnsCategory`, `serviceAddOnsActive`, `serviceAddOn`.
+  - DTO `ServiceAddOnResponse` + Entity `ServiceAddOn` (`id`, `categoryId`, `name`, `description`, `price`, `unit`, `isActive`).
+  - `CategoryRemoteDataSource.getActiveAddOns` & `CategoryRepository.getActiveAddOns` (`GET /api/v1/service-add-ons/category/{categoryId}/active`).
+  - Use case `GetActiveAddOnsUseCase`.
+- **Context Surcharges API (Phụ phí ngữ cảnh chung cư / nhà phố):**
+  - Khai báo endpoint `ApiEndpoints.serviceContextSurchargesApplicable`, `serviceContextSurchargesCategory`, `serviceContextSurchargesType`, `serviceContextSurcharge`.
+  - DTO `ServiceContextSurchargeResponse` + Entity `ServiceContextSurcharge` (`id`, `categoryId`, `contextType`, `contextValue`, `name`, `description`, `surchargeAmount`, `surchargeRate`, `isActive`).
+  - `CategoryRemoteDataSource.getApplicableContextSurcharges` & `CategoryRepository.getApplicableContextSurcharges` (`GET /api/v1/service-context-surcharges/applicable`).
+  - Use case `GetApplicableContextSurchargesUseCase`.
+- **Mã lỗi & Bản địa hóa (L10n):**
+  - Bổ sung 6 mã lỗi mới trong `FailureMessageX`: `HS-404-0004` (danh mục cha), `HS-400-0004` (cha không hợp lệ), `HS-400-0005` (vượt 3 tầng), `HS-409-0008` (xóa danh mục có con), `HS-404-0005` (add-on), `HS-404-0006` (phụ phí).
+  - Cập nhật 1:1 trong `app_vi.arb` & `app_en.arb` và regenerate qua `flutter gen-l10n`.
+- **Kiểm thử tự động:**
+  - Bổ sung unit tests cho data source & repository trong `test/unit/features/home/category_data_test.dart` và `test/unit/core/error/failure_message_test.dart`. Toàn bộ test suite đạt 399/399 tests pass (100%).
+
 ### Changed
 - Tin nhắn Telegram cho issue đổi sang định dạng chữ thường của team: `<icon> Issue #<số> <hành động> (<repo>)` (🆕 mở · 🔄 mở lại · ✅ đóng · 👤 giao việc) / tiêu đề / `by <người>` / link; bình luận: `💬 Comment mới trên #<số> (<repo>)` + 300 ký tự đầu. Bỏ HTML, nút bấm và trích nội dung issue; vẫn gửi đúng topic và truyền dữ liệu qua biến môi trường.
 
