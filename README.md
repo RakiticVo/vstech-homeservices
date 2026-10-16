@@ -118,7 +118,7 @@ Trong bất kỳ agentic IDE nào (Antigravity, Claude Code, Cursor,...), bạn 
 
 ### Thông báo issue lên Telegram
 
-Workflow `.github/workflows/telegram-issues.yml` gửi hoạt động issue vào nhóm Telegram (đúng topic nếu có):
+Workflow `.github/workflows/issue-telegram.yml` gửi hoạt động issue vào nhóm Telegram (đúng topic nếu có):
 
 | Sự kiện | Tin nhắn |
 | :--- | :--- |
@@ -127,7 +127,7 @@ Workflow `.github/workflows/telegram-issues.yml` gửi hoạt động issue vào
 | Giao việc | 👤 người được giao |
 | Bình luận mới (chỉ issue, không tính PR) | 💬 trích bình luận |
 
-Mỗi tin có nút **Mở trên GitHub**. Cần 3 GitHub Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (bỏ trống nếu nhóm không dùng topic). Lưu ý: sự kiện issue luôn chạy workflow từ **nhánh mặc định** của repo, nên file phải có trên nhánh đó.
+Mỗi tin có nút **Mở trên GitHub**. Cần 3 GitHub Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (bỏ trống nếu nhóm không dùng topic). Lưu ý: sự kiện issue luôn chạy workflow từ **nhánh mặc định** của repo (`main`), nên file phải có trên nhánh đó.
 
 Thử script ở máy (không gửi tin):
 

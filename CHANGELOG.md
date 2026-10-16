@@ -8,7 +8,7 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 ## [Unreleased]
 
 ### Added — Thông báo issue lên Telegram
-- Workflow `.github/workflows/telegram-issues.yml` + script `.github/scripts/telegram_issue_notify.sh`: gửi issue mới / mở lại / đóng (xong hoặc không xử lý) / giao việc và bình luận mới trên issue (bỏ qua PR) vào Telegram qua `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (topic). Tin nhắn HTML đã escape, trích nội dung tối đa 1.200 ký tự, nút "Mở trên GitHub"; dữ liệu issue truyền qua biến môi trường (không chèn vào lệnh shell); `DRY_RUN=1` để thử ở máy. Hướng dẫn trong README.
+- Workflow `.github/workflows/issue-telegram.yml` + script `.github/scripts/telegram_issue_notify.sh`: gửi issue mới / mở lại / đóng (xong hoặc không xử lý) / giao việc và bình luận mới trên issue (bỏ qua PR) vào Telegram qua `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (topic). Tin nhắn HTML đã escape, trích nội dung tối đa 1.200 ký tự, nút "Mở trên GitHub"; dữ liệu issue truyền qua biến môi trường (không chèn vào lệnh shell); `DRY_RUN=1` để thử ở máy. Hướng dẫn trong README.
 
 ### Added — CI/CD Pipeline tự động hoá Release & Store Publishing
 - Thiết lập pipeline CI/CD GitHub Actions (`.github/workflows/release.yml`) theo chuẩn `docs/guide/agent-cicd-universal-blueprint.md`:
