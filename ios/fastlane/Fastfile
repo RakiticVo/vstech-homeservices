@@ -1,0 +1,81 @@
+require 'base64'
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Push a new build to App Store Connect / TestFlight"
+  lane :deploy_app_store do
+    setup_ci if ENV["CI"]
+
+    # Authenticate via App Store Connect API Key
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_filepath: "fastlane/api_key.p8",
+      in_house: false
+    )
+
+    # Synchronize certificates and profiles in read-only mode on CI
+    match(
+      type: "appstore",
+      readonly: true,
+      api_key: api_key
+    )
+
+    api_base_url = ENV["API_BASE_URL"].to_s.strip
+    app_env = ENV["APP_ENV"] || "production"
+    debug_console = ENV["DEBUG_CONSOLE"] || "false"
+
+    # Base64 encode dart defines for Xcode xcargs compatibility
+    dart_defines = "API_BASE_URL=#{api_base_url},APP_ENV=#{app_env},DEBUG_CONSOLE=#{debug_console}"
+    encoded_defines = Base64.strict_encode64(dart_defines)
+
+    # Resolve Swift Package Manager deployment target incompatibilities
+    package_swift_path = "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift"
+    if File.exist?(package_swift_path)
+      UI.message("Adjusting iOS deployment target in #{package_swift_path} to 15.0...")
+      content = File.read(package_swift_path)
+      content = content.gsub('.iOS("13.0")', '.iOS("15.0")')
+      File.write(package_swift_path, content)
+    end
+
+    app_id = "com.vstech.vstechHomeServices"
+    profile_name = ENV["sigh_#{app_id}_appstore"] || "match AppStore #{app_id}"
+
+    # Build the signed iOS IPA archive using gym
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Release",
+      output_directory: "../build/ios/ipa",
+      output_name: "vstech_home_services.ipa",
+      export_method: "app-store",
+      xcargs: "DART_DEFINES=#{encoded_defines} DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='#{profile_name}'"
+    )
+
+    # Locate upload-symbols binary dynamically from SPM checkouts if Crashlytics is used
+    spm_binary_path = Dir["/Users/runner/Library/Developer/Xcode/DerivedData/Runner-*/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"].first
+    binary_option = {}
+    if spm_binary_path && File.exist?(spm_binary_path)
+      UI.message("Found SPM Crashlytics upload-symbols at: #{spm_binary_path}")
+      binary_option[:binary_path] = spm_binary_path
+    end
+
+    # Upload dSYM files if Crashlytics GoogleService-Info.plist exists
+    if File.exist?("Runner/GoogleService-Info.plist") && File.exist?("../build/ios/ipa/vstech_home_services.app.dSYM.zip")
+      upload_symbols_to_crashlytics(
+        dsym_path: "../build/ios/ipa/vstech_home_services.app.dSYM.zip",
+        gsp_path: "Runner/GoogleService-Info.plist",
+        **binary_option
+      )
+    end
+
+    # Upload IPA to TestFlight
+    upload_to_testflight(
+      ipa: "../build/ios/ipa/vstech_home_services.ipa",
+      skip_waiting_for_build_processing: true,
+      api_key: api_key,
+      changelog: ENV["RELEASE_NOTES"] || "New release build."
+    )
+  end
+end

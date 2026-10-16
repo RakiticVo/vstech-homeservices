@@ -1,0 +1,44 @@
+default_platform(:android)
+
+platform :android do
+  desc "Submit a new Internal Build to Firebase App Distribution"
+  lane :distribute_firebase do
+    api_base_url = ENV["API_BASE_URL"].to_s.strip
+    sh("flutter build apk --release --dart-define=APP_ENV=development --dart-define=DEBUG_CONSOLE=true --dart-define=API_BASE_URL=#{api_base_url}")
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_ANDROID_APP_ID"],
+      service_credentials_file: "firebase-distribution.json",
+      groups: "internal-testers",
+      release_notes: ENV["RELEASE_NOTES"] || "Build triggered via GitHub Actions tag push.",
+      apk_path: "../build/app/outputs/flutter-apk/app-release.apk"
+    )
+  end
+
+  desc "Deploy a new version to the Google Play Store and build signed APK for release artifact"
+  lane :deploy_play_store do
+    api_base_url = ENV["API_BASE_URL"].to_s.strip
+    # Build App Bundle (.aab) for Google Play Console
+    sh("flutter build appbundle --release --dart-define=APP_ENV=production --dart-define=DEBUG_CONSOLE=false --dart-define=API_BASE_URL=#{api_base_url}")
+
+    # Also build signed Release APK for direct installation / GitHub Artifacts
+    sh("flutter build apk --release --dart-define=APP_ENV=production --dart-define=DEBUG_CONSOLE=false --dart-define=API_BASE_URL=#{api_base_url}")
+
+    release_notes_text = ENV["RELEASE_NOTES"] || "Release update."
+    changelog_dir = "metadata/android/vi-VN/changelogs"
+    FileUtils.mkdir_p(changelog_dir)
+    File.write("#{changelog_dir}/default.txt", release_notes_text)
+
+    track = ENV["PLAY_STORE_TRACK"].to_s.strip
+    track = "internal" if track.empty?
+
+    upload_to_play_store(
+      track: track,
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true
+    )
+  end
+end

@@ -1,0 +1,413 @@
+name: CI/CD Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  # -------------------------------------------------------------
+  # STAGE 1: Code Verification & Static Analysis
+  # -------------------------------------------------------------
+  test:
+    name: Flutter Tests & Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate Tag Branch Integrity
+        run: |
+          git fetch --all
+          TAG_COMMIT=$(git rev-parse HEAD)
+          CONTAINED_BRANCHES=$(git branch -r --contains $TAG_COMMIT)
+          echo "Branches containing commit $TAG_COMMIT:"
+          echo "$CONTAINED_BRANCHES"
+          if ! echo "$CONTAINED_BRANCHES" | grep -qE 'origin/(prod|dev)'; then
+            echo "::error::Release tags are only allowed on 'origin/prod' or 'origin/dev' branches!"
+            exit 1
+          fi
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Static Analyzer
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Run Automated Tests
+        run: flutter test
+
+  # -------------------------------------------------------------
+  # STAGE 2A: Android UAT (Firebase App Distribution & Artifact)
+  # -------------------------------------------------------------
+  android-uat:
+    name: Android UAT Deployment
+    needs: test
+    if: contains(github.ref, '-uat')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Release Notes from Tag Message
+        run: |
+          TAG_MSG=$(git tag -l --format='%(contents)' ${{ github.ref_name }})
+          if [ -z "$TAG_MSG" ]; then
+            TAG_MSG=$(git log -1 --pretty=%B)
+          fi
+          # Flatten multi-line notes for GitHub Actions env safely
+          TAG_MSG=$(echo "$TAG_MSG" | tr '\n' ' ')
+          echo "RELEASE_NOTES=$TAG_MSG" >> $GITHUB_ENV
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Setup Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: android
+
+      - name: Decode Android Keystore & Firebase Credentials
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | grep -v "CERTIFICATE" | base64 --decode > app/upload_keystore.jks
+          printf "%s" "$FIREBASE_APP_DISTRIBUTION_CREDENTIALS" > firebase-distribution.json
+          printf "%s" "$FIREBASE_APP_DISTRIBUTION_CREDENTIALS" > fastlane/firebase-distribution.json
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          FIREBASE_APP_DISTRIBUTION_CREDENTIALS: ${{ secrets.FIREBASE_APP_DISTRIBUTION_CREDENTIALS }}
+
+      - name: Build APK & Deploy to Firebase App Distribution
+        run: bundle exec fastlane distribute_firebase
+        working-directory: android
+        env:
+          FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL_UAT }}
+          RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
+
+      - name: Upload Android UAT APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-uat-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+
+  # -------------------------------------------------------------
+  # STAGE 2B: Android Production (Google Play Store & Artifacts)
+  # -------------------------------------------------------------
+  android-prod:
+    name: Android Production Deployment
+    needs: test
+    if: "!contains(github.ref, '-uat') && !contains(github.ref, '-beta')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Release Notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_MSG=$(git tag -l --format='%(contents)' ${{ github.ref_name }})
+          if [ -z "$TAG_MSG" ] && [ "${{ github.ref_name }}" = "prod" ]; then
+            PR_BODY=$(gh pr list --base prod --state merged --json body,mergeCommit --jq ".[] | select(.mergeCommit.oid == \"$GITHUB_SHA\") | .body")
+            if [ -n "$PR_BODY" ]; then
+              TAG_MSG="$PR_BODY"
+            fi
+          fi
+          if [ -z "$TAG_MSG" ]; then
+            TAG_MSG=$(git log -1 --pretty=%B)
+          fi
+          CLEANED_NOTES=$(echo "$TAG_MSG" | tr '\n' ' ')
+          echo "RELEASE_NOTES=$CLEANED_NOTES" >> $GITHUB_ENV
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Setup Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: android
+
+      - name: Decode Keystore & Play Store Service Account
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | grep -v "CERTIFICATE" | base64 --decode > app/upload_keystore.jks
+          printf "%s" "$PLAY_STORE_JSON_KEY" > fastlane-play-store.json
+          printf "%s" "$PLAY_STORE_JSON_KEY" > fastlane/fastlane-play-store.json
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+
+      - name: Build AAB & Signed APK, Deploy to Google Play Console
+        run: bundle exec fastlane deploy_play_store
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL_PROD }}
+          PLAY_STORE_TRACK: ${{ secrets.PLAY_STORE_TRACK || 'internal' }}
+          RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
+
+      - name: Upload Android App Bundle (.aab) Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-prod-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+      - name: Upload Android Signed APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-prod-signed-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+
+  # -------------------------------------------------------------
+  # STAGE 3A: iOS UAT (TestFlight Internal & Artifact)
+  # -------------------------------------------------------------
+  ios-uat:
+    name: iOS UAT Deployment (TestFlight)
+    needs: test
+    if: contains(github.ref, '-uat')
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Release Notes from Tag Message
+        run: |
+          TAG_MSG=$(git tag -l --format='%(contents)' ${{ github.ref_name }})
+          if [ -z "$TAG_MSG" ]; then
+            TAG_MSG=$(git log -1 --pretty=%B)
+          fi
+          TAG_MSG=$(echo "$TAG_MSG" | tr '\n' ' ')
+          echo "RELEASE_NOTES=$TAG_MSG" >> $GITHUB_ENV
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Setup SSH Key for Fastlane Match
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.MATCH_SSH_KEY }}
+
+      - name: Setup Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: ios
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Generate Flutter iOS Configurations
+        run: flutter build ios --config-only --no-codesign
+
+      - name: Setup App Store Connect API Key
+        run: |
+          printf "%s" "$APP_STORE_CONNECT_API_KEY_P8" > ios/fastlane/api_key.p8
+        env:
+          APP_STORE_CONNECT_API_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
+
+      - name: Build IPA & Deploy to TestFlight
+        run: bundle exec fastlane deploy_app_store
+        working-directory: ios
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL_UAT }}
+          APP_ENV: 'development'
+          DEBUG_CONSOLE: 'true'
+          RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
+
+      - name: Upload iOS UAT IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-uat-ipa
+          path: build/ios/ipa/vstech_home_services.ipa
+          if-no-files-found: error
+
+  # -------------------------------------------------------------
+  # STAGE 3B: iOS Production (App Store Connect & Artifact)
+  # -------------------------------------------------------------
+  ios-prod:
+    name: iOS Production Deployment
+    needs: test
+    if: "!contains(github.ref, '-uat') && !contains(github.ref, '-beta')"
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Release Notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_MSG=$(git tag -l --format='%(contents)' ${{ github.ref_name }})
+          if [ -z "$TAG_MSG" ] && [ "${{ github.ref_name }}" = "prod" ]; then
+            PR_BODY=$(gh pr list --base prod --state merged --json body,mergeCommit --jq ".[] | select(.mergeCommit.oid == \"$GITHUB_SHA\") | .body")
+            if [ -n "$PR_BODY" ]; then
+              TAG_MSG="$PR_BODY"
+            fi
+          fi
+          if [ -z "$TAG_MSG" ]; then
+            TAG_MSG=$(git log -1 --pretty=%B)
+          fi
+          CLEANED_NOTES=$(echo "$TAG_MSG" | tr '\n' ' ')
+          echo "RELEASE_NOTES=$CLEANED_NOTES" >> $GITHUB_ENV
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Setup SSH Key for Fastlane Match
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.MATCH_SSH_KEY }}
+
+      - name: Setup Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: ios
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Generate Flutter iOS Configurations
+        run: flutter build ios --config-only --no-codesign
+
+      - name: Setup App Store Connect API Key
+        run: |
+          printf "%s" "$APP_STORE_CONNECT_API_KEY_P8" > ios/fastlane/api_key.p8
+        env:
+          APP_STORE_CONNECT_API_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
+
+      - name: Build IPA & Deploy to App Store Connect
+        run: bundle exec fastlane deploy_app_store
+        working-directory: ios
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL_PROD }}
+          APP_ENV: 'production'
+          DEBUG_CONSOLE: 'false'
+          RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
+
+      - name: Upload iOS Signed IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-prod-signed-ipa
+          path: build/ios/ipa/vstech_home_services.ipa
+          if-no-files-found: error
+
+  # -------------------------------------------------------------
+  # STAGE 4: Backend Version Synchronization Webhook
+  # -------------------------------------------------------------
+  notify-backend-uat:
+    name: Notify Backend (UAT)
+    needs: [android-uat, ios-uat]
+    if: contains(github.ref, '-uat')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report Active UAT Version to Backend
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL_UAT }}
+          APP_VERSION_CI_TOKEN: ${{ secrets.APP_VERSION_CI_TOKEN }}
+        run: |
+          if [ -z "$APP_VERSION_CI_TOKEN" ]; then
+            echo "APP_VERSION_CI_TOKEN is not configured. Skipping webhook."
+            exit 0
+          fi
+          RAW_TAG="${{ github.ref_name }}"
+          CLEAN_VERSION=$(echo "$RAW_TAG" | sed -E 's/^v//; s/-.*//')
+          echo "Reporting UAT release version $CLEAN_VERSION to $API_BASE_URL/app-version..."
+          curl -s -X POST "$API_BASE_URL/app-version" \
+            -H "Content-Type: application/json" \
+            -H "x-ci-token: $APP_VERSION_CI_TOKEN" \
+            -d "{\"version\": \"$CLEAN_VERSION\"}"
+
+  notify-backend-prod:
+    name: Notify Backend (Production)
+    needs: [android-prod, ios-prod]
+    if: "!contains(github.ref, '-uat') && !contains(github.ref, '-beta')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report Active Production Version to Backend
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL_PROD }}
+          APP_VERSION_CI_TOKEN: ${{ secrets.APP_VERSION_CI_TOKEN }}
+        run: |
+          if [ -z "$APP_VERSION_CI_TOKEN" ]; then
+            echo "APP_VERSION_CI_TOKEN is not configured. Skipping webhook."
+            exit 0
+          fi
+          RAW_TAG="${{ github.ref_name }}"
+          CLEAN_VERSION=$(echo "$RAW_TAG" | sed -E 's/^v//; s/-.*//')
+          echo "Reporting Production release version $CLEAN_VERSION to $API_BASE_URL/app-version..."
+          curl -s -X POST "$API_BASE_URL/app-version" \
+            -H "Content-Type: application/json" \
+            -H "x-ci-token: $APP_VERSION_CI_TOKEN" \
+            -d "{\"version\": \"$CLEAN_VERSION\"}"

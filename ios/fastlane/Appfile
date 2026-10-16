@@ -1,0 +1,4 @@
+# app_identifier accepts a single String
+app_identifier("com.vstech.vstechHomeServices")
+apple_id(ENV["APPLE_ID"])
+team_id(ENV["APPLE_TEAM_ID"])

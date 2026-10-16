@@ -1,0 +1,3 @@
+# Path is relative to the android/fastlane directory
+json_key_file("fastlane-play-store.json")
+package_name("com.vstech.vstech_home_services")

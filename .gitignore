@@ -54,3 +54,11 @@ app.*.map.json
 .env
 .env.*
 !.env.*.example
+
+# Fastlane & Code Signing Credentials (Secrets)
+*.jks
+*.keystore
+*.p8
+**/fastlane-play-store.json
+**/firebase-distribution.json
+

@@ -1,0 +1,6 @@
+git_url(ENV["MATCH_GIT_URL"])
+storage_mode("git")
+type("appstore")
+app_identifier(["com.vstech.vstechHomeServices"]) # Array of strings!
+username(ENV["APPLE_ID"])
+clone_branch_directly(true)

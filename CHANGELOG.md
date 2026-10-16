@@ -7,6 +7,19 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 
 ## [Unreleased]
 
+### Added — CI/CD Pipeline tự động hoá Release & Store Publishing
+- Thiết lập pipeline CI/CD GitHub Actions (`.github/workflows/release.yml`) theo chuẩn `docs/guide/agent-cicd-universal-blueprint.md`:
+  - **Kiểm thử tự động & Bảo vệ nhánh**: Chạy `flutter analyze` + `flutter test` (394 test) và kiểm tra tính toàn vẹn nhánh (chặn tag không thuộc `origin/dev` hoặc `origin/prod`).
+  - **Android UAT (`v*-uat`)**: Build APK qua Fastlane (`distribute_firebase`), đẩy lên Firebase App Distribution + lưu GitHub Actions Artifact (`android-uat-apk`).
+  - **Android Production (`v*`)**: Build Google Play App Bundle `.aab` đẩy lên Google Play Console + build Signed APK lưu GitHub Actions Artifact (`android-prod-aab`, `android-prod-signed-apk`).
+  - **iOS UAT (`v*-uat`)**: Đồng bộ chứng chỉ qua Fastlane Match, build IPA qua gym, đẩy lên TestFlight + lưu GitHub Actions Artifact (`ios-uat-ipa`).
+  - **iOS Production (`v*`)**: Đồng bộ chứng chỉ App Store qua Fastlane Match, build IPA đã ký, đẩy lên App Store Connect / TestFlight + lưu GitHub Actions Artifact (`ios-prod-signed-ipa`).
+  - **Đồng bộ phiên bản**: Webhook tự động cập nhật số phiên bản tới backend (`POST /app-version`) khi cấu hình `APP_VERSION_CI_TOKEN`.
+- Cấu hình Fastlane Android (`android/Gemfile`, `android/fastlane/Appfile`, `Fastfile`, `Pluginfile`) và ký số Gradle (`android/app/build.gradle.kts` hỗ trợ biến môi trường CI & fallback debug cục bộ).
+- Cấu hình Fastlane iOS (`ios/Gemfile`, `ios/fastlane/Appfile`, `Matchfile`, `Fastfile`), mã hóa Base64 Dart defines và tự động vá tương thích iOS 15 SPM `Package.swift`.
+- Bảo mật: Cập nhật `.gitignore` (gốc, `android/`, `ios/`) chặn toàn bộ file bí mật `*.jks`, `*.keystore`, `*.p8`, `*.json`.
+
+
 ### Fixed
 - Bảng debug: ghi log trong lúc một màn đang dựng (vd. cubit đổi trạng thái ngay khi tạo) làm nút Debug dựng lại giữa chừng → lỗi → lỗi lại được ghi log → vòng lặp vô hạn, app treo. `DebugLogStore` giờ gom và báo thay đổi sau khung hình (microtask). Có test hồi quy.
 
