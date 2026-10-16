@@ -128,7 +128,7 @@ Fastlane Match lưu chứng chỉ + provisioning profile (đã mã hoá) trong m
 
 1. Tạo repo GitHub **riêng tư, trống**, vd. `V-STECH/ios-certificates`.
 2. `MATCH_GIT_URL` = `git@github.com:V-STECH/ios-certificates.git` (dạng **SSH** — workflow đọc repo bằng SSH key).
-3. Tạo SSH key riêng cho CI:
+3. Tạo SSH key riêng cho CI — chạy trong **Terminal trên máy Mac của bạn**, ở thư mục nào cũng được (không cần ở trong repo; key được tạo trong `~/.ssh`):
 
    ```bash
    ssh-keygen -t ed25519 -C "github-ci-match" -f ~/.ssh/match_deploy_key -N ""
@@ -136,6 +136,7 @@ Fastlane Match lưu chứng chỉ + provisioning profile (đã mã hoá) trong m
 
 4. Repo `ios-certificates` → **Settings → Deploy keys → Add deploy key** → dán nội dung `~/.ssh/match_deploy_key.pub` (chỉ cần quyền đọc).
 5. `MATCH_SSH_KEY` = nội dung **private key**: `pbcopy < ~/.ssh/match_deploy_key`.
+6. Nhập secret xong thì cất private key vào kho mật khẩu công ty rồi xoá khỏi máy — chỉ CI cần dùng key này. (Bước B5 bên dưới máy bạn clone repo Match bằng tài khoản GitHub của chính bạn, không dùng key này.)
 
 ### B5. Tạo chứng chỉ lần đầu trên Mac → `MATCH_PASSWORD`
 
