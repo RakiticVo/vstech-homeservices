@@ -2,7 +2,7 @@
 # Sends a GitHub issue / issue-comment event to a Telegram chat (optionally a forum topic) as plain
 # text, in the team's format:
 #
-#   🐛 Issue #100 closed (V-STECH/home_services_mobile)
+#   ✅ Issue #100 closed (V-STECH/home_services_mobile)
 #   <issue title>
 #   by <actor>
 #   <issue url>
@@ -29,7 +29,15 @@ by ${ACTOR}:
 ${comment}
 ${ISSUE_URL}"
 else
-  text="🐛 Issue #${ISSUE_NUMBER} ${ACTION} (${REPO})
+  # One icon per action so the chat is scannable at a glance.
+  case "${ACTION}" in
+    opened) icon="🆕" ;;
+    reopened) icon="🔄" ;;
+    closed) icon="✅" ;;
+    assigned) icon="👤" ;;
+    *) icon="📌" ;;
+  esac
+  text="${icon} Issue #${ISSUE_NUMBER} ${ACTION} (${REPO})
 ${ISSUE_TITLE}
 by ${ACTOR}
 ${ISSUE_URL}"

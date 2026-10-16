@@ -8,7 +8,7 @@ Tất cả các thay đổi đáng chú ý của dự án sẽ được ghi nh�
 ## [Unreleased]
 
 ### Changed
-- Tin nhắn Telegram cho issue đổi sang định dạng chữ thường của team: `🐛 Issue #<số> <hành động> (<repo>)` / tiêu đề / `by <người>` / link; bình luận: `💬 Comment mới trên #<số> (<repo>)` + 300 ký tự đầu. Bỏ HTML, nút bấm và trích nội dung issue; vẫn gửi đúng topic và truyền dữ liệu qua biến môi trường.
+- Tin nhắn Telegram cho issue đổi sang định dạng chữ thường của team: `<icon> Issue #<số> <hành động> (<repo>)` (🆕 mở · 🔄 mở lại · ✅ đóng · 👤 giao việc) / tiêu đề / `by <người>` / link; bình luận: `💬 Comment mới trên #<số> (<repo>)` + 300 ký tự đầu. Bỏ HTML, nút bấm và trích nội dung issue; vẫn gửi đúng topic và truyền dữ liệu qua biến môi trường.
 
 ### Added — Thông báo issue lên Telegram
 - Workflow `.github/workflows/issue-telegram.yml` + script `.github/scripts/telegram_issue_notify.sh`: gửi issue mới / mở lại / đóng (xong hoặc không xử lý) / giao việc và bình luận mới trên issue (bỏ qua PR) vào Telegram qua `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (topic). Tin nhắn HTML đã escape, trích nội dung tối đa 1.200 ký tự, nút "Mở trên GitHub"; dữ liệu issue truyền qua biến môi trường (không chèn vào lệnh shell); `DRY_RUN=1` để thử ở máy. Hướng dẫn trong README.

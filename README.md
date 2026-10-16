@@ -123,13 +123,13 @@ Workflow `.github/workflows/issue-telegram.yml` gửi hoạt động issue vào 
 Định dạng (chữ thường, không định dạng):
 
 ```
-🐛 Issue #100 closed (V-STECH/home_services_mobile)
+✅ Issue #100 closed (V-STECH/home_services_mobile)
 Tiêu đề issue
 by tvtrung206
 https://github.com/V-STECH/home_services_mobile/issues/100
 ```
 
-Sự kiện: issue `opened` / `reopened` / `closed` / `assigned`, và bình luận mới trên issue (không tính PR) với dạng `💬 Comment mới trên #100 (...)` + 300 ký tự đầu của bình luận.
+Icon theo hành động: 🆕 `opened` · 🔄 `reopened` · ✅ `closed` · 👤 `assigned`; và bình luận mới trên issue (không tính PR) với dạng `💬 Comment mới trên #100 (...)` + 300 ký tự đầu của bình luận.
 
 Cần 3 GitHub Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (bỏ trống nếu nhóm không dùng topic). Lưu ý: sự kiện issue luôn chạy workflow từ **nhánh mặc định** của repo (`main`), nên file phải có trên nhánh đó.
 
