@@ -111,3 +111,26 @@ Trong bất kỳ agentic IDE nào (Antigravity, Claude Code, Cursor,...), bạn 
 /start-session
 ```
 để tự động kiểm tra sức khỏe dự án và rà soát tiến độ theo ma trận 16 màn hình.
+
+---
+
+## 🤖 CI/CD
+
+### Thông báo issue lên Telegram
+
+Workflow `.github/workflows/telegram-issues.yml` gửi hoạt động issue vào nhóm Telegram (đúng topic nếu có):
+
+| Sự kiện | Tin nhắn |
+| :--- | :--- |
+| Issue mới | 🆕 tiêu đề, người tạo, nhãn, người xử lý, trích nội dung |
+| Mở lại / Đóng | 🔄 / ✅ (xong) / ⛔ (không xử lý) |
+| Giao việc | 👤 người được giao |
+| Bình luận mới (chỉ issue, không tính PR) | 💬 trích bình luận |
+
+Mỗi tin có nút **Mở trên GitHub**. Cần 3 GitHub Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_MESSAGE_THREAD_ID` (bỏ trống nếu nhóm không dùng topic). Lưu ý: sự kiện issue luôn chạy workflow từ **nhánh mặc định** của repo, nên file phải có trên nhánh đó.
+
+Thử script ở máy (không gửi tin):
+
+```bash
+DRY_RUN=1 TELEGRAM_CHAT_ID=-100123 EVENT_NAME=issues ACTION=opened REPO=org/repo ACTOR=me ISSUE_NUMBER=1 ISSUE_TITLE=Test ISSUE_URL=https://github.com/org/repo/issues/1 bash .github/scripts/telegram_issue_notify.sh
+```
