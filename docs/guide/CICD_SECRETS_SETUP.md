@@ -8,6 +8,28 @@
 
 ---
 
+## Vị trí đặt file trên máy (đã được `.gitignore` chặn)
+
+Khi cần build / chạy Fastlane **ở máy**, đặt các file vào đúng chỗ dưới đây — trùng với chỗ CI tự tạo lại từ secret, nên `build.gradle.kts` và Fastlane đọc được ngay. Tất cả đã được `.gitignore` chặn (đã kiểm tra bằng `git check-ignore`), **không commit**; bản gốc cất trong kho mật khẩu công ty.
+
+| File | Đặt tại | Dùng cho | Secret tương ứng trên CI |
+| :--- | :--- | :--- | :--- |
+| Keystore ký app | `android/app/upload_keystore.jks` | Ký APK / AAB release (`build.gradle.kts` tự tìm file này) | `ANDROID_KEYSTORE_BASE64` |
+| Mật khẩu keystore | `android/key.properties` | Ký release ở máy (CI dùng biến môi trường thay thế) | `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` |
+| Service account Firebase App Distribution | `android/fastlane/firebase-distribution.json` | `fastlane distribute_firebase` | `FIREBASE_APP_DISTRIBUTION_CREDENTIALS` |
+| Service account Google Play | `android/fastlane/fastlane-play-store.json` | `fastlane deploy_play_store` (production) | `PLAY_STORE_JSON_KEY` |
+| App Store Connect API key | `ios/fastlane/api_key.p8` | `fastlane deploy_app_store` (đổi tên file `AuthKey_XXXX.p8` thành `api_key.p8`) | `APP_STORE_CONNECT_API_KEY_P8` |
+| SSH key đọc repo Match | `~/.ssh/match_deploy_key` (ngoài repo) | Fastlane Match clone repo chứng chỉ | `MATCH_SSH_KEY` |
+
+Cấu hình Firebase phía app (khi bật FCM / Crashlytics sau này — **không phải khoá bí mật**):
+
+| File | Đặt tại | Ghi chú |
+| :--- | :--- | :--- |
+| `google-services.json` | `android/app/google-services.json` | Hiện bị `android/.gitignore` (`*.json`) chặn — nếu muốn commit để CI build có Firebase, thêm dòng `!app/google-services.json` vào `android/.gitignore` |
+| `GoogleService-Info.plist` | `ios/Runner/GoogleService-Info.plist` | Không bị chặn, commit được; nhớ add vào target Runner trong Xcode |
+
+---
+
 ## Phần A — Android UAT
 
 ### A1. Keystore ký app → `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`
@@ -32,16 +54,15 @@ Keystore là "con dấu" của app Android. **Mất keystore = không cập nh�
    | `ANDROID_KEY_ALIAS` | `upload` (alias ở lệnh trên) |
    | `ANDROID_KEY_PASSWORD` | Cùng mật khẩu với keystore |
 
-3. (Tuỳ chọn) Build release ký thật ở máy: tạo `android/key.properties` (đã gitignore)
+3. (Tuỳ chọn) Build release ký thật ở máy: đặt keystore tại `android/app/upload_keystore.jks` (Gradle tự tìm ở đây) và tạo `android/key.properties` chứa mật khẩu:
 
    ```properties
-   storeFile=../upload_keystore.jks
    storePassword=...
    keyAlias=upload
    keyPassword=...
    ```
 
-   Không có file này thì bản release ở máy tự ký bằng key debug.
+   Không có keystore ở đó thì bản release ở máy tự ký bằng key debug.
 
 ### A2. App Android trên Firebase → `FIREBASE_ANDROID_APP_ID`
 
